@@ -29,7 +29,38 @@ textarea {
 }
 
 .page-shell {
+  position: relative;
   min-height: 100vh;
+}
+
+.language-switcher {
+  position: absolute;
+  top: 18px;
+  right: clamp(16px, 4vw, 48px);
+  z-index: 5;
+  display: flex;
+  gap: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.36);
+  border-radius: 8px;
+  background: rgba(10, 45, 39, 0.54);
+  padding: 5px;
+  backdrop-filter: blur(12px);
+}
+
+.language-switcher button {
+  min-width: 42px;
+  min-height: 34px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.language-switcher button.active {
+  background: white;
+  color: var(--accent-strong);
 }
 
 .hero {
@@ -221,8 +252,10 @@ textarea:focus {
 
 .loading,
 .empty-state,
-.error {
+.error,
+.success {
   border-radius: 8px;
+  margin-bottom: 12px;
   padding: 18px;
   line-height: 1.7;
 }
@@ -236,6 +269,11 @@ textarea:focus {
 .error {
   background: #fff0eb;
   color: var(--warn);
+}
+
+.success {
+  background: #e8f7f0;
+  color: #17644f;
 }
 
 .report {
@@ -268,6 +306,49 @@ textarea:focus {
   font-weight: 700;
 }
 
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  background: rgba(12, 28, 24, 0.48);
+  padding: 18px;
+}
+
+.modal {
+  width: min(760px, 100%);
+  max-height: min(760px, calc(100vh - 36px));
+  overflow: auto;
+  padding: clamp(18px, 3vw, 30px);
+}
+
+.modal .field {
+  margin-top: 16px;
+}
+
+.modal-close {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: white;
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.site-footer {
+  width: min(1440px, 100%);
+  margin: 0 auto;
+  padding: 0 clamp(16px, 4vw, 48px) 42px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
 @media (max-width: 980px) {
   .workspace {
     grid-template-columns: 1fr;
@@ -279,6 +360,15 @@ textarea:focus {
 }
 
 @media (max-width: 640px) {
+  .language-switcher {
+    top: 12px;
+    right: 12px;
+  }
+
+  .language-switcher button {
+    min-width: 36px;
+  }
+
   .hero {
     min-height: 360px;
     padding-top: 42px;
