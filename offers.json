@@ -1,8 +1,8 @@
 [
   {
-    "id": "bell-hidden-winback-internet-pei",
+    "id": "bell-weekly-winback-internet-pei",
     "provider": "Bell",
-    "name": "Bell hidden/winback internet offer",
+    "name": "Bell available weekly/winback internet offer",
     "service_type": "internet",
     "region": "PEI",
     "technology": "fiber",
@@ -13,7 +13,7 @@
     "risk": "high",
     "commission": 10,
     "requires": ["not_bell_30_days"],
-    "notes": "Hidden, winback, or door-to-door pricing may vary by address and must be confirmed manually."
+    "notes": "Available weekly, winback, or door-to-door pricing may vary by address and must be confirmed by the provider or an authorized sales representative."
   },
   {
     "id": "koodo-home-internet-pei",
