@@ -974,6 +974,14 @@ export default function Home() {
   const recommendations = useMemo(() => getRecommendations(form), [form]);
   const score = useMemo(() => calculateScore(form, recommendations), [form, recommendations]);
   const yearlySavings = useMemo(() => yearlySavingsValue(recommendations, form), [recommendations, form]);
+  const heroLogoSrc =
+    language === "zhHans" ? "/bill-saver-logo-zh.png" : language === "zhHant" ? "/bill-saver-logo-zh-tw.png" : "/bill-saver-logo-en.png";
+  const heroLogoAlt =
+    language === "zhHans"
+      ? "Bill Saver｜PEI 手机宽带账单免费体检"
+      : language === "zhHant"
+        ? "Bill Saver｜PEI 手機寬頻帳單免費體檢"
+        : "Bill Saver | Free PEI Mobile & Internet Bill Check";
 
   useEffect(() => {
     function onKeyDown(event) {
@@ -1062,8 +1070,8 @@ export default function Home() {
           <p className="eyebrow">{t.eyebrow}</p>
           <div className="heroLogoWrap">
             <Image
-              src="/bill-saver-logo.png"
-              alt="Bill Saver | PEI 手机宽带账单免费体检"
+              src={heroLogoSrc}
+              alt={heroLogoAlt}
               width={1600}
               height={420}
               priority
