@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { offerDatabase } from "@/lib/offerDatabase";
 
@@ -1059,7 +1060,16 @@ export default function Home() {
       <section className="hero">
         <div>
           <p className="eyebrow">{t.eyebrow}</p>
-          <h1>{t.title}</h1>
+          <div className="heroLogoWrap">
+            <Image
+              src="/bill-saver-logo.png"
+              alt="Bill Saver | PEI 手机宽带账单免费体检"
+              width={1600}
+              height={420}
+              priority
+              className="heroLogo"
+            />
+          </div>
           <div className="hero-flow" aria-label={t.heroFlowTitle}>
             <p className="hero-flow-title">{t.heroFlowTitle}</p>
             <div className="hero-flow-steps">

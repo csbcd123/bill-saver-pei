@@ -101,6 +101,23 @@ h1 {
   letter-spacing: 0;
 }
 
+.heroLogoWrap {
+  display: inline-block;
+  max-width: 1120px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.94);
+  border-radius: 22px;
+  padding: 18px 22px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+  margin-bottom: 22px;
+}
+
+.heroLogo {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .hero-copy {
   max-width: 700px;
   margin-bottom: 0;
@@ -915,6 +932,14 @@ textarea:focus {
 
   .result-panel {
     position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .heroLogoWrap {
+    padding: 12px 14px;
+    border-radius: 16px;
+    margin-bottom: 16px;
   }
 }
 
