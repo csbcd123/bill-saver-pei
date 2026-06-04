@@ -438,6 +438,62 @@ textarea:focus {
   font-size: clamp(1.3rem, 3vw, 2rem);
 }
 
+.score-summary.excellent {
+  border-color: rgba(15, 123, 104, 0.28);
+  background: linear-gradient(180deg, #ffffff, #eef8f3);
+}
+
+.score-summary.excellent .summary-icon {
+  background: #dff4eb;
+  color: #0f7b68;
+}
+
+.score-summary.excellent .summary-value {
+  color: #0f7b68;
+}
+
+.score-summary.healthy {
+  border-color: rgba(42, 154, 120, 0.22);
+  background: linear-gradient(180deg, #ffffff, #f3faf6);
+}
+
+.score-summary.healthy .summary-icon {
+  background: #e9f6ef;
+  color: #287b5c;
+}
+
+.score-summary.healthy .summary-value {
+  color: #287b5c;
+}
+
+.score-summary.medium {
+  border-color: rgba(217, 149, 36, 0.32);
+  background: linear-gradient(180deg, #ffffff, #fff8ed);
+}
+
+.score-summary.medium .summary-icon {
+  background: #fff0d8;
+  color: #a8650d;
+}
+
+.score-summary.medium .summary-value {
+  color: #a8650d;
+}
+
+.score-summary.alert {
+  border-color: rgba(214, 90, 50, 0.34);
+  background: linear-gradient(180deg, #ffffff, #fff1ec);
+}
+
+.score-summary.alert .summary-icon {
+  background: #ffe1d6;
+  color: #9f3f1d;
+}
+
+.score-summary.alert .summary-value {
+  color: #9f3f1d;
+}
+
 .score-box {
   border-radius: 8px;
   padding: 22px;

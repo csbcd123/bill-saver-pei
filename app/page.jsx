@@ -875,26 +875,38 @@ function getRecommendations(form) {
 }
 
 function calculateScore(form, offers) {
-  const price = monthlyPrice(form);
-  if (!price || !offers.length) return 62;
-  const comparisonOffers =
-    form.service_type === "both" ? offers.filter((offer) => offer.service_type === "both") : offers.filter((offer) => offer.service_type === form.service_type);
-  const publicComparisonOffers = comparisonOffers.filter((offer) => !isManualPrice(offer));
-  const targets = publicComparisonOffers.map((offer) => offer.bill_saver_target_price).filter((value) => typeof value === "number");
-  const regulars = publicComparisonOffers.map((offer) => offer.official_regular_price).filter((value) => typeof value === "number");
-  const target = targets.length ? Math.min(...targets) : price;
-  const regular = regulars.length ? Math.min(...regulars) : target + 25;
-  let score = 76 - Math.max(0, price - target) * 0.7;
-  if (price >= regular) score = Math.min(score, 68);
-  if (price > target + 40) score = Math.min(score, 54);
-  if (price <= target + 5) score = Math.max(score, 78);
-  return Math.max(35, Math.min(88, Math.round(score)));
+  const yearlySavings = yearlySavingsValue(offers, form);
+  if (yearlySavings <= 0) return 94;
+  if (yearlySavings <= 120) return Math.max(82, 89 - Math.floor(((yearlySavings - 1) / 120) * 8));
+  if (yearlySavings <= 300) return Math.max(65, 81 - Math.floor(((yearlySavings - 121) / 180) * 17));
+  if (yearlySavings <= 600) return Math.max(48, 64 - Math.floor(((yearlySavings - 301) / 300) * 17));
+  return Math.max(35, 47 - Math.floor((yearlySavings - 601) / 50));
 }
 
 function scoreTone(score) {
-  if (score >= 76) return "healthy";
+  if (score >= 90) return "excellent";
+  if (score >= 75) return "healthy";
   if (score >= 50) return "medium";
   return "alert";
+}
+
+function scoreStatusText(score, language) {
+  if (score >= 90) return textByLanguage(language, "账单表现不错", "帳單表現不錯", "Your bill looks strong");
+  if (score >= 75) return textByLanguage(language, "仍有少量优化空间", "仍有少量優化空間", "Some room to improve");
+  if (score >= 50) return textByLanguage(language, "还有明显优化空间", "還有明顯優化空間", "Clear room for improvement");
+  return textByLanguage(language, "优化空间较大", "優化空間較大", "Large room for improvement");
+}
+
+function savingsHelperText(yearlySavings, t, language) {
+  if (yearlySavings <= 0) {
+    return textByLanguage(
+      language,
+      "你的账单已经比较接近当前可用的好价格",
+      "你的帳單已經比較接近目前可用的好價格",
+      "Your bill is already close to a strong available price"
+    );
+  }
+  return t.savingsHelper;
 }
 
 function buildSheetPayload({ form, language, source, lead }) {
@@ -1174,7 +1186,7 @@ export default function Home() {
                     <span className="summary-icon">✓</span>
                     <div>
                       <h3>{t.billScore}</h3>
-                      <p>{t.scoreStatus}</p>
+                      <p>{scoreStatusText(score, language)}</p>
                     </div>
                   </div>
                   <strong className="summary-value">{score}</strong>
@@ -1184,7 +1196,7 @@ export default function Home() {
                     <span className="summary-icon">↘</span>
                     <div>
                       <h3>{t.estimatedYearlySavings}</h3>
-                      <p>{t.savingsHelper}</p>
+                      <p>{savingsHelperText(yearlySavings, t, language)}</p>
                     </div>
                   </div>
                   <strong className="summary-value savings-value">{t.yearlySavingsValue(yearlySavings)}</strong>
