@@ -1110,65 +1110,97 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="grid form-grid-top">
-            <Field
-              label={
-                form.service_type === "internet"
-                  ? t.providerInternet
-                  : form.service_type === "mobile"
-                    ? t.providerMobile
-                    : t.providerBoth
-              }
-            >
-              <Select value={form.current_provider} onChange={(value) => update("current_provider", value)}>
-                {providerOptionsByService[form.service_type].map((provider) => (
-                  <option key={provider} value={provider}>
-                    {optionLabel(t, provider)}
-                  </option>
-                ))}
-              </Select>
-            </Field>
-
-            <Field
-              label={
-                form.service_type === "internet"
-                  ? t.monthlyPriceInternet
-                  : form.service_type === "mobile"
-                    ? t.monthlyPriceMobile
-                    : t.monthlyPriceBoth
-              }
-            >
-              <input
-                type="number"
-                min="0"
-                inputMode="decimal"
-                value={form.monthly_price}
-                onChange={(event) => update("monthly_price", event.target.value)}
-                placeholder={t.monthlyPlaceholder}
-                required
-              />
-            </Field>
-
-            {showInternet && (
-              <div className="field field-full">
-                <span>{t.internetUsageLevel}</span>
-                <div className="usage-card-grid">
-                  {usageLevels.map((item) => (
-                    <button
-                      key={item.value}
-                      type="button"
-                      className={form.internet_usage_level === item.value ? "usage-card active" : "usage-card"}
-                      onClick={() => update("internet_usage_level", item.value)}
-                    >
-                      <strong>{t.usageCards[item.value].title}</strong>
-                      <span>{t.usageCards[item.value].description}</span>
-                    </button>
-                  ))}
+          {showInternet ? (
+            <div className="form-split form-grid-top">
+              <div className="form-split-left">
+                <div className="field">
+                  <span>{t.internetUsageLevel}</span>
+                  <div className="usage-card-grid compact">
+                    {usageLevels.map((item) => (
+                      <button
+                        key={item.value}
+                        type="button"
+                        className={form.internet_usage_level === item.value ? "usage-card active" : "usage-card"}
+                        onClick={() => update("internet_usage_level", item.value)}
+                      >
+                        <strong>{t.usageCards[item.value].title}</strong>
+                        <span>{t.usageCards[item.value].description}</span>
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
 
-            {showMobile && (
+                {showMobile && (
+                  <Field label={t.currentMobileDataQuestion}>
+                    <Select value={form.current_mobile_data} onChange={(value) => update("current_mobile_data", value)}>
+                      {mobileDataOptions.map((value) => (
+                        <option key={value} value={value}>
+                          {optionLabel(t, value)}
+                        </option>
+                      ))}
+                    </Select>
+                  </Field>
+                )}
+              </div>
+
+              <div className="form-split-right">
+                <Field label={form.service_type === "internet" ? t.providerInternet : t.providerBoth}>
+                  <Select value={form.current_provider} onChange={(value) => update("current_provider", value)}>
+                    {providerOptionsByService[form.service_type].map((provider) => (
+                      <option key={provider} value={provider}>
+                        {optionLabel(t, provider)}
+                      </option>
+                    ))}
+                  </Select>
+                </Field>
+
+                <Field label={form.service_type === "internet" ? t.monthlyPriceInternet : t.monthlyPriceBoth}>
+                  <input
+                    type="number"
+                    min="0"
+                    inputMode="decimal"
+                    value={form.monthly_price}
+                    onChange={(event) => update("monthly_price", event.target.value)}
+                    placeholder={t.monthlyPlaceholder}
+                    required
+                  />
+                </Field>
+
+                <Field label={t.city}>
+                  <Select value={form.city} onChange={(value) => update("city", value)}>
+                    {areaOptions.map((area) => (
+                      <option key={area.value} value={area.value}>
+                        {area.labelKey ? t.options[area.labelKey] : area.label}
+                      </option>
+                    ))}
+                  </Select>
+                </Field>
+              </div>
+            </div>
+          ) : (
+            <div className="grid form-grid-top">
+              <Field label={t.providerMobile}>
+                <Select value={form.current_provider} onChange={(value) => update("current_provider", value)}>
+                  {providerOptionsByService[form.service_type].map((provider) => (
+                    <option key={provider} value={provider}>
+                      {optionLabel(t, provider)}
+                    </option>
+                  ))}
+                </Select>
+              </Field>
+
+              <Field label={t.monthlyPriceMobile}>
+                <input
+                  type="number"
+                  min="0"
+                  inputMode="decimal"
+                  value={form.monthly_price}
+                  onChange={(event) => update("monthly_price", event.target.value)}
+                  placeholder={t.monthlyPlaceholder}
+                  required
+                />
+              </Field>
+
               <Field label={t.currentMobileDataQuestion}>
                 <Select value={form.current_mobile_data} onChange={(value) => update("current_mobile_data", value)}>
                   {mobileDataOptions.map((value) => (
@@ -1178,18 +1210,18 @@ export default function Home() {
                   ))}
                 </Select>
               </Field>
-            )}
 
-            <Field label={t.city}>
-              <Select value={form.city} onChange={(value) => update("city", value)}>
-                {areaOptions.map((area) => (
-                  <option key={area.value} value={area.value}>
-                    {area.labelKey ? t.options[area.labelKey] : area.label}
-                  </option>
-                ))}
-              </Select>
-            </Field>
-          </div>
+              <Field label={t.city}>
+                <Select value={form.city} onChange={(value) => update("city", value)}>
+                  {areaOptions.map((area) => (
+                    <option key={area.value} value={area.value}>
+                      {area.labelKey ? t.options[area.labelKey] : area.label}
+                    </option>
+                  ))}
+                </Select>
+              </Field>
+            </div>
+          )}
 
           <button className="submit-button" type="submit">
             {t.submit}
