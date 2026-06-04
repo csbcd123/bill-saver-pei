@@ -577,11 +577,22 @@ textarea:focus {
   color: var(--ink);
 }
 
+.price-with-badges {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin-bottom: 10px;
+}
+
+.price-with-badges p {
+  margin-bottom: 0;
+}
+
 .badge-row {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 14px;
 }
 
 .badge-row span {
@@ -589,8 +600,9 @@ textarea:focus {
   border-radius: 999px;
   background: #eef8f4;
   color: var(--accent-strong);
-  padding: 6px 10px;
-  font-size: 0.82rem;
+  padding: 4px 9px;
+  font-size: 0.78rem;
+  line-height: 1.25;
   font-weight: 700;
 }
 

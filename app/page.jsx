@@ -1230,9 +1230,18 @@ export default function Home() {
                             <b>{fieldLabel(language, "data")}</b> {dataText(offer, language)}
                           </p>
                         )}
-                        <p>
-                          <b>{t.price}</b> {displayPrice(offer, t, language)}
-                        </p>
+                        <div className="price-with-badges">
+                          <p>
+                            <b>{t.price}</b> {displayPrice(offer, t, language)}
+                          </p>
+                          {badges.length > 0 && (
+                            <div className="badge-row price-badges">
+                              {badges.map((badge) => (
+                                <span key={badge}>{badge}</span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
                         {priceNote && (
                           <p>
                             <b>{fieldLabel(language, "priceNote")}</b> {priceNote}
@@ -1247,13 +1256,6 @@ export default function Home() {
                         <p>
                           <b>{t.note}</b> {localizedNote(offer, t, language)}
                         </p>
-                        {badges.length > 0 && (
-                          <div className="badge-row">
-                            {badges.map((badge) => (
-                              <span key={badge}>{badge}</span>
-                            ))}
-                          </div>
-                        )}
                         {isPremiumProvider(offer) && (
                           <div className="premium-cta-wrap">
                             <button className="premium-cta" type="button" onClick={openLeadFromResult}>
