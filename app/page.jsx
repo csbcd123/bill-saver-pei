@@ -166,7 +166,7 @@ const translations = {
     purpleCowBadges: ["免安装费", "免激活费", "首月不满意可退款"],
     koodoInternetNote:
       "Koodo Internet 适合希望降低宽带月费、接受自助安装、又想保留较好性价比的用户。通常无激活费，并支持免费自助安装；如需要人工指导或上门安装，可以根据地址和资格进一步确认。Koodo 也提供 30 天免费试用 / 不满意退款政策，具体安装方式、退款条件、资格和最终价格以 Koodo 当前条款确认为准。",
-    koodoBadges: ["推荐优先", "无激活费", "免费自助安装", "30 天免费试用"]
+    koodoBadges: ["无激活费", "免费自助安装", "30 天免费试用"]
   },
   zhHant: {
     languageName: "繁體中文",
@@ -321,7 +321,7 @@ const translations = {
     purpleCowBadges: ["免安裝費", "免啟用費", "首月不滿意可退款"],
     koodoInternetNote:
       "Koodo Internet 適合希望降低寬頻月費、接受自助安裝、又想保留較好性價比的用戶。通常無啟用費，並支援免費自助安裝；如需要人工指導或上門安裝，可以根據地址和資格進一步確認。Koodo 也提供 30 天免費試用 / 不滿意退款政策，具體安裝方式、退款條件、資格和最終價格以 Koodo 目前條款確認為準。",
-    koodoBadges: ["優先推薦", "無啟用費", "免費自助安裝", "30 天免費試用"]
+    koodoBadges: ["無啟用費", "免費自助安裝", "30 天免費試用"]
   },
   en: {
     languageName: "English",
@@ -486,7 +486,7 @@ const translations = {
     purpleCowBadges: ["No installation fee", "No activation fee", "First-month money-back"],
     koodoInternetNote:
       "Koodo Internet may be a strong fit for users who want to lower their internet bill, are comfortable with self-installation, and still want good overall value. It typically has no activation fee and supports free self-installation. If technician guidance or in-home installation is needed, availability can be confirmed based on address and eligibility. Koodo also offers a 30-day free trial / money-back policy. Installation method, refund terms, eligibility, and final pricing should be confirmed with Koodo's current terms.",
-    koodoBadges: ["Priority Pick", "No activation fee", "Free self-installation", "30-day free trial"]
+    koodoBadges: ["No activation fee", "Free self-installation", "30-day free trial"]
   }
 };
 
@@ -597,15 +597,11 @@ function isBell(offerOrProvider) {
 }
 
 function isPremiumProvider(offer) {
-  return /koodo|telus|bell/i.test(offer.provider || "");
+  return Boolean(offer.show_premium_cta) || /koodo|telus|bell|purple cow/i.test(offer.provider || "");
 }
 
 function isManualPrice(offer) {
-  return offer.requires_manual_confirmation || offer.is_sensitive_price || !offer.is_public_price || isBell(offer);
-}
-
-function planTypeLabel(offer, t) {
-  return t.options[offer.billing_type] || offer.billing_type || t.options.manual_confirmation;
+  return offer.is_sensitive_price || !offer.is_public_price || isBell(offer);
 }
 
 function monthlyPrice(form) {
@@ -621,13 +617,14 @@ function savingsText(offer, form, t, language) {
   if (isManualPrice(offer)) return t.bellSavings;
   const saving = Math.max(0, Math.round(monthlyPrice(form) - Number(offer.bill_saver_target_price || offer.official_promo_price || 0)));
   if (!saving) return language === "en" ? "Needs manual review" : language === "zhHant" ? "需要人工確認" : "需要人工确认";
-  return language === "en" ? `About $${saving}/mo before confirmation` : `约 $${saving}/月，需确认`;
+  if (language === "en") return `About $${saving}/month`;
+  return language === "zhHant" ? `約 $${saving}/月` : `约 $${saving}/月`;
 }
 
 function relevantTargets(offers, form) {
   const relevant =
     form.service_type === "both" ? offers.filter((offer) => offer.service_type === "both") : offers.filter((offer) => offer.service_type === form.service_type);
-  return relevant.map((offer) => offer.bill_saver_target_price).filter((value) => typeof value === "number");
+  return relevant.filter((offer) => !isManualPrice(offer)).map((offer) => offer.bill_saver_target_price).filter((value) => typeof value === "number");
 }
 
 function yearlySavingsValue(offers, form) {
@@ -650,7 +647,7 @@ function offerDistance(offer, form) {
 }
 
 function localizedGoodFor(offer, form, t) {
-  if (offer.service_type === "internet") return t.internetGoodFor[speedBucket(offer.speed_down || form.current_speed)];
+  if (offer.service_type === "internet" || offer.service_type === "both") return t.internetGoodFor[speedBucket(offer.speed_down || form.current_speed)];
   if (/Public Mobile/i.test(offer.provider)) return t.publicMobileNote;
   if (/Koodo Prepaid/i.test(offer.plan_name)) return t.koodoPrepaidNote;
   if (offer.offer_id === "bell_mobile_winback_manual") return t.bellWinbackGoodFor;
@@ -664,9 +661,102 @@ function localizedNote(offer, t) {
   return offer.caution;
 }
 
-function offerBadges(offer, t) {
-  if (/Koodo/i.test(offer.provider) && offer.service_type === "internet") return t.koodoBadges;
-  if (/Purple Cow/i.test(offer.provider)) return t.purpleCowBadges;
+function textByLanguage(language, zhHans, zhHant, en) {
+  if (language === "en") return en;
+  if (language === "zhHant") return zhHant;
+  return zhHans;
+}
+
+function fieldLabel(language, key) {
+  const labels = {
+    speed: ["速度：", "速度：", "Speed:"],
+    data: ["流量：", "流量：", "Data:"],
+    priceNote: ["价格备注：", "價格備註：", "Price note:"]
+  };
+  const [zhHans, zhHant, en] = labels[key];
+  return textByLanguage(language, zhHans, zhHant, en);
+}
+
+function speedText(offer, language) {
+  if (!offer.speed_down && !offer.speed_up) {
+    return textByLanguage(language, "具体上下行速度需确认", "具體上下行速度需確認", "Download/upload speeds require confirmation");
+  }
+  if (!offer.speed_up) {
+    return textByLanguage(
+      language,
+      `下载最高 ${offer.speed_down} / 上传速度需确认`,
+      `下載最高 ${offer.speed_down} / 上傳速度需確認`,
+      `Up to ${offer.speed_down} download / upload speed requires confirmation`
+    );
+  }
+  return textByLanguage(
+    language,
+    `下载最高 ${offer.speed_down} / 上传最高 ${offer.speed_up}`,
+    `下載最高 ${offer.speed_down} / 上傳最高 ${offer.speed_up}`,
+    `Up to ${offer.speed_down} download / ${offer.speed_up} upload`
+  );
+}
+
+function dataText(offer, language) {
+  return offer.mobile_data || textByLanguage(language, "流量需确认", "流量需確認", "Data requires confirmation");
+}
+
+function priceNoteText(offer, language) {
+  if (!/Koodo/i.test(offer.provider) || offer.service_type !== "internet") return "";
+  return textByLanguage(
+    language,
+    "TELUS / Koodo 后付费手机用户可能额外优惠 $10/月，预付费用户不包含在内，最终资格和价格以 Koodo 确认为准。",
+    "TELUS / Koodo 後付費手機用戶可能額外優惠 $10/月，預付費用戶不包含在內，最終資格和價格以 Koodo 確認為準。",
+    "TELUS / Koodo postpaid mobile customers may qualify for an extra $10/month discount. Prepaid users are not included. Final eligibility and pricing must be confirmed with Koodo."
+  );
+}
+
+function offerBadges(offer, language) {
+  if (/Koodo/i.test(offer.provider) && offer.service_type === "internet") {
+    return [
+      textByLanguage(language, "无激活费", "無啟用費", "No activation fee"),
+      textByLanguage(language, "免费自助安装", "免費自助安裝", "Free self-installation"),
+      textByLanguage(language, "30 天免费试用", "30 天免費試用", "30-day free trial")
+    ];
+  }
+  if (/Purple Cow/i.test(offer.provider)) {
+    return [
+      textByLanguage(language, "免安装费", "免安裝費", "No installation fee"),
+      textByLanguage(language, "免激活费", "免啟用費", "No activation fee"),
+      textByLanguage(language, "首月不满意可退款", "首月不滿意可退款", "First-month money-back")
+    ];
+  }
+  if (isBell(offer) && offer.service_type === "internet") {
+    return [
+      textByLanguage(language, "光纤稳定", "光纖穩定", "Stable Fibre"),
+      textByLanguage(language, "免安装费", "免安裝費", "No installation fee"),
+      textByLanguage(language, "免激活费", "免啟用費", "No activation fee"),
+      textByLanguage(language, "优惠需确认", "優惠需確認", "Offer confirmation")
+    ];
+  }
+  if (isBell(offer) && offer.service_type === "mobile") {
+    return [
+      textByLanguage(language, "大网覆盖", "大網覆蓋", "Major network"),
+      textByLanguage(language, "大流量方案", "大流量方案", "High-data option"),
+      textByLanguage(language, "优惠需确认", "優惠需確認", "Offer confirmation"),
+      textByLanguage(language, "适合重度用户", "適合重度用戶", "Good for heavy users")
+    ];
+  }
+  if (/TELUS/i.test(offer.provider) && offer.service_type === "mobile") {
+    return [
+      textByLanguage(language, "大网覆盖", "大網覆蓋", "Major network"),
+      textByLanguage(language, "5G+ 高速", "5G+ 高速", "5G+ speed"),
+      textByLanguage(language, "5 年价格锁定", "5 年價格鎖定", "5-year price lock"),
+      textByLanguage(language, "适合高流量用户", "適合高流量用戶", "Good for high-data users")
+    ];
+  }
+  if (/Koodo/i.test(offer.provider) && offer.service_type === "mobile") {
+    return [
+      textByLanguage(language, "性价比推荐", "性價比推薦", "Good Value Pick"),
+      "5G 60GB+",
+      textByLanguage(language, "免费 Perk", "免費 Perk", "Free Perk")
+    ];
+  }
   return [];
 }
 
@@ -765,8 +855,9 @@ function calculateScore(form, offers) {
   if (!price || !offers.length) return 62;
   const comparisonOffers =
     form.service_type === "both" ? offers.filter((offer) => offer.service_type === "both") : offers.filter((offer) => offer.service_type === form.service_type);
-  const targets = comparisonOffers.map((offer) => offer.bill_saver_target_price).filter((value) => typeof value === "number");
-  const regulars = comparisonOffers.map((offer) => offer.official_regular_price).filter((value) => typeof value === "number");
+  const publicComparisonOffers = comparisonOffers.filter((offer) => !isManualPrice(offer));
+  const targets = publicComparisonOffers.map((offer) => offer.bill_saver_target_price).filter((value) => typeof value === "number");
+  const regulars = publicComparisonOffers.map((offer) => offer.official_regular_price).filter((value) => typeof value === "number");
   const target = targets.length ? Math.min(...targets) : price;
   const regular = regulars.length ? Math.min(...regulars) : target + 25;
   let score = 76 - Math.max(0, price - target) * 0.7;
@@ -1079,49 +1170,65 @@ export default function Home() {
               <section>
                 <h3>{t.planTitle}</h3>
                 <div className="plan-list">
-                  {recommendations.map((offer) => (
-                    <article className="plan-card" key={offer.offer_id}>
-                      <p>
-                        <b>{t.pickType}</b> {t[offer.pickTypeKey]}
-                      </p>
-                      <p>
-                        <b>{t.providerLabel}</b> {offer.provider}
-                      </p>
-                      <p>
-                        <b>{t.service}</b> {displayPlanName(offer, t)}
-                      </p>
-                      <p>
-                        <b>{t.price}</b> {displayPrice(offer, t, language)}
-                      </p>
-                      <p>
-                        <b>{t.savings}</b> {savingsText(offer, form, t, language)}
-                      </p>
-                      <p>
-                        <b>{t.planType}</b> {planTypeLabel(offer, t)}
-                      </p>
-                      <p>
-                        <b>{t.goodFor}</b> {localizedGoodFor(offer, form, t)}
-                      </p>
-                      <p>
-                        <b>{t.note}</b> {localizedNote(offer, t)}
-                      </p>
-                      {offerBadges(offer, t).length > 0 && (
-                        <div className="badge-row">
-                          {offerBadges(offer, t).map((badge) => (
-                            <span key={badge}>{badge}</span>
-                          ))}
-                        </div>
-                      )}
-                      {isPremiumProvider(offer) && (
-                        <div className="premium-cta-wrap">
-                          <button className="premium-cta" type="button" onClick={openLeadFromResult}>
-                            {t.bestPrice}
-                          </button>
-                          <small>{t.bestPriceHelp}</small>
-                        </div>
-                      )}
-                    </article>
-                  ))}
+                  {recommendations.map((offer) => {
+                    const badges = offerBadges(offer, language);
+                    const priceNote = priceNoteText(offer, language);
+                    const includesInternet = offer.service_type === "internet" || offer.service_type === "both";
+                    const includesMobile = offer.service_type === "mobile" || (offer.service_type === "both" && offer.mobile_data);
+
+                    return (
+                      <article className="plan-card" key={offer.offer_id}>
+                        <p>
+                          <b>{t.providerLabel}</b> {offer.provider}
+                        </p>
+                        <p>
+                          <b>{t.service}</b> {displayPlanName(offer, t)}
+                        </p>
+                        {includesInternet && (
+                          <p>
+                            <b>{fieldLabel(language, "speed")}</b> {speedText(offer, language)}
+                          </p>
+                        )}
+                        {includesMobile && (
+                          <p>
+                            <b>{fieldLabel(language, "data")}</b> {dataText(offer, language)}
+                          </p>
+                        )}
+                        <p>
+                          <b>{t.price}</b> {displayPrice(offer, t, language)}
+                        </p>
+                        {priceNote && (
+                          <p>
+                            <b>{fieldLabel(language, "priceNote")}</b> {priceNote}
+                          </p>
+                        )}
+                        <p>
+                          <b>{t.savings}</b> {savingsText(offer, form, t, language)}
+                        </p>
+                        <p>
+                          <b>{t.goodFor}</b> {localizedGoodFor(offer, form, t)}
+                        </p>
+                        <p>
+                          <b>{t.note}</b> {localizedNote(offer, t)}
+                        </p>
+                        {badges.length > 0 && (
+                          <div className="badge-row">
+                            {badges.map((badge) => (
+                              <span key={badge}>{badge}</span>
+                            ))}
+                          </div>
+                        )}
+                        {isPremiumProvider(offer) && (
+                          <div className="premium-cta-wrap">
+                            <button className="premium-cta" type="button" onClick={openLeadFromResult}>
+                              {t.bestPrice}
+                            </button>
+                            <small>{t.bestPriceHelp}</small>
+                          </div>
+                        )}
+                      </article>
+                    );
+                  })}
                 </div>
               </section>
 
