@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { offerDatabase } from "@/lib/offerDatabase";
 
@@ -18,6 +19,9 @@ const translations = {
     eyebrow: "仅限 PEI · v1",
     title: "Bill Saver｜PEI 手机宽带账单免费体检",
     hero: "先输入账单信息查看体检结果。想拿到可用优惠时，再提交联系方式给人工复核。",
+    heroFlowTitle: "3 步免费体检流程",
+    heroFlowSteps: ["输入账单信息", "查看体检结果", "提交联系方式获取可用优惠"],
+    heroFlowHelper: "全程免费。先看结果，再决定是否需要人工复核。",
     formTitle: "账单信息",
     province: "默认地区：Prince Edward Island",
     serviceType: "你想检查哪类账单？",
@@ -139,12 +143,12 @@ const translations = {
     areaCaution:
       "如果你不在 Charlottetown / Stratford / Cornwall，建议优先考虑 Bell 或 TELUS 这类大网，并确认家里、工作地点和常用路线的信号表现，不要只看最低价格。",
     internetGoodFor: {
-      low: "日常上网、视频通话、YouTube / Netflix、1-2 人远程办公和普通高清视频。多人同时 4K、游戏、直播或大量下载时可能不够稳。",
-      mid: "多数家庭日常使用、4K 视频、视频会议、在线学习、远程办公和普通游戏。多人重度使用时可考虑 500M 以上。",
+      low: "日常上网、微信、邮件、YouTube、视频通话、1–2 人普通高清视频。",
+      mid: "普通家庭、4K 视频、视频会议、孩子上网课、多设备同时使用、普通游戏。",
       high:
-        "大多数家庭使用，支持 4K 视频、多人视频会议、远程办公、在线学习、普通游戏、直播观看。对 PEI 普通家庭来说，500M 通常已经够用。",
+        "大多数家庭、多设备同时使用、4K 视频、视频会议、远程办公、在线学习、普通游戏和较大的下载需求。",
       premium:
-        "多人家庭、重度远程办公、大量下载上传、游戏、多个设备同时 4K 视频、内容创作或更高稳定性需求。如果只是普通上网和视频，可能有些超配。"
+        "重度家庭、多人同时 4K、游戏、直播、大文件下载、远程办公、多设备同时使用。"
     },
     mobileGoodFor: {
       "25GB": "轻中度用户，日常社交、地图、网页、音乐、少量视频。如果经常在外看视频或开热点，建议考虑 50GB 以上。",
@@ -173,6 +177,9 @@ const translations = {
     eyebrow: "僅限 PEI · v1",
     title: "Bill Saver｜PEI 手機寬頻帳單免費體檢",
     hero: "先輸入帳單資訊查看健檢結果。想取得可用優惠時，再提交聯絡方式給人工複核。",
+    heroFlowTitle: "3 步免費健檢流程",
+    heroFlowSteps: ["輸入帳單資訊", "查看健檢結果", "提交聯絡方式取得可用優惠"],
+    heroFlowHelper: "全程免費。先看結果，再決定是否需要人工複核。",
     formTitle: "帳單資訊",
     province: "預設地區：Prince Edward Island",
     serviceType: "你想檢查哪類帳單？",
@@ -294,12 +301,12 @@ const translations = {
     areaCaution:
       "如果你不在 Charlottetown / Stratford / Cornwall，建議優先考慮 Bell 或 TELUS 這類大網，並確認家中、工作地點和常用路線的訊號表現，不要只看最低價格。",
     internetGoodFor: {
-      low: "日常上網、視訊通話、YouTube / Netflix、1-2 人遠端工作和一般高畫質影片。多人同時 4K、遊戲、直播或大量下載時可能不夠穩。",
-      mid: "多數家庭日常使用、4K 影片、視訊會議、線上學習、遠端工作和一般遊戲。多人重度使用時可考慮 500M 以上。",
+      low: "日常上網、微信、電郵、YouTube、視訊通話、1–2 人一般高清影片。",
+      mid: "一般家庭、4K 影片、視訊會議、孩子上網課、多設備同時使用、一般遊戲。",
       high:
-        "大多數家庭使用，支援 4K 影片、多人視訊會議、遠端工作、線上學習、一般遊戲、直播觀看。對 PEI 一般家庭來說，500M 通常已經夠用。",
+        "大多數家庭、多設備同時使用、4K 影片、視訊會議、遠端工作、線上學習、一般遊戲和較大型下載需求。",
       premium:
-        "多人家庭、重度遠端工作、大量下載上傳、遊戲、多個設備同時 4K 影片、內容創作或更高穩定性需求。如果只是一般上網和影片，可能有些超配。"
+        "重度家庭、多人同時 4K、遊戲、直播、大型檔案下載、遠端工作、多設備同時使用。"
     },
     mobileGoodFor: {
       "25GB": "輕中度用戶，日常社交、地圖、網頁、音樂、少量影片。如果經常在外看影片或開熱點，建議考慮 50GB 以上。",
@@ -328,6 +335,9 @@ const translations = {
     eyebrow: "PEI only · v1",
     title: "Bill Saver | Free PEI Mobile and Internet Bill Check",
     hero: "Enter bill details first to see your result. If you want available offers, submit contact details for manual review afterward.",
+    heroFlowTitle: "3-Step Free Bill Check",
+    heroFlowSteps: ["Enter your bill", "View your result", "Submit contact details to access available offers"],
+    heroFlowHelper: "Free to use. Check your result first, then decide whether you want manual follow-up.",
     formTitle: "Bill details",
     province: "Default region: Prince Edward Island",
     serviceType: "Which bill do you want to check?",
@@ -453,13 +463,13 @@ const translations = {
       "If you are outside Charlottetown / Stratford / Cornwall, consider major networks like Bell or TELUS first and confirm signal quality at home, work, and common travel routes. Do not choose based only on the lowest price.",
     internetGoodFor: {
       low:
-        "Daily browsing, video calls, YouTube / Netflix, 1-2 people working from home, and regular HD video. It may not be ideal for multiple 4K streams, gaming, live streaming, or heavy downloads at the same time.",
+        "Everyday browsing, messaging, email, YouTube, video calls, and regular HD video for 1–2 people.",
       mid:
-        "Most household use, 4K video, video meetings, online learning, remote work, and casual gaming. For multiple heavy streams or large downloads, 500M or higher may be better.",
+        "Standard households, 4K video, video meetings, online classes, multiple devices, and casual gaming.",
       high:
-        "Most households, including 4K video, multiple video meetings, remote work, online learning, casual gaming, and live streaming. For many PEI households, 500M is usually enough.",
+        "Most households, multiple devices, 4K video, video meetings, remote work, online learning, casual gaming, and larger downloads.",
       premium:
-        "Larger households, heavy remote work, large downloads/uploads, gaming, multiple 4K streams, content creation, or higher stability needs. It may be more than necessary for basic browsing and video."
+        "Heavy households, multiple people streaming 4K, gaming, livestreaming, large downloads, remote work, and many devices."
     },
     mobileGoodFor: {
       "25GB": "Light to moderate users for social apps, maps, browsing, music, and some video. If you often watch video outside or use hotspot, 50GB or more may be better.",
@@ -575,7 +585,11 @@ function speedForUsage(level) {
 
 function speedRank(speed) {
   const ranks = { "100M": 100, "300M": 300, "350M": 350, "500M": 500, "1G": 1000, "1.5G": 1500, "3G": 3000 };
-  return ranks[speed] || 0;
+  if (ranks[speed]) return ranks[speed];
+  const value = String(speed || "").trim().toLowerCase();
+  const numeric = Number(value.replace(/[^0-9.]/g, ""));
+  if (!numeric) return 0;
+  return value.includes("g") && !value.includes("gb") ? numeric * 1000 : numeric;
 }
 
 function dataRank(data) {
@@ -646,18 +660,38 @@ function offerDistance(offer, form) {
   return 0;
 }
 
-function localizedGoodFor(offer, form, t) {
-  if (offer.service_type === "internet" || offer.service_type === "both") return t.internetGoodFor[speedBucket(offer.speed_down || form.current_speed)];
+function localizedGoodFor(offer, t, language) {
+  if (offer.service_type === "internet" || offer.service_type === "both") {
+    if (!offer.speed_down) {
+      return textByLanguage(
+        language,
+        "适合需要按地址确认可用性、速度和稳定性的用户。",
+        "適合需要按地址確認可用性、速度和穩定性的用戶。",
+        "Good for users who need address-specific confirmation for availability, speed, and stability."
+      );
+    }
+    return t.internetGoodFor[speedBucket(offer.speed_down)];
+  }
   if (/Public Mobile/i.test(offer.provider)) return t.publicMobileNote;
   if (/Koodo Prepaid/i.test(offer.plan_name)) return t.koodoPrepaidNote;
   if (offer.offer_id === "bell_mobile_winback_manual") return t.bellWinbackGoodFor;
   return t.mobileGoodFor[offer.mobile_data] || t.mobileGoodFor.default;
 }
 
-function localizedNote(offer, t) {
+function localizedNote(offer, t, language) {
   if (offer.offer_id === "bell_mobile_winback_manual") return t.bellWinbackNote;
   if (/Purple Cow/i.test(offer.provider)) return t.purpleCowNote;
-  if (/Koodo/i.test(offer.provider) && offer.service_type === "internet") return t.koodoInternetNote;
+  if (/Koodo/i.test(offer.provider) && offer.service_type === "internet") {
+    if (offer.offer_id === "koodo_internet_100") {
+      return `${t.koodoInternetNote} ${textByLanguage(
+        language,
+        "如果家里多人同时 4K、游戏、直播或大量下载，建议考虑更高速方案。",
+        "如果家中多人同時 4K、遊戲、直播或大量下載，建議考慮更高速方案。",
+        "If multiple people stream 4K, game, livestream, or download large files at the same time, consider a faster plan."
+      )}`;
+    }
+    return t.koodoInternetNote;
+  }
   return offer.caution;
 }
 
@@ -851,26 +885,38 @@ function getRecommendations(form) {
 }
 
 function calculateScore(form, offers) {
-  const price = monthlyPrice(form);
-  if (!price || !offers.length) return 62;
-  const comparisonOffers =
-    form.service_type === "both" ? offers.filter((offer) => offer.service_type === "both") : offers.filter((offer) => offer.service_type === form.service_type);
-  const publicComparisonOffers = comparisonOffers.filter((offer) => !isManualPrice(offer));
-  const targets = publicComparisonOffers.map((offer) => offer.bill_saver_target_price).filter((value) => typeof value === "number");
-  const regulars = publicComparisonOffers.map((offer) => offer.official_regular_price).filter((value) => typeof value === "number");
-  const target = targets.length ? Math.min(...targets) : price;
-  const regular = regulars.length ? Math.min(...regulars) : target + 25;
-  let score = 76 - Math.max(0, price - target) * 0.7;
-  if (price >= regular) score = Math.min(score, 68);
-  if (price > target + 40) score = Math.min(score, 54);
-  if (price <= target + 5) score = Math.max(score, 78);
-  return Math.max(35, Math.min(88, Math.round(score)));
+  const yearlySavings = yearlySavingsValue(offers, form);
+  if (yearlySavings <= 0) return 94;
+  if (yearlySavings <= 120) return Math.max(82, 89 - Math.floor(((yearlySavings - 1) / 120) * 8));
+  if (yearlySavings <= 300) return Math.max(65, 81 - Math.floor(((yearlySavings - 121) / 180) * 17));
+  if (yearlySavings <= 600) return Math.max(48, 64 - Math.floor(((yearlySavings - 301) / 300) * 17));
+  return Math.max(35, 47 - Math.floor((yearlySavings - 601) / 50));
 }
 
 function scoreTone(score) {
-  if (score >= 76) return "healthy";
+  if (score >= 90) return "excellent";
+  if (score >= 75) return "healthy";
   if (score >= 50) return "medium";
   return "alert";
+}
+
+function scoreStatusText(score, language) {
+  if (score >= 90) return textByLanguage(language, "账单表现不错", "帳單表現不錯", "Your bill looks strong");
+  if (score >= 75) return textByLanguage(language, "仍有少量优化空间", "仍有少量優化空間", "Some room to improve");
+  if (score >= 50) return textByLanguage(language, "还有明显优化空间", "還有明顯優化空間", "Clear room for improvement");
+  return textByLanguage(language, "优化空间较大", "優化空間較大", "Large room for improvement");
+}
+
+function savingsHelperText(yearlySavings, t, language) {
+  if (yearlySavings <= 0) {
+    return textByLanguage(
+      language,
+      "你的账单已经比较接近当前可用的好价格",
+      "你的帳單已經比較接近目前可用的好價格",
+      "Your bill is already close to a strong available price"
+    );
+  }
+  return t.savingsHelper;
 }
 
 function buildSheetPayload({ form, language, source, lead }) {
@@ -1014,8 +1060,28 @@ export default function Home() {
       <section className="hero">
         <div>
           <p className="eyebrow">{t.eyebrow}</p>
-          <h1>{t.title}</h1>
-          <p className="hero-copy">{t.hero}</p>
+          <div className="heroLogoWrap">
+            <Image
+              src="/bill-saver-logo.png"
+              alt="Bill Saver | PEI 手机宽带账单免费体检"
+              width={1600}
+              height={420}
+              priority
+              className="heroLogo"
+            />
+          </div>
+          <div className="hero-flow" aria-label={t.heroFlowTitle}>
+            <p className="hero-flow-title">{t.heroFlowTitle}</p>
+            <div className="hero-flow-steps">
+              {t.heroFlowSteps.map((step, index) => (
+                <span className="hero-flow-step" key={step}>
+                  {step}
+                  {index < t.heroFlowSteps.length - 1 && <b aria-hidden="true">→</b>}
+                </span>
+              ))}
+            </div>
+            <p className="hero-flow-helper">{t.heroFlowHelper}</p>
+          </div>
         </div>
       </section>
 
@@ -1044,65 +1110,97 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="grid form-grid-top">
-            <Field
-              label={
-                form.service_type === "internet"
-                  ? t.providerInternet
-                  : form.service_type === "mobile"
-                    ? t.providerMobile
-                    : t.providerBoth
-              }
-            >
-              <Select value={form.current_provider} onChange={(value) => update("current_provider", value)}>
-                {providerOptionsByService[form.service_type].map((provider) => (
-                  <option key={provider} value={provider}>
-                    {optionLabel(t, provider)}
-                  </option>
-                ))}
-              </Select>
-            </Field>
-
-            <Field
-              label={
-                form.service_type === "internet"
-                  ? t.monthlyPriceInternet
-                  : form.service_type === "mobile"
-                    ? t.monthlyPriceMobile
-                    : t.monthlyPriceBoth
-              }
-            >
-              <input
-                type="number"
-                min="0"
-                inputMode="decimal"
-                value={form.monthly_price}
-                onChange={(event) => update("monthly_price", event.target.value)}
-                placeholder={t.monthlyPlaceholder}
-                required
-              />
-            </Field>
-
-            {showInternet && (
-              <div className="field field-full">
-                <span>{t.internetUsageLevel}</span>
-                <div className="usage-card-grid">
-                  {usageLevels.map((item) => (
-                    <button
-                      key={item.value}
-                      type="button"
-                      className={form.internet_usage_level === item.value ? "usage-card active" : "usage-card"}
-                      onClick={() => update("internet_usage_level", item.value)}
-                    >
-                      <strong>{t.usageCards[item.value].title}</strong>
-                      <span>{t.usageCards[item.value].description}</span>
-                    </button>
-                  ))}
+          {showInternet ? (
+            <div className="form-split form-grid-top">
+              <div className="form-split-left">
+                <div className="field">
+                  <span>{t.internetUsageLevel}</span>
+                  <div className="usage-card-grid compact">
+                    {usageLevels.map((item) => (
+                      <button
+                        key={item.value}
+                        type="button"
+                        className={form.internet_usage_level === item.value ? "usage-card active" : "usage-card"}
+                        onClick={() => update("internet_usage_level", item.value)}
+                      >
+                        <strong>{t.usageCards[item.value].title}</strong>
+                        <span>{t.usageCards[item.value].description}</span>
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
 
-            {showMobile && (
+                {showMobile && (
+                  <Field label={t.currentMobileDataQuestion}>
+                    <Select value={form.current_mobile_data} onChange={(value) => update("current_mobile_data", value)}>
+                      {mobileDataOptions.map((value) => (
+                        <option key={value} value={value}>
+                          {optionLabel(t, value)}
+                        </option>
+                      ))}
+                    </Select>
+                  </Field>
+                )}
+              </div>
+
+              <div className="form-split-right">
+                <Field label={form.service_type === "internet" ? t.providerInternet : t.providerBoth}>
+                  <Select value={form.current_provider} onChange={(value) => update("current_provider", value)}>
+                    {providerOptionsByService[form.service_type].map((provider) => (
+                      <option key={provider} value={provider}>
+                        {optionLabel(t, provider)}
+                      </option>
+                    ))}
+                  </Select>
+                </Field>
+
+                <Field label={form.service_type === "internet" ? t.monthlyPriceInternet : t.monthlyPriceBoth}>
+                  <input
+                    type="number"
+                    min="0"
+                    inputMode="decimal"
+                    value={form.monthly_price}
+                    onChange={(event) => update("monthly_price", event.target.value)}
+                    placeholder={t.monthlyPlaceholder}
+                    required
+                  />
+                </Field>
+
+                <Field label={t.city}>
+                  <Select value={form.city} onChange={(value) => update("city", value)}>
+                    {areaOptions.map((area) => (
+                      <option key={area.value} value={area.value}>
+                        {area.labelKey ? t.options[area.labelKey] : area.label}
+                      </option>
+                    ))}
+                  </Select>
+                </Field>
+              </div>
+            </div>
+          ) : (
+            <div className="grid form-grid-top">
+              <Field label={t.providerMobile}>
+                <Select value={form.current_provider} onChange={(value) => update("current_provider", value)}>
+                  {providerOptionsByService[form.service_type].map((provider) => (
+                    <option key={provider} value={provider}>
+                      {optionLabel(t, provider)}
+                    </option>
+                  ))}
+                </Select>
+              </Field>
+
+              <Field label={t.monthlyPriceMobile}>
+                <input
+                  type="number"
+                  min="0"
+                  inputMode="decimal"
+                  value={form.monthly_price}
+                  onChange={(event) => update("monthly_price", event.target.value)}
+                  placeholder={t.monthlyPlaceholder}
+                  required
+                />
+              </Field>
+
               <Field label={t.currentMobileDataQuestion}>
                 <Select value={form.current_mobile_data} onChange={(value) => update("current_mobile_data", value)}>
                   {mobileDataOptions.map((value) => (
@@ -1112,18 +1210,18 @@ export default function Home() {
                   ))}
                 </Select>
               </Field>
-            )}
 
-            <Field label={t.city}>
-              <Select value={form.city} onChange={(value) => update("city", value)}>
-                {areaOptions.map((area) => (
-                  <option key={area.value} value={area.value}>
-                    {area.labelKey ? t.options[area.labelKey] : area.label}
-                  </option>
-                ))}
-              </Select>
-            </Field>
-          </div>
+              <Field label={t.city}>
+                <Select value={form.city} onChange={(value) => update("city", value)}>
+                  {areaOptions.map((area) => (
+                    <option key={area.value} value={area.value}>
+                      {area.labelKey ? t.options[area.labelKey] : area.label}
+                    </option>
+                  ))}
+                </Select>
+              </Field>
+            </div>
+          )}
 
           <button className="submit-button" type="submit">
             {t.submit}
@@ -1150,7 +1248,7 @@ export default function Home() {
                     <span className="summary-icon">✓</span>
                     <div>
                       <h3>{t.billScore}</h3>
-                      <p>{t.scoreStatus}</p>
+                      <p>{scoreStatusText(score, language)}</p>
                     </div>
                   </div>
                   <strong className="summary-value">{score}</strong>
@@ -1160,7 +1258,7 @@ export default function Home() {
                     <span className="summary-icon">↘</span>
                     <div>
                       <h3>{t.estimatedYearlySavings}</h3>
-                      <p>{t.savingsHelper}</p>
+                      <p>{savingsHelperText(yearlySavings, t, language)}</p>
                     </div>
                   </div>
                   <strong className="summary-value savings-value">{t.yearlySavingsValue(yearlySavings)}</strong>
@@ -1194,9 +1292,18 @@ export default function Home() {
                             <b>{fieldLabel(language, "data")}</b> {dataText(offer, language)}
                           </p>
                         )}
-                        <p>
-                          <b>{t.price}</b> {displayPrice(offer, t, language)}
-                        </p>
+                        <div className="price-with-badges">
+                          <p>
+                            <b>{t.price}</b> {displayPrice(offer, t, language)}
+                          </p>
+                          {badges.length > 0 && (
+                            <div className="badge-row price-badges">
+                              {badges.map((badge) => (
+                                <span key={badge}>{badge}</span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
                         {priceNote && (
                           <p>
                             <b>{fieldLabel(language, "priceNote")}</b> {priceNote}
@@ -1206,18 +1313,11 @@ export default function Home() {
                           <b>{t.savings}</b> {savingsText(offer, form, t, language)}
                         </p>
                         <p>
-                          <b>{t.goodFor}</b> {localizedGoodFor(offer, form, t)}
+                          <b>{t.goodFor}</b> {localizedGoodFor(offer, t, language)}
                         </p>
                         <p>
-                          <b>{t.note}</b> {localizedNote(offer, t)}
+                          <b>{t.note}</b> {localizedNote(offer, t, language)}
                         </p>
-                        {badges.length > 0 && (
-                          <div className="badge-row">
-                            {badges.map((badge) => (
-                              <span key={badge}>{badge}</span>
-                            ))}
-                          </div>
-                        )}
                         {isPremiumProvider(offer) && (
                           <div className="premium-cta-wrap">
                             <button className="premium-cta" type="button" onClick={openLeadFromResult}>
