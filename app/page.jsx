@@ -139,12 +139,12 @@ const translations = {
     areaCaution:
       "如果你不在 Charlottetown / Stratford / Cornwall，建议优先考虑 Bell 或 TELUS 这类大网，并确认家里、工作地点和常用路线的信号表现，不要只看最低价格。",
     internetGoodFor: {
-      low: "日常上网、视频通话、YouTube / Netflix、1-2 人远程办公和普通高清视频。多人同时 4K、游戏、直播或大量下载时可能不够稳。",
-      mid: "多数家庭日常使用、4K 视频、视频会议、在线学习、远程办公和普通游戏。多人重度使用时可考虑 500M 以上。",
+      low: "日常上网、微信、邮件、YouTube、视频通话、1–2 人普通高清视频。",
+      mid: "普通家庭、4K 视频、视频会议、孩子上网课、多设备同时使用、普通游戏。",
       high:
-        "大多数家庭使用，支持 4K 视频、多人视频会议、远程办公、在线学习、普通游戏、直播观看。对 PEI 普通家庭来说，500M 通常已经够用。",
+        "大多数家庭、多设备同时使用、4K 视频、视频会议、远程办公、在线学习、普通游戏和较大的下载需求。",
       premium:
-        "多人家庭、重度远程办公、大量下载上传、游戏、多个设备同时 4K 视频、内容创作或更高稳定性需求。如果只是普通上网和视频，可能有些超配。"
+        "重度家庭、多人同时 4K、游戏、直播、大文件下载、远程办公、多设备同时使用。"
     },
     mobileGoodFor: {
       "25GB": "轻中度用户，日常社交、地图、网页、音乐、少量视频。如果经常在外看视频或开热点，建议考虑 50GB 以上。",
@@ -294,12 +294,12 @@ const translations = {
     areaCaution:
       "如果你不在 Charlottetown / Stratford / Cornwall，建議優先考慮 Bell 或 TELUS 這類大網，並確認家中、工作地點和常用路線的訊號表現，不要只看最低價格。",
     internetGoodFor: {
-      low: "日常上網、視訊通話、YouTube / Netflix、1-2 人遠端工作和一般高畫質影片。多人同時 4K、遊戲、直播或大量下載時可能不夠穩。",
-      mid: "多數家庭日常使用、4K 影片、視訊會議、線上學習、遠端工作和一般遊戲。多人重度使用時可考慮 500M 以上。",
+      low: "日常上網、微信、電郵、YouTube、視訊通話、1–2 人一般高清影片。",
+      mid: "一般家庭、4K 影片、視訊會議、孩子上網課、多設備同時使用、一般遊戲。",
       high:
-        "大多數家庭使用，支援 4K 影片、多人視訊會議、遠端工作、線上學習、一般遊戲、直播觀看。對 PEI 一般家庭來說，500M 通常已經夠用。",
+        "大多數家庭、多設備同時使用、4K 影片、視訊會議、遠端工作、線上學習、一般遊戲和較大型下載需求。",
       premium:
-        "多人家庭、重度遠端工作、大量下載上傳、遊戲、多個設備同時 4K 影片、內容創作或更高穩定性需求。如果只是一般上網和影片，可能有些超配。"
+        "重度家庭、多人同時 4K、遊戲、直播、大型檔案下載、遠端工作、多設備同時使用。"
     },
     mobileGoodFor: {
       "25GB": "輕中度用戶，日常社交、地圖、網頁、音樂、少量影片。如果經常在外看影片或開熱點，建議考慮 50GB 以上。",
@@ -453,13 +453,13 @@ const translations = {
       "If you are outside Charlottetown / Stratford / Cornwall, consider major networks like Bell or TELUS first and confirm signal quality at home, work, and common travel routes. Do not choose based only on the lowest price.",
     internetGoodFor: {
       low:
-        "Daily browsing, video calls, YouTube / Netflix, 1-2 people working from home, and regular HD video. It may not be ideal for multiple 4K streams, gaming, live streaming, or heavy downloads at the same time.",
+        "Everyday browsing, messaging, email, YouTube, video calls, and regular HD video for 1–2 people.",
       mid:
-        "Most household use, 4K video, video meetings, online learning, remote work, and casual gaming. For multiple heavy streams or large downloads, 500M or higher may be better.",
+        "Standard households, 4K video, video meetings, online classes, multiple devices, and casual gaming.",
       high:
-        "Most households, including 4K video, multiple video meetings, remote work, online learning, casual gaming, and live streaming. For many PEI households, 500M is usually enough.",
+        "Most households, multiple devices, 4K video, video meetings, remote work, online learning, casual gaming, and larger downloads.",
       premium:
-        "Larger households, heavy remote work, large downloads/uploads, gaming, multiple 4K streams, content creation, or higher stability needs. It may be more than necessary for basic browsing and video."
+        "Heavy households, multiple people streaming 4K, gaming, livestreaming, large downloads, remote work, and many devices."
     },
     mobileGoodFor: {
       "25GB": "Light to moderate users for social apps, maps, browsing, music, and some video. If you often watch video outside or use hotspot, 50GB or more may be better.",
@@ -575,7 +575,11 @@ function speedForUsage(level) {
 
 function speedRank(speed) {
   const ranks = { "100M": 100, "300M": 300, "350M": 350, "500M": 500, "1G": 1000, "1.5G": 1500, "3G": 3000 };
-  return ranks[speed] || 0;
+  if (ranks[speed]) return ranks[speed];
+  const value = String(speed || "").trim().toLowerCase();
+  const numeric = Number(value.replace(/[^0-9.]/g, ""));
+  if (!numeric) return 0;
+  return value.includes("g") && !value.includes("gb") ? numeric * 1000 : numeric;
 }
 
 function dataRank(data) {
@@ -646,18 +650,38 @@ function offerDistance(offer, form) {
   return 0;
 }
 
-function localizedGoodFor(offer, form, t) {
-  if (offer.service_type === "internet" || offer.service_type === "both") return t.internetGoodFor[speedBucket(offer.speed_down || form.current_speed)];
+function localizedGoodFor(offer, t, language) {
+  if (offer.service_type === "internet" || offer.service_type === "both") {
+    if (!offer.speed_down) {
+      return textByLanguage(
+        language,
+        "适合需要按地址确认可用性、速度和稳定性的用户。",
+        "適合需要按地址確認可用性、速度和穩定性的用戶。",
+        "Good for users who need address-specific confirmation for availability, speed, and stability."
+      );
+    }
+    return t.internetGoodFor[speedBucket(offer.speed_down)];
+  }
   if (/Public Mobile/i.test(offer.provider)) return t.publicMobileNote;
   if (/Koodo Prepaid/i.test(offer.plan_name)) return t.koodoPrepaidNote;
   if (offer.offer_id === "bell_mobile_winback_manual") return t.bellWinbackGoodFor;
   return t.mobileGoodFor[offer.mobile_data] || t.mobileGoodFor.default;
 }
 
-function localizedNote(offer, t) {
+function localizedNote(offer, t, language) {
   if (offer.offer_id === "bell_mobile_winback_manual") return t.bellWinbackNote;
   if (/Purple Cow/i.test(offer.provider)) return t.purpleCowNote;
-  if (/Koodo/i.test(offer.provider) && offer.service_type === "internet") return t.koodoInternetNote;
+  if (/Koodo/i.test(offer.provider) && offer.service_type === "internet") {
+    if (offer.offer_id === "koodo_internet_100") {
+      return `${t.koodoInternetNote} ${textByLanguage(
+        language,
+        "如果家里多人同时 4K、游戏、直播或大量下载，建议考虑更高速方案。",
+        "如果家中多人同時 4K、遊戲、直播或大量下載，建議考慮更高速方案。",
+        "If multiple people stream 4K, game, livestream, or download large files at the same time, consider a faster plan."
+      )}`;
+    }
+    return t.koodoInternetNote;
+  }
   return offer.caution;
 }
 
@@ -1206,10 +1230,10 @@ export default function Home() {
                           <b>{t.savings}</b> {savingsText(offer, form, t, language)}
                         </p>
                         <p>
-                          <b>{t.goodFor}</b> {localizedGoodFor(offer, form, t)}
+                          <b>{t.goodFor}</b> {localizedGoodFor(offer, t, language)}
                         </p>
                         <p>
-                          <b>{t.note}</b> {localizedNote(offer, t)}
+                          <b>{t.note}</b> {localizedNote(offer, t, language)}
                         </p>
                         {badges.length > 0 && (
                           <div className="badge-row">
