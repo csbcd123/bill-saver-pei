@@ -252,14 +252,14 @@ h1 {
 .form-split {
   display: grid;
   grid-template-columns: minmax(280px, 0.38fr) minmax(0, 0.62fr);
-  gap: clamp(18px, 4vw, 34px);
+  gap: clamp(16px, 3vw, 28px);
   align-items: start;
 }
 
 .form-split-left,
 .form-split-right {
   display: grid;
-  gap: 16px;
+  gap: 14px;
 }
 
 .service-card-grid {
