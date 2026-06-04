@@ -627,6 +627,32 @@ textarea:focus {
   width: min(980px, 100%);
 }
 
+.lead-modal {
+  max-height: min(680px, calc(100vh - 28px));
+  padding: clamp(16px, 2.4vw, 24px);
+}
+
+.lead-modal .section-heading {
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+}
+
+.lead-modal .grid {
+  gap: 10px 14px;
+}
+
+.lead-modal .field {
+  margin-top: 8px;
+}
+
+.lead-modal .grid .field:last-child {
+  grid-column: 1 / -1;
+}
+
+.lead-modal .submit-button {
+  margin-top: 16px;
+}
+
 .modal .field {
   margin-top: 16px;
 }
@@ -648,21 +674,67 @@ textarea:focus {
   border: 1px solid #c9e4dc;
   border-radius: 8px;
   background: #f0faf6;
-  margin-bottom: 18px;
-  padding: 16px;
+  margin-bottom: 12px;
+  padding: 12px 14px;
 }
 
 .trust-box strong {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   color: var(--accent-strong);
-  font-size: 1rem;
+  font-size: 0.94rem;
+}
+
+.trust-box ol {
+  margin: 0;
+  padding-left: 20px;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.trust-box li + li {
+  margin-top: 3px;
 }
 
 .trust-box p {
   margin-bottom: 0;
   color: var(--muted);
   line-height: 1.7;
+}
+
+.success-modal {
+  width: min(430px, 100%);
+  padding: 26px;
+  text-align: center;
+}
+
+.success-icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  background: #e6f5f0;
+  color: var(--accent-strong);
+  font-size: 1.6rem;
+  font-weight: 900;
+}
+
+.success-modal h2 {
+  margin-bottom: 10px;
+}
+
+.success-modal p {
+  color: var(--ink);
+  line-height: 1.65;
+}
+
+.success-modal small {
+  display: block;
+  color: var(--muted);
+  line-height: 1.55;
 }
 
 .group-section {
