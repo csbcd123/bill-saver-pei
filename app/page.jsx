@@ -1130,17 +1130,6 @@ export default function Home() {
                   </div>
                 </div>
 
-                {showMobile && (
-                  <Field label={t.currentMobileDataQuestion}>
-                    <Select value={form.current_mobile_data} onChange={(value) => update("current_mobile_data", value)}>
-                      {mobileDataOptions.map((value) => (
-                        <option key={value} value={value}>
-                          {optionLabel(t, value)}
-                        </option>
-                      ))}
-                    </Select>
-                  </Field>
-                )}
               </div>
 
               <div className="form-split-right">
@@ -1165,6 +1154,18 @@ export default function Home() {
                     required
                   />
                 </Field>
+
+                {showMobile && (
+                  <Field label={t.currentMobileDataQuestion}>
+                    <Select value={form.current_mobile_data} onChange={(value) => update("current_mobile_data", value)}>
+                      {mobileDataOptions.map((value) => (
+                        <option key={value} value={value}>
+                          {optionLabel(t, value)}
+                        </option>
+                      ))}
+                    </Select>
+                  </Field>
+                )}
 
                 <Field label={t.city}>
                   <Select value={form.city} onChange={(value) => update("city", value)}>
