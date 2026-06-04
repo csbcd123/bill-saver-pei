@@ -109,6 +109,55 @@ h1 {
   line-height: 1.7;
 }
 
+.hero-flow {
+  display: grid;
+  gap: 10px;
+  max-width: 860px;
+  color: #e8f6f2;
+}
+
+.hero-flow-title {
+  margin-bottom: 0;
+  color: #bbe7dc;
+  font-size: 0.98rem;
+  font-weight: 800;
+}
+
+.hero-flow-steps {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.hero-flow-step {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid rgba(187, 231, 220, 0.34);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  padding: 8px 12px;
+  font-size: clamp(1rem, 2vw, 1.22rem);
+  font-weight: 800;
+  line-height: 1.35;
+  backdrop-filter: blur(6px);
+}
+
+.hero-flow-step b {
+  color: #bbe7dc;
+  font-size: 1rem;
+}
+
+.hero-flow-helper {
+  max-width: 680px;
+  margin-bottom: 0;
+  color: #e8f6f2;
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
 .workspace {
   display: grid;
   grid-template-columns: minmax(0, 1.25fr) minmax(360px, 0.75fr);

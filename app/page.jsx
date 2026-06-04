@@ -18,6 +18,9 @@ const translations = {
     eyebrow: "仅限 PEI · v1",
     title: "Bill Saver｜PEI 手机宽带账单免费体检",
     hero: "先输入账单信息查看体检结果。想拿到可用优惠时，再提交联系方式给人工复核。",
+    heroFlowTitle: "3 步免费体检流程",
+    heroFlowSteps: ["输入账单信息", "查看体检结果", "提交联系方式获取可用优惠"],
+    heroFlowHelper: "全程免费。先看结果，再决定是否需要人工复核。",
     formTitle: "账单信息",
     province: "默认地区：Prince Edward Island",
     serviceType: "你想检查哪类账单？",
@@ -173,6 +176,9 @@ const translations = {
     eyebrow: "僅限 PEI · v1",
     title: "Bill Saver｜PEI 手機寬頻帳單免費體檢",
     hero: "先輸入帳單資訊查看健檢結果。想取得可用優惠時，再提交聯絡方式給人工複核。",
+    heroFlowTitle: "3 步免費健檢流程",
+    heroFlowSteps: ["輸入帳單資訊", "查看健檢結果", "提交聯絡方式取得可用優惠"],
+    heroFlowHelper: "全程免費。先看結果，再決定是否需要人工複核。",
     formTitle: "帳單資訊",
     province: "預設地區：Prince Edward Island",
     serviceType: "你想檢查哪類帳單？",
@@ -328,6 +334,9 @@ const translations = {
     eyebrow: "PEI only · v1",
     title: "Bill Saver | Free PEI Mobile and Internet Bill Check",
     hero: "Enter bill details first to see your result. If you want available offers, submit contact details for manual review afterward.",
+    heroFlowTitle: "3-Step Free Bill Check",
+    heroFlowSteps: ["Enter your bill", "View your result", "Submit contact details to access available offers"],
+    heroFlowHelper: "Free to use. Check your result first, then decide whether you want manual follow-up.",
     formTitle: "Bill details",
     province: "Default region: Prince Edward Island",
     serviceType: "Which bill do you want to check?",
@@ -1051,7 +1060,18 @@ export default function Home() {
         <div>
           <p className="eyebrow">{t.eyebrow}</p>
           <h1>{t.title}</h1>
-          <p className="hero-copy">{t.hero}</p>
+          <div className="hero-flow" aria-label={t.heroFlowTitle}>
+            <p className="hero-flow-title">{t.heroFlowTitle}</p>
+            <div className="hero-flow-steps">
+              {t.heroFlowSteps.map((step, index) => (
+                <span className="hero-flow-step" key={step}>
+                  {step}
+                  {index < t.heroFlowSteps.length - 1 && <b aria-hidden="true">→</b>}
+                </span>
+              ))}
+            </div>
+            <p className="hero-flow-helper">{t.heroFlowHelper}</p>
+          </div>
         </div>
       </section>
 
