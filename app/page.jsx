@@ -23,12 +23,16 @@ const translations = {
     serviceType: "你想检查哪类账单？",
     city: "你住在哪个区域？",
     provider: "当前运营商",
+    providerInternet: "你现在用的是哪家宽带？",
+    providerMobile: "你现在用的是哪家手机运营商？",
+    providerBoth: "你现在主要用的是哪家运营商？",
     monthlyPriceInternet: "宽带月费（税前）",
     monthlyPriceMobile: "手机月费",
     monthlyPriceBoth: "每月总费用",
     monthlyPlaceholder: "例如 95",
-    currentSpeed: "当前宽带速度",
+    internetUsageLevel: "家庭上网使用情况",
     currentMobileData: "当前手机流量",
+    currentMobileDataQuestion: "你每月大概用多少手机流量？",
     postalPrefix: "邮编前三位",
     postalPlaceholder: "例如 C1A",
     willingToSwitch: "如果有更合适的方案，你是否可以考虑更换？",
@@ -40,6 +44,8 @@ const translations = {
     billScore: "账单评分",
     estimatedYearlySavings: "预计全年可节约",
     yearlySavingsValue: (value) => `约 $${value} / 年`,
+    scoreStatus: "还有明显优化空间",
+    savingsHelper: "根据你当前账单初步估算",
     planTitle: "参考可选方案",
     pickType: "推荐类型：",
     providerLabel: "服务商：",
@@ -67,6 +73,9 @@ const translations = {
     qrPlaceholder: "群二维码位置",
     leadTitle: "获取本周可用优惠",
     leadIntro: "留下联系方式，人工复核后再确认是否有更合适的方案。",
+    trustTitle: "为什么可以放心提交？",
+    trustBody:
+      "你提交的信息只用于帮你人工确认 PEI 本地本周可用的手机 / 宽带优惠。我们不会向你收取套餐费、安装费或任何预付款。最终价格、资格、下单、安装和账单都由运营商或授权销售人员确认。安装通常由运营商官方或授权安装团队完成。你可以先了解方案，再决定是否继续。",
     name: "姓名",
     email: "邮箱",
     phone: "电话",
@@ -77,6 +86,20 @@ const translations = {
     disclaimer: "最终价格、资格、地址覆盖、安装、税费、设备费和信用审核以运营商或授权销售人员确认为准。",
     footer: "请勿提交 SIN、银行卡、完整账号、完整账单或身份证件照片。本工具只需要大概账单信息来做初步判断。",
     serviceCards: { mobile: "手机账单", internet: "宽带账单", both: "宽带 + 手机" },
+    usageCards: {
+      light: {
+        title: "轻度使用",
+        description: "1-2 人使用，主要刷网页、微信、邮件、YouTube 和普通视频。"
+      },
+      standard: {
+        title: "普通家庭",
+        description: "2-4 人家庭，高清视频 / 4K、视频会议、孩子上网课、普通游戏。"
+      },
+      heavy: {
+        title: "重度家庭",
+        description: "多人同时看视频、下载大文件、游戏、远程办公、电视盒子、NAS、摄像头、智能家居设备较多。"
+      }
+    },
     options: {
       other_pei: "其他 PEI 地区",
       not_in_pei: "不在 PEI",
@@ -103,6 +126,8 @@ const translations = {
       "如果你对稳定性要求很高，不建议只看最低价格。",
       "如果你需要保留手机号，转网前需要确认账户信息。"
     ],
+    areaCaution:
+      "如果你不在 Charlottetown / Stratford / Cornwall，建议优先考虑 Bell 或 TELUS 这类大网，并确认家里、工作地点和常用路线的信号表现，不要只看最低价格。",
     internetGoodFor: {
       low: "日常上网、视频通话、YouTube / Netflix、1-2 人远程办公和普通高清视频。多人同时 4K、游戏、直播或大量下载时可能不够稳。",
       mid: "多数家庭日常使用、4K 视频、视频会议、在线学习、远程办公和普通游戏。多人重度使用时可考虑 500M 以上。",
@@ -125,6 +150,13 @@ const translations = {
       "当前 Bell 手机用户，想判断是否有必要转出后等待回流优惠，或比较其他运营商方案。",
     bellWinbackNote:
       "Bell Winback 通常需要满足特定资格，可能需要先转出或等待回流联系。最终价格、资格、自动付款、信用审核和促销条件以运营商或授权销售人员确认为准。"
+    ,
+    purpleCowNote:
+      "Purple Cow 适合价格敏感、希望降低宽带月费的用户。通常免安装费、免激活费，并提供首月不满意退款保证。最终可用性、速度、安装条件和退款条款以 Purple Cow 当前确认为准。",
+    purpleCowBadges: ["免安装费", "免激活费", "首月不满意可退款"],
+    koodoInternetNote:
+      "Koodo Internet 适合希望降低宽带月费、接受自助安装、又想保留较好性价比的用户。通常无激活费，并支持免费自助安装；如需要人工指导或上门安装，可以根据地址和资格进一步确认。Koodo 也提供 30 天免费试用 / 不满意退款政策，具体安装方式、退款条件、资格和最终价格以 Koodo 当前条款确认为准。",
+    koodoBadges: ["推荐优先", "无激活费", "免费自助安装", "30 天免费试用"]
   },
   zhHant: {
     languageName: "繁體中文",
@@ -136,12 +168,16 @@ const translations = {
     serviceType: "你想檢查哪類帳單？",
     city: "你住在哪個區域？",
     provider: "目前業者",
+    providerInternet: "你目前用的是哪家寬頻？",
+    providerMobile: "你目前用的是哪家手機電信商？",
+    providerBoth: "你目前主要用的是哪家電信商？",
     monthlyPriceInternet: "寬頻月費",
     monthlyPriceMobile: "手機月費",
     monthlyPriceBoth: "每月總費用",
     monthlyPlaceholder: "例如 95",
-    currentSpeed: "目前寬頻速度",
+    internetUsageLevel: "家庭上網使用情況",
     currentMobileData: "目前手機流量",
+    currentMobileDataQuestion: "你每月大約用多少手機流量？",
     postalPrefix: "郵遞區號前三碼",
     postalPlaceholder: "例如 C1A",
     willingToSwitch: "如果有更合適的方案，你是否可以考慮更換？",
@@ -153,6 +189,8 @@ const translations = {
     billScore: "帳單評分",
     estimatedYearlySavings: "預計全年可節省",
     yearlySavingsValue: (value) => `約 $${value} / 年`,
+    scoreStatus: "還有明顯優化空間",
+    savingsHelper: "根據你目前帳單初步估算",
     planTitle: "參考可選方案",
     pickType: "推薦類型：",
     providerLabel: "電信商：",
@@ -180,6 +218,9 @@ const translations = {
     qrPlaceholder: "群 QR Code 位置",
     leadTitle: "取得本週可用優惠",
     leadIntro: "留下聯絡方式，人工複核後再確認是否有更合適的方案。",
+    trustTitle: "為什麼可以放心提交？",
+    trustBody:
+      "你提交的資訊只用於幫你人工確認 PEI 本地本週可用的手機 / 寬頻優惠。我們不會向你收取方案費、安裝費或任何預付款。最終價格、資格、下單、安裝和帳單都由電信商或授權銷售人員確認。安裝通常由電信商官方或授權安裝團隊完成。你可以先了解方案，再決定是否繼續。",
     name: "姓名",
     email: "電郵",
     phone: "電話",
@@ -190,6 +231,20 @@ const translations = {
     disclaimer: "最終價格、資格、地址覆蓋、安裝、稅費、設備費和信用審核以電信商或授權銷售人員確認為準。",
     footer: "請勿提交 SIN、銀行卡、完整帳號、完整帳單或身分證件照片。本工具只需要大概帳單資訊來做初步判斷。",
     serviceCards: { mobile: "手機帳單", internet: "寬頻帳單", both: "寬頻 + 手機" },
+    usageCards: {
+      light: {
+        title: "輕度使用",
+        description: "1-2 人使用，主要瀏覽網頁、微信、電郵、YouTube 和一般影片。"
+      },
+      standard: {
+        title: "一般家庭",
+        description: "2-4 人家庭，高畫質影片 / 4K、視訊會議、孩子上網課、一般遊戲。"
+      },
+      heavy: {
+        title: "重度家庭",
+        description: "多人同時看影片、下載大型檔案、遊戲、遠端工作、電視盒、NAS、攝影機、智能家居設備較多。"
+      }
+    },
     options: {
       other_pei: "其他 PEI 地區",
       not_in_pei: "不在 PEI",
@@ -216,6 +271,8 @@ const translations = {
       "如果你對穩定性要求很高，不建議只看最低價格。",
       "如果你需要保留手機號，轉網前需要確認帳戶資訊。"
     ],
+    areaCaution:
+      "如果你不在 Charlottetown / Stratford / Cornwall，建議優先考慮 Bell 或 TELUS 這類大網，並確認家中、工作地點和常用路線的訊號表現，不要只看最低價格。",
     internetGoodFor: {
       low: "日常上網、視訊通話、YouTube / Netflix、1-2 人遠端工作和一般高畫質影片。多人同時 4K、遊戲、直播或大量下載時可能不夠穩。",
       mid: "多數家庭日常使用、4K 影片、視訊會議、線上學習、遠端工作和一般遊戲。多人重度使用時可考慮 500M 以上。",
@@ -238,6 +295,13 @@ const translations = {
       "目前 Bell 手機用戶，想判斷是否有必要轉出後等待回流優惠，或比較其他電信商方案。",
     bellWinbackNote:
       "Bell Winback 通常需要滿足特定資格，可能需要先轉出或等待回流聯絡。最終價格、資格、自動付款、信用審核和促銷條件以電信商或授權銷售人員確認為準。"
+    ,
+    purpleCowNote:
+      "Purple Cow 適合價格敏感、希望降低寬頻月費的用戶。通常免安裝費、免啟用費，並提供首月不滿意退款保證。最終可用性、速度、安裝條件和退款條款以 Purple Cow 目前確認為準。",
+    purpleCowBadges: ["免安裝費", "免啟用費", "首月不滿意可退款"],
+    koodoInternetNote:
+      "Koodo Internet 適合希望降低寬頻月費、接受自助安裝、又想保留較好性價比的用戶。通常無啟用費，並支援免費自助安裝；如需要人工指導或上門安裝，可以根據地址和資格進一步確認。Koodo 也提供 30 天免費試用 / 不滿意退款政策，具體安裝方式、退款條件、資格和最終價格以 Koodo 目前條款確認為準。",
+    koodoBadges: ["優先推薦", "無啟用費", "免費自助安裝", "30 天免費試用"]
   },
   en: {
     languageName: "English",
@@ -249,12 +313,16 @@ const translations = {
     serviceType: "Which bill do you want to check?",
     city: "Which area are you in?",
     provider: "Current provider",
+    providerInternet: "Who is your current internet provider?",
+    providerMobile: "Who is your current mobile provider?",
+    providerBoth: "Who is your main current provider?",
     monthlyPriceInternet: "Internet monthly bill",
     monthlyPriceMobile: "Mobile monthly bill",
     monthlyPriceBoth: "Total monthly bill",
     monthlyPlaceholder: "e.g. 95",
-    currentSpeed: "Current internet speed",
+    internetUsageLevel: "Home internet usage",
     currentMobileData: "Current mobile data",
+    currentMobileDataQuestion: "How much mobile data do you use per month?",
     postalPrefix: "Postal code prefix",
     postalPlaceholder: "e.g. C1A",
     willingToSwitch: "If there is a better option, would you consider switching?",
@@ -267,6 +335,8 @@ const translations = {
     billScore: "Bill Score",
     estimatedYearlySavings: "Estimated Yearly Savings",
     yearlySavingsValue: (value) => `About $${value} / year`,
+    scoreStatus: "Clear room for improvement",
+    savingsHelper: "Based on your current bill estimate",
     planTitle: "Reference Optional Plans",
     pickType: "Pick type:",
     providerLabel: "Provider:",
@@ -294,6 +364,9 @@ const translations = {
     qrPlaceholder: "Group QR Code Placeholder",
     leadTitle: "Get available weekly offers",
     leadIntro: "Leave your contact details. We will manually confirm whether there is a better option.",
+    trustTitle: "Why it's safe to submit",
+    trustBody:
+      "Your information is only used to manually check available weekly phone or internet offers in PEI. We do not charge you plan fees, installation fees, or any upfront payment. Final pricing, eligibility, order processing, installation, and billing are confirmed by the provider or an authorized sales representative. Installation is typically completed by the provider's official or authorized installation team. You can review the option first before deciding whether to continue.",
     name: "Name",
     email: "Email",
     phone: "Phone",
@@ -306,6 +379,20 @@ const translations = {
     footer:
       "Do not submit SIN, bank card details, full account numbers, full bills, or identity-document photos. This tool only needs approximate bill details for a preliminary check.",
     serviceCards: { mobile: "Mobile bill", internet: "Internet bill", both: "Internet + Mobile" },
+    usageCards: {
+      light: {
+        title: "Light use",
+        description: "1-2 people, mainly browsing, messaging, email, YouTube, and regular video."
+      },
+      standard: {
+        title: "Standard household",
+        description: "2-4 people, HD / 4K video, video meetings, online classes, and casual gaming."
+      },
+      heavy: {
+        title: "Heavy household",
+        description: "Multiple people streaming, large downloads, gaming, remote work, TV boxes, NAS, cameras, and many smart home devices."
+      }
+    },
     options: {
       other_pei: "Other PEI area",
       not_in_pei: "Not in PEI",
@@ -332,6 +419,8 @@ const translations = {
       "If stability is very important, do not choose by the lowest price alone.",
       "If you need to keep your phone number, confirm account details before porting."
     ],
+    areaCaution:
+      "If you are outside Charlottetown / Stratford / Cornwall, consider major networks like Bell or TELUS first and confirm signal quality at home, work, and common travel routes. Do not choose based only on the lowest price.",
     internetGoodFor: {
       low:
         "Daily browsing, video calls, YouTube / Netflix, 1-2 people working from home, and regular HD video. It may not be ideal for multiple 4K streams, gaming, live streaming, or heavy downloads at the same time.",
@@ -361,6 +450,13 @@ const translations = {
       "Current Bell mobile users who want to check whether switching out and waiting for a winback offer may be worth it, or compare other provider options.",
     bellWinbackNote:
       "Bell winback offers usually require specific eligibility and may require switching out first or waiting for a winback contact. Final pricing, eligibility, pre-authorized payment, credit approval, and promotional terms must be confirmed by the provider or an authorized sales representative."
+    ,
+    purpleCowNote:
+      "Purple Cow may be a good fit for price-sensitive users who want to lower their internet bill. It typically has no installation fee, no activation fee, and a first-month money-back guarantee. Final availability, speed, installation conditions, and refund terms should be confirmed with Purple Cow.",
+    purpleCowBadges: ["No installation fee", "No activation fee", "First-month money-back"],
+    koodoInternetNote:
+      "Koodo Internet may be a strong fit for users who want to lower their internet bill, are comfortable with self-installation, and still want good overall value. It typically has no activation fee and supports free self-installation. If technician guidance or in-home installation is needed, availability can be confirmed based on address and eligibility. Koodo also offers a 30-day free trial / money-back policy. Installation method, refund terms, eligibility, and final pricing should be confirmed with Koodo's current terms.",
+    koodoBadges: ["Priority Pick", "No activation fee", "Free self-installation", "30-day free trial"]
   }
 };
 
@@ -373,8 +469,33 @@ const areaOptions = [
   { value: "Not in PEI", labelKey: "not_in_pei" }
 ];
 
-const providerOptions = ["Bell", "Bell Aliant", "TELUS", "Koodo", "Public Mobile", "Eastlink", "Purple Cow", "Rogers", "Fido", "Virgin Plus", "Other", "Not sure"];
-const speedOptions = ["100M", "300M", "500M", "1G", "1.5G", "3G", "not_sure"];
+const serviceOrder = ["internet", "mobile", "both"];
+const providerOptionsByService = {
+  internet: ["Bell", "Bell Aliant", "TELUS", "Koodo", "Eastlink", "Purple Cow", "Xplore", "Starlink", "Other", "Not sure"],
+  mobile: ["Bell", "Bell Aliant", "TELUS", "Koodo", "Public Mobile", "Eastlink", "Rogers", "Fido", "Virgin Plus", "Other", "Not sure"],
+  both: [
+    "Bell",
+    "Bell Aliant",
+    "TELUS",
+    "Koodo",
+    "Eastlink",
+    "Public Mobile",
+    "Rogers",
+    "Fido",
+    "Virgin Plus",
+    "Purple Cow",
+    "Xplore",
+    "Starlink",
+    "Multiple providers",
+    "Other",
+    "Not sure"
+  ]
+};
+const usageLevels = [
+  { value: "light", currentSpeed: "100M" },
+  { value: "standard", currentSpeed: "300M" },
+  { value: "heavy", currentSpeed: "1G" }
+];
 const mobileDataOptions = ["5GB", "10GB", "20GB", "50GB", "75GB", "100GB", "150GB+", "not_sure"];
 
 const initialForm = {
@@ -383,10 +504,11 @@ const initialForm = {
   current_provider: "Bell Aliant",
   monthly_price: "",
   price_type: "not_asked",
-  current_speed: "500M",
+  internet_usage_level: "standard",
+  current_speed: "300M",
   current_mobile_data: "50GB",
   postal_code: "",
-  willing_to_switch: "can_consider",
+  willing_to_switch: "",
   notes: ""
 };
 
@@ -415,6 +537,10 @@ function optionLabel(t, value) {
   if (value === "Other") return t.options.other || "Other";
   if (value === "Not sure" || value === "not_sure") return t.options.not_sure;
   return t.options[value] || value;
+}
+
+function speedForUsage(level) {
+  return usageLevels.find((item) => item.value === level)?.currentSpeed || "300M";
 }
 
 function speedRank(speed) {
@@ -503,7 +629,15 @@ function localizedGoodFor(offer, form, t) {
 
 function localizedNote(offer, t) {
   if (offer.offer_id === "bell_mobile_winback_manual") return t.bellWinbackNote;
+  if (/Purple Cow/i.test(offer.provider)) return t.purpleCowNote;
+  if (/Koodo/i.test(offer.provider) && offer.service_type === "internet") return t.koodoInternetNote;
   return offer.caution;
+}
+
+function offerBadges(offer, t) {
+  if (/Koodo/i.test(offer.provider) && offer.service_type === "internet") return t.koodoBadges;
+  if (/Purple Cow/i.test(offer.provider)) return t.purpleCowBadges;
+  return [];
 }
 
 function displayPlanName(offer, t) {
@@ -525,6 +659,11 @@ function scoreOffer(offer, form) {
   if (offer.is_public_price && typeof offer.official_regular_price === "number") score -= 4;
   if (offer.requires_manual_confirmation) score -= 2;
   if (typeof offer.bill_saver_target_price === "number") score += Math.max(0, 16 - offer.bill_saver_target_price / 8);
+  if (/Koodo/i.test(offer.provider) && offer.service_type === "internet") score += 7;
+  if (/Purple Cow/i.test(offer.provider)) score += 4;
+  if (offer.partner_status === "active_partner") score += 3;
+  if (offer.recommendation_weight === "high") score += 5;
+  if (offer.recommendation_weight === "medium_high") score += 2;
   return score;
 }
 
@@ -538,12 +677,22 @@ function internetPicks(form) {
 }
 
 function mobilePicks(form) {
-  const mobileOffers = offerDatabase.filter((offer) => offer.service_type === "mobile" && offer.status !== "inactive");
+  const coreArea = ["Charlottetown", "Stratford", "Cornwall"].includes(form.city);
+  const mobileOffers = offerDatabase.filter((offer) => offer.service_type === "mobile" && offer.status !== "inactive" && offer.provider !== "Rogers");
   const quality =
     mobileOffers
       .filter((offer) => dataRank(offer.mobile_data) >= 40 && !isBell(offer))
+      .sort((a, b) => {
+        if (!coreArea) {
+          const aMajor = /TELUS|Bell/i.test(a.provider) ? 1 : 0;
+          const bMajor = /TELUS|Bell/i.test(b.provider) ? 1 : 0;
+          if (aMajor !== bMajor) return bMajor - aMajor;
+        }
+        return scoreOffer(b, form) - scoreOffer(a, form);
+      })[0] ||
+    mobileOffers
       .sort((a, b) => scoreOffer(b, form) - scoreOffer(a, form))[0] ||
-    mobileOffers.sort((a, b) => scoreOffer(b, form) - scoreOffer(a, form))[0];
+    mobileOffers[0];
 
   const cheapest =
     mobileOffers
@@ -614,7 +763,7 @@ function buildSheetPayload({ form, language, source, lead }) {
     preferred_contact: lead.preferred_contact || "",
     wechat: lead.wechat || "",
     city: form.city || "",
-    postal_code: form.postal_code || "",
+    postal_code: "",
     service_type: serviceType,
     current_provider: form.current_provider || "",
     monthly_price: form.monthly_price || "",
@@ -622,11 +771,12 @@ function buildSheetPayload({ form, language, source, lead }) {
     current_speed: serviceType === "internet" || serviceType === "both" ? form.current_speed : "",
     current_mobile_data: serviceType === "mobile" || serviceType === "both" ? form.current_mobile_data : "",
     plan_details: JSON.stringify({
+      internet_usage_level: form.internet_usage_level,
       selected_speed: form.current_speed,
       selected_mobile_data: form.current_mobile_data
     }),
-    willing_to_switch: form.willing_to_switch || "",
-    notes: form.notes || ""
+    willing_to_switch: "",
+    notes: ""
   };
 }
 
@@ -669,7 +819,12 @@ export default function Home() {
   }, []);
 
   function update(field, value) {
-    setForm((current) => ({ ...current, [field]: value }));
+    setForm((current) => {
+      if (field === "internet_usage_level") {
+        return { ...current, internet_usage_level: value, current_speed: speedForUsage(value) };
+      }
+      return { ...current, [field]: value };
+    });
   }
 
   function updateLead(field, value) {
@@ -750,7 +905,7 @@ export default function Home() {
           <div className="field">
             <span>{t.serviceType}</span>
             <div className="service-card-grid">
-              {["mobile", "internet", "both"].map((value) => (
+              {serviceOrder.map((value) => (
                 <button
                   key={value}
                   type="button"
@@ -764,19 +919,17 @@ export default function Home() {
           </div>
 
           <div className="grid form-grid-top">
-            <Field label={t.city}>
-              <Select value={form.city} onChange={(value) => update("city", value)}>
-                {areaOptions.map((area) => (
-                  <option key={area.value} value={area.value}>
-                    {area.labelKey ? t.options[area.labelKey] : area.label}
-                  </option>
-                ))}
-              </Select>
-            </Field>
-
-            <Field label={t.provider}>
+            <Field
+              label={
+                form.service_type === "internet"
+                  ? t.providerInternet
+                  : form.service_type === "mobile"
+                    ? t.providerMobile
+                    : t.providerBoth
+              }
+            >
               <Select value={form.current_provider} onChange={(value) => update("current_provider", value)}>
-                {providerOptions.map((provider) => (
+                {providerOptionsByService[form.service_type].map((provider) => (
                   <option key={provider} value={provider}>
                     {optionLabel(t, provider)}
                   </option>
@@ -805,19 +958,26 @@ export default function Home() {
             </Field>
 
             {showInternet && (
-              <Field label={t.currentSpeed}>
-                <Select value={form.current_speed} onChange={(value) => update("current_speed", value)}>
-                  {speedOptions.map((value) => (
-                    <option key={value} value={value}>
-                      {optionLabel(t, value)}
-                    </option>
+              <div className="field field-full">
+                <span>{t.internetUsageLevel}</span>
+                <div className="usage-card-grid">
+                  {usageLevels.map((item) => (
+                    <button
+                      key={item.value}
+                      type="button"
+                      className={form.internet_usage_level === item.value ? "usage-card active" : "usage-card"}
+                      onClick={() => update("internet_usage_level", item.value)}
+                    >
+                      <strong>{t.usageCards[item.value].title}</strong>
+                      <span>{t.usageCards[item.value].description}</span>
+                    </button>
                   ))}
-                </Select>
-              </Field>
+                </div>
+              </div>
             )}
 
             {showMobile && (
-              <Field label={t.currentMobileData}>
+              <Field label={t.currentMobileDataQuestion}>
                 <Select value={form.current_mobile_data} onChange={(value) => update("current_mobile_data", value)}>
                   {mobileDataOptions.map((value) => (
                     <option key={value} value={value}>
@@ -828,28 +988,16 @@ export default function Home() {
               </Field>
             )}
 
-            <Field label={t.postalPrefix}>
-              <input
-                value={form.postal_code}
-                onChange={(event) => update("postal_code", event.target.value.toUpperCase().slice(0, 3))}
-                placeholder={t.postalPlaceholder}
-              />
-            </Field>
-
-            <Field label={t.willingToSwitch}>
-              <Select value={form.willing_to_switch} onChange={(value) => update("willing_to_switch", value)}>
-                {["can_consider", "yes", "no", "just_checking"].map((value) => (
-                  <option key={value} value={value}>
-                    {t.options[value]}
+            <Field label={t.city}>
+              <Select value={form.city} onChange={(value) => update("city", value)}>
+                {areaOptions.map((area) => (
+                  <option key={area.value} value={area.value}>
+                    {area.labelKey ? t.options[area.labelKey] : area.label}
                   </option>
                 ))}
               </Select>
             </Field>
           </div>
-
-          <Field label={t.notes}>
-            <textarea value={form.notes} onChange={(event) => update("notes", event.target.value)} rows="4" />
-          </Field>
 
           <button className="submit-button" type="submit">
             {t.submit}
@@ -870,14 +1018,26 @@ export default function Home() {
             </div>
 
             <div className="result-stack">
-              <section className={`score-box ${scoreTone(score)}`}>
-                <div>
-                  <span>{t.billScore}</span>
-                  <strong>{score}</strong>
+              <section className={`score-summary ${scoreTone(score)}`}>
+                <div className="score-summary-row">
+                  <div className="summary-copy">
+                    <span className="summary-icon">✓</span>
+                    <div>
+                      <h3>{t.billScore}</h3>
+                      <p>{t.scoreStatus}</p>
+                    </div>
+                  </div>
+                  <strong className="summary-value">{score}</strong>
                 </div>
-                <div className="savings-line">
-                  <span>{t.estimatedYearlySavings}</span>
-                  <strong>{t.yearlySavingsValue(yearlySavings)}</strong>
+                <div className="score-summary-row">
+                  <div className="summary-copy">
+                    <span className="summary-icon">↘</span>
+                    <div>
+                      <h3>{t.estimatedYearlySavings}</h3>
+                      <p>{t.savingsHelper}</p>
+                    </div>
+                  </div>
+                  <strong className="summary-value savings-value">{t.yearlySavingsValue(yearlySavings)}</strong>
                 </div>
               </section>
 
@@ -910,6 +1070,13 @@ export default function Home() {
                       <p>
                         <b>{t.note}</b> {localizedNote(offer, t)}
                       </p>
+                      {offerBadges(offer, t).length > 0 && (
+                        <div className="badge-row">
+                          {offerBadges(offer, t).map((badge) => (
+                            <span key={badge}>{badge}</span>
+                          ))}
+                        </div>
+                      )}
                       {isPremiumProvider(offer) && (
                         <div className="premium-cta-wrap">
                           <button className="premium-cta" type="button" onClick={openLeadFromResult}>
@@ -929,6 +1096,7 @@ export default function Home() {
                   {t.cautionItems.map((item) => (
                     <li key={item}>{item}</li>
                   ))}
+                  {!["Charlottetown", "Stratford", "Cornwall"].includes(form.city) && showMobile && <li>{t.areaCaution}</li>}
                 </ul>
               </section>
 
@@ -955,6 +1123,11 @@ export default function Home() {
               <button className="modal-close" type="button" onClick={() => setLeadOpen(false)} aria-label={t.close}>
                 ×
               </button>
+            </div>
+
+            <div className="trust-box">
+              <strong>{t.trustTitle}</strong>
+              <p>{t.trustBody}</p>
             </div>
 
             <div className="grid">
