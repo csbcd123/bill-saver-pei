@@ -118,6 +118,11 @@ h1 {
   padding: 28px clamp(16px, 4vw, 48px) 48px;
 }
 
+.workspace.single-column {
+  grid-template-columns: minmax(0, 960px);
+  justify-content: center;
+}
+
 .panel {
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -354,6 +359,18 @@ textarea:focus {
   gap: 16px;
 }
 
+.score-box .savings-line {
+  align-items: center;
+  margin-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+  padding-top: 16px;
+}
+
+.score-box .savings-line strong {
+  font-size: clamp(1.4rem, 4vw, 2.2rem);
+  line-height: 1.1;
+}
+
 .score-box span {
   font-size: 0.98rem;
   font-weight: 700;
@@ -485,6 +502,10 @@ textarea:focus {
   padding: clamp(18px, 3vw, 30px);
 }
 
+.result-modal {
+  width: min(980px, 100%);
+}
+
 .modal .field {
   margin-top: 16px;
 }
@@ -507,6 +528,14 @@ textarea:focus {
   margin: 0 auto 42px;
   text-align: center;
   padding: 26px clamp(18px, 4vw, 42px);
+}
+
+.group-section.in-modal {
+  width: 100%;
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfdfc;
 }
 
 .group-section h2 {
