@@ -17,7 +17,7 @@ const translations = {
     languageName: "简体中文",
     eyebrow: "仅限 PEI · v1",
     title: "Bill Saver｜PEI 手机宽带账单免费体检",
-    hero: "先输入账单信息查看体检结果。想拿到本周可用优惠时，再提交联系方式给人工复核。",
+    hero: "先输入账单信息查看体检结果。想拿到可用优惠时，再提交联系方式给人工复核。",
     formTitle: "账单信息",
     province: "默认地区：Prince Edward Island",
     serviceType: "你想检查哪类账单？",
@@ -39,7 +39,7 @@ const translations = {
     notes: "备注",
     submit: "查看体检结果",
     submitting: "提交中...",
-    sheetSuccess: "已收到你的账单信息。我们会人工查看你填写的内容，并结合 PEI 本地本周可用优惠进行初步判断。",
+    sheetSuccess: "已收到你的账单信息。我们会人工查看你填写的内容，并结合 PEI 本地可用优惠进行初步判断。",
     sheetError: "提交失败，请稍后再试，或直接通过电话 / 邮箱联系我们。",
     billScore: "账单评分",
     estimatedYearlySavings: "预计全年可节约",
@@ -62,26 +62,36 @@ const translations = {
     bundlePick: "组合参考方案",
     bellWinbackTitle: "Bell Winback 套餐",
     bellWinbackService: "Bell 手机回流 / Winback 方案",
-    bellPrice: "本周可用优惠需人工确认",
+    bellPrice: "可用优惠需人工确认",
     bellSavings: "提交信息后人工确认",
     bestPrice: "✨ 获得最佳价格 →",
-    bestPriceHelp: "提交后人工确认本周可用优惠",
+    bestPriceHelp: "提交后人工确认可用优惠",
     cautionTitle: "不建议或需要谨慎的地方",
     groupTitle: "加入 PEI 账单省钱群",
     groupDescription:
-      "我们会不定期分享 PEI 手机、宽带和家庭账单相关的省钱信息。本周可用优惠可能变化，具体价格和资格需要人工确认。",
+      "我们会不定期分享 PEI 手机、宽带和家庭账单相关的省钱信息。可用优惠可能变化，具体价格和资格需要人工确认。",
     qrPlaceholder: "群二维码位置",
-    leadTitle: "获取本周可用优惠",
+    leadTitle: "获取可用优惠",
     leadIntro: "留下联系方式，人工复核后再确认是否有更合适的方案。",
     trustTitle: "为什么可以放心提交？",
-    trustBody:
-      "你提交的信息只用于帮你人工确认 PEI 本地本周可用的手机 / 宽带优惠。我们不会向你收取套餐费、安装费或任何预付款。最终价格、资格、下单、安装和账单都由运营商或授权销售人员确认。安装通常由运营商官方或授权安装团队完成。你可以先了解方案，再决定是否继续。",
+    trustItems: [
+      "你提交的信息只用于帮你人工确认 PEI 本地可用的手机 / 宽带优惠",
+      "我们不会向你收取任何费用",
+      "价格和资格由运营商确认",
+      "安装由运营商官方或授权团队完成",
+      "你可以先了解方案，再决定是否继续办理"
+    ],
     name: "姓名",
     email: "邮箱",
-    phone: "电话",
+    phone: "电话（选填）",
     preferredContact: "偏好联系方式",
-    wechat: "微信（选填）",
-    leadSubmit: "提交人工复核",
+    installationAddress: "宽带安装地址（选填）",
+    installationAddressPlaceholder: "例如：街道地址或小区名称，可不填",
+    leadSubmit: "提交",
+    successTitle: "提交成功",
+    successBody: "已收到你的反馈，我们会在 1-2 个工作日内联系你。",
+    successHelper: "你也可以返回主页，继续进行其他账单体检。",
+    successButton: "返回主页",
     close: "关闭",
     disclaimer: "最终价格、资格、地址覆盖、安装、税费、设备费和信用审核以运营商或授权销售人员确认为准。",
     footer: "请勿提交 SIN、银行卡、完整账号、完整账单或身份证件照片。本工具只需要大概账单信息来做初步判断。",
@@ -162,7 +172,7 @@ const translations = {
     languageName: "繁體中文",
     eyebrow: "僅限 PEI · v1",
     title: "Bill Saver｜PEI 手機寬頻帳單免費體檢",
-    hero: "先輸入帳單資訊查看健檢結果。想取得本週可用優惠時，再提交聯絡方式給人工複核。",
+    hero: "先輸入帳單資訊查看健檢結果。想取得可用優惠時，再提交聯絡方式給人工複核。",
     formTitle: "帳單資訊",
     province: "預設地區：Prince Edward Island",
     serviceType: "你想檢查哪類帳單？",
@@ -184,7 +194,7 @@ const translations = {
     notes: "備註",
     submit: "查看健檢結果",
     submitting: "提交中...",
-    sheetSuccess: "已收到你的帳單資訊。我們會人工查看你填寫的內容，並結合 PEI 本地本週可用優惠進行初步判斷。",
+    sheetSuccess: "已收到你的帳單資訊。我們會人工查看你填寫的內容，並結合 PEI 本地可用優惠進行初步判斷。",
     sheetError: "提交失敗，請稍後再試，或直接透過電話 / 電郵聯絡我們。",
     billScore: "帳單評分",
     estimatedYearlySavings: "預計全年可節省",
@@ -207,26 +217,36 @@ const translations = {
     bundlePick: "組合參考方案",
     bellWinbackTitle: "Bell Winback 方案",
     bellWinbackService: "Bell 手機回流 / Winback 方案",
-    bellPrice: "本週可用優惠需人工確認",
+    bellPrice: "可用優惠需人工確認",
     bellSavings: "提交資訊後人工確認",
     bestPrice: "✨ 取得最佳價格 →",
-    bestPriceHelp: "提交後人工確認本週可用優惠",
+    bestPriceHelp: "提交後人工確認可用優惠",
     cautionTitle: "不建議或需要謹慎的地方",
     groupTitle: "加入 PEI 帳單省錢群",
     groupDescription:
-      "我們會不定期分享 PEI 手機、寬頻和家庭帳單相關的省錢資訊。本週可用優惠可能變化，具體價格和資格需要人工確認。",
+      "我們會不定期分享 PEI 手機、寬頻和家庭帳單相關的省錢資訊。可用優惠可能變化，具體價格和資格需要人工確認。",
     qrPlaceholder: "群 QR Code 位置",
-    leadTitle: "取得本週可用優惠",
+    leadTitle: "取得可用優惠",
     leadIntro: "留下聯絡方式，人工複核後再確認是否有更合適的方案。",
     trustTitle: "為什麼可以放心提交？",
-    trustBody:
-      "你提交的資訊只用於幫你人工確認 PEI 本地本週可用的手機 / 寬頻優惠。我們不會向你收取方案費、安裝費或任何預付款。最終價格、資格、下單、安裝和帳單都由電信商或授權銷售人員確認。安裝通常由電信商官方或授權安裝團隊完成。你可以先了解方案，再決定是否繼續。",
+    trustItems: [
+      "你提交的資訊只用於幫你人工確認 PEI 本地可用的手機 / 寬頻優惠",
+      "我們不會向你收取任何費用",
+      "價格和資格由電信商確認",
+      "安裝由電信商官方或授權團隊完成",
+      "你可以先了解方案，再決定是否繼續辦理"
+    ],
     name: "姓名",
     email: "電郵",
-    phone: "電話",
+    phone: "電話（選填）",
     preferredContact: "偏好聯絡方式",
-    wechat: "微信（選填）",
-    leadSubmit: "提交人工複核",
+    installationAddress: "寬頻安裝地址（選填）",
+    installationAddressPlaceholder: "例如：街道地址或社區名稱，可不填",
+    leadSubmit: "提交",
+    successTitle: "提交成功",
+    successBody: "已收到你的回饋，我們會在 1-2 個工作日內聯絡你。",
+    successHelper: "你也可以返回首頁，繼續進行其他帳單健檢。",
+    successButton: "返回首頁",
     close: "關閉",
     disclaimer: "最終價格、資格、地址覆蓋、安裝、稅費、設備費和信用審核以電信商或授權銷售人員確認為準。",
     footer: "請勿提交 SIN、銀行卡、完整帳號、完整帳單或身分證件照片。本工具只需要大概帳單資訊來做初步判斷。",
@@ -307,7 +327,7 @@ const translations = {
     languageName: "English",
     eyebrow: "PEI only · v1",
     title: "Bill Saver | Free PEI Mobile and Internet Bill Check",
-    hero: "Enter bill details first to see your result. If you want available weekly offers, submit contact details for manual review afterward.",
+    hero: "Enter bill details first to see your result. If you want available offers, submit contact details for manual review afterward.",
     formTitle: "Bill details",
     province: "Default region: Prince Edward Island",
     serviceType: "Which bill do you want to check?",
@@ -330,7 +350,7 @@ const translations = {
     submit: "View My Bill Check Result",
     submitting: "Submitting...",
     sheetSuccess:
-      "We have received your bill information. We will manually review your details and compare them with available weekly PEI offers.",
+      "We have received your bill information. We will manually review your details and compare them with available PEI offers.",
     sheetError: "Submission failed. Please try again later or contact us directly by phone or email.",
     billScore: "Bill Score",
     estimatedYearlySavings: "Estimated Yearly Savings",
@@ -353,26 +373,36 @@ const translations = {
     bundlePick: "Bundle Reference Pick",
     bellWinbackTitle: "Bell Winback Plan",
     bellWinbackService: "Bell mobile winback option",
-    bellPrice: "Available weekly offer requires manual confirmation",
+    bellPrice: "Available offer requires manual confirmation",
     bellSavings: "Confirmed after submission",
     bestPrice: "✨ Get the Best Price →",
-    bestPriceHelp: "We'll manually confirm available weekly offers",
+    bestPriceHelp: "We'll manually confirm available offers",
     cautionTitle: "Things to Watch Carefully",
     groupTitle: "Join the PEI Bill-Saving Group",
     groupDescription:
-      "We occasionally share PEI phone, internet, and household bill-saving tips. Available weekly offers may change, and final pricing and eligibility require manual confirmation.",
+      "We occasionally share PEI phone, internet, and household bill-saving tips. Available offers may change, and final pricing and eligibility require manual confirmation.",
     qrPlaceholder: "Group QR Code Placeholder",
-    leadTitle: "Get available weekly offers",
+    leadTitle: "Get available offers",
     leadIntro: "Leave your contact details. We will manually confirm whether there is a better option.",
     trustTitle: "Why it's safe to submit",
-    trustBody:
-      "Your information is only used to manually check available weekly phone or internet offers in PEI. We do not charge you plan fees, installation fees, or any upfront payment. Final pricing, eligibility, order processing, installation, and billing are confirmed by the provider or an authorized sales representative. Installation is typically completed by the provider's official or authorized installation team. You can review the option first before deciding whether to continue.",
+    trustItems: [
+      "Your information is only used to manually check available phone or internet offers in PEI",
+      "We do not charge you any fees",
+      "Pricing and eligibility are confirmed by the provider",
+      "Installation is completed by the provider's official or authorized team",
+      "You can review the option first before deciding whether to continue"
+    ],
     name: "Name",
     email: "Email",
-    phone: "Phone",
+    phone: "Phone (optional)",
     preferredContact: "Preferred contact",
-    wechat: "WeChat (optional)",
-    leadSubmit: "Submit manual review",
+    installationAddress: "Internet installation address (optional)",
+    installationAddressPlaceholder: "Street address or building/community name, optional",
+    leadSubmit: "Submit",
+    successTitle: "Submitted successfully",
+    successBody: "We've received your request and will contact you within 1-2 business days.",
+    successHelper: "You can also return to the homepage to check another bill.",
+    successButton: "Back to Home",
     close: "Close",
     disclaimer:
       "Final pricing, eligibility, address availability, installation, taxes, equipment fees, and credit approval must be confirmed by the provider or an authorized sales representative.",
@@ -761,6 +791,7 @@ function buildSheetPayload({ form, language, source, lead }) {
     email: lead.email || "",
     phone: lead.phone || "",
     preferred_contact: lead.preferred_contact || "",
+    // Temporarily using wechat field to store optional installation address until Google Sheet schema is updated.
     wechat: lead.wechat || "",
     city: form.city || "",
     postal_code: "",
@@ -797,8 +828,8 @@ export default function Home() {
   const [lead, setLead] = useState(initialLead);
   const [resultOpen, setResultOpen] = useState(false);
   const [leadOpen, setLeadOpen] = useState(false);
+  const [successOpen, setSuccessOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [sheetMessage, setSheetMessage] = useState("");
   const [sheetError, setSheetError] = useState("");
   const t = translations[language];
   const showInternet = form.service_type === "internet" || form.service_type === "both";
@@ -836,9 +867,15 @@ export default function Home() {
     setLeadOpen(true);
   }
 
+  function returnHomeAfterSuccess() {
+    setSuccessOpen(false);
+    setForm(initialForm);
+    setLead(initialLead);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
   function submitInitial(event) {
     event.preventDefault();
-    setSheetMessage("");
     setSheetError("");
     setResultOpen(true);
   }
@@ -847,7 +884,6 @@ export default function Home() {
     event.preventDefault();
     if (submitting) return;
     setSubmitting(true);
-    setSheetMessage("");
     setSheetError("");
     try {
       await submitToGoogleSheet(
@@ -858,9 +894,9 @@ export default function Home() {
           lead
         })
       );
-      setSheetMessage(t.sheetSuccess);
       setLead(initialLead);
       setLeadOpen(false);
+      setSuccessOpen(true);
     } catch {
       setSheetError(t.sheetError);
     } finally {
@@ -899,7 +935,6 @@ export default function Home() {
             <p>{t.province}</p>
           </div>
 
-          {sheetMessage && <div className="success">{sheetMessage}</div>}
           {sheetError && <div className="error">{sheetError}</div>}
 
           <div className="field">
@@ -1114,7 +1149,7 @@ export default function Home() {
 
       {leadOpen && (
         <div className="modal-backdrop" role="presentation" onMouseDown={() => setLeadOpen(false)}>
-          <form className="modal panel" onSubmit={submitLead} onMouseDown={(event) => event.stopPropagation()}>
+          <form className="modal panel lead-modal" onSubmit={submitLead} onMouseDown={(event) => event.stopPropagation()}>
             <div className="section-heading">
               <div>
                 <h2>{t.leadTitle}</h2>
@@ -1127,7 +1162,11 @@ export default function Home() {
 
             <div className="trust-box">
               <strong>{t.trustTitle}</strong>
-              <p>{t.trustBody}</p>
+              <ol>
+                {t.trustItems.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ol>
             </div>
 
             <div className="grid">
@@ -1135,7 +1174,7 @@ export default function Home() {
                 <input value={lead.name} onChange={(event) => updateLead("name", event.target.value)} required />
               </Field>
               <Field label={t.email}>
-                <input type="email" value={lead.email} onChange={(event) => updateLead("email", event.target.value)} />
+                <input type="email" value={lead.email} onChange={(event) => updateLead("email", event.target.value)} required />
               </Field>
               <Field label={t.phone}>
                 <input type="tel" value={lead.phone} onChange={(event) => updateLead("phone", event.target.value)} />
@@ -1149,8 +1188,12 @@ export default function Home() {
                   ))}
                 </Select>
               </Field>
-              <Field label={t.wechat}>
-                <input value={lead.wechat} onChange={(event) => updateLead("wechat", event.target.value)} />
+              <Field label={t.installationAddress}>
+                <input
+                  value={lead.wechat}
+                  onChange={(event) => updateLead("wechat", event.target.value)}
+                  placeholder={t.installationAddressPlaceholder}
+                />
               </Field>
             </div>
 
@@ -1158,6 +1201,20 @@ export default function Home() {
               {submitting ? t.submitting : t.leadSubmit}
             </button>
           </form>
+        </div>
+      )}
+
+      {successOpen && (
+        <div className="modal-backdrop" role="presentation" onMouseDown={returnHomeAfterSuccess}>
+          <div className="modal panel success-modal" role="dialog" aria-modal="true" onMouseDown={(event) => event.stopPropagation()}>
+            <div className="success-icon">✓</div>
+            <h2>{t.successTitle}</h2>
+            <p>{t.successBody}</p>
+            <small>{t.successHelper}</small>
+            <button className="submit-button" type="button" onClick={returnHomeAfterSuccess}>
+              {t.successButton}
+            </button>
+          </div>
         </div>
       )}
 
