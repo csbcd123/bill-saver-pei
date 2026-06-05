@@ -584,6 +584,10 @@ const areaOptions = [
 ];
 
 const serviceOrder = ["internet", "mobile", "both"];
+const serviceTypeIcons = { internet: "⌁", mobile: "▯", both: "⌁ +" };
+const internetUsageIcons = { light: "◒", standard: "⌂", heavy: "●●" };
+const internetUsageSpeeds = { light: "25–100 Mbps", standard: "100–300 Mbps", heavy: "300+ Mbps" };
+const mobileUsageIcons = { "0-20GB": "◔", "20-50GB": "◑", "50-100GB": "◕", "100GB+": "●" };
 const providerOptionsByService = {
   internet: ["Bell Aliant", "TELUS", "Koodo", "Eastlink", "Purple Cow", "Xplore", "Starlink", "Other", "Not sure"],
   mobile: ["Bell Aliant", "TELUS", "Koodo", "Public Mobile", "Eastlink", "Rogers", "Fido", "Virgin Plus", "Other", "Not sure"],
@@ -634,11 +638,20 @@ const initialLead = {
   wechat: ""
 };
 
-function Field({ label, children, className = "" }) {
+function Field({ label, children, className = "", icon = "", unit = "" }) {
   return (
     <label className={`field ${className}`.trim()}>
       <span>{label}</span>
-      {children}
+      {icon ? (
+        <span className="input-shell">
+          <span className="input-icon" aria-hidden="true">{icon}</span>
+          {children}
+          {unit && <span className="input-unit">{unit}</span>}
+          {children?.type === Select && <span className="select-chevron" aria-hidden="true">⌄</span>}
+        </span>
+      ) : (
+        children
+      )}
     </label>
   );
 }
@@ -1777,7 +1790,9 @@ export default function Home() {
                   className={form.service_type === value ? "service-card active" : "service-card"}
                   onClick={() => update("service_type", value)}
                 >
-                  {t.serviceCards[value]}
+                  <span className="service-card-icon" aria-hidden="true">{serviceTypeIcons[value]}</span>
+                  <span className="service-card-title">{t.serviceCards[value]}</span>
+                  {form.service_type === value && <span className="service-card-check" aria-hidden="true">✓</span>}
                 </button>
               ))}
             </div>
@@ -1796,8 +1811,13 @@ export default function Home() {
                         className={form.internet_usage_level === item.value ? "usage-card active" : "usage-card"}
                         onClick={() => update("internet_usage_level", item.value)}
                       >
-                        <strong>{t.usageCards[item.value].title}</strong>
-                        <span>{t.usageCards[item.value].description}</span>
+                        <span className="usage-card-icon" aria-hidden="true">{internetUsageIcons[item.value]}</span>
+                        <span className="usage-card-copy">
+                          <strong>{t.usageCards[item.value].title}</strong>
+                          <span>{t.usageCards[item.value].description}</span>
+                        </span>
+                        <span className="usage-card-speed"><small>{language === "en" ? "Suggested" : language === "zhHant" ? "建議頻寬" : "推荐带宽"}</small>{internetUsageSpeeds[item.value]}</span>
+                        {form.internet_usage_level === item.value && <span className="usage-card-check" aria-hidden="true">✓</span>}
                       </button>
                     ))}
                   </div>
@@ -1819,8 +1839,12 @@ export default function Home() {
                           className={form.current_mobile_data === item.value ? "usage-card active" : "usage-card"}
                           onClick={() => update("current_mobile_data", item.value)}
                         >
-                          <strong>{t.mobileDataUsageCards[item.value].title}</strong>
-                          <span>{t.mobileDataUsageCards[item.value].description}</span>
+                          <span className="usage-card-icon" aria-hidden="true">{mobileUsageIcons[item.value]}</span>
+                          <span className="usage-card-copy">
+                            <strong>{t.mobileDataUsageCards[item.value].title}</strong>
+                            <span>{t.mobileDataUsageCards[item.value].description}</span>
+                          </span>
+                          {form.current_mobile_data === item.value && <span className="usage-card-check" aria-hidden="true">✓</span>}
                         </button>
                       ))}
                     </div>
@@ -1830,7 +1854,7 @@ export default function Home() {
               </div>
 
               <div className="form-split-right">
-                <Field label={form.service_type === "internet" ? t.providerInternet : t.providerBoth} className={missingFields.includes("current_provider") ? "missing" : ""}>
+                <Field icon="▦" label={form.service_type === "internet" ? t.providerInternet : t.providerBoth} className={missingFields.includes("current_provider") ? "missing" : ""}>
                   <Select value={form.current_provider} onChange={(value) => update("current_provider", value)}>
                     <option value="" disabled>
                       {t.providerPlaceholder}
@@ -1843,7 +1867,7 @@ export default function Home() {
                   </Select>
                 </Field>
 
-                <Field label={form.service_type === "internet" ? t.monthlyPriceInternet : t.monthlyPriceBoth} className={missingFields.includes("monthly_price") ? "missing" : ""}>
+                <Field icon="$" label={form.service_type === "internet" ? t.monthlyPriceInternet : t.monthlyPriceBoth} className={missingFields.includes("monthly_price") ? "missing" : ""}>
                   <input
                     type="number"
                     min="0"
@@ -1855,7 +1879,7 @@ export default function Home() {
                   />
                 </Field>
 
-                <Field label={t.city} className={missingFields.includes("city") ? "missing" : ""}>
+                <Field icon="⌖" label={t.city} className={missingFields.includes("city") ? "missing" : ""}>
                   <Select value={form.city} onChange={(value) => update("city", value)}>
                     <option value="" disabled>
                       {t.areaPlaceholder}
@@ -1882,8 +1906,12 @@ export default function Home() {
                         className={form.current_mobile_data === item.value ? "usage-card active" : "usage-card"}
                         onClick={() => update("current_mobile_data", item.value)}
                       >
-                        <strong>{t.mobileDataUsageCards[item.value].title}</strong>
-                        <span>{t.mobileDataUsageCards[item.value].description}</span>
+                        <span className="usage-card-icon" aria-hidden="true">{mobileUsageIcons[item.value]}</span>
+                        <span className="usage-card-copy">
+                          <strong>{t.mobileDataUsageCards[item.value].title}</strong>
+                          <span>{t.mobileDataUsageCards[item.value].description}</span>
+                        </span>
+                        {form.current_mobile_data === item.value && <span className="usage-card-check" aria-hidden="true">✓</span>}
                       </button>
                     ))}
                   </div>
@@ -1891,7 +1919,7 @@ export default function Home() {
               </div>
 
               <div className="form-split-right">
-                <Field label={t.providerMobile} className={missingFields.includes("current_provider") ? "missing" : ""}>
+                <Field icon="▦" label={t.providerMobile} className={missingFields.includes("current_provider") ? "missing" : ""}>
                   <Select value={form.current_provider} onChange={(value) => update("current_provider", value)}>
                     <option value="" disabled>
                       {t.providerPlaceholder}
@@ -1904,7 +1932,7 @@ export default function Home() {
                   </Select>
                 </Field>
 
-                <Field label={t.monthlyPriceMobile} className={missingFields.includes("monthly_price") ? "missing" : ""}>
+                <Field icon="$" label={t.monthlyPriceMobile} className={missingFields.includes("monthly_price") ? "missing" : ""}>
                   <input
                     type="number"
                     min="0"
@@ -1916,7 +1944,7 @@ export default function Home() {
                   />
                 </Field>
 
-                <Field label={t.city} className={missingFields.includes("city") ? "missing" : ""}>
+                <Field icon="⌖" label={t.city} className={missingFields.includes("city") ? "missing" : ""}>
                   <Select value={form.city} onChange={(value) => update("city", value)}>
                     <option value="" disabled>
                       {t.areaPlaceholder}
@@ -1933,7 +1961,8 @@ export default function Home() {
           )}
 
           <button className="submit-button" type="submit">
-            {t.submit}
+            <span>{t.submit}</span>
+            <span aria-hidden="true">›</span>
           </button>
         </form>
       </section>
