@@ -35,10 +35,16 @@ const translations = {
     monthlyPriceMobile: "手机月费（税前）",
     monthlyPriceBoth: "每月总费用",
     monthlyPlaceholder: "例如 95",
+    monthlyPlaceholderInternet: "例如 95",
+    monthlyPlaceholderMobile: "例如 45",
+    monthlyPlaceholderBoth: "例如 140",
     internetUsageLevel: "家庭上网使用情况",
     currentMobileData: "当前手机流量",
     currentMobileDataQuestion: "你每月大概用多少手机流量？",
     mobileDataUsageTitle: "手机流量使用情况",
+    providerPlaceholder: "请选择运营商",
+    areaPlaceholder: "请选择所在区域",
+    validationRequired: "请先完成必填信息，再查看体检结果。",
     postalPrefix: "邮编前三位",
     postalPlaceholder: "例如 C1A",
     willingToSwitch: "如果有更合适的方案，你是否可以考虑更换？",
@@ -213,10 +219,16 @@ const translations = {
     monthlyPriceMobile: "手機月費（稅前）",
     monthlyPriceBoth: "每月總費用",
     monthlyPlaceholder: "例如 95",
+    monthlyPlaceholderInternet: "例如 95",
+    monthlyPlaceholderMobile: "例如 45",
+    monthlyPlaceholderBoth: "例如 140",
     internetUsageLevel: "家庭上網使用情況",
     currentMobileData: "目前手機流量",
     currentMobileDataQuestion: "你每月大約用多少手機流量？",
     mobileDataUsageTitle: "手機流量使用情況",
+    providerPlaceholder: "請選擇電信商",
+    areaPlaceholder: "請選擇所在區域",
+    validationRequired: "請先完成必填資訊，再查看健檢結果。",
     postalPrefix: "郵遞區號前三碼",
     postalPlaceholder: "例如 C1A",
     willingToSwitch: "如果有更合適的方案，你是否可以考慮更換？",
@@ -391,10 +403,16 @@ const translations = {
     monthlyPriceMobile: "Mobile monthly bill before tax",
     monthlyPriceBoth: "Total monthly bill",
     monthlyPlaceholder: "e.g. 95",
+    monthlyPlaceholderInternet: "e.g. 95",
+    monthlyPlaceholderMobile: "e.g. 45",
+    monthlyPlaceholderBoth: "e.g. 140",
     internetUsageLevel: "Home internet usage",
     currentMobileData: "Current mobile data",
     currentMobileDataQuestion: "How much mobile data do you use per month?",
     mobileDataUsageTitle: "Mobile data usage",
+    providerPlaceholder: "Please select a provider",
+    areaPlaceholder: "Please select your area",
+    validationRequired: "Please complete the required information before viewing your result.",
     postalPrefix: "Postal code prefix",
     postalPlaceholder: "e.g. C1A",
     willingToSwitch: "If there is a better option, would you consider switching?",
@@ -600,12 +618,12 @@ const mobileDataUsageLevels = [{ value: "0-20GB" }, { value: "20-50GB" }, { valu
 
 const initialForm = {
   service_type: "internet",
-  city: "Charlottetown",
-  current_provider: "Bell Aliant",
+  city: "",
+  current_provider: "",
   monthly_price: "",
   price_type: "not_asked",
-  internet_usage_level: "standard",
-  current_speed: "300M",
+  internet_usage_level: "",
+  current_speed: "",
   current_mobile_data: "",
   postal_code: "",
   willing_to_switch: "",
@@ -620,9 +638,9 @@ const initialLead = {
   wechat: ""
 };
 
-function Field({ label, children }) {
+function Field({ label, children, className = "" }) {
   return (
-    <label className="field">
+    <label className={`field ${className}`.trim()}>
       <span>{label}</span>
       {children}
     </label>
@@ -641,6 +659,12 @@ function optionLabel(t, value) {
 
 function speedForUsage(level) {
   return usageLevels.find((item) => item.value === level)?.currentSpeed || "300M";
+}
+
+function monthlyPlaceholder(t, serviceType) {
+  if (serviceType === "mobile") return t.monthlyPlaceholderMobile;
+  if (serviceType === "both") return t.monthlyPlaceholderBoth;
+  return t.monthlyPlaceholderInternet;
 }
 
 function speedRank(speed) {
@@ -1035,6 +1059,7 @@ export default function Home() {
   const [successOpen, setSuccessOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [sheetError, setSheetError] = useState("");
+  const [missingFields, setMissingFields] = useState([]);
   const t = translations[language];
   const showInternet = form.service_type === "internet" || form.service_type === "both";
   const showMobile = form.service_type === "mobile" || form.service_type === "both";
@@ -1069,6 +1094,8 @@ export default function Home() {
       }
       return { ...current, [field]: value };
     });
+    setMissingFields((current) => current.filter((item) => item !== field));
+    if (sheetError === t.validationRequired) setSheetError("");
   }
 
   function updateLead(field, value) {
@@ -1084,12 +1111,24 @@ export default function Home() {
     setSuccessOpen(false);
     setForm(initialForm);
     setLead(initialLead);
+    setMissingFields([]);
+    setSheetError("");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function submitInitial(event) {
     event.preventDefault();
     setSheetError("");
+    const requiredFields = ["current_provider", "monthly_price", "city"];
+    if (showInternet) requiredFields.push("internet_usage_level");
+    if (showMobile) requiredFields.push("current_mobile_data");
+    const missing = requiredFields.filter((field) => !String(form[field] || "").trim());
+    if (missing.length) {
+      setMissingFields(missing);
+      setSheetError(t.validationRequired);
+      return;
+    }
+    setMissingFields([]);
     setResultOpen(true);
   }
 
@@ -1169,7 +1208,7 @@ export default function Home() {
       </section>
 
       <section className="workspace single-column">
-        <form className="panel form-panel" onSubmit={submitInitial}>
+        <form className="panel form-panel" onSubmit={submitInitial} noValidate>
           <div className="section-heading">
             <h2>{t.formTitle}</h2>
             <p>{t.province}</p>
@@ -1196,7 +1235,7 @@ export default function Home() {
           {showInternet ? (
             <div className="form-split form-grid-top">
               <div className="form-split-left">
-                <div className="field">
+                <div className={`field ${missingFields.includes("internet_usage_level") ? "missing" : ""}`.trim()}>
                   <span>{t.internetUsageLevel}</span>
                   <div className="usage-card-grid compact">
                     {usageLevels.map((item) => (
@@ -1214,7 +1253,7 @@ export default function Home() {
                 </div>
 
                 {showMobile && (
-                  <div className="field usage-section">
+                  <div className={`field usage-section ${missingFields.includes("current_mobile_data") ? "missing" : ""}`.trim()}>
                     <span>{t.mobileDataUsageTitle}</span>
                     <div className="usage-card-grid compact">
                       {mobileDataUsageLevels.map((item) => (
@@ -1235,8 +1274,11 @@ export default function Home() {
               </div>
 
               <div className="form-split-right">
-                <Field label={form.service_type === "internet" ? t.providerInternet : t.providerBoth}>
+                <Field label={form.service_type === "internet" ? t.providerInternet : t.providerBoth} className={missingFields.includes("current_provider") ? "missing" : ""}>
                   <Select value={form.current_provider} onChange={(value) => update("current_provider", value)}>
+                    <option value="" disabled>
+                      {t.providerPlaceholder}
+                    </option>
                     {providerOptionsByService[form.service_type].map((provider) => (
                       <option key={provider} value={provider}>
                         {optionLabel(t, provider)}
@@ -1245,20 +1287,23 @@ export default function Home() {
                   </Select>
                 </Field>
 
-                <Field label={form.service_type === "internet" ? t.monthlyPriceInternet : t.monthlyPriceBoth}>
+                <Field label={form.service_type === "internet" ? t.monthlyPriceInternet : t.monthlyPriceBoth} className={missingFields.includes("monthly_price") ? "missing" : ""}>
                   <input
                     type="number"
                     min="0"
                     inputMode="decimal"
                     value={form.monthly_price}
                     onChange={(event) => update("monthly_price", event.target.value)}
-                    placeholder={t.monthlyPlaceholder}
+                    placeholder={monthlyPlaceholder(t, form.service_type)}
                     required
                   />
                 </Field>
 
-                <Field label={t.city}>
+                <Field label={t.city} className={missingFields.includes("city") ? "missing" : ""}>
                   <Select value={form.city} onChange={(value) => update("city", value)}>
+                    <option value="" disabled>
+                      {t.areaPlaceholder}
+                    </option>
                     {areaOptions.map((area) => (
                       <option key={area.value} value={area.value}>
                         {area.labelKey ? t.options[area.labelKey] : area.label}
@@ -1271,7 +1316,7 @@ export default function Home() {
           ) : (
             <div className="form-split form-grid-top">
               <div className="form-split-left">
-                <div className="field">
+                <div className={`field ${missingFields.includes("current_mobile_data") ? "missing" : ""}`.trim()}>
                   <span>{t.mobileDataUsageTitle}</span>
                   <div className="usage-card-grid compact">
                     {mobileDataUsageLevels.map((item) => (
@@ -1290,8 +1335,11 @@ export default function Home() {
               </div>
 
               <div className="form-split-right">
-                <Field label={t.providerMobile}>
+                <Field label={t.providerMobile} className={missingFields.includes("current_provider") ? "missing" : ""}>
                   <Select value={form.current_provider} onChange={(value) => update("current_provider", value)}>
+                    <option value="" disabled>
+                      {t.providerPlaceholder}
+                    </option>
                     {providerOptionsByService[form.service_type].map((provider) => (
                       <option key={provider} value={provider}>
                         {optionLabel(t, provider)}
@@ -1300,20 +1348,23 @@ export default function Home() {
                   </Select>
                 </Field>
 
-                <Field label={t.monthlyPriceMobile}>
+                <Field label={t.monthlyPriceMobile} className={missingFields.includes("monthly_price") ? "missing" : ""}>
                   <input
                     type="number"
                     min="0"
                     inputMode="decimal"
                     value={form.monthly_price}
                     onChange={(event) => update("monthly_price", event.target.value)}
-                    placeholder={t.monthlyPlaceholder}
+                    placeholder={monthlyPlaceholder(t, form.service_type)}
                     required
                   />
                 </Field>
 
-                <Field label={t.city}>
+                <Field label={t.city} className={missingFields.includes("city") ? "missing" : ""}>
                   <Select value={form.city} onChange={(value) => update("city", value)}>
+                    <option value="" disabled>
+                      {t.areaPlaceholder}
+                    </option>
                     {areaOptions.map((area) => (
                       <option key={area.value} value={area.value}>
                         {area.labelKey ? t.options[area.labelKey] : area.label}

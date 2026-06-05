@@ -382,6 +382,25 @@ h1 {
   margin-top: 16px;
 }
 
+.field.missing > span {
+  color: var(--warn);
+  font-weight: 800;
+}
+
+.field.missing input,
+.field.missing select {
+  border-color: rgba(159, 63, 29, 0.72);
+  background: #fff8f5;
+  box-shadow: 0 0 0 3px rgba(159, 63, 29, 0.08);
+}
+
+.field.missing .usage-card-grid {
+  border: 1px solid rgba(159, 63, 29, 0.48);
+  border-radius: 8px;
+  background: #fff8f5;
+  padding: 8px;
+}
+
 input,
 select,
 textarea {
