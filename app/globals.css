@@ -22,8 +22,16 @@ body {
 }
 
 body {
+  min-height: 100vh;
   margin: 0;
-  background: linear-gradient(180deg, #f6faf8 0%, #eef5f2 100%);
+  background:
+    linear-gradient(rgba(0, 24, 32, 0.76), rgba(0, 24, 32, 0.88)),
+    url("/pei-lighthouse-hero.png");
+  background-attachment: fixed;
+  background-color: #001820;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: cover;
   color: var(--ink);
   font-family: Arial, "Microsoft YaHei", sans-serif;
 }
@@ -53,6 +61,7 @@ textarea {
 .page-shell {
   position: relative;
   min-height: 100vh;
+  background: transparent;
 }
 
 .language-switcher {
@@ -85,9 +94,7 @@ textarea {
   min-height: 430px;
   padding: 24px clamp(20px, 6vw, 76px) 46px;
   color: white;
-  background:
-    linear-gradient(90deg, rgba(8, 46, 40, 0.92), rgba(8, 46, 40, 0.55)),
-    url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=80") center/cover;
+  background: transparent;
 }
 
 .heroInner {
