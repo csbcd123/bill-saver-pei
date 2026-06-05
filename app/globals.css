@@ -780,6 +780,16 @@ textarea:focus {
   gap: 14px;
 }
 
+.rural-recommendation-note {
+  border: 1px solid rgba(80, 170, 255, 0.28);
+  border-radius: 8px;
+  background: rgba(235, 247, 255, 0.94);
+  color: #24546a;
+  padding: 12px 14px;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
 .plan-card {
   min-width: 0;
   border: 1px solid var(--line);

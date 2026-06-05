@@ -588,10 +588,9 @@ const areaOptions = [
 
 const serviceOrder = ["internet", "mobile", "both"];
 const providerOptionsByService = {
-  internet: ["Bell", "Bell Aliant", "TELUS", "Koodo", "Eastlink", "Purple Cow", "Xplore", "Starlink", "Other", "Not sure"],
-  mobile: ["Bell", "Bell Aliant", "TELUS", "Koodo", "Public Mobile", "Eastlink", "Rogers", "Fido", "Virgin Plus", "Other", "Not sure"],
+  internet: ["Bell Aliant", "TELUS", "Koodo", "Eastlink", "Purple Cow", "Xplore", "Starlink", "Other", "Not sure"],
+  mobile: ["Bell Aliant", "TELUS", "Koodo", "Public Mobile", "Eastlink", "Rogers", "Fido", "Virgin Plus", "Other", "Not sure"],
   both: [
-    "Bell",
     "Bell Aliant",
     "TELUS",
     "Koodo",
@@ -614,6 +613,7 @@ const usageLevels = [
   { value: "heavy", currentSpeed: "1G" }
 ];
 const mobileDataUsageLevels = [{ value: "0-20GB" }, { value: "20-50GB" }, { value: "50-100GB" }, { value: "100GB+" }];
+const mainUrbanAreas = ["Charlottetown", "Stratford", "Cornwall", "Summerside"];
 
 const initialForm = {
   service_type: "internet",
@@ -687,6 +687,18 @@ function dataRank(data) {
   return Number(String(data).replace(/[^0-9]/g, "")) || 0;
 }
 
+function isMainUrbanArea(area) {
+  return mainUrbanAreas.includes(area);
+}
+
+function isMobileDataUnder50GB(value) {
+  return value === "0-20GB" || value === "0–20GB" || value === "20-50GB" || value === "20–50GB";
+}
+
+function isMobileData50GBOrMore(value) {
+  return value === "50-100GB" || value === "50–100GB" || value === "100GB+" || value === "100GB 以上";
+}
+
 function speedBucket(speed) {
   const rank = speedRank(speed);
   if (rank <= 150) return "low";
@@ -702,6 +714,59 @@ function isBell(offerOrProvider) {
 
 function isPremiumProvider(offer) {
   return Boolean(offer.show_premium_cta) || /koodo|telus|bell|purple cow/i.test(offer.provider || "");
+}
+
+function bellAliantDisplayText(value) {
+  return String(value || "").replace(/\bBell\b(?!\s+Aliant)/g, "Bell Aliant");
+}
+
+function displayProviderName(provider) {
+  return bellAliantDisplayText(provider);
+}
+
+function ruralRecommendationNote(language) {
+  return textByLanguage(
+    language,
+    "你选择的区域不在 Charlottetown / Stratford / Cornwall / Summerside 四个主要城区内，本次宽带建议优先考虑 Bell Aliant、Starlink 和 Xplore 等覆盖更稳或更适合农村地址的方案。",
+    "你選擇的區域不在 Charlottetown / Stratford / Cornwall / Summerside 四個主要城區內，本次寬頻建議優先考慮 Bell Aliant、Starlink 和 Xplore 等覆蓋更穩或更適合農村地址的方案。",
+    "Your selected area is outside Charlottetown / Stratford / Cornwall / Summerside, so this internet recommendation prioritizes Bell Aliant, Starlink, and Xplore-style options that are more suitable for rural or coverage-sensitive addresses."
+  );
+}
+
+function ruralOfferNote(offer, language) {
+  if (isBell(offer)) {
+    return textByLanguage(
+      language,
+      "四个主要城区以外，建议优先确认 Bell Aliant 是否可安装。对农村、半农村或覆盖敏感地址来说，稳定性和可安装性通常比最低月费更重要。",
+      "四個主要城區以外，建議優先確認 Bell Aliant 是否可安裝。對農村、半農村或覆蓋敏感地址來說，穩定性和可安裝性通常比最低月費更重要。",
+      "Outside PEI’s four main urban areas, Bell Aliant should be checked first. For rural, semi-rural, or coverage-sensitive addresses, stability and service availability are usually more important than the lowest monthly price."
+    );
+  }
+  if (/Starlink/i.test(offer.provider)) {
+    return textByLanguage(
+      language,
+      "Starlink 更适合传统光纤或有线宽带覆盖较差的农村、偏远或海边地址。它不一定是最便宜方案，但在没有稳定 Bell Aliant 服务的地方，可以作为备选。设备费用、月费、安装方式和速度表现需要按实际地址确认。",
+      "Starlink 更適合傳統光纖或有線寬頻覆蓋較差的農村、偏遠或海邊地址。它不一定是最便宜方案，但在沒有穩定 Bell Aliant 服務的地方，可以作為備選。設備費用、月費、安裝方式和速度表現需要按實際地址確認。",
+      "Starlink may suit rural, remote, or coastal addresses with limited wired coverage. It may not be the cheapest option, and equipment, monthly pricing, installation, and performance should be confirmed for the address."
+    );
+  }
+  if (/Xplore/i.test(offer.provider)) {
+    return textByLanguage(
+      language,
+      "Xplore 可作为农村或传统有线宽带覆盖不足地区的备选方案。实际可用性、速度、月费和安装条件需要按地址确认。",
+      "Xplore 可作為農村或傳統有線寬頻覆蓋不足地區的備選方案。實際可用性、速度、月費和安裝條件需要按地址確認。",
+      "Xplore can be an alternative for rural areas with limited wired broadband. Availability, speed, monthly pricing, and installation conditions require address confirmation."
+    );
+  }
+  if (/Public Mobile/i.test(offer.provider)) {
+    return textByLanguage(
+      language,
+      "Public Mobile 价格较低、不需要信用核查，但使用 TELUS 网络。农村或信号敏感用户建议先测试家里、工作地和常走路线的信号。",
+      "Public Mobile 價格較低、不需要信用審查，但使用 TELUS 網絡。農村或訊號敏感用戶建議先測試家裡、工作地和常走路線的訊號。",
+      "Public Mobile is lower-cost and requires no credit check, but uses the TELUS network. Rural or signal-sensitive users should test signal at home, work, and common routes first."
+    );
+  }
+  return "";
 }
 
 function isManualPrice(offer) {
@@ -764,12 +829,16 @@ function localizedGoodFor(offer, t, language) {
   }
   if (/Public Mobile/i.test(offer.provider)) return t.publicMobileNote;
   if (/Koodo Prepaid/i.test(offer.plan_name)) return t.koodoPrepaidNote;
-  if (offer.offer_id === "bell_mobile_winback_manual") return t.bellWinbackGoodFor;
-  return t.mobileGoodFor[offer.mobile_data] || t.mobileGoodFor.default;
+  if (offer.offer_id === "bell_mobile_winback_manual") return bellAliantDisplayText(t.bellWinbackGoodFor);
+  return bellAliantDisplayText(t.mobileGoodFor[offer.mobile_data] || t.mobileGoodFor.default);
 }
 
-function localizedNote(offer, t, language) {
-  if (offer.offer_id === "bell_mobile_winback_manual") return t.bellWinbackNote;
+function localizedNote(offer, t, language, form) {
+  if (!isMainUrbanArea(form.city)) {
+    const ruralNote = ruralOfferNote(offer, language);
+    if (ruralNote) return ruralNote;
+  }
+  if (offer.offer_id === "bell_mobile_winback_manual") return bellAliantDisplayText(t.bellWinbackNote);
   if (/Purple Cow/i.test(offer.provider)) return t.purpleCowNote;
   if (/Koodo/i.test(offer.provider) && offer.service_type === "internet") {
     if (offer.offer_id === "koodo_internet_100") {
@@ -782,7 +851,7 @@ function localizedNote(offer, t, language) {
     }
     return t.koodoInternetNote;
   }
-  return offer.caution;
+  return bellAliantDisplayText(offer.caution);
 }
 
 function textByLanguage(language, zhHans, zhHant, en) {
@@ -1201,8 +1270,8 @@ function premiumCtaContent(language) {
 }
 
 function displayPlanName(offer, t) {
-  if (offer.offer_id === "bell_mobile_winback_manual") return t.bellWinbackService;
-  return offer.plan_name;
+  if (offer.offer_id === "bell_mobile_winback_manual") return bellAliantDisplayText(t.bellWinbackService);
+  return bellAliantDisplayText(offer.plan_name);
 }
 
 function displayPrice(offer, t, language) {
@@ -1227,67 +1296,96 @@ function scoreOffer(offer, form) {
   return score;
 }
 
+function bestProviderOffer(offers, provider, form) {
+  const matches = offers.filter((offer) => (provider === "Bell Aliant" ? isBell(offer) : offer.provider === provider));
+  return matches.sort((a, b) => scoreOffer(b, form) - scoreOffer(a, form))[0];
+}
+
 function internetPicks(form) {
-  return offerDatabase
-    .filter((offer) => offer.service_type === "internet")
-    .filter((offer) => offer.status !== "inactive")
-    .sort((a, b) => scoreOffer(b, form) - scoreOffer(a, form))
-    .slice(0, 3)
+  const offers = offerDatabase.filter((offer) => offer.service_type === "internet" && offer.status !== "inactive");
+  const currentIsBellAliant = isBell(form.current_provider);
+  const providerOrder = isMainUrbanArea(form.city)
+    ? ["Koodo", "Purple Cow", currentIsBellAliant ? "Eastlink" : "Bell Aliant"]
+    : ["Bell Aliant", "Starlink", "Xplore"];
+
+  return providerOrder
+    .map((provider) => bestProviderOffer(offers, provider, form))
+    .filter(Boolean)
     .map((offer) => ({ ...offer, pickTypeKey: "internetPick" }));
 }
 
 function mobilePicks(form) {
-  const coreArea = ["Charlottetown", "Stratford", "Cornwall"].includes(form.city);
-  const mobileOffers = offerDatabase.filter((offer) => offer.service_type === "mobile" && offer.status !== "inactive" && offer.provider !== "Rogers");
-  const quality =
-    mobileOffers
-      .filter((offer) => dataRank(offer.mobile_data) >= 40 && !isBell(offer))
-      .sort((a, b) => {
-        if (!coreArea) {
-          const aMajor = /TELUS|Bell/i.test(a.provider) ? 1 : 0;
-          const bMajor = /TELUS|Bell/i.test(b.provider) ? 1 : 0;
-          if (aMajor !== bMajor) return bMajor - aMajor;
-        }
-        return scoreOffer(b, form) - scoreOffer(a, form);
-      })[0] ||
-    mobileOffers
-      .sort((a, b) => scoreOffer(b, form) - scoreOffer(a, form))[0] ||
-    mobileOffers[0];
+  const offers = offerDatabase.filter(
+    (offer) => offer.service_type === "mobile" && offer.status !== "inactive" && !["Rogers", "Fido", "Virgin Plus"].includes(offer.provider)
+  );
+  const currentIsBellAliant = isBell(form.current_provider);
+  let providerOrder;
 
-  const cheapest =
-    mobileOffers
-      .filter((offer) => typeof offer.bill_saver_target_price === "number" && offer.bill_saver_target_price <= 35 && dataRank(offer.mobile_data) >= 20)
-      .sort((a, b) => a.bill_saver_target_price - b.bill_saver_target_price)[0] ||
-    mobileOffers.filter((offer) => typeof offer.bill_saver_target_price === "number").sort((a, b) => a.bill_saver_target_price - b.bill_saver_target_price)[0];
-
-  const provider = (form.current_provider || "").toLowerCase();
-  let manual;
-  if (provider.includes("bell")) {
-    manual = mobileOffers.find((offer) => offer.offer_id === "bell_mobile_winback_manual");
-  } else if (provider.includes("telus") || provider.includes("koodo")) {
-    manual = mobileOffers.find((offer) => offer.provider === "Bell" && offer.offer_id !== "bell_mobile_winback_manual");
+  if (!isMainUrbanArea(form.city)) {
+    providerOrder = ["TELUS", "Bell Aliant", "Public Mobile"];
+  } else if (isMobileDataUnder50GB(form.current_mobile_data)) {
+    providerOrder = currentIsBellAliant ? ["Public Mobile", "Koodo", "TELUS"] : ["Public Mobile", "Koodo", "TELUS", "Bell Aliant"];
+  } else if (isMobileData50GBOrMore(form.current_mobile_data)) {
+    providerOrder = currentIsBellAliant ? ["Koodo", "TELUS", "Public Mobile"] : ["Koodo", "TELUS", "Bell Aliant", "Public Mobile"];
   } else {
-    manual = mobileOffers.find((offer) => offer.provider === "TELUS");
+    providerOrder = currentIsBellAliant ? ["Koodo", "TELUS", "Public Mobile"] : ["Koodo", "TELUS", "Bell Aliant", "Public Mobile"];
   }
 
-  return [
-    quality && { ...quality, pickTypeKey: "highQualityPick" },
-    cheapest && { ...cheapest, pickTypeKey: "lowestCostPick" },
-    manual && { ...manual, pickTypeKey: "manualPick" }
-  ].filter(Boolean);
+  return providerOrder
+    .map((provider) => bestProviderOffer(offers, provider, form))
+    .filter(Boolean)
+    .map((offer, index) => ({
+      ...offer,
+      pickTypeKey: index === 0 ? "highQualityPick" : /Public Mobile/i.test(offer.provider) ? "lowestCostPick" : "manualPick"
+    }));
 }
 
-function bundlePicks() {
-  return offerDatabase
-    .filter((offer) => offer.service_type === "both")
-    .slice(0, 2)
-    .map((offer) => ({ ...offer, pickTypeKey: "bundlePick" }));
+function bundlePicks(form) {
+  const internet = internetPicks(form);
+  const mobile = mobilePicks(form);
+  const pairOrder = [
+    [0, 0],
+    [0, 1],
+    [1, 0],
+    [2, 0],
+    [1, 1]
+  ];
+
+  return pairOrder
+    .map(([internetIndex, mobileIndex]) => {
+      const internetOffer = internet[internetIndex];
+      const mobileOffer = mobile[mobileIndex];
+      if (!internetOffer || !mobileOffer) return null;
+
+      const internetPrice = internetOffer.bill_saver_target_price;
+      const mobilePrice = mobileOffer.bill_saver_target_price;
+      const combinedPrice = typeof internetPrice === "number" && typeof mobilePrice === "number" ? internetPrice + mobilePrice : null;
+
+      return {
+        ...internetOffer,
+        offer_id: `bundle_${internetOffer.offer_id}_${mobileOffer.offer_id}`,
+        provider: `${displayProviderName(internetOffer.provider)} + ${displayProviderName(mobileOffer.provider)}`,
+        service_type: "both",
+        plan_name: `${displayPlanName(internetOffer, translations.en)} + ${displayPlanName(mobileOffer, translations.en)}`,
+        mobile_data: mobileOffer.mobile_data,
+        bill_saver_target_price: combinedPrice,
+        official_regular_price: null,
+        official_promo_price: null,
+        is_bundle: true,
+        is_sensitive_price: isManualPrice(internetOffer) || isManualPrice(mobileOffer),
+        is_public_price: internetOffer.is_public_price && mobileOffer.is_public_price,
+        requires_manual_confirmation: internetOffer.requires_manual_confirmation || mobileOffer.requires_manual_confirmation,
+        caution: `${internetOffer.caution || ""} ${mobileOffer.caution || ""}`.trim(),
+        pickTypeKey: "bundlePick"
+      };
+    })
+    .filter(Boolean);
 }
 
 function getRecommendations(form) {
   if (form.service_type === "internet") return internetPicks(form);
   if (form.service_type === "mobile") return mobilePicks(form);
-  return [...bundlePicks(), ...internetPicks(form).slice(0, 1), ...mobilePicks(form)].slice(0, 5);
+  return bundlePicks(form).slice(0, 5);
 }
 
 function calculateScore(form, offers) {
@@ -1744,6 +1842,8 @@ export default function Home() {
                 </div>
               </section>
 
+              {!isMainUrbanArea(form.city) && showInternet && <div className="rural-recommendation-note">{ruralRecommendationNote(language)}</div>}
+
               <section>
                 <h3>{t.planTitle}</h3>
                 <div className="plan-list">
@@ -1758,7 +1858,7 @@ export default function Home() {
                     return (
                       <article className="plan-card" key={offer.offer_id}>
                         <p>
-                          <b>{t.providerLabel}</b> {offer.provider}
+                          <b>{t.providerLabel}</b> {displayProviderName(offer.provider)}
                         </p>
                         <p>
                           <b>{t.service}</b> {displayPlanName(offer, t)}
@@ -1828,7 +1928,7 @@ export default function Home() {
                           <b>{t.goodFor}</b> {localizedGoodFor(offer, t, language)}
                         </p>
                         <p>
-                          <b>{t.note}</b> {localizedNote(offer, t, language)}
+                          <b>{t.note}</b> {localizedNote(offer, t, language, form)}
                         </p>
                         {isPremiumProvider(offer) && (
                           <div className="premium-cta-wrap">
@@ -1864,7 +1964,7 @@ export default function Home() {
                   {t.cautionItems.map((item) => (
                     <li key={item}>{item}</li>
                   ))}
-                  {!["Charlottetown", "Stratford", "Cornwall"].includes(form.city) && showMobile && <li>{t.areaCaution}</li>}
+                  {!isMainUrbanArea(form.city) && showMobile && <li>{bellAliantDisplayText(t.areaCaution)}</li>}
                 </ul>
               </section>
 
