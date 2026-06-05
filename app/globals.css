@@ -779,8 +779,32 @@ textarea:focus {
 
 .premium-cta-wrap {
   display: grid;
-  gap: 8px;
+  grid-template-columns: minmax(0, 1.1fr) minmax(220px, 0.9fr);
+  gap: 12px 14px;
   margin-top: 16px;
+  border: 1px solid #c6e3d9;
+  border-radius: 8px;
+  background: #f1faf6;
+  padding: 14px;
+}
+
+.premium-cta-main {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+}
+
+.premium-cta-main strong,
+.premium-why-card strong {
+  color: var(--ink);
+  font-size: 0.95rem;
+}
+
+.premium-cta-main p {
+  margin-bottom: 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.55;
 }
 
 .premium-cta {
@@ -809,8 +833,29 @@ textarea:focus {
 }
 
 .premium-cta-wrap small {
+  grid-column: 1 / -1;
   color: var(--muted);
+  font-size: 0.78rem;
   line-height: 1.5;
+}
+
+.premium-why-card {
+  display: grid;
+  gap: 8px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.72);
+  padding: 12px;
+}
+
+.premium-why-card ul {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--muted);
+  font-size: 0.84rem;
+  line-height: 1.45;
 }
 
 .caution-box {
@@ -1095,6 +1140,10 @@ textarea:focus {
   .stepCircle {
     width: 34px;
     height: 34px;
+  }
+
+  .premium-cta-wrap {
+    grid-template-columns: 1fr;
   }
 
   .grid,

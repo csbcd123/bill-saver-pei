@@ -920,6 +920,41 @@ function hasPublicMobileComponent(offer) {
   return /Public Mobile/i.test(`${offer.provider || ""} ${offer.plan_name || ""}`);
 }
 
+function premiumCtaContent(language) {
+  return {
+    title: textByLanguage(
+      language,
+      "通过 Bill Saver 获取人工确认优惠",
+      "透過 Bill Saver 取得人工確認優惠",
+      "Get manually confirmed offers through Bill Saver"
+    ),
+    body: textByLanguage(
+      language,
+      "我们会帮你核对当前可用价格、安装资格和是否有更合适方案。你不需要向 Bill Saver 支付任何费用。",
+      "我們會幫你核對目前可用價格、安裝資格和是否有更合適方案。你不需要向 Bill Saver 支付任何費用。",
+      "We’ll help confirm available pricing, installation eligibility, and whether there is a better fit. You do not pay Bill Saver any fee."
+    ),
+    whyTitle: textByLanguage(language, "为什么通过 Bill Saver？", "為什麼透過 Bill Saver？", "Why use Bill Saver?"),
+    items: [
+      textByLanguage(language, "人工确认可用优惠", "人工確認可用優惠", "Manually confirm available offers"),
+      textByLanguage(language, "不收任何服务费", "不收任何服務費", "No service fee"),
+      textByLanguage(language, "协助核对价格、资格和安装方式", "協助核對價格、資格和安裝方式", "Help check pricing, eligibility, and installation options"),
+      textByLanguage(
+        language,
+        "后续涨价也可帮你重新评估替代方案",
+        "後續漲價也可幫你重新評估替代方案",
+        "If prices rise later, we can help reassess alternatives"
+      )
+    ],
+    disclaimer: textByLanguage(
+      language,
+      "最终价格、资格、下单、安装和账单以运营商或授权销售人员确认为准。",
+      "最終價格、資格、下單、安裝和帳單以電信商或授權銷售人員確認為準。",
+      "Final pricing, eligibility, ordering, installation, and billing are confirmed by the provider or authorized sales representative."
+    )
+  };
+}
+
 function displayPlanName(offer, t) {
   if (offer.offer_id === "bell_mobile_winback_manual") return t.bellWinbackService;
   return offer.plan_name;
@@ -1470,6 +1505,7 @@ export default function Home() {
                     const includesInternet = offer.service_type === "internet" || offer.service_type === "both";
                     const includesMobile = offer.service_type === "mobile" || (offer.service_type === "both" && offer.mobile_data);
                     const referralLabels = publicMobileButtonLabels(language);
+                    const ctaContent = premiumCtaContent(language);
 
                     return (
                       <article className="plan-card" key={offer.offer_id}>
@@ -1530,10 +1566,24 @@ export default function Home() {
                         </p>
                         {isPremiumProvider(offer) && (
                           <div className="premium-cta-wrap">
-                            <button className="premium-cta" type="button" onClick={openLeadFromResult}>
-                              {t.bestPrice}
-                            </button>
-                            <small>{t.bestPriceHelp}</small>
+                            <div className="premium-cta-main">
+                              <button className="premium-cta" type="button" onClick={openLeadFromResult}>
+                                {t.bestPrice}
+                              </button>
+                              <div>
+                                <strong>{ctaContent.title}</strong>
+                                <p>{ctaContent.body}</p>
+                              </div>
+                            </div>
+                            <div className="premium-why-card">
+                              <strong>{ctaContent.whyTitle}</strong>
+                              <ul>
+                                {ctaContent.items.map((item) => (
+                                  <li key={item}>✓ {item}</li>
+                                ))}
+                              </ul>
+                            </div>
+                            <small>{ctaContent.disclaimer}</small>
                           </div>
                         )}
                       </article>
