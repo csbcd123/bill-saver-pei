@@ -696,6 +696,36 @@ function isMobileData50GBOrMore(value) {
   return value === "50-100GB" || value === "50–100GB" || value === "100GB+" || value === "100GB 以上";
 }
 
+function parseDataGB(data) {
+  if (!data) return null;
+  const text = String(data).toLowerCase();
+  if (text.includes("unlimited") || text.includes("无限") || text.includes("無限")) return Infinity;
+  const match = text.match(/(\d+)\s*gb/i);
+  return match ? Number(match[1]) : null;
+}
+
+function getMobileUsageBucket(value) {
+  const normalized = String(value || "")
+    .replace(/\s/g, "")
+    .replace(/[–—−]/g, "-");
+  if (normalized.includes("0-20")) return "under20";
+  if (normalized.includes("20-50")) return "20to50";
+  if (normalized.includes("50-100")) return "50to100";
+  if (normalized.includes("100GB+") || normalized.includes("100GB以上") || normalized.includes("100以上")) return "over100";
+  return null;
+}
+
+function isPlanDataSuitableForUsage(planData, usageValue) {
+  const gb = parseDataGB(planData);
+  const bucket = getMobileUsageBucket(usageValue);
+  if (!bucket || gb === null) return true;
+  if (bucket === "under20") return gb < 30;
+  if (bucket === "20to50") return gb > 20 && gb < 60;
+  if (bucket === "50to100") return gb > 50;
+  if (bucket === "over100") return gb > 100;
+  return true;
+}
+
 function speedBucket(speed) {
   const rank = speedRank(speed);
   if (rank <= 150) return "low";
@@ -863,7 +893,8 @@ function localizedGoodFor(offer, t, language) {
 function localizedNote(offer, t, language, form) {
   if (/Public Mobile/i.test(offer.provider)) {
     const ruralNote = !isMainUrbanArea(form.city) ? ruralOfferNote(offer, language) : "";
-    return [ruralNote, publicMobilePlanDisclaimer(language)].filter(Boolean).join(" ");
+    const minutesNote = hasPublicMobileInternationalMinutes(offer) ? publicMobileInternationalMinutes(language) : "";
+    return [minutesNote, ruralNote, publicMobilePlanDisclaimer(language)].filter(Boolean).join(" ");
   }
   if (!isMainUrbanArea(form.city)) {
     const ruralNote = ruralOfferNote(offer, language);
@@ -907,6 +938,15 @@ function publicMobilePlanDisclaimer(language) {
     "Public Mobile 官网套餐和促销经常变化，以上价格、流量、长途分钟、eSIM 优惠和可用性仅供参考，最终以 Public Mobile 官网当前显示为准。",
     "Public Mobile 官網套餐和促銷經常變化，以上價格、流量、長途分鐘、eSIM 優惠和可用性僅供參考，最終以 Public Mobile 官網目前顯示為準。",
     "Public Mobile plans and promotions change frequently. Prices, data, long-distance minutes, eSIM offers, and availability are for reference only and should be confirmed on the current Public Mobile website."
+  );
+}
+
+function publicMobileInternationalMinutes(language) {
+  return textByLanguage(
+    language,
+    "每月 1000 分钟国际长途：可拨打中国、香港、印度、巴基斯坦、菲律宾、台湾和英国。",
+    "每月 1000 分鐘國際長途：可撥打中國、香港、印度、巴基斯坦、菲律賓、台灣和英國。",
+    "1000 monthly international long-distance minutes to China, Hong Kong, India, Pakistan, Philippines, Taiwan, and the UK."
   );
 }
 
@@ -971,7 +1011,14 @@ function offerBadges(offer, language) {
   ];
   const hasPostpaidMobile = (offer.service_type === "mobile" || offer.service_type === "both") && /TELUS|Koodo|Bell/i.test(offer.provider || "");
   const isPublicMobile = /Public Mobile/i.test(`${offer.provider || ""} ${offer.plan_name || ""}`);
-  const mobilePlanBadges = isPublicMobile ? prepaidBadges : hasPostpaidMobile ? [creditCheckBadge] : [];
+  const publicMobileMinutesBadge = hasPublicMobileInternationalMinutes(offer)
+    ? [textByLanguage(language, "1000 分钟国际长途", "1000 分鐘國際長途", "1000 international minutes")]
+    : [];
+  const mobilePlanBadges = isPublicMobile
+    ? [...prepaidBadges, ...publicMobileMinutesBadge]
+    : hasPostpaidMobile
+      ? [creditCheckBadge]
+      : [];
 
   if (/Koodo/i.test(offer.provider) && offer.service_type === "internet") {
     return [
@@ -1303,6 +1350,11 @@ function hasPublicMobileComponent(offer) {
   return /Public Mobile/i.test(`${offer.provider || ""} ${offer.plan_name || ""}`);
 }
 
+function hasPublicMobileInternationalMinutes(offer) {
+  const searchable = `${offer.provider || ""} ${offer.plan_name || ""} ${offer.coverage || ""}`;
+  return /Public Mobile/i.test(searchable) && /Canada-US-Mexico/i.test(searchable);
+}
+
 function premiumCtaContent(language) {
   return {
     title: textByLanguage(
@@ -1393,6 +1445,7 @@ function mobilePicks(form) {
         offer.service_type === "mobile" &&
         offer.status !== "inactive" &&
         !isKoodoPrepaid(offer) &&
+        isPlanDataSuitableForUsage(offer.mobile_data, form.current_mobile_data) &&
         !["Rogers", "Fido", "Virgin Plus"].includes(offer.provider)
     ),
     form.current_provider
