@@ -396,6 +396,49 @@ h1 {
   box-shadow: inset 0 0 0 1px rgba(15, 123, 104, 0.35);
 }
 
+.usageHelpLink {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: 44px;
+  margin-top: 12px;
+  border: 0;
+  background: transparent;
+  color: var(--accent-strong);
+  padding: 0;
+  font-size: 0.88rem;
+  line-height: 1.4;
+  text-align: left;
+  cursor: pointer;
+}
+
+.usageHelpIcon {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  color: #0f7b68;
+  font-size: 0.74rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.usageHelpMuted {
+  color: var(--muted);
+}
+
+.usageHelpAction {
+  color: #0f7b68;
+  font-weight: 800;
+}
+
+.usageHelpLink:hover .usageHelpAction {
+  text-decoration: underline;
+}
+
 .field {
   display: grid;
   gap: 8px;
@@ -1097,6 +1140,227 @@ textarea:focus {
   line-height: 1;
 }
 
+.usageModalBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  overflow-y: auto;
+  background: rgba(1, 18, 22, 0.74);
+  backdrop-filter: blur(8px);
+  padding: 32px 16px;
+}
+
+.usageModal {
+  position: relative;
+  width: min(1080px, 100%);
+  min-width: 0;
+  border: 1px solid rgba(164, 238, 224, 0.24);
+  border-radius: 24px;
+  background:
+    linear-gradient(rgba(2, 32, 38, 0.9), rgba(2, 32, 38, 0.94)),
+    radial-gradient(circle at 20% 0%, rgba(26, 211, 150, 0.12), transparent 36%),
+    radial-gradient(circle at 95% 30%, rgba(128, 95, 255, 0.1), transparent 34%);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.45);
+  color: #eefaf7;
+  padding: clamp(24px, 3vw, 40px);
+}
+
+.usageModalClose {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.usageModalHeader {
+  max-width: 860px;
+  margin: 0 auto 24px;
+  padding: 0 46px;
+  text-align: center;
+}
+
+.usageModalHeader h2 {
+  margin: 0 0 12px;
+  color: #fff;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.usageModalHeader p {
+  margin: 0;
+  color: rgba(238, 250, 247, 0.82);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.usageModalSection {
+  margin-top: 20px;
+  border: 1px solid rgba(164, 238, 224, 0.18);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.035);
+  overflow: hidden;
+}
+
+.usageModalSection h3 {
+  margin: 0;
+  padding: 16px 20px;
+  color: #32e6a3;
+  font-size: 1.2rem;
+  font-weight: 850;
+}
+
+.speedTable {
+  border-top: 1px solid rgba(164, 238, 224, 0.14);
+}
+
+.speedRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  border-bottom: 1px solid rgba(164, 238, 224, 0.12);
+}
+
+.speedRow:last-child {
+  border-bottom: 0;
+}
+
+.speedLabel,
+.speedValue {
+  min-width: 0;
+  padding: 14px 20px;
+  color: rgba(238, 250, 247, 0.9);
+  line-height: 1.6;
+}
+
+.speedValue {
+  border-left: 1px solid rgba(164, 238, 224, 0.12);
+}
+
+.usageGuidanceGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  padding: 0 18px 18px;
+}
+
+.usageGuidanceCard {
+  min-width: 0;
+  border: 1px solid rgba(164, 238, 224, 0.18);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 18px;
+}
+
+.usageGuidanceCard.light {
+  border-color: rgba(50, 230, 163, 0.45);
+  background: linear-gradient(135deg, rgba(25, 179, 118, 0.16), rgba(255, 255, 255, 0.035));
+}
+
+.usageGuidanceCard.standard {
+  border-color: rgba(80, 170, 255, 0.36);
+  background: linear-gradient(135deg, rgba(34, 135, 200, 0.14), rgba(255, 255, 255, 0.035));
+}
+
+.usageGuidanceCard.heavy {
+  border-color: rgba(177, 120, 255, 0.38);
+  background: linear-gradient(135deg, rgba(112, 66, 190, 0.16), rgba(255, 255, 255, 0.035));
+}
+
+.usageGuidanceCardTop {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.usageGuidanceIcon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.09);
+  color: #70f0bd;
+  font-size: 1.2rem;
+  font-weight: 900;
+}
+
+.usageGuidanceCard h4 {
+  margin: 0;
+  color: #eefaf7;
+  font-size: 1.25rem;
+  font-weight: 900;
+}
+
+.usageGuidanceCard span {
+  display: inline-block;
+  margin-top: 6px;
+  border-radius: 999px;
+  background: rgba(25, 224, 151, 0.16);
+  color: #70f0bd;
+  padding: 3px 10px;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.usageGuidanceCard p {
+  margin: 10px 0 14px;
+  color: rgba(238, 250, 247, 0.82);
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.usageGuidanceCard p:last-child {
+  margin-bottom: 0;
+}
+
+.usageGuidanceSubtitle {
+  margin-top: 12px;
+  color: #50e6a8;
+  font-size: 0.88rem;
+  font-weight: 850;
+}
+
+.usageTip {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 18px;
+  border: 1px solid rgba(164, 238, 224, 0.16);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.045);
+  color: rgba(238, 250, 247, 0.9);
+  padding: 16px 18px;
+}
+
+.usageTip strong {
+  flex: 0 0 auto;
+  color: #44e8a7;
+}
+
+.usageSource {
+  margin: 18px 0 0;
+  border-top: 1px solid rgba(164, 238, 224, 0.14);
+  color: rgba(238, 250, 247, 0.58);
+  padding-top: 14px;
+  font-size: 0.8rem;
+  line-height: 1.7;
+}
+
 .trust-box {
   border: 1px solid #c9e4dc;
   border-radius: 8px;
@@ -1421,6 +1685,66 @@ textarea:focus {
   .success-modal {
     width: 100%;
   }
+
+  .usageHelpLink {
+    width: 100%;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .usageModalBackdrop {
+    padding: 12px;
+  }
+
+  .usageModal {
+    border-radius: 20px;
+    padding: 22px 16px;
+  }
+
+  .usageModalClose {
+    top: 12px;
+    right: 12px;
+    width: 44px;
+    height: 44px;
+  }
+
+  .usageModalHeader {
+    padding: 0 40px 0 0;
+    text-align: left;
+  }
+
+  .usageModalHeader h2 {
+    font-size: 2rem;
+  }
+
+  .speedRow,
+  .usageGuidanceGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .speedValue {
+    border-top: 1px solid rgba(164, 238, 224, 0.08);
+    border-left: 0;
+  }
+
+  .speedLabel,
+  .speedValue {
+    padding: 12px 14px;
+  }
+
+  .usageGuidanceGrid {
+    padding: 0 12px 12px;
+  }
+
+  .usageGuidanceCard {
+    padding: 16px;
+  }
+
+  .usageTip {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
 }
 
 @media (max-width: 360px) {
@@ -1503,6 +1827,48 @@ textarea:focus {
   .modal {
     max-height: calc(100dvh - 16px);
     padding: 14px;
+  }
+
+  .usageHelpLink {
+    font-size: 0.82rem;
+  }
+
+  .usageModalBackdrop {
+    padding: 8px;
+  }
+
+  .usageModal {
+    border-radius: 16px;
+    padding: 18px 12px;
+  }
+
+  .usageModalHeader {
+    padding-right: 42px;
+  }
+
+  .usageModalHeader h2 {
+    font-size: 1.65rem;
+  }
+
+  .usageModalHeader p,
+  .speedLabel,
+  .speedValue,
+  .usageGuidanceCard p {
+    font-size: 0.86rem;
+  }
+
+  .usageModalSection h3 {
+    padding: 14px 12px;
+    font-size: 1rem;
+  }
+
+  .usageGuidanceCardTop {
+    gap: 10px;
+  }
+
+  .usageGuidanceIcon {
+    width: 42px;
+    height: 42px;
   }
 
   .summary-copy {

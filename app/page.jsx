@@ -978,6 +978,190 @@ function publicMobileButtonLabels(language) {
   };
 }
 
+function usageGuidanceContent(language) {
+  return {
+    helpMuted: textByLanguage(language, "不确定选哪个？", "不確定選哪個？", "Not sure which one to choose?"),
+    helpAction: textByLanguage(language, "了解更多使用场景建议 >", "了解更多使用場景建議 >", "View usage guidance >"),
+    title: textByLanguage(language, "使用场景建议", "使用場景建議", "Usage Guidance"),
+    intro: textByLanguage(
+      language,
+      "单个视频流并不需要很高的网速，但家庭宽带还要考虑多人同时使用、Wi-Fi 衰减、上传速度、视频会议、游戏、摄像头、电视盒子和智能家居设备等因素。",
+      "單個影片串流並不需要很高的網速，但家庭寬頻還要考慮多人同時使用、Wi-Fi 衰減、上傳速度、視訊會議、遊戲、攝影機、電視盒和智能家居設備等因素。",
+      "A single video stream does not require extremely high speed, but home internet also needs to account for multiple users, Wi-Fi signal loss, upload speed, video meetings, gaming, cameras, TV boxes, and smart-home devices."
+    ),
+    videoTitle: textByLanguage(language, "视频平台参考速度（单个视频流）", "影片平台參考速度（單個影片串流）", "Reference Speeds for Video Platforms"),
+    householdTitle: textByLanguage(language, "家庭上网使用场景建议", "家庭上網使用場景建議", "Home Internet Usage Guidance"),
+    ruleLabel: textByLanguage(language, "参考判断", "參考判斷", "Rule of thumb"),
+    cautionLabel: textByLanguage(language, "需要注意", "需要注意", "Watch out"),
+    tipTitle: textByLanguage(language, "小提示", "小提示", "Tip"),
+    tip: textByLanguage(
+      language,
+      "如果不确定，先选“普通家庭”。我们会结合你当前月费、运营商和使用情况做初步判断。",
+      "如果不確定，先選「一般家庭」。我們會結合你目前月費、電信商和使用情況做初步判斷。",
+      "If you are not sure, choose “Standard household” first. We’ll use your current bill, provider, and usage level to make an initial estimate."
+    ),
+    source: textByLanguage(
+      language,
+      "参考来源：Netflix 官方网速建议、YouTube 官方系统需求、FCC Broadband Speed Guide、CRTC 50/10 Mbps 宽带目标、加拿大连接战略。实际需求会受家庭人数、设备数量、Wi-Fi 环境、上传需求和具体应用影响。",
+      "參考來源：Netflix 官方網速建議、YouTube 官方系統需求、FCC Broadband Speed Guide、CRTC 50/10 Mbps 寬頻目標、加拿大連接戰略。實際需求會受家庭人數、設備數量、Wi-Fi 環境、上傳需求和具體應用影響。",
+      "Sources: Netflix official speed recommendations, YouTube system requirements, FCC Broadband Speed Guide, CRTC 50/10 Mbps broadband objective, and Canada’s Connectivity Strategy. Actual needs may vary depending on household size, number of devices, Wi-Fi conditions, upload needs, and specific applications."
+    ),
+    speedRows: [
+      ["Netflix 1080p", textByLanguage(language, "5 Mbps 以上", "5 Mbps 以上", "5 Mbps or higher")],
+      ["Netflix 4K UHD", textByLanguage(language, "15 Mbps 以上", "15 Mbps 以上", "15 Mbps or higher")],
+      ["YouTube 1080p", "5 Mbps"],
+      ["YouTube 4K UHD", "20 Mbps"],
+      [
+        textByLanguage(language, "FCC 对单个 4K 视频流的参考", "FCC 對單個 4K 影片串流的參考", "FCC reference for a single 4K video stream"),
+        textByLanguage(language, "约 25 Mbps", "約 25 Mbps", "About 25 Mbps")
+      ],
+      [
+        textByLanguage(language, "CRTC / 加拿大连接战略", "CRTC / 加拿大連接戰略", "CRTC / Canada’s Connectivity Strategy"),
+        textByLanguage(
+          language,
+          "加拿大固定宽带目标为至少 50 Mbps 下载 / 10 Mbps 上传，并提供无限流量选项",
+          "加拿大固定寬頻目標為至少 50 Mbps 下載 / 10 Mbps 上傳，並提供無限流量選項",
+          "Canada’s fixed broadband target is at least 50 Mbps download / 10 Mbps upload, with access to unlimited data"
+        )
+      ]
+    ],
+    cards: [
+      {
+        type: "light",
+        marker: "1",
+        title: textByLanguage(language, "轻度使用", "輕度使用", "Light use"),
+        people: textByLanguage(language, "1–2 人", "1–2 人", "1–2 people"),
+        body: textByLanguage(
+          language,
+          "微信、网页、邮件、YouTube/Netflix、普通高清视频、视频通话、刷短视频、偶尔在家办公。",
+          "微信、網頁、電郵、YouTube/Netflix、一般高清影片、視訊通話、刷短影片、偶爾在家工作。",
+          "Messaging, browsing, email, YouTube/Netflix, regular HD video, video calls, short videos, and occasional work from home."
+        ),
+        estimate: textByLanguage(language, "50–100 Mbps 通常够用。", "50–100 Mbps 通常夠用。", "50–100 Mbps is usually enough."),
+        caution: textByLanguage(
+          language,
+          "如果多人同时 4K、游戏、直播、上传文件，100 Mbps / 上传 10 Mbps 可能不够稳。",
+          "如果多人同時 4K、遊戲、直播、上傳檔案，100 Mbps / 上傳 10 Mbps 可能不夠穩。",
+          "If multiple people stream 4K, game, livestream, or upload files at the same time, 100 Mbps download / 10 Mbps upload may feel less stable."
+        )
+      },
+      {
+        type: "standard",
+        marker: "2",
+        title: textByLanguage(language, "普通家庭", "一般家庭", "Standard household"),
+        people: textByLanguage(language, "2–4 人", "2–4 人", "2–4 people"),
+        body: textByLanguage(
+          language,
+          "4K 视频、视频会议、孩子上网课、电视盒子、多台手机和平板同时使用、普通游戏、偶尔远程办公。",
+          "4K 影片、視訊會議、孩子上網課、電視盒、多台手機和平板同時使用、一般遊戲、偶爾遠端工作。",
+          "4K video, video meetings, online classes, TV boxes, multiple phones/tablets, casual gaming, and occasional remote work."
+        ),
+        estimate: textByLanguage(
+          language,
+          "100–300 Mbps 比较合适。对大多数 PEI 普通家庭来说，300 Mbps 通常已经比较舒服。",
+          "100–300 Mbps 比較合適。對大多數 PEI 一般家庭來說，300 Mbps 通常已經比較舒服。",
+          "100–300 Mbps is usually a good range. For many PEI households, 300 Mbps is already comfortable."
+        ),
+        caution: textByLanguage(
+          language,
+          "如果家里经常多人同时 4K、下载大文件、直播、NAS、摄像头很多，可以考虑更高速度。",
+          "如果家中經常多人同時 4K、下載大型檔案、直播、NAS、攝影機很多，可以考慮更高速度。",
+          "If your home often has multiple 4K streams, large downloads, livestreaming, NAS, or many cameras, consider a faster plan."
+        )
+      },
+      {
+        type: "heavy",
+        marker: "3",
+        title: textByLanguage(language, "重度家庭", "重度家庭", "Heavy household"),
+        people: textByLanguage(language, "4 人以上", "4 人以上", "4+ people"),
+        body: textByLanguage(
+          language,
+          "多人同时 4K、在线游戏、直播、下载大文件、远程办公、上传文件、NAS、摄像头、电视盒子、智能家居设备较多。",
+          "多人同時 4K、線上遊戲、直播、下載大型檔案、遠端工作、上傳檔案、NAS、攝影機、電視盒、智能家居設備較多。",
+          "Multiple people streaming 4K, online gaming, livestreaming, large downloads, remote work, uploads, NAS, cameras, TV boxes, and smart-home devices."
+        ),
+        estimate: textByLanguage(
+          language,
+          "400 Mbps–1 Gbps 更合适。如果追求稳定体验，尤其是多人同时使用，Gigabit / Fibre 会更稳。",
+          "400 Mbps–1 Gbps 更合適。如果追求穩定體驗，尤其是多人同時使用，Gigabit / Fibre 會更穩。",
+          "400 Mbps–1 Gbps is usually more suitable. For the most stable experience, especially with many simultaneous users, Gigabit / Fibre can be a better fit."
+        ),
+        caution: textByLanguage(
+          language,
+          "这类家庭不应该只看最低月费，上传速度、稳定性、延迟和 Wi-Fi 覆盖都很重要。",
+          "這類家庭不應該只看最低月費，上傳速度、穩定性、延遲和 Wi-Fi 覆蓋都很重要。",
+          "Heavy households should not choose only by the lowest monthly price. Upload speed, stability, latency, and Wi-Fi coverage matter."
+        )
+      }
+    ]
+  };
+}
+
+function UsageGuidanceModal({ isOpen, onClose, language }) {
+  if (!isOpen) return null;
+
+  const content = usageGuidanceContent(language);
+
+  return (
+    <div className="usageModalBackdrop" role="presentation" onMouseDown={onClose}>
+      <div className="usageModal" role="dialog" aria-modal="true" onMouseDown={(event) => event.stopPropagation()}>
+        <button type="button" className="usageModalClose" onClick={onClose} aria-label="Close">
+          ×
+        </button>
+
+        <div className="usageModalHeader">
+          <h2>{content.title}</h2>
+          <p>{content.intro}</p>
+        </div>
+
+        <section className="usageModalSection">
+          <h3>{content.videoTitle}</h3>
+          <div className="speedTable">
+            {content.speedRows.map(([label, value]) => (
+              <div className="speedRow" key={label}>
+                <div className="speedLabel">{label}</div>
+                <div className="speedValue">{value}</div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="usageModalSection">
+          <h3>{content.householdTitle}</h3>
+          <div className="usageGuidanceGrid">
+            {content.cards.map((card) => (
+              <div className={`usageGuidanceCard ${card.type}`} key={card.type}>
+                <div className="usageGuidanceCardTop">
+                  <div className="usageGuidanceIcon">{card.marker}</div>
+                  <div>
+                    <h4>{card.title}</h4>
+                    <span>{card.people}</span>
+                  </div>
+                </div>
+
+                <p>{card.body}</p>
+
+                <div className="usageGuidanceSubtitle">{content.ruleLabel}</div>
+                <p>{card.estimate}</p>
+
+                <div className="usageGuidanceSubtitle">{content.cautionLabel}</div>
+                <p>{card.caution}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <div className="usageTip">
+          <strong>{content.tipTitle}</strong>
+          <span>{content.tip}</span>
+        </div>
+
+        <p className="usageSource">{content.source}</p>
+      </div>
+    </div>
+  );
+}
+
 function hasPublicMobileComponent(offer) {
   return /Public Mobile/i.test(`${offer.provider || ""} ${offer.plan_name || ""}`);
 }
@@ -1189,6 +1373,7 @@ export default function Home() {
   const [resultOpen, setResultOpen] = useState(false);
   const [leadOpen, setLeadOpen] = useState(false);
   const [peiReviewOpen, setPeiReviewOpen] = useState(false);
+  const [showUsageGuidance, setShowUsageGuidance] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [sheetError, setSheetError] = useState("");
@@ -1208,6 +1393,7 @@ export default function Home() {
       ? "Bill Saver｜PEI 手機寬頻帳單免費體檢"
       : "Bill Saver | Free PEI Mobile & Internet Bill Check";
   const publicMobileReview = publicMobileLocalReviewContent(language);
+  const usageGuidance = usageGuidanceContent(language);
   const currentStep = leadOpen ? 3 : resultOpen ? 2 : 1;
 
   useEffect(() => {
@@ -1215,6 +1401,8 @@ export default function Home() {
       if (event.key === "Escape") {
         setResultOpen(false);
         setLeadOpen(false);
+        setPeiReviewOpen(false);
+        setShowUsageGuidance(false);
       }
     }
     window.addEventListener("keydown", onKeyDown);
@@ -1392,6 +1580,11 @@ export default function Home() {
                       </button>
                     ))}
                   </div>
+                  <button type="button" className="usageHelpLink" onClick={() => setShowUsageGuidance(true)}>
+                    <span className="usageHelpIcon">i</span>
+                    <span className="usageHelpMuted">{usageGuidance.helpMuted}</span>
+                    <span className="usageHelpAction">{usageGuidance.helpAction}</span>
+                  </button>
                 </div>
 
                 {showMobile && (
@@ -1798,6 +1991,8 @@ export default function Home() {
           </div>
         </div>
       )}
+
+      <UsageGuidanceModal isOpen={showUsageGuidance} onClose={() => setShowUsageGuidance(false)} language={language} />
 
       <footer className="site-footer">{t.footer}</footer>
     </main>
