@@ -60,13 +60,7 @@ textarea {
 .billSaverPage {
   min-height: 100vh;
   color: #fff;
-  background-image:
-    linear-gradient(rgba(0, 24, 32, 0.68), rgba(0, 24, 32, 0.84)),
-    url("/pei-lighthouse-hero.png");
-  background-attachment: fixed;
-  background-position: center top;
-  background-repeat: no-repeat;
-  background-size: cover;
+  background: #00141c;
 }
 
 .language-switcher {
@@ -104,7 +98,7 @@ textarea {
 
 .heroSection {
   position: relative;
-  background: transparent;
+  overflow: hidden;
 }
 
 .heroInner {
@@ -1914,19 +1908,43 @@ textarea:focus {
 
 /* Homepage glass UI */
 .billSaverPage {
-  background-image:
-    linear-gradient(rgba(0, 18, 28, 0.42), rgba(0, 22, 30, 0.7)),
-    url("/pei-lighthouse-hero.png");
-  background-position: center top;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+  min-height: 100vh;
+  background: #00141c;
 }
 
 .heroSection {
-  min-height: 420px;
-  padding: 28px 48px 82px;
-  background: transparent;
+  position: relative;
+  min-height: 560px;
+  padding: 28px 48px 120px;
+  color: #fff;
+  overflow: hidden;
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(0, 18, 28, 0.3) 0%,
+      rgba(0, 18, 28, 0.42) 45%,
+      rgba(0, 18, 28, 0.78) 100%
+    ),
+    url("/pei-lighthouse-hero.png");
+  background-position: 65% top;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.heroSection::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 82% 18%, rgba(255, 90, 40, 0.14), transparent 28%),
+    linear-gradient(90deg, rgba(0, 18, 28, 0.34), rgba(0, 18, 28, 0.12), rgba(0, 18, 28, 0.28));
+}
+
+.heroSection > * {
+  position: relative;
+  z-index: 1;
 }
 
 .heroInner {
@@ -1949,7 +1967,9 @@ textarea:focus {
 
 .workspace.single-column {
   grid-template-columns: minmax(0, 1280px);
-  margin-top: -46px;
+  position: relative;
+  z-index: 2;
+  margin-top: -90px;
   padding-top: 0;
 }
 
@@ -2282,8 +2302,9 @@ textarea:focus {
 
 @media (max-width: 900px) {
   .heroSection {
-    min-height: 390px;
-    padding: 20px 18px 58px;
+    min-height: 480px;
+    padding: 20px 18px 96px;
+    background-position: 68% top;
   }
 
   .heroBrandLogo {
@@ -2292,7 +2313,7 @@ textarea:focus {
   }
 
   .workspace.single-column {
-    margin-top: -28px;
+    margin-top: -60px;
     padding-left: 14px;
     padding-right: 14px;
   }
@@ -2362,8 +2383,9 @@ textarea:focus {
 
 @media (max-width: 600px) {
   .heroSection {
-    min-height: 360px;
-    padding-bottom: 48px;
+    min-height: 480px;
+    padding: 20px 18px 96px;
+    background-position: 68% top;
   }
 
   .heroTopBar {
