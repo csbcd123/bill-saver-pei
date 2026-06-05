@@ -918,6 +918,45 @@ function publicMobileSourceNote(language) {
   );
 }
 
+function publicMobileLocalReviewContent(language) {
+  return {
+    entryTitle: textByLanguage(language, "PEI 本地评价", "PEI 本地評價", "PEI Local Review"),
+    entryText: textByLanguage(language, "城区更适合，农村建议先测试", "城區更適合，農村建議先測試", "Best for urban users; rural users should test first"),
+    entryLink: textByLanguage(language, "查看详情 →", "查看詳情 →", "View details →"),
+    title: textByLanguage(language, "Public Mobile｜PEI 本地评价", "Public Mobile｜PEI 本地評價", "Public Mobile | PEI Local Review"),
+    sections: [
+      {
+        icon: "✓",
+        heading: textByLanguage(language, "适合", "適合", "Best for"),
+        items: [
+          textByLanguage(language, "主要在 Charlottetown、Stratford、Summerside 和常见城区活动的用户", "主要在 Charlottetown、Stratford、Summerside 和常見城區活動的用戶", "Users mainly active in Charlottetown, Stratford, Summerside, and common urban areas"),
+          textByLanguage(language, "BYOD 自带手机用户", "BYOD 自帶手機用戶", "BYOD users"),
+          textByLanguage(language, "价格敏感、愿意自己用 App 管理账户的用户", "價格敏感、願意自己用 App 管理帳戶的用戶", "Price-sensitive users who are comfortable managing their account through an app"),
+          textByLanguage(language, "不太依赖线下客服的人", "不太依賴線下客服的人", "Users who do not rely heavily on in-person customer service")
+        ]
+      },
+      {
+        icon: "▥",
+        heading: textByLanguage(language, "信号", "訊號", "Signal"),
+        items: [
+          textByLanguage(language, "使用 TELUS 网络，理论上与 TELUS / Koodo 覆盖接近", "使用 TELUS 網絡，理論上與 TELUS / Koodo 覆蓋接近", "Uses the TELUS network, so coverage should generally be close to TELUS / Koodo"),
+          textByLanguage(language, "PEI 主要城区通常够用", "PEI 主要城區通常夠用", "Usually good enough in PEI’s main urban areas"),
+          textByLanguage(language, "郊区、低洼地、树林、海边、公路部分路段可能仍有盲区", "郊區、低窪地、樹林、海邊、公路部分路段可能仍有盲區", "Suburban areas, low-lying spots, wooded areas, coastal areas, and some highway sections may still have dead zones"),
+          textByLanguage(language, "如果你家里或工作地点原本 TELUS/Koodo 信号不好，Public Mobile 通常也不会神奇变好", "如果你家裡或工作地點原本 TELUS/Koodo 訊號不好，Public Mobile 通常也不會神奇變好", "If TELUS/Koodo signal is weak at your home or workplace, Public Mobile usually will not magically improve it")
+        ]
+      },
+      {
+        icon: "!",
+        heading: textByLanguage(language, "谨慎", "謹慎", "Caution"),
+        items: [
+          textByLanguage(language, "客服主要是线上自助，不适合非常依赖人工客服的人", "客服主要是線上自助，不適合非常依賴人工客服的人", "Support is mainly online self-serve, so it may not suit users who rely heavily on human customer service"),
+          textByLanguage(language, "农村用户建议先用 eSIM/低价套餐测试，确认家里、工作地、常走路线信号后再长期使用", "農村用戶建議先用 eSIM/低價套餐測試，確認家裡、工作地、常走路線訊號後再長期使用", "Rural users should consider testing first with eSIM or a low-cost plan, and confirm signal at home, work, and common routes before using it long term")
+        ]
+      }
+    ]
+  };
+}
+
 function publicMobileButtonLabels(language) {
   return {
     copy: textByLanguage(language, "复制推荐码", "複製推薦碼", "Copy code"),
@@ -1135,6 +1174,7 @@ export default function Home() {
   const [lead, setLead] = useState(initialLead);
   const [resultOpen, setResultOpen] = useState(false);
   const [leadOpen, setLeadOpen] = useState(false);
+  const [peiReviewOpen, setPeiReviewOpen] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [sheetError, setSheetError] = useState("");
@@ -1151,8 +1191,9 @@ export default function Home() {
     language === "zhHans"
       ? "Bill Saver｜PEI 手机宽带账单免费体检"
       : language === "zhHant"
-        ? "Bill Saver｜PEI 手機寬頻帳單免費體檢"
-        : "Bill Saver | Free PEI Mobile & Internet Bill Check";
+      ? "Bill Saver｜PEI 手機寬頻帳單免費體檢"
+      : "Bill Saver | Free PEI Mobile & Internet Bill Check";
+  const publicMobileReview = publicMobileLocalReviewContent(language);
   const currentStep = leadOpen ? 3 : resultOpen ? 2 : 1;
 
   useEffect(() => {
@@ -1562,7 +1603,17 @@ export default function Home() {
                                 {referralLabels.open}
                               </a>
                             </div>
-                            <small className="public-mobile-source-note">{publicMobileSourceNote(language)}</small>
+                          </div>
+                        )}
+                        {hasPublicMobileComponent(offer) && (
+                          <div className="local-review-entry">
+                            <div>
+                              <strong>{publicMobileReview.entryTitle}</strong>
+                              <p>{publicMobileReview.entryText}</p>
+                            </div>
+                            <button type="button" onClick={() => setPeiReviewOpen(true)}>
+                              {publicMobileReview.entryLink}
+                            </button>
                           </div>
                         )}
                         <p>
@@ -1619,6 +1670,38 @@ export default function Home() {
               </section>
 
               <p className="disclaimer">{t.disclaimer}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {peiReviewOpen && (
+        <div className="modal-backdrop" role="presentation" onMouseDown={() => setPeiReviewOpen(false)}>
+          <div className="modal panel pei-review-modal" role="dialog" aria-modal="true" onMouseDown={(event) => event.stopPropagation()}>
+            <div className="section-heading">
+              <div>
+                <h2>{publicMobileReview.title}</h2>
+              </div>
+              <button className="modal-close" type="button" onClick={() => setPeiReviewOpen(false)} aria-label={t.close}>
+                ×
+              </button>
+            </div>
+
+            <div className="pei-review-stack">
+              {publicMobileReview.sections.map((section) => (
+                <section className="pei-review-section" key={section.heading}>
+                  <h3>
+                    <span aria-hidden="true">{section.icon}</span>
+                    {section.heading}
+                  </h3>
+                  <ul>
+                    {section.items.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </section>
+              ))}
+              <small className="public-mobile-source-note modal-source-note">{publicMobileSourceNote(language)}</small>
             </div>
           </div>
         </div>
