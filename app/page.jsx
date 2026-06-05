@@ -709,6 +709,28 @@ function isBell(offerOrProvider) {
   return /bell/i.test(provider || "");
 }
 
+function normalizeProviderName(value = "") {
+  const normalized = String(value).toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  if (normalized.includes("bell aliant") || normalized === "bell") return "bell_aliant";
+  if (normalized.includes("public mobile")) return "public_mobile";
+  if (normalized.includes("purple cow")) return "purple_cow";
+  if (normalized.includes("koodo")) return "koodo";
+  if (normalized.includes("telus")) return "telus";
+  if (normalized.includes("eastlink")) return "eastlink";
+  if (normalized.includes("xplore")) return "xplore";
+  if (normalized.includes("starlink")) return "starlink";
+  return normalized.replace(/\s+/g, "_");
+}
+
+function isSameProvider(a, b) {
+  const normalizedA = normalizeProviderName(a);
+  return Boolean(normalizedA) && normalizedA === normalizeProviderName(b);
+}
+
+function filterOutCurrentProvider(offers, currentProvider) {
+  return offers.filter((offer) => !isSameProvider(offer.provider, currentProvider));
+}
+
 function isKoodoPrepaid(offer) {
   if (!/koodo/i.test(offer.provider || "")) return false;
   if (String(offer.billing_type || "").toLowerCase() === "prepaid") return true;
@@ -839,6 +861,10 @@ function localizedGoodFor(offer, t, language) {
 }
 
 function localizedNote(offer, t, language, form) {
+  if (/Public Mobile/i.test(offer.provider)) {
+    const ruralNote = !isMainUrbanArea(form.city) ? ruralOfferNote(offer, language) : "";
+    return [ruralNote, publicMobilePlanDisclaimer(language)].filter(Boolean).join(" ");
+  }
   if (!isMainUrbanArea(form.city)) {
     const ruralNote = ruralOfferNote(offer, language);
     if (ruralNote) return ruralNote;
@@ -872,6 +898,24 @@ function telusDisclaimer(language) {
     "TELUS 官网套餐和促销可能随时变化，以上价格、流量、漫游权益、价格锁定和资格条件仅供参考，最终以 TELUS 当前官网或授权销售人员确认为准。",
     "TELUS 官網套餐和促銷可能隨時變化，以上價格、流量、漫遊權益、價格鎖定和資格條件僅供參考，最終以 TELUS 目前官網或授權銷售人員確認為準。",
     "TELUS plans and promotions may change at any time. Prices, data, roaming benefits, price-lock terms, and eligibility are for reference only and should be confirmed on the current TELUS website or by an authorized sales representative."
+  );
+}
+
+function publicMobilePlanDisclaimer(language) {
+  return textByLanguage(
+    language,
+    "Public Mobile 官网套餐和促销经常变化，以上价格、流量、长途分钟、eSIM 优惠和可用性仅供参考，最终以 Public Mobile 官网当前显示为准。",
+    "Public Mobile 官網套餐和促銷經常變化，以上價格、流量、長途分鐘、eSIM 優惠和可用性僅供參考，最終以 Public Mobile 官網目前顯示為準。",
+    "Public Mobile plans and promotions change frequently. Prices, data, long-distance minutes, eSIM offers, and availability are for reference only and should be confirmed on the current Public Mobile website."
+  );
+}
+
+function noAlternativeMessage(language) {
+  return textByLanguage(
+    language,
+    "根据你当前填写的信息，暂时没有足够合适的替代方案。你可以提交人工复核，我们会帮你确认是否有可用优惠。",
+    "根據你目前填寫的資訊，暫時沒有足夠合適的替代方案。你可以提交人工覆核，我們會幫你確認是否有可用優惠。",
+    "Based on the information provided, there may not be enough suitable alternatives right now. You can submit for manual review and we’ll help check whether any offers are available."
   );
 }
 
@@ -978,9 +1022,14 @@ function offerBadges(offer, language) {
     ];
   }
   if (/Koodo/i.test(offer.provider) && offer.service_type === "mobile") {
+    const planBadge = /Canada-US-Mexico/i.test(offer.plan_name)
+      ? textByLanguage(language, "5G 60GB / 加美墨", "5G 60GB / 加美墨", "5G 60GB / Canada-US-Mexico")
+      : offer.mobile_data === "100GB"
+        ? "5G 100GB"
+        : "5G 60GB";
     return [
       textByLanguage(language, "性价比推荐", "性價比推薦", "Good Value Pick"),
-      "5G 60GB+",
+      planBadge,
       textByLanguage(language, "免费 Perk", "免費 Perk", "Free Perk"),
       ...mobilePlanBadges
     ];
@@ -1322,7 +1371,10 @@ function bestProviderOffer(offers, provider, form) {
 }
 
 function internetPicks(form) {
-  const offers = offerDatabase.filter((offer) => offer.service_type === "internet" && offer.status !== "inactive");
+  const offers = filterOutCurrentProvider(
+    offerDatabase.filter((offer) => offer.service_type === "internet" && offer.status !== "inactive"),
+    form.current_provider
+  );
   const currentIsBellAliant = isBell(form.current_provider);
   const providerOrder = isMainUrbanArea(form.city)
     ? ["Koodo", "Purple Cow", currentIsBellAliant ? "Eastlink" : "Bell Aliant"]
@@ -1335,12 +1387,15 @@ function internetPicks(form) {
 }
 
 function mobilePicks(form) {
-  const offers = offerDatabase.filter(
-    (offer) =>
-      offer.service_type === "mobile" &&
-      offer.status !== "inactive" &&
-      !isKoodoPrepaid(offer) &&
-      !["Rogers", "Fido", "Virgin Plus"].includes(offer.provider)
+  const offers = filterOutCurrentProvider(
+    offerDatabase.filter(
+      (offer) =>
+        offer.service_type === "mobile" &&
+        offer.status !== "inactive" &&
+        !isKoodoPrepaid(offer) &&
+        !["Rogers", "Fido", "Virgin Plus"].includes(offer.provider)
+    ),
+    form.current_provider
   );
   const currentIsBellAliant = isBell(form.current_provider);
   let providerOrder;
@@ -1871,6 +1926,7 @@ export default function Home() {
               <section>
                 <h3>{t.planTitle}</h3>
                 <div className="plan-list">
+                  {recommendations.length === 0 && <div className="rural-recommendation-note">{noAlternativeMessage(language)}</div>}
                   {recommendations.map((offer) => {
                     const badges = offerBadges(offer, language);
                     const priceNote = priceNoteText(offer, language);
