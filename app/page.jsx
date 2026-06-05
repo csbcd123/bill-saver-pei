@@ -29,15 +29,16 @@ const translations = {
     city: "你住在哪个区域？",
     provider: "当前运营商",
     providerInternet: "你现在用的是哪家宽带？",
-    providerMobile: "你现在用的是哪家手机运营商？",
+    providerMobile: "你现在主要用的是哪家运营商？",
     providerBoth: "你现在主要用的是哪家运营商？",
     monthlyPriceInternet: "宽带月费（税前）",
-    monthlyPriceMobile: "手机月费",
+    monthlyPriceMobile: "手机月费（税前）",
     monthlyPriceBoth: "每月总费用",
     monthlyPlaceholder: "例如 95",
     internetUsageLevel: "家庭上网使用情况",
     currentMobileData: "当前手机流量",
     currentMobileDataQuestion: "你每月大概用多少手机流量？",
+    mobileDataUsageTitle: "手机流量使用情况",
     postalPrefix: "邮编前三位",
     postalPlaceholder: "例如 C1A",
     willingToSwitch: "如果有更合适的方案，你是否可以考虑更换？",
@@ -115,6 +116,24 @@ const translations = {
         description: "多人同时看视频、下载大文件、游戏、远程办公、电视盒子、NAS、摄像头、智能家居设备较多。"
       }
     },
+    mobileDataUsageCards: {
+      "0-20GB": {
+        title: "0–20GB",
+        description: "轻度使用：微信、网页、地图、少量视频"
+      },
+      "20-50GB": {
+        title: "20–50GB",
+        description: "日常使用：社交媒体、短视频、视频通话、音乐"
+      },
+      "50-100GB": {
+        title: "50–100GB",
+        description: "高频使用：经常看视频、热点分享、外出使用较多"
+      },
+      "100GB+": {
+        title: "100GB 以上",
+        description: "重度使用：大量视频、热点共享、经常外出或多设备使用"
+      }
+    },
     options: {
       other_pei: "其他 PEI 地区",
       not_in_pei: "不在 PEI",
@@ -188,15 +207,16 @@ const translations = {
     city: "你住在哪個區域？",
     provider: "目前業者",
     providerInternet: "你目前用的是哪家寬頻？",
-    providerMobile: "你目前用的是哪家手機電信商？",
+    providerMobile: "你現在主要用的是哪家電信商？",
     providerBoth: "你目前主要用的是哪家電信商？",
     monthlyPriceInternet: "寬頻月費",
-    monthlyPriceMobile: "手機月費",
+    monthlyPriceMobile: "手機月費（稅前）",
     monthlyPriceBoth: "每月總費用",
     monthlyPlaceholder: "例如 95",
     internetUsageLevel: "家庭上網使用情況",
     currentMobileData: "目前手機流量",
     currentMobileDataQuestion: "你每月大約用多少手機流量？",
+    mobileDataUsageTitle: "手機流量使用情況",
     postalPrefix: "郵遞區號前三碼",
     postalPlaceholder: "例如 C1A",
     willingToSwitch: "如果有更合適的方案，你是否可以考慮更換？",
@@ -274,6 +294,24 @@ const translations = {
         description: "多人同時看影片、下載大型檔案、遊戲、遠端工作、電視盒、NAS、攝影機、智能家居設備較多。"
       }
     },
+    mobileDataUsageCards: {
+      "0-20GB": {
+        title: "0–20GB",
+        description: "輕度使用：微信、網頁、地圖、少量影片"
+      },
+      "20-50GB": {
+        title: "20–50GB",
+        description: "日常使用：社交媒體、短影片、視訊通話、音樂"
+      },
+      "50-100GB": {
+        title: "50–100GB",
+        description: "高頻使用：經常看影片、熱點分享、外出使用較多"
+      },
+      "100GB+": {
+        title: "100GB 以上",
+        description: "重度使用：大量影片、熱點共享、經常外出或多設備使用"
+      }
+    },
     options: {
       other_pei: "其他 PEI 地區",
       not_in_pei: "不在 PEI",
@@ -347,15 +385,16 @@ const translations = {
     city: "Which area are you in?",
     provider: "Current provider",
     providerInternet: "Who is your current internet provider?",
-    providerMobile: "Who is your current mobile provider?",
+    providerMobile: "Which provider do you mainly use now?",
     providerBoth: "Who is your main current provider?",
     monthlyPriceInternet: "Internet monthly bill",
-    monthlyPriceMobile: "Mobile monthly bill",
+    monthlyPriceMobile: "Mobile monthly bill before tax",
     monthlyPriceBoth: "Total monthly bill",
     monthlyPlaceholder: "e.g. 95",
     internetUsageLevel: "Home internet usage",
     currentMobileData: "Current mobile data",
     currentMobileDataQuestion: "How much mobile data do you use per month?",
+    mobileDataUsageTitle: "Mobile data usage",
     postalPrefix: "Postal code prefix",
     postalPlaceholder: "e.g. C1A",
     willingToSwitch: "If there is a better option, would you consider switching?",
@@ -434,6 +473,24 @@ const translations = {
       heavy: {
         title: "Heavy household",
         description: "Multiple people streaming, large downloads, gaming, remote work, TV boxes, NAS, cameras, and many smart home devices."
+      }
+    },
+    mobileDataUsageCards: {
+      "0-20GB": {
+        title: "0–20GB",
+        description: "Light use: messaging, browsing, maps, and occasional video"
+      },
+      "20-50GB": {
+        title: "20–50GB",
+        description: "Everyday use: social media, short videos, video calls, and music"
+      },
+      "50-100GB": {
+        title: "50–100GB",
+        description: "High use: frequent video, hotspot sharing, and more mobile use outside home"
+      },
+      "100GB+": {
+        title: "100GB+",
+        description: "Heavy use: lots of video, hotspot sharing, frequent outside use, or multiple devices"
       }
     },
     options: {
@@ -539,7 +596,7 @@ const usageLevels = [
   { value: "standard", currentSpeed: "300M" },
   { value: "heavy", currentSpeed: "1G" }
 ];
-const mobileDataOptions = ["5GB", "10GB", "20GB", "50GB", "75GB", "100GB", "150GB+", "not_sure"];
+const mobileDataUsageLevels = [{ value: "0-20GB" }, { value: "20-50GB" }, { value: "50-100GB" }, { value: "100GB+" }];
 
 const initialForm = {
   service_type: "internet",
@@ -549,7 +606,7 @@ const initialForm = {
   price_type: "not_asked",
   internet_usage_level: "standard",
   current_speed: "300M",
-  current_mobile_data: "50GB",
+  current_mobile_data: "",
   postal_code: "",
   willing_to_switch: "",
   notes: ""
@@ -597,6 +654,13 @@ function speedRank(speed) {
 
 function dataRank(data) {
   if (!data || data === "not_sure") return 50;
+  const rangeRanks = {
+    "0-20GB": 20,
+    "20-50GB": 50,
+    "50-100GB": 100,
+    "100GB+": 150
+  };
+  if (rangeRanks[data]) return rangeRanks[data];
   return Number(String(data).replace(/[^0-9]/g, "")) || 0;
 }
 
@@ -1149,6 +1213,25 @@ export default function Home() {
                   </div>
                 </div>
 
+                {showMobile && (
+                  <div className="field usage-section">
+                    <span>{t.mobileDataUsageTitle}</span>
+                    <div className="usage-card-grid compact">
+                      {mobileDataUsageLevels.map((item) => (
+                        <button
+                          key={item.value}
+                          type="button"
+                          className={form.current_mobile_data === item.value ? "usage-card active" : "usage-card"}
+                          onClick={() => update("current_mobile_data", item.value)}
+                        >
+                          <strong>{t.mobileDataUsageCards[item.value].title}</strong>
+                          <span>{t.mobileDataUsageCards[item.value].description}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
               </div>
 
               <div className="form-split-right">
@@ -1174,18 +1257,6 @@ export default function Home() {
                   />
                 </Field>
 
-                {showMobile && (
-                  <Field label={t.currentMobileDataQuestion}>
-                    <Select value={form.current_mobile_data} onChange={(value) => update("current_mobile_data", value)}>
-                      {mobileDataOptions.map((value) => (
-                        <option key={value} value={value}>
-                          {optionLabel(t, value)}
-                        </option>
-                      ))}
-                    </Select>
-                  </Field>
-                )}
-
                 <Field label={t.city}>
                   <Select value={form.city} onChange={(value) => update("city", value)}>
                     {areaOptions.map((area) => (
@@ -1198,48 +1269,59 @@ export default function Home() {
               </div>
             </div>
           ) : (
-            <div className="grid form-grid-top">
-              <Field label={t.providerMobile}>
-                <Select value={form.current_provider} onChange={(value) => update("current_provider", value)}>
-                  {providerOptionsByService[form.service_type].map((provider) => (
-                    <option key={provider} value={provider}>
-                      {optionLabel(t, provider)}
-                    </option>
-                  ))}
-                </Select>
-              </Field>
+            <div className="form-split form-grid-top">
+              <div className="form-split-left">
+                <div className="field">
+                  <span>{t.mobileDataUsageTitle}</span>
+                  <div className="usage-card-grid compact">
+                    {mobileDataUsageLevels.map((item) => (
+                      <button
+                        key={item.value}
+                        type="button"
+                        className={form.current_mobile_data === item.value ? "usage-card active" : "usage-card"}
+                        onClick={() => update("current_mobile_data", item.value)}
+                      >
+                        <strong>{t.mobileDataUsageCards[item.value].title}</strong>
+                        <span>{t.mobileDataUsageCards[item.value].description}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
 
-              <Field label={t.monthlyPriceMobile}>
-                <input
-                  type="number"
-                  min="0"
-                  inputMode="decimal"
-                  value={form.monthly_price}
-                  onChange={(event) => update("monthly_price", event.target.value)}
-                  placeholder={t.monthlyPlaceholder}
-                  required
-                />
-              </Field>
+              <div className="form-split-right">
+                <Field label={t.providerMobile}>
+                  <Select value={form.current_provider} onChange={(value) => update("current_provider", value)}>
+                    {providerOptionsByService[form.service_type].map((provider) => (
+                      <option key={provider} value={provider}>
+                        {optionLabel(t, provider)}
+                      </option>
+                    ))}
+                  </Select>
+                </Field>
 
-              <Field label={t.currentMobileDataQuestion}>
-                <Select value={form.current_mobile_data} onChange={(value) => update("current_mobile_data", value)}>
-                  {mobileDataOptions.map((value) => (
-                    <option key={value} value={value}>
-                      {optionLabel(t, value)}
-                    </option>
-                  ))}
-                </Select>
-              </Field>
+                <Field label={t.monthlyPriceMobile}>
+                  <input
+                    type="number"
+                    min="0"
+                    inputMode="decimal"
+                    value={form.monthly_price}
+                    onChange={(event) => update("monthly_price", event.target.value)}
+                    placeholder={t.monthlyPlaceholder}
+                    required
+                  />
+                </Field>
 
-              <Field label={t.city}>
-                <Select value={form.city} onChange={(value) => update("city", value)}>
-                  {areaOptions.map((area) => (
-                    <option key={area.value} value={area.value}>
-                      {area.labelKey ? t.options[area.labelKey] : area.label}
-                    </option>
-                  ))}
-                </Select>
-              </Field>
+                <Field label={t.city}>
+                  <Select value={form.city} onChange={(value) => update("city", value)}>
+                    {areaOptions.map((area) => (
+                      <option key={area.value} value={area.value}>
+                        {area.labelKey ? t.options[area.labelKey] : area.label}
+                      </option>
+                    ))}
+                  </Select>
+                </Field>
+              </div>
             </div>
           )}
 

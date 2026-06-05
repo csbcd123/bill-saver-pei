@@ -331,6 +331,10 @@ h1 {
   grid-template-columns: 1fr;
 }
 
+.usage-section {
+  padding-top: 6px;
+}
+
 .usage-card {
   border: 1px solid var(--line);
   border-radius: 8px;
