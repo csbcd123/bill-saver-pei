@@ -27,21 +27,26 @@ const translations = {
     city: "你住在哪个区域？",
     provider: "当前运营商",
     providerInternet: "你现在用的是哪家宽带？",
-    providerMobile: "你现在主要用的是哪家运营商？",
+    providerMobile: "你现在用的是哪家手机运营商？",
     providerBoth: "你现在主要用的是哪家运营商？",
     monthlyPriceInternet: "宽带月费（税前）",
     monthlyPriceMobile: "手机月费（税前）",
-    monthlyPriceBoth: "每月总费用",
-    monthlyPlaceholder: "例如 95",
-    monthlyPlaceholderInternet: "例如 95",
-    monthlyPlaceholderMobile: "例如 45",
-    monthlyPlaceholderBoth: "例如 140",
-    internetUsageLevel: "家庭上网使用情况",
+    monthlyPriceBoth: "每月总费用（税前）",
+    monthlyPlaceholder: "例如：89.99",
+    monthlyPlaceholderInternet: "例如：89.99",
+    monthlyPlaceholderMobile: "例如：45",
+    monthlyPlaceholderBoth: "例如：140",
+    internetUsageLevel: "选择您的上网使用情况",
     currentMobileData: "当前手机流量",
     currentMobileDataQuestion: "你每月大概用多少手机流量？",
-    mobileDataUsageTitle: "手机流量使用情况",
-    providerPlaceholder: "请选择运营商",
-    areaPlaceholder: "请选择所在区域",
+    mobileDataUsageTitle: "选择您的手机流量使用情况",
+    providerPlaceholder: "选择您的运营商",
+    areaPlaceholder: "选择您所在的区域",
+    billInfoInternet: "请填写您的宽带信息",
+    billInfoMobile: "请填写您的手机信息",
+    billInfoBoth: "请填写您的账单信息",
+    monthlyUnit: "加元 / 月",
+    formSafetyNote: "安全可靠 · 仅用于为您找到更好优惠",
     validationRequired: "请先完成必填信息，再查看体检结果。",
     postalPrefix: "邮编前三位",
     postalPlaceholder: "例如 C1A",
@@ -109,33 +114,33 @@ const translations = {
     usageCards: {
       light: {
         title: "轻度使用",
-        description: "1-2 人使用，主要刷网页、微信、邮件、YouTube 和普通视频。"
+        description: "浏览网页、社交媒体、收发邮件\n1–3 台设备"
       },
       standard: {
         title: "普通家庭",
-        description: "2-4 人家庭，高清视频 / 4K、视频会议、孩子上网课、普通游戏。"
+        description: "高清视频、在线学习、视频通话\n3–6 台设备"
       },
       heavy: {
         title: "重度家庭",
-        description: "多人同时看视频、下载大文件、游戏、远程办公、电视盒子、NAS、摄像头、智能家居设备较多。"
+        description: "4K 串流、游戏、智能家居、多设备\n6 台设备以上"
       }
     },
     mobileDataUsageCards: {
       "0-20GB": {
         title: "0–20GB",
-        description: "轻度使用：微信、网页、地图、少量视频"
+        description: "微信、网页、地图、少量视频"
       },
       "20-50GB": {
         title: "20–50GB",
-        description: "日常使用：社交媒体、短视频、视频通话、音乐"
+        description: "社交媒体、短视频、视频通话、音乐"
       },
       "50-100GB": {
         title: "50–100GB",
-        description: "高频使用：经常看视频、热点分享、外出使用较多"
+        description: "经常看视频、热点分享、外出使用较多"
       },
       "100GB+": {
         title: "100GB 以上",
-        description: "重度使用：大量视频、热点共享、经常外出或多设备使用"
+        description: "大量视频、热点共享、经常外出或多设备使用"
       }
     },
     options: {
@@ -209,22 +214,27 @@ const translations = {
     serviceType: "你想檢查哪類帳單？",
     city: "你住在哪個區域？",
     provider: "目前業者",
-    providerInternet: "你目前用的是哪家寬頻？",
-    providerMobile: "你現在主要用的是哪家電信商？",
-    providerBoth: "你目前主要用的是哪家電信商？",
-    monthlyPriceInternet: "寬頻月費",
+    providerInternet: "你現在用的是哪家寬頻？",
+    providerMobile: "你現在用的是哪家手機電信商？",
+    providerBoth: "你現在主要用的是哪家電信商？",
+    monthlyPriceInternet: "寬頻月費（稅前）",
     monthlyPriceMobile: "手機月費（稅前）",
-    monthlyPriceBoth: "每月總費用",
-    monthlyPlaceholder: "例如 95",
-    monthlyPlaceholderInternet: "例如 95",
-    monthlyPlaceholderMobile: "例如 45",
-    monthlyPlaceholderBoth: "例如 140",
-    internetUsageLevel: "家庭上網使用情況",
+    monthlyPriceBoth: "每月總費用（稅前）",
+    monthlyPlaceholder: "例如：89.99",
+    monthlyPlaceholderInternet: "例如：89.99",
+    monthlyPlaceholderMobile: "例如：45",
+    monthlyPlaceholderBoth: "例如：140",
+    internetUsageLevel: "選擇您的上網使用情況",
     currentMobileData: "目前手機流量",
     currentMobileDataQuestion: "你每月大約用多少手機流量？",
-    mobileDataUsageTitle: "手機流量使用情況",
-    providerPlaceholder: "請選擇電信商",
-    areaPlaceholder: "請選擇所在區域",
+    mobileDataUsageTitle: "選擇你的手機流量使用情況",
+    providerPlaceholder: "選擇你的電信商",
+    areaPlaceholder: "選擇你所在的區域",
+    billInfoInternet: "請填寫您的寬頻資訊",
+    billInfoMobile: "請填寫您的手機資訊",
+    billInfoBoth: "請填寫您的帳單資訊",
+    monthlyUnit: "加元 / 月",
+    formSafetyNote: "安全可靠 · 僅用於為你找到更好優惠",
     validationRequired: "請先完成必填資訊，再查看健檢結果。",
     postalPrefix: "郵遞區號前三碼",
     postalPlaceholder: "例如 C1A",
@@ -292,33 +302,33 @@ const translations = {
     usageCards: {
       light: {
         title: "輕度使用",
-        description: "1-2 人使用，主要瀏覽網頁、微信、電郵、YouTube 和一般影片。"
+        description: "瀏覽網頁、社交媒體、收發電郵\n1–3 台設備"
       },
       standard: {
         title: "一般家庭",
-        description: "2-4 人家庭，高畫質影片 / 4K、視訊會議、孩子上網課、一般遊戲。"
+        description: "高清影片、線上學習、視訊通話\n3–6 台設備"
       },
       heavy: {
         title: "重度家庭",
-        description: "多人同時看影片、下載大型檔案、遊戲、遠端工作、電視盒、NAS、攝影機、智能家居設備較多。"
+        description: "4K 串流、遊戲、智能家居、多設備\n6 台設備以上"
       }
     },
     mobileDataUsageCards: {
       "0-20GB": {
         title: "0–20GB",
-        description: "輕度使用：微信、網頁、地圖、少量影片"
+        description: "微信、網頁、地圖、少量影片"
       },
       "20-50GB": {
         title: "20–50GB",
-        description: "日常使用：社交媒體、短影片、視訊通話、音樂"
+        description: "社交媒體、短影片、視訊通話、音樂"
       },
       "50-100GB": {
         title: "50–100GB",
-        description: "高頻使用：經常看影片、熱點分享、外出使用較多"
+        description: "經常看影片、熱點分享、外出使用較多"
       },
       "100GB+": {
         title: "100GB 以上",
-        description: "重度使用：大量影片、熱點共享、經常外出或多設備使用"
+        description: "大量影片、熱點共享、經常外出或多設備使用"
       }
     },
     options: {
@@ -390,24 +400,29 @@ const translations = {
     formTitle: "Bill details",
     province: "Default region: Prince Edward Island",
     serviceType: "Which bill do you want to check?",
-    city: "Which area are you in?",
+    city: "Which area do you live in?",
     provider: "Current provider",
-    providerInternet: "Who is your current internet provider?",
-    providerMobile: "Which provider do you mainly use now?",
-    providerBoth: "Who is your main current provider?",
-    monthlyPriceInternet: "Internet monthly bill",
+    providerInternet: "Which internet provider do you use now?",
+    providerMobile: "Which mobile provider do you use now?",
+    providerBoth: "Which provider do you mainly use now?",
+    monthlyPriceInternet: "Internet monthly bill before tax",
     monthlyPriceMobile: "Mobile monthly bill before tax",
-    monthlyPriceBoth: "Total monthly bill",
-    monthlyPlaceholder: "e.g. 95",
-    monthlyPlaceholderInternet: "e.g. 95",
+    monthlyPriceBoth: "Total monthly bill before tax",
+    monthlyPlaceholder: "e.g. 89.99",
+    monthlyPlaceholderInternet: "e.g. 89.99",
     monthlyPlaceholderMobile: "e.g. 45",
     monthlyPlaceholderBoth: "e.g. 140",
-    internetUsageLevel: "Home internet usage",
+    internetUsageLevel: "Choose your internet usage",
     currentMobileData: "Current mobile data",
     currentMobileDataQuestion: "How much mobile data do you use per month?",
-    mobileDataUsageTitle: "Mobile data usage",
-    providerPlaceholder: "Please select a provider",
-    areaPlaceholder: "Please select your area",
+    mobileDataUsageTitle: "Choose your mobile data usage",
+    providerPlaceholder: "Select your provider",
+    areaPlaceholder: "Select your area",
+    billInfoInternet: "Enter your internet bill information",
+    billInfoMobile: "Enter your mobile bill information",
+    billInfoBoth: "Enter your bill information",
+    monthlyUnit: "CAD / mo",
+    formSafetyNote: "Secure · Used only to help find better offers",
     validationRequired: "Please complete the required information before viewing your result.",
     postalPrefix: "Postal code prefix",
     postalPlaceholder: "e.g. C1A",
@@ -478,33 +493,33 @@ const translations = {
     usageCards: {
       light: {
         title: "Light use",
-        description: "1-2 people, mainly browsing, messaging, email, YouTube, and regular video."
+        description: "Browsing, social media, and email\n1–3 devices"
       },
       standard: {
         title: "Standard household",
-        description: "2-4 people, HD / 4K video, video meetings, online classes, and casual gaming."
+        description: "HD video, online learning, and video calls\n3–6 devices"
       },
       heavy: {
         title: "Heavy household",
-        description: "Multiple people streaming, large downloads, gaming, remote work, TV boxes, NAS, cameras, and many smart home devices."
+        description: "4K streaming, gaming, smart home, and many devices\n6+ devices"
       }
     },
     mobileDataUsageCards: {
       "0-20GB": {
         title: "0–20GB",
-        description: "Light use: messaging, browsing, maps, and occasional video"
+        description: "Messaging, browsing, maps, and occasional video"
       },
       "20-50GB": {
         title: "20–50GB",
-        description: "Everyday use: social media, short videos, video calls, and music"
+        description: "Social media, short videos, video calls, and music"
       },
       "50-100GB": {
         title: "50–100GB",
-        description: "High use: frequent video, hotspot sharing, and more mobile use outside home"
+        description: "Frequent video, hotspot sharing, and more mobile use outside home"
       },
       "100GB+": {
         title: "100GB+",
-        description: "Heavy use: lots of video, hotspot sharing, frequent outside use, or multiple devices"
+        description: "Lots of video, hotspot sharing, frequent outside use, or multiple devices"
       }
     },
     options: {
@@ -1877,7 +1892,7 @@ export default function Home() {
                           <strong>{t.usageCards[item.value].title}</strong>
                           <span>{t.usageCards[item.value].description}</span>
                         </span>
-                        <span className="usage-card-speed"><small>{language === "en" ? "Suggested" : language === "zhHant" ? "建議頻寬" : "推荐带宽"}</small>{internetUsageSpeeds[item.value]}</span>
+                        <span className="usage-card-speed"><small>{language === "en" ? "Recommended" : language === "zhHant" ? "建議頻寬" : "推荐带宽"}</small>{internetUsageSpeeds[item.value]}</span>
                         {form.internet_usage_level === item.value && <span className="usage-card-check" aria-hidden="true">✓</span>}
                       </button>
                     ))}
@@ -1915,6 +1930,9 @@ export default function Home() {
               </div>
 
               <div className="form-split-right">
+                <h3 className="form-side-title">
+                  {form.service_type === "internet" ? t.billInfoInternet : t.billInfoBoth}
+                </h3>
                 <Field icon="▦" label={form.service_type === "internet" ? t.providerInternet : t.providerBoth} className={missingFields.includes("current_provider") ? "missing" : ""}>
                   <Select value={form.current_provider} onChange={(value) => update("current_provider", value)}>
                     <option value="" disabled>
@@ -1928,7 +1946,7 @@ export default function Home() {
                   </Select>
                 </Field>
 
-                <Field icon="$" label={form.service_type === "internet" ? t.monthlyPriceInternet : t.monthlyPriceBoth} className={missingFields.includes("monthly_price") ? "missing" : ""}>
+                <Field icon="$" unit={t.monthlyUnit} label={form.service_type === "internet" ? t.monthlyPriceInternet : t.monthlyPriceBoth} className={missingFields.includes("monthly_price") ? "missing" : ""}>
                   <input
                     type="number"
                     min="0"
@@ -1980,6 +1998,7 @@ export default function Home() {
               </div>
 
               <div className="form-split-right">
+                <h3 className="form-side-title">{t.billInfoMobile}</h3>
                 <Field icon="▦" label={t.providerMobile} className={missingFields.includes("current_provider") ? "missing" : ""}>
                   <Select value={form.current_provider} onChange={(value) => update("current_provider", value)}>
                     <option value="" disabled>
@@ -1993,7 +2012,7 @@ export default function Home() {
                   </Select>
                 </Field>
 
-                <Field icon="$" label={t.monthlyPriceMobile} className={missingFields.includes("monthly_price") ? "missing" : ""}>
+                <Field icon="$" unit={t.monthlyUnit} label={t.monthlyPriceMobile} className={missingFields.includes("monthly_price") ? "missing" : ""}>
                   <input
                     type="number"
                     min="0"
@@ -2025,6 +2044,10 @@ export default function Home() {
             <span>{t.submit}</span>
             <span aria-hidden="true">›</span>
           </button>
+          <p className="form-safe-note">
+            <span aria-hidden="true">🔒</span>
+            {t.formSafetyNote}
+          </p>
         </form>
       </section>
 

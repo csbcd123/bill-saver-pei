@@ -2207,6 +2207,13 @@ textarea:focus {
   padding-left: 4px;
 }
 
+.form-side-title {
+  margin: 0 0 2px;
+  color: #fff;
+  font-size: 1.08rem;
+  font-weight: 800;
+}
+
 .usage-card-grid.compact {
   gap: 14px;
 }
@@ -2269,6 +2276,8 @@ textarea:focus {
 .usage-card-copy span {
   color: rgba(255, 255, 255, 0.66);
   font-size: 0.86rem;
+  line-height: 1.55;
+  white-space: pre-line;
 }
 
 .usage-card-speed {
@@ -2391,6 +2400,17 @@ textarea:focus {
 .workspace.single-column .submit-button:hover {
   transform: translateY(-1px);
   box-shadow: 0 22px 48px rgba(0, 0, 0, 0.36);
+}
+
+.form-safe-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 12px auto 0;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 0.82rem;
+  text-align: center;
 }
 
 @media (max-width: 900px) {
