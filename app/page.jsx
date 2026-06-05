@@ -690,11 +690,11 @@ function LineIcon({ name, size = 32 }) {
 
 function ServiceTypeIcon({ type }) {
   return (
-    <span className="service-card-icon" aria-hidden="true">
+    <span className="bill-type-icon-wrap" aria-hidden="true">
       {type === "internet" && <LineIcon name="wifi" size={38} />}
       {type === "mobile" && <LineIcon name="smartphone" size={36} />}
       {type === "both" && (
-        <span className="combo-icon">
+        <span className="bill-type-combo-icon">
           <LineIcon name="wifi" size={27} />
           <span>+</span>
           <LineIcon name="smartphone" size={25} />
@@ -702,6 +702,16 @@ function ServiceTypeIcon({ type }) {
       )}
     </span>
   );
+}
+
+function serviceTypeSubtitle(language, type) {
+  const subtitles = {
+    internet: ["仅宽带服务", "僅寬頻服務", "Internet only"],
+    mobile: ["仅手机服务", "僅手機服務", "Mobile only"],
+    both: ["组合服务", "組合服務", "Bundle service"]
+  };
+  const [zhHans, zhHant, en] = subtitles[type];
+  return language === "en" ? en : language === "zhHant" ? zhHant : zhHans;
 }
 
 function UsageIcon({ type }) {
@@ -1829,19 +1839,21 @@ export default function Home() {
 
           {sheetError && <div className="error">{sheetError}</div>}
 
-          <div className="field">
-            <span>{t.serviceType}</span>
-            <div className="service-card-grid">
+          <div className="field bill-type-field">
+            <div className="service-card-grid bill-type-grid">
               {serviceOrder.map((value) => (
                 <button
                   key={value}
                   type="button"
-                  className={form.service_type === value ? "service-card active" : "service-card"}
+                  className={form.service_type === value ? "service-card bill-type-card active" : "service-card bill-type-card"}
                   onClick={() => update("service_type", value)}
                 >
                   <ServiceTypeIcon type={value} />
-                  <span className="service-card-title">{t.serviceCards[value]}</span>
-                  {form.service_type === value && <span className="service-card-check" aria-hidden="true">✓</span>}
+                  <span className="bill-type-text">
+                    <span className="service-card-title bill-type-title">{t.serviceCards[value]}</span>
+                    <span className="bill-type-sub">{serviceTypeSubtitle(language, value)}</span>
+                  </span>
+                  {form.service_type === value && <span className="service-card-check bill-type-check" aria-hidden="true">✓</span>}
                 </button>
               ))}
             </div>
