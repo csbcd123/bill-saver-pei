@@ -239,15 +239,6 @@ h1 {
   color: #fff;
 }
 
-.hero-flow-helper {
-  display: none;
-  max-width: 680px;
-  margin: 18px auto 0;
-  color: #e8f6f2;
-  font-size: 1rem;
-  line-height: 1.65;
-}
-
 .workspace {
   display: grid;
   grid-template-columns: minmax(0, 1.25fr) minmax(360px, 0.75fr);
@@ -1577,8 +1568,7 @@ textarea:focus {
     font-size: clamp(30px, 9vw, 42px);
   }
 
-  .heroSubtitle,
-  .hero-flow-helper {
+  .heroSubtitle {
     font-size: 0.96rem;
   }
 
@@ -1815,8 +1805,7 @@ textarea:focus {
     font-size: 28px;
   }
 
-  .heroSubtitle,
-  .hero-flow-helper {
+  .heroSubtitle {
     font-size: 0.9rem;
     line-height: 1.5;
   }
