@@ -584,10 +584,7 @@ const areaOptions = [
 ];
 
 const serviceOrder = ["internet", "mobile", "both"];
-const serviceTypeIcons = { internet: "⌁", mobile: "▯", both: "⌁ +" };
-const internetUsageIcons = { light: "◒", standard: "⌂", heavy: "●●" };
 const internetUsageSpeeds = { light: "25–100 Mbps", standard: "100–300 Mbps", heavy: "300+ Mbps" };
-const mobileUsageIcons = { "0-20GB": "◔", "20-50GB": "◑", "50-100GB": "◕", "100GB+": "●" };
 const providerOptionsByService = {
   internet: ["Bell Aliant", "TELUS", "Koodo", "Eastlink", "Purple Cow", "Xplore", "Starlink", "Other", "Not sure"],
   mobile: ["Bell Aliant", "TELUS", "Koodo", "Public Mobile", "Eastlink", "Rogers", "Fido", "Virgin Plus", "Other", "Not sure"],
@@ -658,6 +655,58 @@ function Field({ label, children, className = "", icon = "", unit = "" }) {
 
 function Select({ value, onChange, children }) {
   return <select value={value} onChange={(event) => onChange(event.target.value)}>{children}</select>;
+}
+
+function LineIcon({ name, size = 32 }) {
+  const common = {
+    width: size,
+    height: size,
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 2.4,
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    "aria-hidden": true
+  };
+
+  if (name === "wifi") {
+    return <svg {...common}><path d="M5 12.55a11 11 0 0 1 14 0" /><path d="M8.5 16a6 6 0 0 1 7 0" /><path d="M12 20h.01" /></svg>;
+  }
+  if (name === "smartphone") {
+    return <svg {...common}><rect x="6.5" y="2" width="11" height="20" rx="2" /><path d="M10 5h4" /><path d="M11.5 18.5h1" /></svg>;
+  }
+  if (name === "leaf") {
+    return <svg {...common}><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5.2 19 2 19 2c.8 6.6-1.4 13.7-8 15.8" /><path d="M2 21c0-3 1.85-5.36 5.08-6.94C9.14 13.05 12 12 16 12" /></svg>;
+  }
+  if (name === "home") {
+    return <svg {...common}><path d="m3 11 9-8 9 8" /><path d="M5 10v10h14V10" /><path d="M9 20v-6h6v6" /></svg>;
+  }
+  if (name === "users") {
+    return <svg {...common}><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>;
+  }
+  return <svg {...common}><path d="M4 20V14" /><path d="M10 20V10" /><path d="M16 20V6" /><path d="M22 20V2" /></svg>;
+}
+
+function ServiceTypeIcon({ type }) {
+  return (
+    <span className="service-card-icon" aria-hidden="true">
+      {type === "internet" && <LineIcon name="wifi" size={38} />}
+      {type === "mobile" && <LineIcon name="smartphone" size={36} />}
+      {type === "both" && (
+        <span className="combo-icon">
+          <LineIcon name="wifi" size={27} />
+          <span>+</span>
+          <LineIcon name="smartphone" size={25} />
+        </span>
+      )}
+    </span>
+  );
+}
+
+function UsageIcon({ type }) {
+  const iconName = type === "light" ? "leaf" : type === "standard" ? "home" : type === "heavy" ? "users" : "data";
+  return <span className="usage-card-icon" aria-hidden="true"><LineIcon name={iconName} size={30} /></span>;
 }
 
 function optionLabel(t, value) {
@@ -1790,7 +1839,7 @@ export default function Home() {
                   className={form.service_type === value ? "service-card active" : "service-card"}
                   onClick={() => update("service_type", value)}
                 >
-                  <span className="service-card-icon" aria-hidden="true">{serviceTypeIcons[value]}</span>
+                  <ServiceTypeIcon type={value} />
                   <span className="service-card-title">{t.serviceCards[value]}</span>
                   {form.service_type === value && <span className="service-card-check" aria-hidden="true">✓</span>}
                 </button>
@@ -1811,7 +1860,7 @@ export default function Home() {
                         className={form.internet_usage_level === item.value ? "usage-card active" : "usage-card"}
                         onClick={() => update("internet_usage_level", item.value)}
                       >
-                        <span className="usage-card-icon" aria-hidden="true">{internetUsageIcons[item.value]}</span>
+                        <UsageIcon type={item.value} />
                         <span className="usage-card-copy">
                           <strong>{t.usageCards[item.value].title}</strong>
                           <span>{t.usageCards[item.value].description}</span>
@@ -1839,7 +1888,7 @@ export default function Home() {
                           className={form.current_mobile_data === item.value ? "usage-card active" : "usage-card"}
                           onClick={() => update("current_mobile_data", item.value)}
                         >
-                          <span className="usage-card-icon" aria-hidden="true">{mobileUsageIcons[item.value]}</span>
+                          <UsageIcon type="data" />
                           <span className="usage-card-copy">
                             <strong>{t.mobileDataUsageCards[item.value].title}</strong>
                             <span>{t.mobileDataUsageCards[item.value].description}</span>
@@ -1906,7 +1955,7 @@ export default function Home() {
                         className={form.current_mobile_data === item.value ? "usage-card active" : "usage-card"}
                         onClick={() => update("current_mobile_data", item.value)}
                       >
-                        <span className="usage-card-icon" aria-hidden="true">{mobileUsageIcons[item.value]}</span>
+                        <UsageIcon type="data" />
                         <span className="usage-card-copy">
                           <strong>{t.mobileDataUsageCards[item.value].title}</strong>
                           <span>{t.mobileDataUsageCards[item.value].description}</span>
