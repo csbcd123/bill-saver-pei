@@ -131,19 +131,51 @@
     "notes": "Good balance of price, network, and store/channel support depending on promo."
   },
   {
-    "id": "telus-mobile-canada",
+    "id": "telus-mobile-complete-100gb",
     "provider": "TELUS",
-    "name": "TELUS mobile offer",
+    "name": "TELUS 5G+ Complete 100GB",
     "service_type": "mobile",
     "region": "Canada",
-    "technology": "mobile",
-    "min_price": 50,
-    "max_price": 75,
-    "data_label": "Premium mobile data plans",
+    "technology": "5G+",
+    "min_price": 65,
+    "max_price": 65,
+    "data_label": "100GB",
     "priority_1_5": 3,
     "risk": "medium",
     "commission": 60,
     "requires": [],
-    "notes": "Can make sense for 5G, family, or premium network needs; verify promo and contract terms."
+    "notes": "Postpaid plan with speeds up to 2Gbps and a 5-year rate plan price lock. Confirm current pricing, Canada/US benefits, discounts, credit-check requirements, and eligibility with TELUS."
+  },
+  {
+    "id": "telus-mobile-complete-unlimited",
+    "provider": "TELUS",
+    "name": "TELUS 5G+ Complete - Unlimited",
+    "service_type": "mobile",
+    "region": "Canada",
+    "technology": "5G+",
+    "min_price": 80,
+    "max_price": 80,
+    "data_label": "Unlimited",
+    "priority_1_5": 3,
+    "risk": "medium",
+    "commission": 60,
+    "requires": [],
+    "notes": "Postpaid plan with speeds up to 2Gbps and a 5-year rate plan price lock. Confirm current pricing, Canada/US/Mexico benefits, discounts, credit-check requirements, and eligibility with TELUS."
+  },
+  {
+    "id": "telus-mobile-complete-unlimited-explore",
+    "provider": "TELUS",
+    "name": "TELUS 5G+ Complete - Unlimited Explore",
+    "service_type": "mobile",
+    "region": "Canada",
+    "technology": "5G+",
+    "min_price": 95,
+    "max_price": 95,
+    "data_label": "Unlimited",
+    "priority_1_5": 3,
+    "risk": "medium",
+    "commission": 60,
+    "requires": [],
+    "notes": "Postpaid travel-focused plan with speeds up to 2Gbps and a 5-year rate plan price lock. Confirm current pricing, included destinations, roaming benefits, discounts, credit-check requirements, and eligibility with TELUS."
   }
 ]

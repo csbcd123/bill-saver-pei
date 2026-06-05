@@ -845,6 +845,7 @@ function localizedNote(offer, t, language, form) {
   }
   if (offer.offer_id === "bell_mobile_winback_manual") return bellAliantDisplayText(t.bellWinbackNote);
   if (/Purple Cow/i.test(offer.provider)) return t.purpleCowNote;
+  if (/TELUS/i.test(offer.provider)) return telusDisclaimer(language);
   if (/Koodo/i.test(offer.provider) && offer.service_type === "internet") {
     if (offer.offer_id === "koodo_internet_100") {
       return `${t.koodoInternetNote} ${textByLanguage(
@@ -863,6 +864,15 @@ function textByLanguage(language, zhHans, zhHant, en) {
   if (language === "en") return en;
   if (language === "zhHant") return zhHant;
   return zhHans;
+}
+
+function telusDisclaimer(language) {
+  return textByLanguage(
+    language,
+    "TELUS 官网套餐和促销可能随时变化，以上价格、流量、漫游权益、价格锁定和资格条件仅供参考，最终以 TELUS 当前官网或授权销售人员确认为准。",
+    "TELUS 官網套餐和促銷可能隨時變化，以上價格、流量、漫遊權益、價格鎖定和資格條件僅供參考，最終以 TELUS 目前官網或授權銷售人員確認為準。",
+    "TELUS plans and promotions may change at any time. Prices, data, roaming benefits, price-lock terms, and eligibility are for reference only and should be confirmed on the current TELUS website or by an authorized sales representative."
+  );
 }
 
 function fieldLabel(language, key) {
@@ -954,11 +964,16 @@ function offerBadges(offer, language) {
     ];
   }
   if (/TELUS/i.test(offer.provider) && offer.service_type === "mobile") {
+    const planSpecificBadge = /Unlimited Explore/i.test(offer.plan_name)
+      ? textByLanguage(language, "适合国际旅行", "適合國際旅行", "Good for international travel")
+      : /Unlimited/i.test(offer.plan_name)
+        ? textByLanguage(language, "无限高速数据", "無限高速數據", "Unlimited high-speed data")
+        : textByLanguage(language, "适合高流量用户", "適合高流量用戶", "Good for high-data users");
     return [
       textByLanguage(language, "大网覆盖", "大網覆蓋", "Major network"),
-      textByLanguage(language, "5G+ 高速", "5G+ 高速", "5G+ speed"),
+      textByLanguage(language, "5G+ 高速，最高约 2Gbps", "5G+ 高速，最高約 2Gbps", "5G+ speeds up to about 2Gbps"),
       textByLanguage(language, "5 年价格锁定", "5 年價格鎖定", "5-year price lock"),
-      textByLanguage(language, "适合高流量用户", "適合高流量用戶", "Good for high-data users"),
+      planSpecificBadge,
       ...mobilePlanBadges
     ];
   }
@@ -1276,7 +1291,7 @@ function premiumCtaContent(language) {
 
 function displayPlanName(offer, t) {
   if (offer.offer_id === "bell_mobile_winback_manual") return bellAliantDisplayText(t.bellWinbackService);
-  return bellAliantDisplayText(offer.plan_name);
+  return bellAliantDisplayText(offer.display_name || offer.plan_name);
 }
 
 function displayPrice(offer, t, language) {
