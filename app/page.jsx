@@ -900,6 +900,20 @@ function offerBadges(offer, language) {
   return mobilePlanBadges;
 }
 
+function displayBadge(badge, offer, index, language) {
+  if (/Purple Cow/i.test(offer.provider || "") && index === 0) {
+    return {
+      label: textByLanguage(language, "免安装费", "免安裝費", "No installation fee"),
+      subLabel: textByLanguage(language, "Bill Saver 专享", "Bill Saver 專享", "Bill Saver exclusive")
+    };
+  }
+  return typeof badge === "string" ? { label: badge } : badge;
+}
+
+function badgeKey(badge, index) {
+  return typeof badge === "string" ? `${badge}-${index}` : `${badge.label}-${badge.subLabel || ""}-${index}`;
+}
+
 function publicMobileReferralText(language) {
   return textByLanguage(
     language,
@@ -1581,9 +1595,16 @@ export default function Home() {
                           </p>
                           {badges.length > 0 && (
                             <div className="badge-row price-badges">
-                              {badges.map((badge) => (
-                                <span key={badge}>{badge}</span>
-                              ))}
+                              {badges.map((badge, index) => {
+                                const visibleBadge = displayBadge(badge, offer, index, language);
+
+                                return (
+                                  <span className={visibleBadge.subLabel ? "badge-with-sub-label" : ""} key={badgeKey(visibleBadge, index)}>
+                                    <span>{visibleBadge.label}</span>
+                                    {visibleBadge.subLabel && <small>{visibleBadge.subLabel}</small>}
+                                  </span>
+                                );
+                              })}
                             </div>
                           )}
                         </div>
