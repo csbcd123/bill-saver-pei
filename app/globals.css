@@ -24,14 +24,7 @@ body {
 body {
   min-height: 100vh;
   margin: 0;
-  background:
-    linear-gradient(rgba(0, 24, 32, 0.76), rgba(0, 24, 32, 0.88)),
-    url("/pei-lighthouse-hero.png");
-  background-attachment: fixed;
-  background-color: #001820;
-  background-position: center top;
-  background-repeat: no-repeat;
-  background-size: cover;
+  background: #001a1f;
   color: var(--ink);
   font-family: Arial, "Microsoft YaHei", sans-serif;
 }
@@ -64,6 +57,18 @@ textarea {
   background: transparent;
 }
 
+.billSaverPage {
+  min-height: 100vh;
+  color: #fff;
+  background-image:
+    linear-gradient(rgba(0, 24, 32, 0.68), rgba(0, 24, 32, 0.84)),
+    url("/pei-lighthouse-hero.png");
+  background-attachment: fixed;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
 .language-switcher {
   display: flex;
   gap: 6px;
@@ -92,8 +97,13 @@ textarea {
 
 .hero {
   min-height: 430px;
-  padding: 24px clamp(20px, 6vw, 76px) 46px;
+  padding: 28px clamp(20px, 6vw, 76px) 96px;
   color: white;
+  background: transparent;
+}
+
+.heroSection {
+  position: relative;
   background: transparent;
 }
 
@@ -105,30 +115,34 @@ textarea {
 
 .heroTopBar {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 24px;
+  position: relative;
+  z-index: 2;
 }
 
 .heroBrandLogo {
   display: block;
-  width: 240px;
+  width: 220px;
   max-width: 28vw;
   height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.35));
 }
 
 .heroContent {
   align-self: center;
-  max-width: 980px;
-  margin: 0 auto;
+  max-width: 900px;
+  margin: 28px auto 0;
   text-align: center;
 }
 
 .eyebrow {
-  margin: 0 0 14px;
+  margin: 0 0 16px;
   color: #bbe7dc;
-  font-size: 0.86rem;
-  font-weight: 700;
+  font-size: 1.1rem;
+  font-weight: 800;
   letter-spacing: 0;
   text-transform: uppercase;
 }
@@ -150,18 +164,20 @@ h1 {
 .heroTitle {
   margin-bottom: 0;
   color: #fff;
-  font-size: clamp(32px, 4vw, 56px);
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  line-height: 1.08;
+  font-size: clamp(38px, 5vw, 64px);
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  line-height: 1.12;
+  text-shadow: 0 8px 28px rgba(0, 0, 0, 0.48);
 }
 
 .heroSubtitle {
-  margin: 10px auto 0;
+  margin: 14px auto 0;
   max-width: 760px;
   color: rgba(255, 255, 255, 0.82);
-  font-size: clamp(16px, 1.5vw, 22px);
+  font-size: clamp(17px, 1.6vw, 23px);
   line-height: 1.6;
+  text-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
 }
 
 .stepProgress {
@@ -224,6 +240,7 @@ h1 {
 }
 
 .hero-flow-helper {
+  display: none;
   max-width: 680px;
   margin: 18px auto 0;
   color: #e8f6f2;

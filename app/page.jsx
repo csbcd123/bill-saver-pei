@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { offerDatabase } from "@/lib/offerDatabase";
 
@@ -1487,18 +1486,11 @@ export default function Home() {
   }
 
   return (
-    <main className="page-shell" lang={language === "en" ? "en" : language === "zhHant" ? "zh-Hant" : "zh-CN"}>
-      <section className="hero">
+    <main className="page-shell billSaverPage" lang={language === "en" ? "en" : language === "zhHant" ? "zh-Hant" : "zh-CN"}>
+      <section className="hero heroSection">
         <div className="heroInner">
           <div className="heroTopBar">
-            <Image
-              src={heroLogoSrc}
-              alt={heroLogoAlt}
-              width={520}
-              height={140}
-              priority
-              className="heroBrandLogo"
-            />
+            <img src={heroLogoSrc} alt={heroLogoAlt} className="heroBrandLogo" />
             <div className="language-switcher" aria-label="Language switcher">
               {languages.map((item) => (
                 <button
@@ -1532,7 +1524,6 @@ export default function Home() {
                 );
               })}
             </div>
-            <p className="hero-flow-helper">{t.heroFlowHelper}</p>
           </div>
         </div>
       </section>
