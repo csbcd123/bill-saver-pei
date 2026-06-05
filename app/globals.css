@@ -777,6 +777,15 @@ textarea:focus {
   cursor: pointer;
 }
 
+.public-mobile-source-note {
+  display: block;
+  border-top: 1px solid rgba(15, 123, 104, 0.16);
+  padding-top: 8px;
+  color: var(--muted);
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
 .premium-cta-wrap {
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(220px, 0.9fr);

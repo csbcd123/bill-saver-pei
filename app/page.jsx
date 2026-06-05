@@ -909,6 +909,15 @@ function publicMobileReferralText(language) {
   );
 }
 
+function publicMobileSourceNote(language) {
+  return textByLanguage(
+    language,
+    "参考来源：Public Mobile 官方覆盖说明、TELUS 覆盖地图、Public Mobile Community，以及 Reddit / PEI 本地论坛公开用户反馈整理。覆盖体验会因地址、建筑、地形、手机型号和使用场景不同而变化，农村或信号敏感用户建议先测试。",
+    "參考來源：Public Mobile 官方覆蓋說明、TELUS 覆蓋地圖、Public Mobile Community，以及 Reddit / PEI 本地論壇公開用戶反饋整理。覆蓋體驗會因地址、建築、地形、手機型號和使用場景不同而變化，農村或訊號敏感用戶建議先測試。",
+    "Sources: Public Mobile official coverage information, TELUS coverage map, Public Mobile Community, and public user feedback from Reddit / PEI local forums. Coverage experience may vary by address, building, terrain, phone model, and usage scenario. Rural users or signal-sensitive users should test first."
+  );
+}
+
 function publicMobileButtonLabels(language) {
   return {
     copy: textByLanguage(language, "复制推荐码", "複製推薦碼", "Copy code"),
@@ -1553,6 +1562,7 @@ export default function Home() {
                                 {referralLabels.open}
                               </a>
                             </div>
+                            <small className="public-mobile-source-note">{publicMobileSourceNote(language)}</small>
                           </div>
                         )}
                         <p>
