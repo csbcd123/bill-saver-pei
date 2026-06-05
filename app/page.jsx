@@ -837,18 +837,29 @@ function priceNoteText(offer, language) {
 }
 
 function offerBadges(offer, language) {
+  const creditCheckBadge = textByLanguage(language, "需要信用核查", "需要信用審查", "Credit check required");
+  const prepaidBadges = [
+    textByLanguage(language, "预付卡订阅", "預付卡訂閱", "Prepaid subscription"),
+    textByLanguage(language, "不需要信用核查", "不需要信用審查", "No credit check")
+  ];
+  const hasPostpaidMobile = (offer.service_type === "mobile" || offer.service_type === "both") && /TELUS|Koodo|Bell/i.test(offer.provider || "");
+  const isPublicMobile = /Public Mobile/i.test(`${offer.provider || ""} ${offer.plan_name || ""}`);
+  const mobilePlanBadges = isPublicMobile ? prepaidBadges : hasPostpaidMobile ? [creditCheckBadge] : [];
+
   if (/Koodo/i.test(offer.provider) && offer.service_type === "internet") {
     return [
       textByLanguage(language, "无激活费", "無啟用費", "No activation fee"),
       textByLanguage(language, "免费自助安装", "免費自助安裝", "Free self-installation"),
-      textByLanguage(language, "30 天免费试用", "30 天免費試用", "30-day free trial")
+      textByLanguage(language, "30 天免费试用", "30 天免費試用", "30-day free trial"),
+      ...mobilePlanBadges
     ];
   }
   if (/Purple Cow/i.test(offer.provider)) {
     return [
       textByLanguage(language, "免安装费", "免安裝費", "No installation fee"),
       textByLanguage(language, "免激活费", "免啟用費", "No activation fee"),
-      textByLanguage(language, "首月不满意可退款", "首月不滿意可退款", "First-month money-back")
+      textByLanguage(language, "首月不满意可退款", "首月不滿意可退款", "First-month money-back"),
+      ...mobilePlanBadges
     ];
   }
   if (isBell(offer) && offer.service_type === "internet") {
@@ -856,7 +867,8 @@ function offerBadges(offer, language) {
       textByLanguage(language, "光纤稳定", "光纖穩定", "Stable Fibre"),
       textByLanguage(language, "免安装费", "免安裝費", "No installation fee"),
       textByLanguage(language, "免激活费", "免啟用費", "No activation fee"),
-      textByLanguage(language, "优惠需确认", "優惠需確認", "Offer confirmation")
+      textByLanguage(language, "优惠需确认", "優惠需確認", "Offer confirmation"),
+      ...mobilePlanBadges
     ];
   }
   if (isBell(offer) && offer.service_type === "mobile") {
@@ -864,7 +876,8 @@ function offerBadges(offer, language) {
       textByLanguage(language, "大网覆盖", "大網覆蓋", "Major network"),
       textByLanguage(language, "大流量方案", "大流量方案", "High-data option"),
       textByLanguage(language, "优惠需确认", "優惠需確認", "Offer confirmation"),
-      textByLanguage(language, "适合重度用户", "適合重度用戶", "Good for heavy users")
+      textByLanguage(language, "适合重度用户", "適合重度用戶", "Good for heavy users"),
+      ...mobilePlanBadges
     ];
   }
   if (/TELUS/i.test(offer.provider) && offer.service_type === "mobile") {
@@ -872,17 +885,39 @@ function offerBadges(offer, language) {
       textByLanguage(language, "大网覆盖", "大網覆蓋", "Major network"),
       textByLanguage(language, "5G+ 高速", "5G+ 高速", "5G+ speed"),
       textByLanguage(language, "5 年价格锁定", "5 年價格鎖定", "5-year price lock"),
-      textByLanguage(language, "适合高流量用户", "適合高流量用戶", "Good for high-data users")
+      textByLanguage(language, "适合高流量用户", "適合高流量用戶", "Good for high-data users"),
+      ...mobilePlanBadges
     ];
   }
   if (/Koodo/i.test(offer.provider) && offer.service_type === "mobile") {
     return [
       textByLanguage(language, "性价比推荐", "性價比推薦", "Good Value Pick"),
       "5G 60GB+",
-      textByLanguage(language, "免费 Perk", "免費 Perk", "Free Perk")
+      textByLanguage(language, "免费 Perk", "免費 Perk", "Free Perk"),
+      ...mobilePlanBadges
     ];
   }
-  return [];
+  return mobilePlanBadges;
+}
+
+function publicMobileReferralText(language) {
+  return textByLanguage(
+    language,
+    "使用推荐码 P8S6NX 开通 Public Mobile，可获得 $10 账户余额奖励。",
+    "使用推薦碼 P8S6NX 開通 Public Mobile，可獲得 $10 帳戶餘額獎勵。",
+    "Use referral code P8S6NX when activating Public Mobile to receive a $10 account credit."
+  );
+}
+
+function publicMobileButtonLabels(language) {
+  return {
+    copy: textByLanguage(language, "复制推荐码", "複製推薦碼", "Copy code"),
+    open: textByLanguage(language, "打开 Public Mobile", "打開 Public Mobile", "Open Public Mobile")
+  };
+}
+
+function hasPublicMobileComponent(offer) {
+  return /Public Mobile/i.test(`${offer.provider || ""} ${offer.plan_name || ""}`);
 }
 
 function displayPlanName(offer, t) {
@@ -1114,6 +1149,14 @@ export default function Home() {
     setMissingFields([]);
     setSheetError("");
     window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  async function copyPublicMobileReferralCode() {
+    try {
+      await navigator.clipboard.writeText("P8S6NX");
+    } catch {
+      // Clipboard access can be blocked by the browser; the code remains visible for manual copy.
+    }
   }
 
   function submitInitial(event) {
@@ -1426,6 +1469,7 @@ export default function Home() {
                     const priceNote = priceNoteText(offer, language);
                     const includesInternet = offer.service_type === "internet" || offer.service_type === "both";
                     const includesMobile = offer.service_type === "mobile" || (offer.service_type === "both" && offer.mobile_data);
+                    const referralLabels = publicMobileButtonLabels(language);
 
                     return (
                       <article className="plan-card" key={offer.offer_id}>
@@ -1461,6 +1505,19 @@ export default function Home() {
                           <p>
                             <b>{fieldLabel(language, "priceNote")}</b> {priceNote}
                           </p>
+                        )}
+                        {hasPublicMobileComponent(offer) && (
+                          <div className="referral-box">
+                            <p>{publicMobileReferralText(language)}</p>
+                            <div className="referral-actions">
+                              <button type="button" onClick={copyPublicMobileReferralCode}>
+                                {referralLabels.copy}
+                              </button>
+                              <a href="https://publicmobile.ca/en/pe/plans?referral=P8S6NX" target="_blank" rel="noreferrer">
+                                {referralLabels.open}
+                              </a>
+                            </div>
+                          </div>
                         )}
                         <p>
                           <b>{t.savings}</b> {savingsText(offer, form, t, language)}
