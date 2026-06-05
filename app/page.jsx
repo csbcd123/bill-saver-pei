@@ -709,6 +709,14 @@ function isBell(offerOrProvider) {
   return /bell/i.test(provider || "");
 }
 
+function isKoodoPrepaid(offer) {
+  if (!/koodo/i.test(offer.provider || "")) return false;
+  if (String(offer.billing_type || "").toLowerCase() === "prepaid") return true;
+
+  const searchableName = `${offer.plan_name || ""} ${offer.name || ""} ${offer.plan_type || ""}`.toLowerCase();
+  return /prepaid|4g prepaid|预付费|預付費|预付卡|預付卡/.test(searchableName);
+}
+
 function isPremiumProvider(offer) {
   return Boolean(offer.show_premium_cta) || /koodo|telus|bell|purple cow/i.test(offer.provider || "");
 }
@@ -1313,7 +1321,11 @@ function internetPicks(form) {
 
 function mobilePicks(form) {
   const offers = offerDatabase.filter(
-    (offer) => offer.service_type === "mobile" && offer.status !== "inactive" && !["Rogers", "Fido", "Virgin Plus"].includes(offer.provider)
+    (offer) =>
+      offer.service_type === "mobile" &&
+      offer.status !== "inactive" &&
+      !isKoodoPrepaid(offer) &&
+      !["Rogers", "Fido", "Virgin Plus"].includes(offer.provider)
   );
   const currentIsBellAliant = isBell(form.current_provider);
   let providerOrder;
