@@ -34,10 +34,6 @@ textarea {
 }
 
 .language-switcher {
-  position: absolute;
-  top: 18px;
-  right: clamp(16px, 4vw, 48px);
-  z-index: 5;
   display: flex;
   gap: 6px;
   border: 1px solid rgba(255, 255, 255, 0.36);
@@ -64,18 +60,39 @@ textarea {
 }
 
 .hero {
-  display: flex;
-  align-items: end;
-  min-height: 330px;
-  padding: 56px clamp(20px, 6vw, 76px) 42px;
+  min-height: 430px;
+  padding: 24px clamp(20px, 6vw, 76px) 46px;
   color: white;
   background:
     linear-gradient(90deg, rgba(8, 46, 40, 0.92), rgba(8, 46, 40, 0.55)),
     url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=80") center/cover;
 }
 
-.hero > div {
-  max-width: 820px;
+.heroInner {
+  display: grid;
+  min-height: 360px;
+  gap: 36px;
+}
+
+.heroTopBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.heroBrandLogo {
+  display: block;
+  width: 240px;
+  max-width: 28vw;
+  height: auto;
+}
+
+.heroContent {
+  align-self: center;
+  max-width: 980px;
+  margin: 0 auto;
+  text-align: center;
 }
 
 .eyebrow {
@@ -101,75 +118,85 @@ h1 {
   letter-spacing: 0;
 }
 
-.heroLogoWrap {
-  display: inline-block;
-  max-width: 1120px;
-  width: 100%;
-  background: rgba(255, 255, 255, 0.94);
-  border-radius: 22px;
-  padding: 18px 22px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
-  margin-bottom: 22px;
-}
-
-.heroLogo {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-.hero-copy {
-  max-width: 700px;
+.heroTitle {
   margin-bottom: 0;
-  color: #e8f6f2;
-  font-size: 1.15rem;
-  line-height: 1.7;
+  color: #fff;
+  font-size: clamp(32px, 4vw, 56px);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  line-height: 1.08;
 }
 
-.hero-flow {
+.heroSubtitle {
+  margin: 10px auto 0;
+  max-width: 760px;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: clamp(16px, 1.5vw, 22px);
+  line-height: 1.6;
+}
+
+.stepProgress {
+  position: relative;
   display: grid;
-  gap: 10px;
-  max-width: 860px;
-  color: #e8f6f2;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  max-width: 760px;
+  margin: 36px auto 0;
 }
 
-.hero-flow-title {
-  margin-bottom: 0;
-  color: #bbe7dc;
-  font-size: 0.98rem;
+.stepProgress::before {
+  content: "";
+  position: absolute;
+  top: 19px;
+  left: calc(16.66% + 19px);
+  right: calc(16.66% + 19px);
+  height: 2px;
+  background: rgba(255, 255, 255, 0.24);
+}
+
+.stepItem {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  gap: 9px;
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.stepCircle {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: 50%;
+  background: rgba(8, 46, 40, 0.72);
+  color: rgba(255, 255, 255, 0.78);
+  font-weight: 900;
+  backdrop-filter: blur(8px);
+}
+
+.stepItem.complete .stepCircle,
+.stepItem.current .stepCircle {
+  border-color: rgba(187, 231, 220, 0.9);
+  background: #0f7b68;
+  color: #fff;
+  box-shadow: 0 0 0 6px rgba(15, 123, 104, 0.18);
+}
+
+.stepLabel {
+  font-size: 0.94rem;
   font-weight: 800;
 }
 
-.hero-flow-steps {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
-}
-
-.hero-flow-step {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  border: 1px solid rgba(187, 231, 220, 0.34);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.1);
-  color: #ffffff;
-  padding: 8px 12px;
-  font-size: clamp(1rem, 2vw, 1.22rem);
-  font-weight: 800;
-  line-height: 1.35;
-  backdrop-filter: blur(6px);
-}
-
-.hero-flow-step b {
-  color: #bbe7dc;
-  font-size: 1rem;
+.stepItem.complete,
+.stepItem.current {
+  color: #fff;
 }
 
 .hero-flow-helper {
   max-width: 680px;
-  margin-bottom: 0;
+  margin: 18px auto 0;
   color: #e8f6f2;
   font-size: 1rem;
   line-height: 1.65;
@@ -956,26 +983,56 @@ textarea:focus {
 }
 
 @media (max-width: 768px) {
-  .heroLogoWrap {
-    padding: 12px 14px;
-    border-radius: 16px;
-    margin-bottom: 16px;
+  .heroBrandLogo {
+    width: 180px;
+    max-width: 48vw;
+  }
+
+  .stepProgress {
+    gap: 8px;
+  }
+
+  .stepLabel {
+    font-size: 0.82rem;
   }
 }
 
 @media (max-width: 640px) {
-  .language-switcher {
-    top: 12px;
-    right: 12px;
+  .hero {
+    min-height: 420px;
+    padding: 18px 16px 34px;
+  }
+
+  .heroInner {
+    min-height: 368px;
+    gap: 28px;
+  }
+
+  .heroTopBar {
+    gap: 12px;
   }
 
   .language-switcher button {
     min-width: 36px;
   }
 
-  .hero {
-    min-height: 360px;
-    padding-top: 42px;
+  .heroBrandLogo {
+    width: 160px;
+    max-width: 46vw;
+  }
+
+  .stepProgress {
+    margin-top: 28px;
+  }
+
+  .stepProgress::before {
+    left: calc(16.66% + 16px);
+    right: calc(16.66% + 16px);
+  }
+
+  .stepCircle {
+    width: 34px;
+    height: 34px;
   }
 
   .grid,

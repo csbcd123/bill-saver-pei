@@ -19,8 +19,9 @@ const translations = {
     eyebrow: "仅限 PEI · v1",
     title: "Bill Saver｜PEI 手机宽带账单免费体检",
     hero: "先输入账单信息查看体检结果。想拿到可用优惠时，再提交联系方式给人工复核。",
-    heroFlowTitle: "3 步免费体检流程",
-    heroFlowSteps: ["输入账单信息", "查看体检结果", "提交联系方式获取可用优惠"],
+    heroHeadline: "检查账单 · 发现更好优惠",
+    heroSubtitle: "快速比较运营商方案，帮您每年节省数百加元",
+    heroProgressSteps: ["输入账单", "查看结果", "获取优惠"],
     heroFlowHelper: "全程免费。先看结果，再决定是否需要人工复核。",
     formTitle: "账单信息",
     province: "默认地区：Prince Edward Island",
@@ -177,8 +178,9 @@ const translations = {
     eyebrow: "僅限 PEI · v1",
     title: "Bill Saver｜PEI 手機寬頻帳單免費體檢",
     hero: "先輸入帳單資訊查看健檢結果。想取得可用優惠時，再提交聯絡方式給人工複核。",
-    heroFlowTitle: "3 步免費健檢流程",
-    heroFlowSteps: ["輸入帳單資訊", "查看健檢結果", "提交聯絡方式取得可用優惠"],
+    heroHeadline: "檢查帳單 · 發現更好優惠",
+    heroSubtitle: "快速比較電信商方案，幫您每年節省數百加元",
+    heroProgressSteps: ["輸入帳單", "查看結果", "取得優惠"],
     heroFlowHelper: "全程免費。先看結果，再決定是否需要人工複核。",
     formTitle: "帳單資訊",
     province: "預設地區：Prince Edward Island",
@@ -335,8 +337,9 @@ const translations = {
     eyebrow: "PEI only · v1",
     title: "Bill Saver | Free PEI Mobile and Internet Bill Check",
     hero: "Enter bill details first to see your result. If you want available offers, submit contact details for manual review afterward.",
-    heroFlowTitle: "3-Step Free Bill Check",
-    heroFlowSteps: ["Enter your bill", "View your result", "Submit contact details to access available offers"],
+    heroHeadline: "Check Your Bill · Find Better Offers",
+    heroSubtitle: "Quickly compare provider options and potentially save hundreds per year",
+    heroProgressSteps: ["Enter Bill", "View Result", "Get Offer"],
     heroFlowHelper: "Free to use. Check your result first, then decide whether you want manual follow-up.",
     formTitle: "Bill details",
     province: "Default region: Prince Edward Island",
@@ -982,6 +985,7 @@ export default function Home() {
       : language === "zhHant"
         ? "Bill Saver｜PEI 手機寬頻帳單免費體檢"
         : "Bill Saver | Free PEI Mobile & Internet Bill Check";
+  const currentStep = leadOpen ? 3 : resultOpen ? 2 : 1;
 
   useEffect(() => {
     function onKeyDown(event) {
@@ -1051,42 +1055,49 @@ export default function Home() {
 
   return (
     <main className="page-shell" lang={language === "en" ? "en" : language === "zhHant" ? "zh-Hant" : "zh-CN"}>
-      <div className="language-switcher" aria-label="Language switcher">
-        {languages.map((item) => (
-          <button
-            key={item.code}
-            type="button"
-            className={language === item.code ? "active" : ""}
-            onClick={() => setLanguage(item.code)}
-            aria-label={translations[item.code].languageName}
-          >
-            {item.label}
-          </button>
-        ))}
-      </div>
-
       <section className="hero">
-        <div>
-          <p className="eyebrow">{t.eyebrow}</p>
-          <div className="heroLogoWrap">
+        <div className="heroInner">
+          <div className="heroTopBar">
             <Image
               src={heroLogoSrc}
               alt={heroLogoAlt}
-              width={1600}
-              height={420}
+              width={520}
+              height={140}
               priority
-              className="heroLogo"
+              className="heroBrandLogo"
             />
-          </div>
-          <div className="hero-flow" aria-label={t.heroFlowTitle}>
-            <p className="hero-flow-title">{t.heroFlowTitle}</p>
-            <div className="hero-flow-steps">
-              {t.heroFlowSteps.map((step, index) => (
-                <span className="hero-flow-step" key={step}>
-                  {step}
-                  {index < t.heroFlowSteps.length - 1 && <b aria-hidden="true">→</b>}
-                </span>
+            <div className="language-switcher" aria-label="Language switcher">
+              {languages.map((item) => (
+                <button
+                  key={item.code}
+                  type="button"
+                  className={language === item.code ? "active" : ""}
+                  onClick={() => setLanguage(item.code)}
+                  aria-label={translations[item.code].languageName}
+                >
+                  {item.label}
+                </button>
               ))}
+            </div>
+          </div>
+
+          <div className="heroContent">
+            <p className="eyebrow">{t.eyebrow}</p>
+            <h1 className="heroTitle">{t.heroHeadline}</h1>
+            <p className="heroSubtitle">{t.heroSubtitle}</p>
+            <div className="stepProgress" aria-label={t.heroHeadline}>
+              {t.heroProgressSteps.map((step, index) => {
+                const stepNumber = index + 1;
+                const isComplete = stepNumber < currentStep;
+                const isCurrent = stepNumber === currentStep;
+
+                return (
+                  <div className={`stepItem ${isComplete ? "complete" : ""} ${isCurrent ? "current" : ""}`} key={step}>
+                    <span className="stepCircle">{isComplete ? "✓" : stepNumber}</span>
+                    <span className="stepLabel">{step}</span>
+                  </div>
+                );
+              })}
             </div>
             <p className="hero-flow-helper">{t.heroFlowHelper}</p>
           </div>
