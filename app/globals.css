@@ -1981,18 +1981,8 @@ textarea:focus {
   border-radius: 28px;
   background: linear-gradient(180deg, rgba(8, 49, 64, 0.82), rgba(2, 31, 43, 0.9));
   box-shadow: 0 28px 90px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  padding: 28px 34px 34px;
+  padding: 26px 34px 34px;
   backdrop-filter: blur(18px);
-}
-
-.workspace.single-column .form-panel .section-heading {
-  align-items: center;
-  border-color: rgba(164, 238, 224, 0.16);
-}
-
-.workspace.single-column .form-panel .section-heading h2,
-.workspace.single-column .form-panel .section-heading p {
-  color: rgba(255, 255, 255, 0.92);
 }
 
 .workspace.single-column .form-panel .field {

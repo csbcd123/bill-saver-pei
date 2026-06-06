@@ -1855,11 +1855,6 @@ export default function Home() {
 
       <section className="workspace single-column">
         <form className="panel form-panel" onSubmit={submitInitial} noValidate>
-          <div className="section-heading">
-            <h2>{t.formTitle}</h2>
-            <p>{t.province}</p>
-          </div>
-
           {sheetError && <div className="error">{sheetError}</div>}
 
           <div className="field bill-type-field">
