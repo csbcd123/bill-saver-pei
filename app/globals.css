@@ -163,7 +163,7 @@ h1 {
 .heroTitle {
   margin: 0;
   color: #fff;
-  font-size: clamp(42px, 5.2vw, 68px);
+  font-size: clamp(34px, 3.6vw, 48px);
   font-weight: 900;
   letter-spacing: 0.03em;
   line-height: 1.08;
@@ -172,11 +172,11 @@ h1 {
 }
 
 .heroSubtitle {
-  margin: 16px auto 0;
+  margin: 10px auto 0;
   max-width: 760px;
   color: rgba(255, 255, 255, 0.82);
-  font-size: clamp(18px, 1.8vw, 24px);
-  line-height: 1.5;
+  font-size: clamp(15px, 1.35vw, 19px);
+  line-height: 1.45;
   font-weight: 500;
   letter-spacing: 0.02em;
   text-shadow: 0 6px 18px rgba(0, 0, 0, 0.42);
@@ -184,17 +184,17 @@ h1 {
 
 .stepProgress {
   position: relative;
-  width: min(760px, 80vw);
-  height: 116px;
-  margin: 50px auto 0;
+  width: min(700px, 74vw);
+  height: 86px;
+  margin: 28px auto 0;
 }
 
 .stepTrack {
   position: absolute;
-  top: 30px;
+  top: 24px;
   left: 9%;
   right: 9%;
-  height: 5px;
+  height: 4px;
   overflow: hidden;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.46);
@@ -205,7 +205,7 @@ h1 {
   height: 100%;
   border-radius: 999px;
   background: linear-gradient(90deg, #12f0a4, #0fd694);
-  box-shadow: 0 0 22px rgba(18, 240, 164, 0.42);
+  box-shadow: 0 0 18px rgba(18, 240, 164, 0.38);
 }
 
 .stepNode {
@@ -213,7 +213,7 @@ h1 {
   top: 0;
   z-index: 1;
   display: flex;
-  width: 140px;
+  width: 120px;
   transform: translateX(-50%);
   flex-direction: column;
   align-items: center;
@@ -234,23 +234,23 @@ h1 {
 .stepCircle {
   display: grid;
   place-items: center;
-  width: 66px;
-  height: 66px;
-  border: 4px solid rgba(255, 255, 255, 0.68);
+  width: 54px;
+  height: 54px;
+  border: 3px solid rgba(255, 255, 255, 0.68);
   border-radius: 999px;
   background: rgba(7, 34, 42, 0.64);
   color: rgba(255, 255, 255, 0.86);
-  font-size: 30px;
+  font-size: 24px;
   font-weight: 850;
   line-height: 1;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .stepNode.active .stepCircle {
   border-color: rgba(255, 255, 255, 0.96);
   background: linear-gradient(135deg, #24e9aa, #0eae80);
   color: #fff;
-  box-shadow: 0 0 0 7px rgba(36, 233, 170, 0.16), 0 0 26px rgba(36, 233, 170, 0.38), 0 16px 34px rgba(0, 0, 0, 0.36);
+  box-shadow: 0 0 0 6px rgba(36, 233, 170, 0.14), 0 0 22px rgba(36, 233, 170, 0.34), 0 14px 30px rgba(0, 0, 0, 0.34);
 }
 
 .stepNode.done .stepCircle {
@@ -260,9 +260,9 @@ h1 {
 }
 
 .stepLabel {
-  margin-top: 14px;
+  margin-top: 10px;
   color: rgba(255, 255, 255, 0.76);
-  font-size: 19px;
+  font-size: 16px;
   line-height: 1.2;
   font-weight: 800;
   text-align: center;
@@ -1916,19 +1916,19 @@ textarea:focus {
 
 .heroSection {
   position: relative;
-  min-height: 560px;
-  padding: 28px 48px 120px;
+  min-height: 430px;
+  padding: 22px 48px 36px;
   color: #fff;
   overflow: hidden;
   background-image:
     linear-gradient(
       180deg,
-      rgba(0, 18, 28, 0.3) 0%,
-      rgba(0, 18, 28, 0.42) 45%,
-      rgba(0, 18, 28, 0.78) 100%
+      rgba(0, 18, 28, 0.1) 0%,
+      rgba(0, 18, 28, 0.22) 48%,
+      rgba(0, 18, 28, 0.48) 100%
     ),
     url("/pei-lighthouse-hero.png");
-  background-position: 65% top;
+  background-position: center top;
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -1940,8 +1940,8 @@ textarea:focus {
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(circle at 82% 18%, rgba(255, 90, 40, 0.14), transparent 28%),
-    linear-gradient(90deg, rgba(0, 18, 28, 0.34), rgba(0, 18, 28, 0.12), rgba(0, 18, 28, 0.28));
+    radial-gradient(circle at 82% 18%, rgba(255, 90, 40, 0.08), transparent 28%),
+    linear-gradient(90deg, rgba(0, 18, 28, 0.18), rgba(0, 18, 28, 0.06), rgba(0, 18, 28, 0.16));
 }
 
 .heroSection > * {
@@ -1950,7 +1950,7 @@ textarea:focus {
 }
 
 .heroInner {
-  min-height: 310px;
+  min-height: 270px;
 }
 
 .heroBrandLogo {
@@ -1959,31 +1959,33 @@ textarea:focus {
 }
 
 .heroContent {
-  margin-top: 20px;
+  max-width: 900px;
+  margin-top: -4px;
 }
 
 .heroContent .eyebrow {
+  margin-bottom: 8px;
   color: #b6fff0;
-  font-size: 18px;
+  font-size: 15px;
 }
 
 .workspace.single-column {
-  grid-template-columns: minmax(0, 1280px);
+  grid-template-columns: minmax(0, 1180px);
   position: relative;
   z-index: 2;
-  width: min(1328px, 100%);
-  margin-top: -90px;
-  padding: 0 24px 80px;
+  width: min(1276px, 100%);
+  margin-top: -88px;
+  padding: 0 48px 70px;
 }
 
 .workspace.single-column .form-panel {
   width: 100%;
   color: #fff;
   border: 1px solid rgba(164, 238, 224, 0.22);
-  border-radius: 28px;
+  border-radius: 24px;
   background: linear-gradient(180deg, rgba(8, 49, 64, 0.82), rgba(2, 31, 43, 0.9));
-  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  padding: 26px 34px 34px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  padding: 24px 30px 30px;
   backdrop-filter: blur(18px);
 }
 
@@ -2002,8 +2004,8 @@ textarea:focus {
 }
 
 .bill-type-grid {
-  gap: 28px;
-  margin: 0 0 26px;
+  gap: 24px;
+  margin: 0 0 22px;
 }
 
 .service-card {
@@ -2022,9 +2024,10 @@ textarea:focus {
 }
 
 .bill-type-card {
-  min-height: 112px;
+  min-height: 96px;
   gap: 18px;
-  padding: 20px 28px;
+  padding: 18px 24px;
+  border-radius: 15px;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.095), rgba(255, 255, 255, 0.055));
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 12px 28px rgba(0, 0, 0, 0.16);
 }
@@ -2049,9 +2052,9 @@ textarea:focus {
 .bill-type-icon-wrap {
   display: grid;
   place-items: center;
-  width: 54px;
-  height: 54px;
-  flex: 0 0 54px;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
   border-radius: 0;
   background: transparent;
   color: #fff;
@@ -2100,23 +2103,26 @@ textarea:focus {
 }
 
 .bill-type-title {
-  font-size: 25px;
+  font-size: 22px;
   line-height: 1.15;
   white-space: nowrap;
 }
 
 .bill-type-sub {
-  margin-top: 7px;
+  margin-top: 5px;
   color: rgba(255, 255, 255, 0.68);
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 500;
   line-height: 1.25;
   white-space: nowrap;
 }
 
 .bill-type-check {
-  top: 12px;
-  right: 12px;
+  top: 10px;
+  right: 10px;
+  width: 26px;
+  height: 26px;
+  font-size: 18px;
 }
 
 .service-card.active {
@@ -2192,12 +2198,12 @@ textarea:focus {
 
 .workspace.single-column .form-split {
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 36px;
+  gap: 32px;
   align-items: stretch;
   border: 1px solid rgba(164, 238, 224, 0.14);
-  border-radius: 20px;
+  border-radius: 18px;
   background: rgba(0, 24, 36, 0.28);
-  padding: 24px;
+  padding: 22px;
 }
 
 .workspace.single-column .form-split-left {
@@ -2229,7 +2235,7 @@ textarea:focus {
 
 .form-split-right .field > span:first-child {
   margin-bottom: 1px;
-  font-size: 1.06rem;
+  font-size: 1rem;
   line-height: 1.35;
   font-weight: 700;
 }
@@ -2243,21 +2249,21 @@ textarea:focus {
 }
 
 .usage-card-grid.compact {
-  gap: 14px;
+  gap: 12px;
 }
 
 .usage-card {
   position: relative;
   display: grid;
-  grid-template-columns: 64px minmax(0, 1fr) 118px;
+  grid-template-columns: 60px minmax(0, 1fr) 110px;
   align-items: center;
-  gap: 16px;
-  min-height: 96px;
+  gap: 14px;
+  min-height: 88px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.055);
   color: #fff;
-  padding: 16px 18px;
+  padding: 14px 16px;
 }
 
 .usage-card:hover {
@@ -2278,9 +2284,9 @@ textarea:focus {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 58px;
-  height: 58px;
-  flex: 0 0 58px;
+  width: 52px;
+  height: 52px;
+  flex: 0 0 52px;
   border-radius: 50%;
   background: rgba(70, 125, 145, 0.62);
   color: #fff;
@@ -2294,8 +2300,8 @@ textarea:focus {
 
 .usage-card-icon svg {
   display: block;
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   color: #fff;
   opacity: 1;
   stroke: currentColor;
@@ -2306,23 +2312,23 @@ textarea:focus {
 }
 
 .usage-card-copy strong {
-  margin-bottom: 6px;
+  margin-bottom: 5px;
   color: #fff;
-  font-size: 1.18rem;
+  font-size: 1.125rem;
   line-height: 1.2;
 }
 
 .usage-card-copy span {
   color: rgba(255, 255, 255, 0.66);
-  font-size: 0.875rem;
-  line-height: 1.45;
+  font-size: 0.8125rem;
+  line-height: 1.38;
   white-space: pre-line;
 }
 
 .usage-card-speed {
   min-width: 110px;
   color: rgba(255, 255, 255, 0.9);
-  font-size: 0.96rem;
+  font-size: 0.9375rem;
   font-weight: 800;
   text-align: right;
 }
@@ -2331,7 +2337,7 @@ textarea:focus {
   display: block;
   margin-bottom: 4px;
   color: rgba(255, 255, 255, 0.48);
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
 }
 
 .usage-card .usage-card-check {
@@ -2394,7 +2400,7 @@ textarea:focus {
   position: relative;
   display: flex;
   align-items: center;
-  min-height: 58px;
+  min-height: 54px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.055);
@@ -2406,9 +2412,9 @@ textarea:focus {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 58px;
-  height: 58px;
-  flex: 0 0 58px;
+  width: 54px;
+  height: 54px;
+  flex: 0 0 54px;
   color: rgba(255, 255, 255, 0.82);
 }
 
@@ -2432,14 +2438,14 @@ textarea:focus {
 .input-shell select {
   flex: 1;
   min-width: 0;
-  height: 58px;
-  min-height: 58px;
+  height: 54px;
+  min-height: 54px;
   border: 0;
   border-radius: 0;
   background: transparent;
   color: #fff;
   padding: 0 12px 0 0;
-  font-size: 16px;
+  font-size: 15px;
   box-shadow: none;
 }
 
@@ -2490,13 +2496,13 @@ textarea:focus {
   align-items: center;
   justify-content: center;
   gap: 14px;
-  width: min(520px, 100%);
-  min-height: 64px;
-  margin: 26px auto 0;
+  width: min(460px, 100%);
+  min-height: 58px;
+  margin: 24px auto 0;
   border-radius: 999px;
   background: linear-gradient(135deg, #16e39b, #0eb47d);
   color: #fff;
-  font-size: clamp(1.1rem, 2vw, 1.55rem);
+  font-size: 22px;
   font-weight: 900;
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.3);
   transition: transform 160ms ease, box-shadow 160ms ease;
@@ -2512,9 +2518,9 @@ textarea:focus {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin: 12px auto 0;
+  margin: 10px auto 0;
   color: rgba(255, 255, 255, 0.58);
-  font-size: 0.82rem;
+  font-size: 13px;
   text-align: center;
 }
 
