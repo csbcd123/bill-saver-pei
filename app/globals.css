@@ -1927,7 +1927,7 @@ textarea:focus {
       rgba(0, 18, 28, 0.42) 45%,
       rgba(0, 18, 28, 0.78) 100%
     ),
-    url("/pei-lighthouse-hero.png");
+    url("/bill-saver-hero-frame.png");
   background-position: 65% top;
   background-size: cover;
   background-repeat: no-repeat;
@@ -2736,6 +2736,269 @@ textarea:focus {
   .usage-card-speed {
     grid-column: 2;
     min-width: 0;
+    text-align: left;
+  }
+}
+
+/* Full-frame homepage artwork */
+.billSaverPage {
+  min-height: 100vh;
+  background: #00141c;
+  color: #fff;
+}
+
+.heroFrame {
+  position: relative;
+  width: 100%;
+  min-height: max(100vh, 1120px);
+  overflow: hidden;
+  background-image: url("/bill-saver-hero-frame.png");
+  background-position: center top;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.embeddedFormCard {
+  position: absolute;
+  top: 44%;
+  left: 50%;
+  z-index: 2;
+  width: min(1120px, 78vw);
+  min-height: 430px;
+  transform: translateX(-50%);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: #fff;
+  padding: 0;
+}
+
+.embeddedFormCard .bill-type-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin-bottom: 22px;
+}
+
+.embeddedFormCard .bill-type-card {
+  min-height: 92px;
+  gap: 16px;
+  border-radius: 14px;
+  border-color: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.075);
+  padding: 18px 24px;
+}
+
+.embeddedFormCard .bill-type-card.active {
+  border-color: #18e6a4;
+  background:
+    radial-gradient(circle at 20% 50%, rgba(35, 236, 168, 0.26), transparent 34%),
+    linear-gradient(135deg, rgba(9, 139, 108, 0.78), rgba(5, 78, 87, 0.8));
+}
+
+.embeddedFormCard .bill-type-icon-wrap {
+  width: 48px;
+  height: 48px;
+  flex-basis: 48px;
+}
+
+.embeddedFormCard .bill-type-title {
+  font-size: 22px;
+}
+
+.embeddedFormCard .bill-type-sub {
+  margin-top: 5px;
+  font-size: 14px;
+}
+
+.embeddedFormCard .bill-type-check {
+  top: 10px;
+  right: 10px;
+  width: 26px;
+  height: 26px;
+  font-size: 18px;
+}
+
+.embeddedFormCard .form-split {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 32px;
+  align-items: stretch;
+  margin-top: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 20px 0 0;
+}
+
+.embeddedFormCard .form-split-left {
+  border-right: 1px solid rgba(164, 238, 224, 0.2);
+  padding-right: 28px;
+}
+
+.embeddedFormCard .form-split-right {
+  gap: 18px;
+  padding-left: 4px;
+}
+
+.embeddedFormCard .field {
+  color: rgba(255, 255, 255, 0.84);
+  font-size: 15.5px;
+  font-weight: 700;
+}
+
+.embeddedFormCard .form-side-title {
+  margin: 0 0 14px;
+  font-size: 18px;
+  line-height: 1.3;
+  font-weight: 900;
+}
+
+.embeddedFormCard .usage-card-grid.compact {
+  gap: 11px;
+}
+
+.embeddedFormCard .usage-card {
+  grid-template-columns: 58px minmax(0, 1fr) 108px;
+  gap: 14px;
+  min-height: 82px;
+  border-radius: 13px;
+  padding: 13px 15px;
+}
+
+.embeddedFormCard .mobile-usage-card,
+.embeddedFormCard .bundle-usage-card.mobile-usage-card {
+  grid-template-columns: 54px minmax(0, 1fr);
+}
+
+.embeddedFormCard .usage-card-icon,
+.embeddedFormCard .bundle-usage-card .usage-card-icon {
+  width: 48px;
+  height: 48px;
+  flex-basis: 48px;
+}
+
+.embeddedFormCard .usage-card-icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+.embeddedFormCard .usage-card-copy strong,
+.embeddedFormCard .bundle-usage-card .usage-card-copy strong {
+  margin-bottom: 4px;
+  font-size: 17px;
+}
+
+.embeddedFormCard .usage-card-copy span,
+.embeddedFormCard .bundle-usage-card .usage-card-copy span {
+  font-size: 12.5px;
+  line-height: 1.38;
+}
+
+.embeddedFormCard .usage-card-speed {
+  min-width: 100px;
+  font-size: 14px;
+}
+
+.embeddedFormCard .usage-card-speed small {
+  font-size: 11px;
+}
+
+.embeddedFormCard .usageHelpLink {
+  min-height: 36px;
+  margin-top: 6px;
+  font-size: 13px;
+}
+
+.embeddedFormCard .input-shell {
+  min-height: 52px;
+}
+
+.embeddedFormCard .input-icon {
+  width: 52px;
+  height: 52px;
+  flex-basis: 52px;
+}
+
+.embeddedFormCard .input-shell input,
+.embeddedFormCard .input-shell select {
+  height: 52px;
+  min-height: 52px;
+  font-size: 15px;
+}
+
+.embeddedFormCard .input-unit,
+.embeddedFormCard .select-chevron {
+  padding: 0 16px;
+}
+
+.embeddedFormCard .submit-button {
+  width: min(420px, 100%);
+  min-height: 54px;
+  margin: 20px auto 0;
+  font-size: 21px;
+}
+
+.embeddedFormCard .form-safe-note {
+  margin-top: 9px;
+  font-size: 12.5px;
+}
+
+@media (max-width: 900px) {
+  .heroFrame {
+    min-height: auto;
+    overflow: visible;
+    background-position: center top;
+    background-size: cover;
+    padding-top: 360px;
+  }
+
+  .embeddedFormCard {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: calc(100% - 28px);
+    min-height: 0;
+    margin: -40px auto 60px;
+    transform: none;
+    border: 1px solid rgba(164, 238, 224, 0.22);
+    border-radius: 22px;
+    background: linear-gradient(180deg, rgba(8, 49, 64, 0.84), rgba(2, 31, 43, 0.9));
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.42);
+    padding: 20px;
+  }
+
+  .embeddedFormCard .bill-type-grid,
+  .embeddedFormCard .form-split {
+    grid-template-columns: 1fr;
+  }
+
+  .embeddedFormCard .bill-type-grid {
+    gap: 14px;
+  }
+
+  .embeddedFormCard .form-split {
+    gap: 22px;
+    padding-top: 18px;
+  }
+
+  .embeddedFormCard .form-split-left {
+    border-right: 0;
+    border-bottom: 1px solid rgba(164, 238, 224, 0.18);
+    padding-right: 0;
+    padding-bottom: 18px;
+  }
+
+  .embeddedFormCard .form-split-right {
+    padding-left: 0;
+  }
+
+  .embeddedFormCard .usage-card,
+  .embeddedFormCard .bundle-usage-card {
+    grid-template-columns: 54px minmax(0, 1fr);
+  }
+
+  .embeddedFormCard .usage-card-speed {
+    grid-column: 2;
     text-align: left;
   }
 }
