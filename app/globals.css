@@ -127,18 +127,23 @@ textarea {
 
 .heroContent {
   align-self: center;
-  max-width: 900px;
-  margin: 28px auto 0;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 980px;
+  margin: 20px auto 0;
   text-align: center;
 }
 
 .eyebrow {
-  margin: 0 0 16px;
-  color: #bbe7dc;
-  font-size: 1.1rem;
+  margin: 0 0 14px;
+  color: #b6fff0;
+  font-size: 18px;
+  line-height: 1.2;
   font-weight: 800;
-  letter-spacing: 0;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
 }
 
 h1,
@@ -156,81 +161,122 @@ h1 {
 }
 
 .heroTitle {
-  margin-bottom: 0;
+  margin: 0;
   color: #fff;
-  font-size: clamp(38px, 5vw, 64px);
+  font-size: clamp(42px, 5.2vw, 68px);
   font-weight: 900;
-  letter-spacing: 0.04em;
-  line-height: 1.12;
-  text-shadow: 0 8px 28px rgba(0, 0, 0, 0.48);
+  letter-spacing: 0.03em;
+  line-height: 1.08;
+  text-align: center;
+  text-shadow: 0 4px 0 rgba(0, 0, 0, 0.1), 0 10px 28px rgba(0, 0, 0, 0.48);
 }
 
 .heroSubtitle {
-  margin: 14px auto 0;
+  margin: 16px auto 0;
   max-width: 760px;
   color: rgba(255, 255, 255, 0.82);
-  font-size: clamp(17px, 1.6vw, 23px);
-  line-height: 1.6;
-  text-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+  font-size: clamp(18px, 1.8vw, 24px);
+  line-height: 1.5;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-shadow: 0 6px 18px rgba(0, 0, 0, 0.42);
 }
 
 .stepProgress {
   position: relative;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
-  max-width: 760px;
-  margin: 36px auto 0;
+  width: min(760px, 80vw);
+  height: 116px;
+  margin: 50px auto 0;
 }
 
-.stepProgress::before {
-  content: "";
+.stepTrack {
   position: absolute;
-  top: 19px;
-  left: calc(16.66% + 19px);
-  right: calc(16.66% + 19px);
-  height: 2px;
-  background: rgba(255, 255, 255, 0.24);
+  top: 30px;
+  left: 9%;
+  right: 9%;
+  height: 5px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.46);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
-.stepItem {
-  position: relative;
+.stepTrackActive {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #12f0a4, #0fd694);
+  box-shadow: 0 0 22px rgba(18, 240, 164, 0.42);
+}
+
+.stepNode {
+  position: absolute;
+  top: 0;
   z-index: 1;
-  display: grid;
-  justify-items: center;
-  gap: 9px;
-  color: rgba(255, 255, 255, 0.68);
+  display: flex;
+  width: 140px;
+  transform: translateX(-50%);
+  flex-direction: column;
+  align-items: center;
+}
+
+.stepNode1 {
+  left: 9%;
+}
+
+.stepNode2 {
+  left: 50%;
+}
+
+.stepNode3 {
+  left: 91%;
 }
 
 .stepCircle {
   display: grid;
   place-items: center;
-  width: 38px;
-  height: 38px;
-  border: 1px solid rgba(255, 255, 255, 0.32);
-  border-radius: 50%;
-  background: rgba(8, 46, 40, 0.72);
-  color: rgba(255, 255, 255, 0.78);
-  font-weight: 900;
-  backdrop-filter: blur(8px);
+  width: 66px;
+  height: 66px;
+  border: 4px solid rgba(255, 255, 255, 0.68);
+  border-radius: 999px;
+  background: rgba(7, 34, 42, 0.64);
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 30px;
+  font-weight: 850;
+  line-height: 1;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-.stepItem.complete .stepCircle,
-.stepItem.current .stepCircle {
-  border-color: rgba(187, 231, 220, 0.9);
-  background: #0f7b68;
+.stepNode.active .stepCircle {
+  border-color: rgba(255, 255, 255, 0.96);
+  background: linear-gradient(135deg, #24e9aa, #0eae80);
   color: #fff;
-  box-shadow: 0 0 0 6px rgba(15, 123, 104, 0.18);
+  box-shadow: 0 0 0 7px rgba(36, 233, 170, 0.16), 0 0 26px rgba(36, 233, 170, 0.38), 0 16px 34px rgba(0, 0, 0, 0.36);
+}
+
+.stepNode.done .stepCircle {
+  border-color: rgba(255, 255, 255, 0.86);
+  background: linear-gradient(135deg, #18c992, #0d8f73);
+  color: #fff;
 }
 
 .stepLabel {
-  font-size: 0.94rem;
+  margin-top: 14px;
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 19px;
+  line-height: 1.2;
   font-weight: 800;
+  text-align: center;
+  white-space: nowrap;
+  text-shadow: 0 6px 16px rgba(0, 0, 0, 0.36);
 }
 
-.stepItem.complete,
-.stepItem.current {
-  color: #fff;
+.stepNode.active .stepLabel {
+  color: #1ff0aa;
+  text-shadow: 0 0 18px rgba(31, 240, 170, 0.42), 0 6px 16px rgba(0, 0, 0, 0.36);
+}
+
+.stepNode.done .stepLabel {
+  color: rgba(31, 240, 170, 0.88);
 }
 
 .workspace {
@@ -1558,23 +1604,6 @@ textarea:focus {
     width: 100%;
   }
 
-  .heroTitle {
-    font-size: clamp(30px, 9vw, 42px);
-  }
-
-  .heroSubtitle {
-    font-size: 0.96rem;
-  }
-
-  .stepProgress {
-    gap: 8px;
-    margin-top: 28px;
-  }
-
-  .stepLabel {
-    font-size: 0.82rem;
-  }
-
   .workspace,
   .group-section,
   .site-footer {
@@ -1795,33 +1824,6 @@ textarea:focus {
     max-width: 42vw;
   }
 
-  .heroTitle {
-    font-size: 28px;
-  }
-
-  .heroSubtitle {
-    font-size: 0.9rem;
-    line-height: 1.5;
-  }
-
-  .stepProgress {
-    gap: 4px;
-  }
-
-  .stepProgress::before {
-    left: calc(16.66% + 15px);
-    right: calc(16.66% + 15px);
-  }
-
-  .stepCircle {
-    width: 32px;
-    height: 32px;
-  }
-
-  .stepLabel {
-    font-size: 0.72rem;
-  }
-
   .workspace,
   .group-section,
   .site-footer {
@@ -1957,11 +1959,11 @@ textarea:focus {
 }
 
 .heroContent {
-  margin-top: 8px;
+  margin-top: 20px;
 }
 
 .heroContent .eyebrow {
-  color: #b8f3e5;
+  color: #b6fff0;
   font-size: 18px;
 }
 
@@ -2632,6 +2634,69 @@ textarea:focus {
   }
 }
 
+@media (max-width: 768px) {
+  .heroContent {
+    margin-top: 26px;
+  }
+
+  .heroContent .eyebrow {
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+
+  .heroTitle {
+    font-size: clamp(32px, 9vw, 44px);
+    line-height: 1.12;
+    letter-spacing: 0.01em;
+  }
+
+  .heroSubtitle {
+    margin-top: 12px;
+    font-size: 15px;
+  }
+
+  .stepProgress {
+    width: min(360px, 92vw);
+    height: 88px;
+    margin-top: 34px;
+  }
+
+  .stepTrack {
+    top: 23px;
+    left: 11%;
+    right: 11%;
+    height: 4px;
+  }
+
+  .stepNode {
+    width: 92px;
+  }
+
+  .stepNode1 {
+    left: 11%;
+  }
+
+  .stepNode2 {
+    left: 50%;
+  }
+
+  .stepNode3 {
+    left: 89%;
+  }
+
+  .stepCircle {
+    width: 50px;
+    height: 50px;
+    border-width: 3px;
+    font-size: 22px;
+  }
+
+  .stepLabel {
+    margin-top: 9px;
+    font-size: 13px;
+  }
+}
+
 @media (max-width: 600px) {
   .heroSection {
     min-height: 480px;
@@ -2650,14 +2715,6 @@ textarea:focus {
 
   .language-switcher button {
     min-width: 38px;
-  }
-
-  .heroContent {
-    margin-top: 0;
-  }
-
-  .heroTitle {
-    font-size: clamp(28px, 9vw, 38px);
   }
 
   .workspace.single-column .form-panel {

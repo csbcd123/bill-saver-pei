@@ -1836,13 +1836,19 @@ export default function Home() {
             <h1 className="heroTitle">{t.heroHeadline}</h1>
             <p className="heroSubtitle">{t.heroSubtitle}</p>
             <div className="stepProgress" aria-label={t.heroHeadline}>
+              <div className="stepTrack" aria-hidden="true">
+                <div
+                  className="stepTrackActive"
+                  style={{ width: currentStep >= 3 ? "100%" : "50%" }}
+                />
+              </div>
               {t.heroProgressSteps.map((step, index) => {
                 const stepNumber = index + 1;
                 const isComplete = stepNumber < currentStep;
                 const isCurrent = stepNumber === currentStep;
 
                 return (
-                  <div className={`stepItem ${isComplete ? "complete" : ""} ${isCurrent ? "current" : ""}`} key={step}>
+                  <div className={`stepNode stepNode${stepNumber} ${isComplete ? "done" : ""} ${isCurrent ? "active" : ""}`} key={step}>
                     <span className="stepCircle">{isComplete ? "✓" : stepNumber}</span>
                     <span className="stepLabel">{step}</span>
                   </div>
