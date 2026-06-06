@@ -651,12 +651,14 @@ const initialLead = {
 };
 
 function Field({ label, children, className = "", icon = "", unit = "" }) {
+  const iconClassName = icon === "$" ? "input-icon input-icon-dollar" : "input-icon";
+
   return (
     <label className={`field ${className}`.trim()}>
       <span>{label}</span>
       {icon ? (
         <span className="input-shell">
-          <span className="input-icon" aria-hidden="true">{icon}</span>
+          <span className={iconClassName} aria-hidden="true">{icon}</span>
           {children}
           {unit && <span className="input-unit">{unit}</span>}
           {children?.type === Select && <span className="select-chevron" aria-hidden="true">⌄</span>}
@@ -672,14 +674,14 @@ function Select({ value, onChange, children }) {
   return <select value={value} onChange={(event) => onChange(event.target.value)}>{children}</select>;
 }
 
-function LineIcon({ name, size = 32 }) {
+function LineIcon({ name, size = 32, strokeWidth = 2.4 }) {
   const common = {
     width: size,
     height: size,
     viewBox: "0 0 24 24",
     fill: "none",
     stroke: "currentColor",
-    strokeWidth: 2.4,
+    strokeWidth,
     strokeLinecap: "round",
     strokeLinejoin: "round",
     "aria-hidden": true
@@ -700,19 +702,25 @@ function LineIcon({ name, size = 32 }) {
   if (name === "users") {
     return <svg {...common}><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>;
   }
+  if (name === "building") {
+    return <svg {...common}><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18" /><path d="M2 22h20" /><path d="M9 6h1" /><path d="M14 6h1" /><path d="M9 10h1" /><path d="M14 10h1" /><path d="M9 14h1" /><path d="M14 14h1" /><path d="M10 22v-4h4v4" /></svg>;
+  }
+  if (name === "map-pin") {
+    return <svg {...common}><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z" /><circle cx="12" cy="10" r="2.5" /></svg>;
+  }
   return <svg {...common}><path d="M4 20V14" /><path d="M10 20V10" /><path d="M16 20V6" /><path d="M22 20V2" /></svg>;
 }
 
 function ServiceTypeIcon({ type }) {
   return (
     <span className="bill-type-icon-wrap" aria-hidden="true">
-      {type === "internet" && <LineIcon name="wifi" size={38} />}
-      {type === "mobile" && <LineIcon name="smartphone" size={36} />}
+      {type === "internet" && <LineIcon name="wifi" size={36} strokeWidth={2.8} />}
+      {type === "mobile" && <LineIcon name="smartphone" size={34} strokeWidth={2.6} />}
       {type === "both" && (
         <span className="bill-type-combo-icon">
-          <LineIcon name="wifi" size={27} />
+          <LineIcon name="wifi" size={32} strokeWidth={2.8} />
           <span>+</span>
-          <LineIcon name="smartphone" size={25} />
+          <LineIcon name="smartphone" size={30} strokeWidth={2.6} />
         </span>
       )}
     </span>
@@ -731,7 +739,7 @@ function serviceTypeSubtitle(language, type) {
 
 function UsageIcon({ type }) {
   const iconName = type === "light" ? "leaf" : type === "standard" ? "home" : type === "heavy" ? "users" : "data";
-  return <span className="usage-card-icon" aria-hidden="true"><LineIcon name={iconName} size={30} /></span>;
+  return <span className="usage-card-icon" aria-hidden="true"><LineIcon name={iconName} size={28} strokeWidth={2.5} /></span>;
 }
 
 function optionLabel(t, value) {
@@ -1933,7 +1941,7 @@ export default function Home() {
                 <h3 className="form-side-title">
                   {form.service_type === "internet" ? t.billInfoInternet : t.billInfoBoth}
                 </h3>
-                <Field icon="▦" label={form.service_type === "internet" ? t.providerInternet : t.providerBoth} className={missingFields.includes("current_provider") ? "missing" : ""}>
+                <Field icon={<LineIcon name="building" size={22} strokeWidth={2.2} />} label={form.service_type === "internet" ? t.providerInternet : t.providerBoth} className={missingFields.includes("current_provider") ? "missing" : ""}>
                   <Select value={form.current_provider} onChange={(value) => update("current_provider", value)}>
                     <option value="" disabled>
                       {t.providerPlaceholder}
@@ -1958,7 +1966,7 @@ export default function Home() {
                   />
                 </Field>
 
-                <Field icon="⌖" label={t.city} className={missingFields.includes("city") ? "missing" : ""}>
+                <Field icon={<LineIcon name="map-pin" size={22} strokeWidth={2.2} />} label={t.city} className={missingFields.includes("city") ? "missing" : ""}>
                   <Select value={form.city} onChange={(value) => update("city", value)}>
                     <option value="" disabled>
                       {t.areaPlaceholder}
@@ -1999,7 +2007,7 @@ export default function Home() {
 
               <div className="form-split-right form-column">
                 <h3 className="form-side-title">{t.billInfoMobile}</h3>
-                <Field icon="▦" label={t.providerMobile} className={missingFields.includes("current_provider") ? "missing" : ""}>
+                <Field icon={<LineIcon name="building" size={22} strokeWidth={2.2} />} label={t.providerMobile} className={missingFields.includes("current_provider") ? "missing" : ""}>
                   <Select value={form.current_provider} onChange={(value) => update("current_provider", value)}>
                     <option value="" disabled>
                       {t.providerPlaceholder}
@@ -2024,7 +2032,7 @@ export default function Home() {
                   />
                 </Field>
 
-                <Field icon="⌖" label={t.city} className={missingFields.includes("city") ? "missing" : ""}>
+                <Field icon={<LineIcon name="map-pin" size={22} strokeWidth={2.2} />} label={t.city} className={missingFields.includes("city") ? "missing" : ""}>
                   <Select value={form.city} onChange={(value) => update("city", value)}>
                     <option value="" disabled>
                       {t.areaPlaceholder}
