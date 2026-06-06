@@ -1875,16 +1875,16 @@ export default function Home() {
           </div>
 
           {showInternet ? (
-            <div className="form-split form-grid-top">
-              <div className="form-split-left">
-                <div className={`field ${missingFields.includes("internet_usage_level") ? "missing" : ""}`.trim()}>
+            <div className={`form-split form-grid-top ${showMobile ? "bundle-form-split" : "internet-form-split"}`}>
+              <div className="form-split-left form-column">
+                <div className={`field ${showMobile ? "bundle-usage-group" : ""} ${missingFields.includes("internet_usage_level") ? "missing" : ""}`.trim()}>
                   <span>{t.internetUsageLevel}</span>
                   <div className="usage-card-grid compact">
                     {usageLevels.map((item) => (
                       <button
                         key={item.value}
                         type="button"
-                        className={form.internet_usage_level === item.value ? "usage-card active" : "usage-card"}
+                        className={`${form.internet_usage_level === item.value ? "usage-card active" : "usage-card"} ${showMobile ? "bundle-usage-card" : "internet-usage-card"}`}
                         onClick={() => update("internet_usage_level", item.value)}
                       >
                         <UsageIcon type={item.value} />
@@ -1905,14 +1905,14 @@ export default function Home() {
                 </div>
 
                 {showMobile && (
-                  <div className={`field usage-section ${missingFields.includes("current_mobile_data") ? "missing" : ""}`.trim()}>
+                  <div className={`field usage-section bundle-usage-group ${missingFields.includes("current_mobile_data") ? "missing" : ""}`.trim()}>
                     <span>{t.mobileDataUsageTitle}</span>
                     <div className="usage-card-grid compact">
                       {mobileDataUsageLevels.map((item) => (
                         <button
                           key={item.value}
                           type="button"
-                          className={form.current_mobile_data === item.value ? "usage-card active" : "usage-card"}
+                          className={form.current_mobile_data === item.value ? "usage-card mobile-usage-card bundle-usage-card active" : "usage-card mobile-usage-card bundle-usage-card"}
                           onClick={() => update("current_mobile_data", item.value)}
                         >
                           <UsageIcon type="data" />
@@ -1929,7 +1929,7 @@ export default function Home() {
 
               </div>
 
-              <div className="form-split-right">
+              <div className="form-split-right form-column">
                 <h3 className="form-side-title">
                   {form.service_type === "internet" ? t.billInfoInternet : t.billInfoBoth}
                 </h3>
@@ -1973,8 +1973,8 @@ export default function Home() {
               </div>
             </div>
           ) : (
-            <div className="form-split form-grid-top">
-              <div className="form-split-left">
+            <div className="form-split form-grid-top mobile-form-split">
+              <div className="form-split-left form-column">
                 <div className={`field ${missingFields.includes("current_mobile_data") ? "missing" : ""}`.trim()}>
                   <span>{t.mobileDataUsageTitle}</span>
                   <div className="usage-card-grid compact">
@@ -1982,7 +1982,7 @@ export default function Home() {
                       <button
                         key={item.value}
                         type="button"
-                        className={form.current_mobile_data === item.value ? "usage-card active" : "usage-card"}
+                        className={form.current_mobile_data === item.value ? "usage-card mobile-usage-card active" : "usage-card mobile-usage-card"}
                         onClick={() => update("current_mobile_data", item.value)}
                       >
                         <UsageIcon type="data" />
@@ -1997,7 +1997,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="form-split-right">
+              <div className="form-split-right form-column">
                 <h3 className="form-side-title">{t.billInfoMobile}</h3>
                 <Field icon="▦" label={t.providerMobile} className={missingFields.includes("current_provider") ? "missing" : ""}>
                   <Select value={form.current_provider} onChange={(value) => update("current_provider", value)}>
