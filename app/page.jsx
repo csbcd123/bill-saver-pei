@@ -18,7 +18,7 @@ const translations = {
     eyebrow: "仅限 PEI · v1",
     title: "Bill Saver｜PEI 手机宽带账单免费体检",
     hero: "先输入账单信息查看体检结果。想拿到可用优惠时，再提交联系方式给人工复核。",
-    heroHeadline: "检查账单 · 发现更好优惠",
+    heroHeadline: "手机宽带账单免费体检",
     heroSubtitle: "快速比较运营商方案，帮您每年节省数百加元",
     heroProgressSteps: ["输入账单", "查看结果", "获取优惠"],
     formTitle: "账单信息",
@@ -205,8 +205,8 @@ const translations = {
     eyebrow: "僅限 PEI · v1",
     title: "Bill Saver｜PEI 手機寬頻帳單免費體檢",
     hero: "先輸入帳單資訊查看健檢結果。想取得可用優惠時，再提交聯絡方式給人工複核。",
-    heroHeadline: "檢查帳單 · 發現更好優惠",
-    heroSubtitle: "快速比較電信商方案，幫您每年節省數百加元",
+    heroHeadline: "手機寬頻帳單免費健檢",
+    heroSubtitle: "快速比較電信商方案，幫你每年節省數百加元",
     heroProgressSteps: ["輸入帳單", "查看結果", "取得優惠"],
     formTitle: "帳單資訊",
     province: "預設地區：Prince Edward Island",
@@ -392,8 +392,8 @@ const translations = {
     eyebrow: "PEI only · v1",
     title: "Bill Saver | Free PEI Mobile and Internet Bill Check",
     hero: "Enter bill details first to see your result. If you want available offers, submit contact details for manual review afterward.",
-    heroHeadline: "Check Your Bill · Find Better Offers",
-    heroSubtitle: "Quickly compare provider options and potentially save hundreds per year",
+    heroHeadline: "Free Mobile & Internet Bill Check",
+    heroSubtitle: "Quickly compare carrier plans and help you save hundreds per year",
     heroProgressSteps: ["Enter Bill", "View Result", "Get Offer"],
     formTitle: "Bill details",
     province: "Default region: Prince Edward Island",
@@ -1916,7 +1916,6 @@ export default function Home() {
           </div>
 
           <div className="heroContent">
-            <p className="eyebrow">{t.eyebrow}</p>
             <h1 className="heroTitle">{t.heroHeadline}</h1>
             <p className="heroSubtitle">{t.heroSubtitle}</p>
             <div className="stepProgress" aria-label={t.heroProgressSteps.join(" → ")}>
