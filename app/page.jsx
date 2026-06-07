@@ -754,7 +754,8 @@ function serviceTypeSubtitle(language, type) {
 
 function UsageIcon({ type }) {
   const iconName = type === "light" ? "leaf" : type === "standard" ? "home" : type === "heavy" ? "users" : "data";
-  return <span className="usage-card-icon" aria-hidden="true"><LineIcon name={iconName} size={28} strokeWidth={2.5} /></span>;
+  const iconSize = type === "heavy" ? 28 : 27;
+  return <span className={type === "heavy" ? "usage-card-icon usage-card-icon-heavy" : "usage-card-icon"} aria-hidden="true"><LineIcon name={iconName} size={iconSize} strokeWidth={2.5} /></span>;
 }
 
 function MobileUsageCard({ item, content, active, onClick, bundle = false }) {
@@ -1984,7 +1985,10 @@ export default function Home() {
                           <strong>{t.usageCards[item.value].title}</strong>
                           <span>{t.usageCards[item.value].description}</span>
                         </span>
-                        <span className="usage-card-speed"><small>{language === "en" ? "Recommended" : language === "zhHant" ? "建議頻寬" : "推荐带宽"}</small>{internetUsageSpeeds[item.value]}</span>
+                        <span className="usage-card-speed">
+                          <small>{language === "en" ? "Recommended" : language === "zhHant" ? "建議頻寬" : "推荐带宽"}</small>
+                          <strong>{internetUsageSpeeds[item.value]}</strong>
+                        </span>
                         {form.internet_usage_level === item.value && <span className="usage-card-check" aria-hidden="true">✓</span>}
                       </button>
                     ))}
