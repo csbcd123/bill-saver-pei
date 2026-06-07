@@ -809,10 +809,40 @@ function isPlanDataSuitableForUsage(planData, usageValue) {
   const bucket = getMobileUsageBucket(usageValue);
   if (!bucket || gb === null) return true;
   if (bucket === "under20") return gb < 30;
-  if (bucket === "20to50") return gb > 20 && gb < 60;
+  if (bucket === "20to50") return gb > 20;
   if (bucket === "50to100") return gb > 50;
   if (bucket === "over100") return gb > 100;
   return true;
+}
+
+function mobileOfferPrice(offer) {
+  const prices = [offer.bill_saver_target_price, offer.official_promo_price, offer.official_regular_price];
+  return prices.find((price) => typeof price === "number" && Number.isFinite(price)) ?? null;
+}
+
+function mobileDataOverprovisionPenalty(planData, usageValue) {
+  const gb = parseDataGB(planData);
+  const bucket = getMobileUsageBucket(usageValue);
+  if (!bucket || gb === null) return 0;
+
+  if (bucket === "20to50") {
+    if (gb <= 60) return 0;
+    if (gb <= 100) return 12;
+    return 25;
+  }
+
+  if (bucket === "50to100" && gb > 100) return 10;
+  return 0;
+}
+
+function mobileOfferSortScore(offer, form) {
+  const price = mobileOfferPrice(offer);
+  if (price === null) return 9999;
+
+  const currentPrice = monthlyPrice(form);
+  const estimatedSaving = currentPrice > 0 ? Math.max(0, currentPrice - price) : 0;
+
+  return price * 2 - estimatedSaving * 1.5 + mobileDataOverprovisionPenalty(offer.mobile_data, form.current_mobile_data);
 }
 
 function speedBucket(speed) {
@@ -1511,6 +1541,11 @@ function bestProviderOffer(offers, provider, form) {
   return matches.sort((a, b) => scoreOffer(b, form) - scoreOffer(a, form))[0];
 }
 
+function bestMobileProviderOffer(offers, provider, form) {
+  const matches = offers.filter((offer) => (provider === "Bell Aliant" ? isBell(offer) : offer.provider === provider));
+  return matches.sort((a, b) => mobileOfferSortScore(a, form) - mobileOfferSortScore(b, form))[0];
+}
+
 function internetPicks(form) {
   const offers = filterOutCurrentProvider(
     offerDatabase.filter((offer) => offer.service_type === "internet" && offer.status !== "inactive"),
@@ -1528,14 +1563,20 @@ function internetPicks(form) {
 }
 
 function mobilePicks(form) {
+  const currentPrice = monthlyPrice(form);
   const offers = filterOutCurrentProvider(
     offerDatabase.filter(
-      (offer) =>
-        offer.service_type === "mobile" &&
-        offer.status !== "inactive" &&
-        !isKoodoPrepaid(offer) &&
-        isPlanDataSuitableForUsage(offer.mobile_data, form.current_mobile_data) &&
-        !["Rogers", "Fido", "Virgin Plus"].includes(offer.provider)
+      (offer) => {
+        const offerPrice = mobileOfferPrice(offer);
+        return (
+          offer.service_type === "mobile" &&
+          offer.status !== "inactive" &&
+          !isKoodoPrepaid(offer) &&
+          isPlanDataSuitableForUsage(offer.mobile_data, form.current_mobile_data) &&
+          !["Rogers", "Fido", "Virgin Plus"].includes(offer.provider) &&
+          (offerPrice === null || currentPrice <= 0 || offerPrice < currentPrice)
+        );
+      }
     ),
     form.current_provider
   );
@@ -1553,8 +1594,10 @@ function mobilePicks(form) {
   }
 
   return providerOrder
-    .map((provider) => bestProviderOffer(offers, provider, form))
+    .map((provider) => bestMobileProviderOffer(offers, provider, form))
     .filter(Boolean)
+    .sort((a, b) => mobileOfferSortScore(a, form) - mobileOfferSortScore(b, form))
+    .slice(0, 3)
     .map((offer, index) => ({
       ...offer,
       pickTypeKey: index === 0 ? "highQualityPick" : /Public Mobile/i.test(offer.provider) ? "lowestCostPick" : "manualPick"
