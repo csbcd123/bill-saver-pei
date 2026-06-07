@@ -1745,6 +1745,15 @@ export default function Home() {
   const recommendations = useMemo(() => getRecommendations(form), [form]);
   const score = useMemo(() => calculateScore(form, recommendations), [form, recommendations]);
   const yearlySavings = useMemo(() => yearlySavingsValue(recommendations, form), [recommendations, form]);
+  const heroLogoSrc =
+    language === "zhHans" ? "/bill-saver-logo-zh.png" : language === "zhHant" ? "/bill-saver-logo-zh-tw.png" : "/bill-saver-logo-en.png";
+  const heroLogoAlt =
+    language === "zhHans"
+      ? "Bill Saver｜PEI 手机宽带账单免费体检"
+      : language === "zhHant"
+        ? "Bill Saver｜PEI 手機寬頻帳單免費體檢"
+        : "Bill Saver | Free PEI Mobile & Internet Bill Check";
+  const currentStep = leadOpen ? 3 : resultOpen ? 2 : 1;
   const publicMobileReview = publicMobileLocalReviewContent(language);
   const usageGuidance = usageGuidanceContent(language);
 
@@ -1840,8 +1849,55 @@ export default function Home() {
 
   return (
     <main className="page-shell billSaverPage" lang={language === "en" ? "en" : language === "zhHant" ? "zh-Hant" : "zh-CN"}>
-      <section className="heroFrame">
-        <form className="form-panel embeddedFormCard" onSubmit={submitInitial} noValidate>
+      <section className="hero heroSection">
+        <div className="heroInner">
+          <div className="heroTopBar">
+            <img src={heroLogoSrc} alt={heroLogoAlt} className="heroBrandLogo" />
+            <div className="language-switcher" aria-label="Language switcher">
+              {languages.map((item) => (
+                <button
+                  key={item.code}
+                  type="button"
+                  className={language === item.code ? "active" : ""}
+                  onClick={() => setLanguage(item.code)}
+                  aria-label={translations[item.code].languageName}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="heroContent">
+            <p className="eyebrow">{t.eyebrow}</p>
+            <h1 className="heroTitle">{t.heroHeadline}</h1>
+            <p className="heroSubtitle">{t.heroSubtitle}</p>
+            <div className="stepProgress" aria-label={t.heroProgressSteps.join(" → ")}>
+              <div className="stepTrack" aria-hidden="true">
+                <div
+                  className="stepTrackActive"
+                  style={{ width: `${((currentStep - 1) / (t.heroProgressSteps.length - 1)) * 100}%` }}
+                />
+              </div>
+              {t.heroProgressSteps.map((step, index) => {
+                const stepNumber = index + 1;
+                const isComplete = stepNumber < currentStep;
+                const isCurrent = stepNumber === currentStep;
+
+                return (
+                  <div className={`stepNode stepNode${stepNumber} ${isComplete ? "done" : ""} ${isCurrent ? "active" : ""}`} key={step}>
+                    <span className="stepCircle">{isComplete ? "✓" : stepNumber}</span>
+                    <span className="stepLabel">{step}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="workspace single-column">
+        <form className="panel form-panel" onSubmit={submitInitial} noValidate>
           {sheetError && <div className="error">{sheetError}</div>}
 
           <div className="field bill-type-field">
