@@ -6,6 +6,12 @@ import { offerDatabase } from "@/lib/offerDatabase";
 const GOOGLE_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbyIzob_u06H4LUyIE783HC9O9K_XmCckwyKz3u8y2h05MHX__C4XZ-9DskK__XBcBltxw/exec";
 
+const languages = [
+  { code: "zhHans", label: "简" },
+  { code: "zhHant", label: "繁" },
+  { code: "en", label: "EN" }
+];
+
 const translations = {
   zhHans: {
     languageName: "简体中文",
