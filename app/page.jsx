@@ -127,20 +127,19 @@ const translations = {
     },
     mobileDataUsageCards: {
       "0-20GB": {
-        title: "0–20GB",
-        description: "微信、网页、地图、少量视频"
+        title: "轻度使用",
+        description: "微信、邮件、地图、轻度视频",
+        amount: "10–20 GB"
       },
       "20-50GB": {
-        title: "20–50GB",
-        description: "社交媒体、短视频、视频通话、音乐"
+        title: "日常使用",
+        description: "社交媒体、短视频、视频通话",
+        amount: "20–60 GB"
       },
-      "50-100GB": {
-        title: "50–100GB",
-        description: "经常看视频、热点分享、外出使用较多"
-      },
-      "100GB+": {
-        title: "100GB 以上",
-        description: "大量视频、热点共享、经常外出或多设备使用"
+      "60GB+": {
+        title: "重度使用",
+        description: "高清视频、热点分享、经常外出",
+        amount: "60 GB+"
       }
     },
     options: {
@@ -315,20 +314,19 @@ const translations = {
     },
     mobileDataUsageCards: {
       "0-20GB": {
-        title: "0–20GB",
-        description: "微信、網頁、地圖、少量影片"
+        title: "輕度使用",
+        description: "微信、電郵、地圖、輕度影片",
+        amount: "10–20 GB"
       },
       "20-50GB": {
-        title: "20–50GB",
-        description: "社交媒體、短影片、視訊通話、音樂"
+        title: "日常使用",
+        description: "社交媒體、短影片、視訊通話",
+        amount: "20–60 GB"
       },
-      "50-100GB": {
-        title: "50–100GB",
-        description: "經常看影片、熱點分享、外出使用較多"
-      },
-      "100GB+": {
-        title: "100GB 以上",
-        description: "大量影片、熱點共享、經常外出或多設備使用"
+      "60GB+": {
+        title: "重度使用",
+        description: "高清影片、熱點分享、經常外出",
+        amount: "60 GB+"
       }
     },
     options: {
@@ -506,20 +504,19 @@ const translations = {
     },
     mobileDataUsageCards: {
       "0-20GB": {
-        title: "0–20GB",
-        description: "Messaging, browsing, maps, and occasional video"
+        title: "Light use",
+        description: "Messaging, email, maps, and light video",
+        amount: "10–20 GB"
       },
       "20-50GB": {
-        title: "20–50GB",
-        description: "Social media, short videos, video calls, and music"
+        title: "Everyday use",
+        description: "Social media, short videos, and video calls",
+        amount: "20–60 GB"
       },
-      "50-100GB": {
-        title: "50–100GB",
-        description: "Frequent video, hotspot sharing, and more mobile use outside home"
-      },
-      "100GB+": {
-        title: "100GB+",
-        description: "Lots of video, hotspot sharing, frequent outside use, or multiple devices"
+      "60GB+": {
+        title: "Heavy use",
+        description: "HD video, hotspot sharing, and frequent outside use",
+        amount: "60 GB+"
       }
     },
     options: {
@@ -625,7 +622,11 @@ const usageLevels = [
   { value: "standard", currentSpeed: "300M" },
   { value: "heavy", currentSpeed: "1G" }
 ];
-const mobileDataUsageLevels = [{ value: "0-20GB" }, { value: "20-50GB" }, { value: "50-100GB" }, { value: "100GB+" }];
+const mobileDataUsageLevels = [
+  { value: "0-20GB", type: "light" },
+  { value: "20-50GB", type: "daily" },
+  { value: "60GB+", type: "heavy" }
+];
 const mainUrbanAreas = ["Charlottetown", "Stratford", "Cornwall", "Summerside"];
 
 const initialForm = {
@@ -702,6 +703,15 @@ function LineIcon({ name, size = 32, strokeWidth = 2.4 }) {
   if (name === "users") {
     return <svg {...common}><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>;
   }
+  if (name === "message-circle") {
+    return <svg {...common}><path d="M21 15a4 4 0 0 1-4 4H8l-5 3 1.7-5.1A8 8 0 1 1 21 15Z" /></svg>;
+  }
+  if (name === "message-square") {
+    return <svg {...common}><path d="M21 15a4 4 0 0 1-4 4H7l-4 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z" /></svg>;
+  }
+  if (name === "play") {
+    return <svg {...common}><path d="m7 4 13 8-13 8Z" /></svg>;
+  }
   if (name === "building") {
     return <svg {...common}><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18" /><path d="M2 22h20" /><path d="M9 6h1" /><path d="M14 6h1" /><path d="M9 10h1" /><path d="M14 10h1" /><path d="M9 14h1" /><path d="M14 14h1" /><path d="M10 22v-4h4v4" /></svg>;
   }
@@ -747,6 +757,28 @@ function UsageIcon({ type }) {
   return <span className="usage-card-icon" aria-hidden="true"><LineIcon name={iconName} size={28} strokeWidth={2.5} /></span>;
 }
 
+function MobileUsageCard({ item, content, active, onClick, bundle = false }) {
+  const iconName = item.type === "light" ? "message-circle" : item.type === "daily" ? "message-square" : "play";
+
+  return (
+    <button
+      type="button"
+      className={`mobile-usage-card${bundle ? " bundle-usage-card" : ""}${active ? " active" : ""}`}
+      onClick={onClick}
+    >
+      <span className="mobile-usage-icon" aria-hidden="true">
+        <LineIcon name={iconName} size={26} strokeWidth={2.5} />
+      </span>
+      <span className="mobile-usage-text">
+        <strong className="mobile-usage-title">{content.title}</strong>
+        <span className="mobile-usage-desc">{content.description}</span>
+      </span>
+      <span className="mobile-usage-amount">{content.amount}</span>
+      {active && <span className="mobile-usage-check" aria-hidden="true">✓</span>}
+    </button>
+  );
+}
+
 function optionLabel(t, value) {
   if (value === "Other") return t.options.other || "Other";
   if (value === "Not sure" || value === "not_sure") return t.options.not_sure;
@@ -777,6 +809,7 @@ function dataRank(data) {
   const rangeRanks = {
     "0-20GB": 20,
     "20-50GB": 50,
+    "60GB+": 100,
     "50-100GB": 100,
     "100GB+": 150
   };
@@ -793,7 +826,7 @@ function isMobileDataUnder50GB(value) {
 }
 
 function isMobileData50GBOrMore(value) {
-  return value === "50-100GB" || value === "50–100GB" || value === "100GB+" || value === "100GB 以上";
+  return value === "60GB+" || value === "50-100GB" || value === "50–100GB" || value === "100GB+" || value === "100GB 以上";
 }
 
 function parseDataGB(data) {
@@ -810,6 +843,7 @@ function getMobileUsageBucket(value) {
     .replace(/[–—−]/g, "-");
   if (normalized.includes("0-20")) return "under20";
   if (normalized.includes("20-50")) return "20to50";
+  if (normalized.includes("60GB+")) return "over60";
   if (normalized.includes("50-100")) return "50to100";
   if (normalized.includes("100GB+") || normalized.includes("100GB以上") || normalized.includes("100以上")) return "over100";
   return null;
@@ -821,6 +855,7 @@ function isPlanDataSuitableForUsage(planData, usageValue) {
   if (!bucket || gb === null) return true;
   if (bucket === "under20") return gb < 30;
   if (bucket === "20to50") return gb > 20;
+  if (bucket === "over60") return gb > 60;
   if (bucket === "50to100") return gb > 50;
   if (bucket === "over100") return gb > 100;
   return true;
@@ -1966,19 +2001,14 @@ export default function Home() {
                     <span>{t.mobileDataUsageTitle}</span>
                     <div className="usage-card-grid compact">
                       {mobileDataUsageLevels.map((item) => (
-                        <button
+                        <MobileUsageCard
                           key={item.value}
-                          type="button"
-                          className={form.current_mobile_data === item.value ? "usage-card mobile-usage-card bundle-usage-card active" : "usage-card mobile-usage-card bundle-usage-card"}
+                          item={item}
+                          content={t.mobileDataUsageCards[item.value]}
+                          active={form.current_mobile_data === item.value}
                           onClick={() => update("current_mobile_data", item.value)}
-                        >
-                          <UsageIcon type="data" />
-                          <span className="usage-card-copy">
-                            <strong>{t.mobileDataUsageCards[item.value].title}</strong>
-                            <span>{t.mobileDataUsageCards[item.value].description}</span>
-                          </span>
-                          {form.current_mobile_data === item.value && <span className="usage-card-check" aria-hidden="true">✓</span>}
-                        </button>
+                          bundle
+                        />
                       ))}
                     </div>
                   </div>
@@ -2036,19 +2066,13 @@ export default function Home() {
                   <span>{t.mobileDataUsageTitle}</span>
                   <div className="usage-card-grid compact">
                     {mobileDataUsageLevels.map((item) => (
-                      <button
+                      <MobileUsageCard
                         key={item.value}
-                        type="button"
-                        className={form.current_mobile_data === item.value ? "usage-card mobile-usage-card active" : "usage-card mobile-usage-card"}
+                        item={item}
+                        content={t.mobileDataUsageCards[item.value]}
+                        active={form.current_mobile_data === item.value}
                         onClick={() => update("current_mobile_data", item.value)}
-                      >
-                        <UsageIcon type="data" />
-                        <span className="usage-card-copy">
-                          <strong>{t.mobileDataUsageCards[item.value].title}</strong>
-                          <span>{t.mobileDataUsageCards[item.value].description}</span>
-                        </span>
-                        {form.current_mobile_data === item.value && <span className="usage-card-check" aria-hidden="true">✓</span>}
-                      </button>
+                      />
                     ))}
                   </div>
                 </div>
