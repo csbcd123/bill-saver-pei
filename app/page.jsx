@@ -712,17 +712,22 @@ function LineIcon({ name, size = 32, strokeWidth = 2.4 }) {
 }
 
 function ServiceTypeIcon({ type }) {
+  if (type === "both") {
+    return (
+      <span className="bill-type-icon-wrap bill-type-icon-wrap-combo" aria-hidden="true">
+        <span className="bill-type-combo-icon">
+          <LineIcon name="wifi" size={30} strokeWidth={2.7} />
+          <span>+</span>
+          <LineIcon name="smartphone" size={28} strokeWidth={2.6} />
+        </span>
+      </span>
+    );
+  }
+
   return (
     <span className="bill-type-icon-wrap" aria-hidden="true">
       {type === "internet" && <LineIcon name="wifi" size={30} strokeWidth={2.7} />}
       {type === "mobile" && <LineIcon name="smartphone" size={28} strokeWidth={2.6} />}
-      {type === "both" && (
-        <span className="bill-type-combo-icon">
-          <LineIcon name="wifi" size={28} strokeWidth={2.7} />
-          <span>+</span>
-          <LineIcon name="smartphone" size={26} strokeWidth={2.6} />
-        </span>
-      )}
     </span>
   );
 }

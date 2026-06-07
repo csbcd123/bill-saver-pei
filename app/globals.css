@@ -2067,6 +2067,14 @@ textarea:focus {
   box-shadow: none;
 }
 
+.bill-type-icon-wrap-combo {
+  width: 86px;
+  height: 44px;
+  flex: 0 0 86px;
+  align-items: center;
+  padding: 0;
+}
+
 .bill-type-icon-wrap svg {
   display: block;
   color: #fff;
@@ -2078,10 +2086,10 @@ textarea:focus {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 7px;
   color: #fff;
   line-height: 1;
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
 .bill-type-combo-icon svg {
@@ -2089,7 +2097,9 @@ textarea:focus {
 }
 
 .bill-type-combo-icon span {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   color: rgba(255, 255, 255, 0.95);
   font-size: 19px;
   font-weight: 800;
@@ -2600,6 +2610,11 @@ textarea:focus {
     width: 44px;
     height: 44px;
     flex-basis: 44px;
+  }
+
+  .bill-type-icon-wrap-combo {
+    width: 86px;
+    flex-basis: 86px;
   }
 
   .bill-type-title {
