@@ -92,7 +92,7 @@ const translations = {
     bundlePick: "组合参考方案",
     bellWinbackTitle: "Bell Winback 套餐",
     bellWinbackService: "Bell 手机回流 / Winback 方案",
-    bellPrice: "可用优惠需人工确认",
+    bellPrice: "优惠价需人工确认",
     bellSavings: "提交信息后人工确认",
     bestPrice: "✨ 获得最佳价格 →",
     bestPriceHelp: "提交后人工确认可用优惠",
@@ -294,7 +294,7 @@ const translations = {
     bundlePick: "組合參考方案",
     bellWinbackTitle: "Bell Winback 方案",
     bellWinbackService: "Bell 手機回流 / Winback 方案",
-    bellPrice: "可用優惠需人工確認",
+    bellPrice: "優惠價需人工確認",
     bellSavings: "提交資訊後人工確認",
     bestPrice: "✨ 取得最佳價格 →",
     bestPriceHelp: "提交後人工確認可用優惠",
@@ -497,7 +497,7 @@ const translations = {
     bundlePick: "Bundle Reference Pick",
     bellWinbackTitle: "Bell Winback Plan",
     bellWinbackService: "Bell mobile winback option",
-    bellPrice: "Available offer requires manual confirmation",
+    bellPrice: "Offer price requires confirmation",
     bellSavings: "Confirmed after submission",
     bestPrice: "✨ Get the Best Price →",
     bestPriceHelp: "We'll manually confirm available offers",
@@ -1097,6 +1097,22 @@ function localizedNote(offer, t, language, form) {
       textByLanguage(language, "家庭电话组合价格需要人工确认。", "家居電話組合價格需要人工確認。", "Home phone bundle pricing requires manual confirmation.")
     );
   }
+  if (offer.offer_id === "bell_internet_mobile_bundle") {
+    return textByLanguage(
+      language,
+      "包含宽带和 Better TV。Better TV 包含 TSN 高清频道。最终价格、资格、安装和本周可用优惠需人工确认。",
+      "包含寬頻和 Better TV。Better TV 包含 TSN 高清頻道。最終價格、資格、安裝和本週可用優惠需人工確認。",
+      "Includes Internet and Better TV. Better TV includes TSN HD. Final price, eligibility, installation, and available weekly offer require manual confirmation."
+    );
+  }
+  if (offer.offer_id === "bell_internet_better_tv_home_phone_bundle") {
+    return textByLanguage(
+      language,
+      "包含宽带、Better TV 和家庭电话。Better TV 包含 TSN 高清频道。最终价格、资格、安装和本周可用优惠需人工确认。",
+      "包含寬頻、Better TV 和家居電話。Better TV 包含 TSN 高清頻道。最終價格、資格、安裝和本週可用優惠需人工確認。",
+      "Includes Internet, Better TV, and Home Phone. Better TV includes TSN HD. Final price, eligibility, installation, and available weekly offer require manual confirmation."
+    );
+  }
   if (/Public Mobile/i.test(offer.provider)) {
     const ruralNote = !isMainUrbanArea(form.city) ? ruralOfferNote(offer, language) : "";
     const minutesNote = hasPublicMobileInternationalMinutes(offer) ? publicMobileInternationalMinutes(language) : "";
@@ -1289,7 +1305,7 @@ function priceNoteText(offer, language) {
   );
 }
 
-function offerBadges(offer, language) {
+function offerBadges(offer, language, form) {
   const creditCheckBadge = textByLanguage(language, "需要信用核查", "需要信用審查", "Credit check required");
   const prepaidBadges = [
     textByLanguage(language, "预付卡订阅", "預付卡訂閱", "Prepaid subscription"),
@@ -1321,19 +1337,35 @@ function offerBadges(offer, language) {
     ];
   }
 
-  if (/Koodo/i.test(offer.provider) && offer.service_type === "internet") {
+  if (/Koodo/i.test(offer.provider) && (offer.service_type === "internet" || offer.service_type === "both")) {
     return [
-      textByLanguage(language, "无激活费", "無啟用費", "No activation fee"),
-      textByLanguage(language, "免费自助安装", "免費自助安裝", "Free self-installation"),
-      textByLanguage(language, "30 天免费试用", "30 天免費試用", "30-day free trial"),
+      textByLanguage(language, "无合约", "無合約", "No contract"),
+      textByLanguage(language, "30 天可免费试用", "30 天可免費試用", "30-day risk-free trial"),
+      textByLanguage(language, "免费设备租用", "免費設備租用", "Free equipment rental"),
+      textByLanguage(language, "安装资格需确认", "安裝資格需確認", "Installation eligibility required"),
+      ...(form?.bundle_includes_tv
+        ? [textByLanguage(language, "TV 需人工确认", "TV 需人工確認", "TV requires manual confirmation")]
+        : []),
+      ...(form?.bundle_includes_home_phone
+        ? [textByLanguage(language, "家庭电话需人工确认", "家居電話需人工確認", "Home phone requires manual confirmation")]
+        : []),
       ...mobilePlanBadges
     ];
   }
   if (/Purple Cow/i.test(offer.provider)) {
     return [
       textByLanguage(language, "免安装费", "免安裝費", "No installation fee"),
-      textByLanguage(language, "免激活费", "免啟用費", "No activation fee"),
-      textByLanguage(language, "首月不满意可退款", "首月不滿意可退款", "First-month money-back"),
+      textByLanguage(language, "无合约", "無合約", "No contract"),
+      textByLanguage(language, "不限流量", "不限流量", "Unlimited data"),
+      textByLanguage(language, "免费设备", "免費設備", "Free equipment"),
+      textByLanguage(language, "本地客服", "本地客服", "Local support"),
+      textByLanguage(language, "30 天满意保证", "30 天滿意保證", "30-day satisfaction guarantee"),
+      ...(form?.bundle_includes_tv
+        ? [textByLanguage(language, "可加 TV，需人工确认", "可加 TV，需人工確認", "TV available with manual confirmation")]
+        : []),
+      ...(form?.bundle_includes_home_phone
+        ? [textByLanguage(language, "家庭电话需人工确认", "家居電話需人工確認", "Home phone requires manual confirmation")]
+        : []),
       ...mobilePlanBadges
     ];
   }
@@ -1665,20 +1697,20 @@ function premiumCtaContent(language, offer) {
       : null,
     title: textByLanguage(
       language,
-      isBundle ? "让 Bill Saver 帮你人工复核多项服务" : "通过 Bill Saver 获取人工确认优惠",
-      isBundle ? "讓 Bill Saver 幫你人工覆核多項服務" : "透過 Bill Saver 取得人工確認優惠",
-      isBundle ? "Let Bill Saver manually review your services" : "Get manually confirmed offers through Bill Saver"
+      isBundle ? "通过 Bill Saver 获取组合账单人工复核" : "通过 Bill Saver 获取人工确认优惠",
+      isBundle ? "透過 Bill Saver 取得組合帳單人工覆核" : "透過 Bill Saver 取得人工確認優惠",
+      isBundle ? "Get a manual bundle bill review through Bill Saver" : "Get manually confirmed offers through Bill Saver"
     ),
     body: textByLanguage(
       language,
       isBundle
-        ? "提交后，我们会按你选择的宽带、手机、TV 和家庭电话服务，人工核对当前可用方案、安装资格和组合方式。"
+        ? "我们会帮你核对当前可用价格、安装资格、TV 套餐、家庭电话是否需要保留，以及是否有更合适方案。你不需要向 Bill Saver 支付任何费用。"
         : "我们会帮你核对当前可用价格、安装资格和是否有更合适方案。你不需要向 Bill Saver 支付任何费用。",
       isBundle
-        ? "提交後，我們會按你選擇的寬頻、手機、TV 和家居電話服務，人工核對目前可用方案、安裝資格和組合方式。"
+        ? "我們會幫你核對目前可用價格、安裝資格、TV 套餐、家居電話是否需要保留，以及是否有更合適方案。你不需要向 Bill Saver 支付任何費用。"
         : "我們會幫你核對目前可用價格、安裝資格和是否有更合適方案。你不需要向 Bill Saver 支付任何費用。",
       isBundle
-        ? "After submission, we will manually review available options, installation eligibility, and suitable combinations for your selected internet, mobile, TV, and home phone services."
+        ? "We’ll help confirm available pricing, installation eligibility, TV options, whether home phone should be retained, and whether there is a better fit. You do not pay Bill Saver any fee."
         : "We’ll help confirm available pricing, installation eligibility, and whether there is a better fit. You do not pay Bill Saver any fee."
     ),
     whyTitle: textByLanguage(language, "为什么通过 Bill Saver？", "為什麼透過 Bill Saver？", "Why use Bill Saver?"),
@@ -1704,11 +1736,37 @@ function premiumCtaContent(language, offer) {
 
 function displayPlanName(offer, t) {
   if (offer.offer_id === "bell_mobile_winback_manual") return bellAliantDisplayText(t.bellWinbackService);
+  if (offer.offer_id === "bell_internet_mobile_bundle") {
+    const language = t === translations.en ? "en" : t === translations.zhHant ? "zhHant" : "zhHans";
+    return textByLanguage(language, "Bell Aliant 宽带 + Better TV", "Bell Aliant 寬頻 + Better TV", "Bell Aliant Internet + Better TV");
+  }
+  if (offer.offer_id === "bell_internet_better_tv_home_phone_bundle") {
+    const language = t === translations.en ? "en" : t === translations.zhHant ? "zhHant" : "zhHans";
+    return textByLanguage(
+      language,
+      "Bell Aliant 宽带 + Better TV + 家庭电话",
+      "Bell Aliant 寬頻 + Better TV + 家居電話",
+      "Bell Aliant Internet + Better TV + Home Phone"
+    );
+  }
+  if (offer.service_type === "both" && (offer.manual_tv_direction || offer.manual_home_phone_direction)) {
+    const language = t === translations.en ? "en" : t === translations.zhHant ? "zhHant" : "zhHans";
+    const directions = [
+      offer.manual_tv_direction ? textByLanguage(language, "TV 服务人工确认", "TV 服務人工確認", "TV service manual confirmation") : "",
+      offer.manual_home_phone_direction
+        ? textByLanguage(language, "家庭电话人工确认", "家居電話人工確認", "Home phone manual confirmation")
+        : ""
+    ].filter(Boolean);
+    return `${bellAliantDisplayText(offer.display_name || offer.plan_name)} + ${directions.join(" + ")}`;
+  }
   return bellAliantDisplayText(offer.display_name || offer.plan_name);
 }
 
 function displayPrice(offer, t, language) {
-  if (isManualPrice(offer)) return t.bellPrice;
+  if (isManualPrice(offer)) {
+    if (isBell(offer)) return t.bellPrice;
+    return textByLanguage(language, "价格需人工确认", "價格需人工確認", "Price requires confirmation");
+  }
   return money(offer.bill_saver_target_price, language);
 }
 
@@ -1731,6 +1789,12 @@ function scoreOffer(offer, form) {
 
 function bestProviderOffer(offers, provider, form) {
   const matches = offers.filter((offer) => (provider === "Bell Aliant" ? isBell(offer) : offer.provider === provider));
+  if (provider === "Purple Cow" && matches.length) {
+    const sorted = [...matches].sort((a, b) => speedRank(a.speed_down) - speedRank(b.speed_down));
+    if (form.internet_usage_level === "heavy") return sorted[sorted.length - 1];
+    if (form.internet_usage_level === "standard") return sorted.find((offer) => speedRank(offer.speed_down) >= 300) || sorted[sorted.length - 1];
+    return sorted.find((offer) => speedRank(offer.speed_down) >= 100) || sorted[0];
+  }
   return matches.sort((a, b) => scoreOffer(b, form) - scoreOffer(a, form))[0];
 }
 
@@ -1867,32 +1931,71 @@ function bellBundleDirections(form, internet) {
   return [];
 }
 
+function bundleServiceMatchScore(offer, form) {
+  let score = 0;
+  const speed = speedRank(offer.speed_down);
+  const supportsTv = offer.bundle_services?.includes("tv") || offer.manual_tv_direction;
+  const supportsHomePhone = offer.bundle_services?.includes("home_phone") || offer.manual_home_phone_direction;
+
+  if (form.bundle_includes_tv) score += supportsTv ? -25 : 25;
+  if (form.bundle_includes_home_phone) score += supportsHomePhone ? -25 : 25;
+  if (form.bundle_includes_tv) {
+    if (/Purple Cow/i.test(offer.provider)) score -= 8;
+    if (/Koodo/i.test(offer.provider)) score -= 5;
+    if (/Eastlink/i.test(offer.provider)) score -= 3;
+  }
+  if (form.bundle_includes_home_phone && /Eastlink/i.test(offer.provider)) score -= 8;
+
+  if (form.internet_usage_level === "heavy") {
+    if (speed >= 900) score -= 20;
+    else if (speed >= 300) score += 5;
+    else score += 40;
+  } else if (form.internet_usage_level === "standard") {
+    if (speed >= 300) score -= 15;
+    else if (speed < 100) score += 30;
+  }
+
+  if (offer.requires_manual_confirmation) score += 2;
+  return score;
+}
+
 function bundlePicks(form) {
   const internet = internetPicks(form);
   if (!form.bundle_includes_mobile) {
     const genericDirections = internet
+      .filter((offer) => !(isBell(offer) && (form.bundle_includes_tv || form.bundle_includes_home_phone)))
       .map((offer) => ({
         ...offer,
         offer_id: `bundle_${offer.offer_id}`,
         service_type: "both",
         is_bundle: true,
+        is_sensitive_price: form.bundle_includes_tv || form.bundle_includes_home_phone || offer.is_sensitive_price,
+        is_public_price: form.bundle_includes_tv || form.bundle_includes_home_phone ? false : offer.is_public_price,
+        display_price_requires_confirmation: form.bundle_includes_tv || form.bundle_includes_home_phone || offer.display_price_requires_confirmation,
+        manual_tv_direction: Boolean(form.bundle_includes_tv),
+        manual_home_phone_direction: Boolean(form.bundle_includes_home_phone),
+        bundle_services: [
+          "internet",
+          ...(form.bundle_includes_tv ? ["tv"] : []),
+          ...(form.bundle_includes_home_phone ? ["home_phone"] : [])
+        ],
         requires_manual_confirmation:
           offer.requires_manual_confirmation || form.bundle_includes_tv || form.bundle_includes_home_phone,
-        bundle_sort_score:
-          form.bundle_includes_tv && /Bell|Eastlink|TELUS/i.test(offer.provider) ? -4 : 0,
+        bundle_sort_score: 0,
         pickTypeKey: "bundlePick"
       }))
+      .map((offer) => ({ ...offer, bundle_sort_score: bundleServiceMatchScore(offer, form) }))
       .sort((a, b) => a.bundle_sort_score - b.bundle_sort_score);
 
     const preferredBellDirections = bellBundleDirections(form, internet).map((offer) => ({
       ...offer,
       pickTypeKey: "bundlePick",
-      bundle_sort_score: -10
+      bundle_sort_score: bundleServiceMatchScore(offer, form) - 20
     }));
 
     return [...preferredBellDirections, ...genericDirections].filter(
       (offer, index, offers) => offers.findIndex((candidate) => candidate.offer_id === offer.offer_id) === index
-    );
+    ).sort((a, b) => a.bundle_sort_score - b.bundle_sort_score);
   }
 
   const mobile = mobilePicks(form);
@@ -1930,8 +2033,23 @@ function bundlePicks(form) {
         official_regular_price: null,
         official_promo_price: null,
         is_bundle: true,
-        is_sensitive_price: isManualPrice(internetOffer) || isManualPrice(mobileOffer),
-        is_public_price: internetOffer.is_public_price && mobileOffer.is_public_price,
+        is_sensitive_price:
+          isManualPrice(internetOffer) || isManualPrice(mobileOffer) || form.bundle_includes_tv || form.bundle_includes_home_phone,
+        is_public_price:
+          !form.bundle_includes_tv && !form.bundle_includes_home_phone && internetOffer.is_public_price && mobileOffer.is_public_price,
+        display_price_requires_confirmation:
+          form.bundle_includes_tv ||
+          form.bundle_includes_home_phone ||
+          internetOffer.display_price_requires_confirmation ||
+          mobileOffer.display_price_requires_confirmation,
+        manual_tv_direction: Boolean(form.bundle_includes_tv),
+        manual_home_phone_direction: Boolean(form.bundle_includes_home_phone),
+        bundle_services: [
+          "internet",
+          "mobile",
+          ...(form.bundle_includes_tv ? ["tv"] : []),
+          ...(form.bundle_includes_home_phone ? ["home_phone"] : [])
+        ],
         requires_manual_confirmation:
           internetOffer.requires_manual_confirmation ||
           mobileOffer.requires_manual_confirmation ||
@@ -1939,13 +2057,12 @@ function bundlePicks(form) {
           form.bundle_includes_tv ||
           form.bundle_includes_home_phone,
         caution: `${internetOffer.caution || ""} ${mobileOffer.caution || ""}`.trim(),
-        bundle_sort_score:
-          bundleProviderPreference(mobileOffer.provider, form) -
-          (form.bundle_includes_tv && /Bell|Eastlink|TELUS/i.test(internetOffer.provider) ? 4 : 0),
+        bundle_sort_score: bundleProviderPreference(mobileOffer.provider, form),
         pickTypeKey: "bundlePick"
       };
     })
     .filter(Boolean)
+    .map((offer) => ({ ...offer, bundle_sort_score: offer.bundle_sort_score + bundleServiceMatchScore(offer, form) }))
     .sort((a, b) => a.bundle_sort_score - b.bundle_sort_score);
 }
 
@@ -2590,7 +2707,7 @@ export default function Home() {
                 <div className="plan-list">
                   {recommendations.length === 0 && <div className="rural-recommendation-note">{noAlternativeMessage(language)}</div>}
                   {recommendations.map((offer) => {
-                    const badges = offerBadges(offer, language);
+                    const badges = offerBadges(offer, language, form);
                     const priceNote = priceNoteText(offer, language);
                     const includesInternet = offer.service_type === "internet" || offer.service_type === "both";
                     const includesMobile = offer.service_type === "mobile" || (offer.service_type === "both" && offer.mobile_data);
