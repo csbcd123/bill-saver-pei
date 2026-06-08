@@ -977,6 +977,23 @@ textarea:focus {
   margin-bottom: 0;
 }
 
+.bundle-cost-breakdown {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 14px;
+  margin: 12px 0;
+  border: 1px solid rgba(15, 123, 104, 0.16);
+  border-radius: 8px;
+  background: rgba(15, 123, 104, 0.05);
+  padding: 12px 14px;
+}
+
+.bundle-cost-breakdown p {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
 .badge-row {
   display: flex;
   flex-wrap: wrap;
@@ -3652,6 +3669,10 @@ textarea:focus {
   .summaryValue .manualSummaryValue {
     max-width: 96px;
     font-size: 15px;
+  }
+
+  .bundle-cost-breakdown {
+    grid-template-columns: 1fr;
   }
 }
 

@@ -1770,6 +1770,50 @@ function displayPrice(offer, t, language) {
   return money(offer.bill_saver_target_price, language);
 }
 
+function bundleCostRows(offer, language) {
+  if (offer.service_type !== "both" || !offer.mobile_data || !offer.mobile_line_count) return [];
+
+  const isFivePlus = offer.mobile_line_count === "5+";
+  const exactMobilePriceHidden = isBell(offer) || isFivePlus || typeof offer.mobile_unit_price !== "number";
+  const exactBundlePriceHidden = isManualPrice(offer) || typeof offer.bundle_total_monthly_cost !== "number";
+  const lineLabel = isFivePlus
+    ? textByLanguage(language, "5 条及以上", "5 條及以上", "5+")
+    : textByLanguage(language, `${offer.mobile_line_count} 条`, `${offer.mobile_line_count} 條`, offer.mobile_line_count);
+  const mobileCost = exactMobilePriceHidden
+    ? textByLanguage(language, "优惠价需人工确认", "優惠價需人工確認", "Offer price requires confirmation")
+    : `${money(offer.mobile_unit_price, language)} × ${offer.mobile_line_count} = ${money(offer.mobile_total, language)}`;
+  const totalCost = exactBundlePriceHidden
+    ? textByLanguage(language, "组合总价需人工确认", "組合總價需人工確認", "Bundle total requires confirmation")
+    : textByLanguage(
+        language,
+        `约 ${money(offer.bundle_total_monthly_cost, language)}`,
+        `約 ${money(offer.bundle_total_monthly_cost, language)}`,
+        `About ${money(offer.bundle_total_monthly_cost, language)}`
+      );
+
+  return [
+    {
+      label: textByLanguage(language, "手机线路：", "手機線路：", "Mobile lines:"),
+      value: lineLabel
+    },
+    {
+      label: textByLanguage(language, "手机费用：", "手機費用：", "Mobile cost:"),
+      value: mobileCost
+    },
+    {
+      label: textByLanguage(language, "宽带费用：", "寬頻費用：", "Internet cost:"),
+      value:
+        isBell(offer) || typeof offer.internet_monthly_price !== "number"
+          ? textByLanguage(language, "价格需人工确认", "價格需人工確認", "Price requires confirmation")
+          : money(offer.internet_monthly_price, language)
+    },
+    {
+      label: textByLanguage(language, "预计组合总费用：", "預計組合總費用：", "Estimated bundle total:"),
+      value: totalCost
+    }
+  ];
+}
+
 function scoreOffer(offer, form) {
   let score = 0;
   if (offer.status === "active") score += 8;
@@ -1865,6 +1909,25 @@ function getLineCountNumber(value) {
   if (value === "5+") return 5;
   const count = Number(value);
   return Number.isFinite(count) && count >= 0 ? count : 0;
+}
+
+function calculateBundleMonthlyCost(internetOffer, mobileOffer, form) {
+  const includesMobile = Boolean(form.bundle_includes_mobile);
+  const mobileLineCount = includesMobile ? Math.max(1, getLineCountNumber(form.mobile_line_count)) : 0;
+  const internetPrice =
+    typeof internetOffer.bill_saver_target_price === "number" ? internetOffer.bill_saver_target_price : null;
+  const mobileUnitPrice =
+    typeof mobileOffer.bill_saver_target_price === "number" ? mobileOffer.bill_saver_target_price : null;
+  const mobileTotal = includesMobile && mobileUnitPrice !== null ? mobileUnitPrice * mobileLineCount : null;
+  const totalMonthlyCost = internetPrice !== null && mobileTotal !== null ? internetPrice + mobileTotal : null;
+
+  return {
+    internetPrice,
+    mobileUnitPrice,
+    mobileLineCount,
+    mobileTotal,
+    totalMonthlyCost
+  };
 }
 
 function bundleProviderPreference(provider, form) {
@@ -2017,9 +2080,8 @@ function bundlePicks(form) {
       const mobileOffer = mobile[mobileIndex];
       if (!internetOffer || !mobileOffer) return null;
 
-      const internetPrice = internetOffer.bill_saver_target_price;
-      const mobilePrice = mobileOffer.bill_saver_target_price;
-      const combinedPrice = typeof internetPrice === "number" && typeof mobilePrice === "number" ? internetPrice + mobilePrice : null;
+      const bundleCost = calculateBundleMonthlyCost(internetOffer, mobileOffer, form);
+      const lineCountRequiresManualReview = form.mobile_line_count === "5+";
 
       return {
         ...internetOffer,
@@ -2029,14 +2091,28 @@ function bundlePicks(form) {
         plan_name: `${displayPlanName(internetOffer, translations.en)} + ${displayPlanName(mobileOffer, translations.en)}`,
         mobile_provider: mobileOffer.provider,
         mobile_data: mobileOffer.mobile_data,
-        bill_saver_target_price: combinedPrice,
+        bill_saver_target_price: bundleCost.totalMonthlyCost,
+        internet_monthly_price: bundleCost.internetPrice,
+        mobile_unit_price: bundleCost.mobileUnitPrice,
+        mobile_line_count: form.mobile_line_count,
+        mobile_line_count_number: bundleCost.mobileLineCount,
+        mobile_total: bundleCost.mobileTotal,
+        bundle_total_monthly_cost: bundleCost.totalMonthlyCost,
         official_regular_price: null,
         official_promo_price: null,
         is_bundle: true,
         is_sensitive_price:
-          isManualPrice(internetOffer) || isManualPrice(mobileOffer) || form.bundle_includes_tv || form.bundle_includes_home_phone,
+          isManualPrice(internetOffer) ||
+          isManualPrice(mobileOffer) ||
+          form.bundle_includes_tv ||
+          form.bundle_includes_home_phone ||
+          lineCountRequiresManualReview,
         is_public_price:
-          !form.bundle_includes_tv && !form.bundle_includes_home_phone && internetOffer.is_public_price && mobileOffer.is_public_price,
+          !form.bundle_includes_tv &&
+          !form.bundle_includes_home_phone &&
+          !lineCountRequiresManualReview &&
+          internetOffer.is_public_price &&
+          mobileOffer.is_public_price,
         display_price_requires_confirmation:
           form.bundle_includes_tv ||
           form.bundle_includes_home_phone ||
@@ -2053,11 +2129,13 @@ function bundlePicks(form) {
         requires_manual_confirmation:
           internetOffer.requires_manual_confirmation ||
           mobileOffer.requires_manual_confirmation ||
-          getLineCountNumber(form.mobile_line_count) >= 5 ||
+          lineCountRequiresManualReview ||
           form.bundle_includes_tv ||
           form.bundle_includes_home_phone,
         caution: `${internetOffer.caution || ""} ${mobileOffer.caution || ""}`.trim(),
-        bundle_sort_score: bundleProviderPreference(mobileOffer.provider, form),
+        bundle_sort_score:
+          bundleProviderPreference(mobileOffer.provider, form) +
+          (typeof bundleCost.totalMonthlyCost === "number" ? bundleCost.totalMonthlyCost / 1000 : 1),
         pickTypeKey: "bundlePick"
       };
     })
@@ -2726,6 +2804,7 @@ export default function Home() {
                     const includesMobile = offer.service_type === "mobile" || (offer.service_type === "both" && offer.mobile_data);
                     const referralLabels = publicMobileButtonLabels(language);
                     const ctaContent = premiumCtaContent(language, offer);
+                    const bundleCosts = bundleCostRows(offer, language);
 
                     return (
                       <article className="plan-card" key={offer.offer_id}>
@@ -2744,6 +2823,15 @@ export default function Home() {
                           <p>
                             <b>{fieldLabel(language, "data")}</b> {dataText(offer, language)}
                           </p>
+                        )}
+                        {bundleCosts.length > 0 && (
+                          <div className="bundle-cost-breakdown">
+                            {bundleCosts.map((row) => (
+                              <p key={row.label}>
+                                <b>{row.label}</b> {row.value}
+                              </p>
+                            ))}
+                          </div>
                         )}
                         <div className="price-with-badges">
                           <p>
