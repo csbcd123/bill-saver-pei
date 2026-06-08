@@ -123,7 +123,7 @@ const translations = {
     successHelper: "你也可以返回主页，继续进行其他账单体检。",
     successButton: "返回主页",
     close: "关闭",
-    disclaimer: "最终价格、资格、地址覆盖、安装、税费、设备费和信用审核以运营商或授权销售人员确认为准。",
+    disclaimer: "Bill Saver 提供 PEI 本地手机 / 宽带账单免费分析服务。我们不会向你收取费用。部分运营商或合作渠道可能会向我们支付推荐佣金，但建议会综合考虑价格、速度、稳定性、地址可用性和你的实际需求。最终价格、资格、安装和信用审核以运营商官方或授权团队确认为准。",
     footer: "请勿提交 SIN、银行卡、完整账号、完整账单或身份证件照片。本工具只需要大概账单信息来做初步判断。",
     serviceCards: { mobile: "手机账单", internet: "宽带账单", both: "组合账单" },
     usageCards: {
@@ -325,7 +325,7 @@ const translations = {
     successHelper: "你也可以返回首頁，繼續進行其他帳單健檢。",
     successButton: "返回首頁",
     close: "關閉",
-    disclaimer: "最終價格、資格、地址覆蓋、安裝、稅費、設備費和信用審核以電信商或授權銷售人員確認為準。",
+    disclaimer: "Bill Saver 提供 PEI 本地手機 / 寬頻帳單免費分析服務。我們不會向你收取費用。部分電信商或合作渠道可能會向我們支付推薦佣金，但建議會綜合考慮價格、速度、穩定性、地址可用性和你的實際需求。最終價格、資格、安裝和信用審核以電信商官方或授權團隊確認為準。",
     footer: "請勿提交 SIN、銀行卡、完整帳號、完整帳單或身分證件照片。本工具只需要大概帳單資訊來做初步判斷。",
     serviceCards: { mobile: "手機帳單", internet: "寬頻帳單", both: "組合帳單" },
     usageCards: {
@@ -529,7 +529,7 @@ const translations = {
     successButton: "Back to Home",
     close: "Close",
     disclaimer:
-      "Final pricing, eligibility, address availability, installation, taxes, equipment fees, and credit approval must be confirmed by the provider or an authorized sales representative.",
+      "Bill Saver provides free local PEI mobile and internet bill analysis. You do not pay us a fee. Some providers or partner channels may pay a referral commission, but recommendations consider price, speed, stability, address availability, and your needs. Final pricing, eligibility, installation, and credit approval must be confirmed by the provider or authorized team.",
     footer:
       "Do not submit SIN, bank card details, full account numbers, full bills, or identity-document photos. This tool only needs approximate bill details for a preliminary check.",
     serviceCards: { mobile: "Mobile bill", internet: "Internet bill", both: "Bundle Bill" },
@@ -1743,6 +1743,76 @@ function premiumCtaContent(language, offer) {
   };
 }
 
+function recommendationTag(offer, index, language) {
+  if (index === 0 || isBell(offer)) return textByLanguage(language, "首选推荐", "首選推薦", "Top recommendation");
+  if (/Koodo|TELUS|Public Mobile/i.test(offer.provider || "")) {
+    return textByLanguage(language, "性价比推荐", "性價比推薦", "Best value");
+  }
+  return textByLanguage(language, "预算备选", "預算備選", "Budget alternative");
+}
+
+function recommendationTagTone(offer, index) {
+  if (index === 0 || isBell(offer)) return "primary";
+  if (/Koodo|TELUS|Public Mobile/i.test(offer.provider || "")) return "value";
+  return "alternative";
+}
+
+function providerCtaLabel(offer, language) {
+  if (isBell(offer)) return textByLanguage(language, "获取可用优惠", "取得可用優惠", "Check available offer");
+  if (/Koodo|TELUS/i.test(offer.provider || "")) return textByLanguage(language, "查看是否适合我", "查看是否適合我", "See if it fits");
+  if (/Purple Cow/i.test(offer.provider || "")) return textByLanguage(language, "咨询本周方案", "諮詢本週方案", "Ask about this week's option");
+  return textByLanguage(language, "人工确认优惠", "人工確認優惠", "Confirm available offer");
+}
+
+function providerMark(provider) {
+  return displayProviderName(provider)
+    .split(/\s|\+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join("")
+    .toUpperCase();
+}
+
+function resultTrustContent(language) {
+  return {
+    action: textByLanguage(language, "获得最佳价格 →", "取得最佳價格 →", "Get the Best Price →"),
+    title: textByLanguage(
+      language,
+      "通过 Bill Saver 获取人工确认优惠",
+      "透過 Bill Saver 取得人工確認優惠",
+      "Get manually confirmed offers through Bill Saver"
+    ),
+    body: textByLanguage(
+      language,
+      "我们会帮你核对当前可用价格、安装资格和是否有更合适方案。你不需要向 Bill Saver 支付任何费用。",
+      "我們會幫你核對目前可用價格、安裝資格和是否有更合適方案。你不需要向 Bill Saver 支付任何費用。",
+      "We’ll help confirm available pricing, installation eligibility, and whether there is a better fit. You do not pay Bill Saver any fee."
+    ),
+    whyTitle: textByLanguage(language, "为什么通过 Bill Saver？", "為什麼透過 Bill Saver？", "Why use Bill Saver?"),
+    items: [
+      textByLanguage(language, "人工确认可用优惠", "人工確認可用優惠", "Manually confirm available offers"),
+      textByLanguage(language, "不收任何服务费", "不收任何服務費", "No service fee"),
+      textByLanguage(language, "协助核对价格、资格和安装方式", "協助核對價格、資格和安裝方式", "Help check pricing, eligibility, and installation options"),
+      textByLanguage(
+        language,
+        "后续涨价也可帮你重新评估替代方案",
+        "後續漲價也可幫你重新評估替代方案",
+        "If prices rise later, we can help reassess alternatives"
+      )
+    ]
+  };
+}
+
+function planSectionIntro(language) {
+  return textByLanguage(
+    language,
+    "以下方案基于您当前账单、PEI 本地可用优惠、价格、稳定性与适用场景综合整理，仅供初步参考。",
+    "以下方案基於你目前帳單、PEI 本地可用優惠、價格、穩定性與適用場景綜合整理，僅供初步參考。",
+    "These options are organized from your current bill, available PEI offers, pricing, stability, and likely fit for preliminary reference."
+  );
+}
+
 function displayPlanName(offer, t) {
   if (offer.offer_id === "bell_mobile_winback_manual") return bellAliantDisplayText(t.bellWinbackService);
   if (offer.offer_id === "bell_internet_mobile_bundle") {
@@ -2286,6 +2356,7 @@ export default function Home() {
   const yearlySavings = useMemo(() => yearlySavingsValue(recommendations, form), [recommendations, form]);
   const savingsRequiresManualReview =
     recommendations.length > 0 && recommendations.every((offer) => calculationMonthlyPrice(offer) === null);
+  const resultTrust = resultTrustContent(language);
   const currentStep = leadOpen ? 3 : resultOpen ? 2 : 1;
   const publicMobileReview = publicMobileLocalReviewContent(language);
   const usageGuidance = usageGuidanceContent(language);
@@ -2816,11 +2887,28 @@ export default function Home() {
                 <div className="rural-recommendation-note">{ruralRecommendationNote(language)}</div>
               )}
 
-              <section>
-                <h3>{t.planTitle}</h3>
+              <section className="result-trust-section">
+                <div className="result-trust-intro">
+                  <button type="button" onClick={openLeadFromResult}>{resultTrust.action}</button>
+                  <strong>{resultTrust.title}</strong>
+                  <p>{resultTrust.body}</p>
+                </div>
+                <div className="result-trust-why">
+                  <strong>{resultTrust.whyTitle}</strong>
+                  <ul>
+                    {resultTrust.items.map((item) => <li key={item}><span aria-hidden="true">✓</span>{item}</li>)}
+                  </ul>
+                </div>
+              </section>
+
+              <section className="recommendation-section">
+                <div className="recommendation-heading">
+                  <h3>{t.planTitle}</h3>
+                  <p>{planSectionIntro(language)}</p>
+                </div>
                 <div className="plan-list">
                   {recommendations.length === 0 && <div className="rural-recommendation-note">{noAlternativeMessage(language)}</div>}
-                  {recommendations.map((offer) => {
+                  {recommendations.map((offer, recommendationIndex) => {
                     const badges = offerBadges(offer, language, form);
                     const priceNote = priceNoteText(offer, language);
                     const includesInternet = offer.service_type === "internet" || offer.service_type === "both";
@@ -2831,6 +2919,41 @@ export default function Home() {
 
                     return (
                       <article className="plan-card" key={offer.offer_id}>
+                        <div className="plan-card-overview">
+                          <div className="plan-provider">
+                            <span className="provider-mark" aria-hidden="true">{providerMark(offer.provider)}</span>
+                            <div>
+                              <strong>{displayProviderName(offer.provider)}</strong>
+                              <span className={`recommendation-tag ${recommendationTagTone(offer, recommendationIndex)}`}>
+                                {recommendationTag(offer, recommendationIndex, language)}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="plan-field">
+                            <span>{t.service}</span>
+                            <strong>{displayPlanName(offer, t)}</strong>
+                          </div>
+                          <div className="plan-field">
+                            <span>{includesMobile && !includesInternet ? fieldLabel(language, "data") : fieldLabel(language, "speed")}</span>
+                            <strong>{includesMobile && !includesInternet ? dataText(offer, language) : speedText(offer, language)}</strong>
+                          </div>
+                          <div className="plan-price-area">
+                            <span>{t.price}</span>
+                            <strong>{displayPrice(offer, t, language)}</strong>
+                            <div className="badge-row">
+                              {badges.map((badge, index) => {
+                                const visibleBadge = displayBadge(badge, offer, index, language);
+                                return <span key={badgeKey(visibleBadge, index)}>{visibleBadge.label}</span>;
+                              })}
+                            </div>
+                            <p>{localizedGoodFor(offer, t, language)}</p>
+                          </div>
+                          <div className="plan-conversion">
+                            <span>{t.savings}</span>
+                            <strong>{savingsText(offer, form, t, language)}</strong>
+                            <button type="button" onClick={openLeadFromResult}>{providerCtaLabel(offer, language)}</button>
+                          </div>
+                        </div>
                         <p>
                           <b>{t.providerLabel}</b> {displayProviderName(offer.provider)}
                         </p>
@@ -2910,10 +3033,10 @@ export default function Home() {
                         <p>
                           <b>{t.goodFor}</b> {localizedGoodFor(offer, t, language)}
                         </p>
-                        <p>
+                        <p className="plan-note">
                           <b>{t.note}</b> {localizedNote(offer, t, language, form)}
                         </p>
-                        {isPremiumProvider(offer) && (
+                        {false && isPremiumProvider(offer) && (
                           <div className="premium-cta-wrap">
                             <div className="premium-cta-main">
                               <button className="premium-cta" type="button" onClick={openLeadFromResult}>
