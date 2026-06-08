@@ -1027,6 +1027,14 @@ function isManualPrice(offer) {
   return offer.is_sensitive_price || !offer.is_public_price || isBell(offer);
 }
 
+function calculationMonthlyPrice(offer) {
+  if (offer.calculation_price_available === false) return null;
+  const rawPrice = offer.bill_saver_target_price ?? offer.official_promo_price;
+  if (rawPrice === null || rawPrice === undefined || rawPrice === "") return null;
+  const price = Number(rawPrice);
+  return Number.isFinite(price) ? price : null;
+}
+
 function monthlyPrice(form) {
   return Number(form.monthly_price || 0);
 }
@@ -1037,17 +1045,18 @@ function money(value, language) {
 }
 
 function savingsText(offer, form, t, language) {
-  if (isManualPrice(offer)) return t.bellSavings;
-  const saving = Math.max(0, Math.round(monthlyPrice(form) - Number(offer.bill_saver_target_price || offer.official_promo_price || 0)));
-  if (!saving) return language === "en" ? "Needs manual review" : language === "zhHant" ? "需要人工確認" : "需要人工确认";
-  if (language === "en") return `About $${saving}/month`;
-  return language === "zhHant" ? `約 $${saving}/月` : `约 $${saving}/月`;
+  const targetPrice = calculationMonthlyPrice(offer);
+  if (targetPrice === null) return t.bellSavings;
+  const saving = Math.max(0, Math.round(monthlyPrice(form) - targetPrice));
+  const annualSaving = saving * 12;
+  if (language === "en") return `About $${saving}/mo, about $${annualSaving}/yr`;
+  return language === "zhHant" ? `約 $${saving}/月，約 $${annualSaving}/年` : `约 $${saving}/月，约 $${annualSaving}/年`;
 }
 
 function relevantTargets(offers, form) {
   const relevant =
     form.service_type === "both" ? offers.filter((offer) => offer.service_type === "both") : offers.filter((offer) => offer.service_type === form.service_type);
-  return relevant.filter((offer) => !isManualPrice(offer)).map((offer) => offer.bill_saver_target_price).filter((value) => typeof value === "number");
+  return relevant.map(calculationMonthlyPrice).filter((value) => typeof value === "number");
 }
 
 function yearlySavingsValue(offers, form) {
@@ -1999,9 +2008,12 @@ function bundleServiceMatchScore(offer, form) {
   const speed = speedRank(offer.speed_down);
   const supportsTv = offer.bundle_services?.includes("tv") || offer.manual_tv_direction;
   const supportsHomePhone = offer.bundle_services?.includes("home_phone") || offer.manual_home_phone_direction;
+  const estimatedMonthlySaving = Math.max(0, monthlyPrice(form) - (calculationMonthlyPrice(offer) ?? monthlyPrice(form)));
 
   if (form.bundle_includes_tv) score += supportsTv ? -25 : 25;
   if (form.bundle_includes_home_phone) score += supportsHomePhone ? -25 : 25;
+  if (!isBell(form.current_provider) && isBell(offer) && form.bundle_includes_tv && form.bundle_includes_home_phone) score -= 60;
+  else if (!isBell(form.current_provider) && isBell(offer) && form.bundle_includes_tv) score -= 50;
   if (form.bundle_includes_tv) {
     if (/Purple Cow/i.test(offer.provider)) score -= 8;
     if (/Koodo/i.test(offer.provider)) score -= 5;
@@ -2019,6 +2031,7 @@ function bundleServiceMatchScore(offer, form) {
   }
 
   if (offer.requires_manual_confirmation) score += 2;
+  score -= Math.min(estimatedMonthlySaving, 80) * 0.5;
   return score;
 }
 
@@ -2044,6 +2057,7 @@ function bundlePicks(form) {
         ],
         requires_manual_confirmation:
           offer.requires_manual_confirmation || form.bundle_includes_tv || form.bundle_includes_home_phone,
+        calculation_price_available: !(form.bundle_includes_tv || form.bundle_includes_home_phone),
         bundle_sort_score: 0,
         pickTypeKey: "bundlePick"
       }))
@@ -2132,6 +2146,8 @@ function bundlePicks(form) {
           lineCountRequiresManualReview ||
           form.bundle_includes_tv ||
           form.bundle_includes_home_phone,
+        calculation_price_available:
+          !lineCountRequiresManualReview && !form.bundle_includes_tv && !form.bundle_includes_home_phone,
         caution: `${internetOffer.caution || ""} ${mobileOffer.caution || ""}`.trim(),
         bundle_sort_score:
           bundleProviderPreference(mobileOffer.provider, form) +
@@ -2151,12 +2167,19 @@ function getRecommendations(form) {
 }
 
 function calculateScore(form, offers) {
-  const yearlySavings = yearlySavingsValue(offers, form);
-  if (yearlySavings <= 0) return 94;
-  if (yearlySavings <= 120) return Math.max(82, 89 - Math.floor(((yearlySavings - 1) / 120) * 8));
-  if (yearlySavings <= 300) return Math.max(65, 81 - Math.floor(((yearlySavings - 121) / 180) * 17));
-  if (yearlySavings <= 600) return Math.max(48, 64 - Math.floor(((yearlySavings - 301) / 300) * 17));
-  return Math.max(35, 47 - Math.floor((yearlySavings - 601) / 50));
+  const current = monthlyPrice(form);
+  const targets = relevantTargets(offers, form);
+  if (!current || !targets.length) return 70;
+
+  const monthlySaving = Math.max(0, current - Math.min(...targets));
+  const savingsRatio = monthlySaving / current;
+
+  if (savingsRatio >= 0.4) return 55;
+  if (savingsRatio >= 0.3) return 62;
+  if (savingsRatio >= 0.2) return 70;
+  if (savingsRatio >= 0.1) return 80;
+  if (savingsRatio >= 0.05) return 88;
+  return 94;
 }
 
 function scoreTone(score) {
@@ -2262,7 +2285,7 @@ export default function Home() {
   const score = useMemo(() => calculateScore(form, recommendations), [form, recommendations]);
   const yearlySavings = useMemo(() => yearlySavingsValue(recommendations, form), [recommendations, form]);
   const savingsRequiresManualReview =
-    recommendations.length > 0 && recommendations.every((offer) => isManualPrice(offer));
+    recommendations.length > 0 && recommendations.every((offer) => calculationMonthlyPrice(offer) === null);
   const currentStep = leadOpen ? 3 : resultOpen ? 2 : 1;
   const publicMobileReview = publicMobileLocalReviewContent(language);
   const usageGuidance = usageGuidanceContent(language);
