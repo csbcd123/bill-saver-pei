@@ -14,6 +14,7 @@
     "commission": 10,
     "requires": ["manual_confirmation", "installation_check"],
     "display_price_requires_confirmation": true,
+    "use_for_savings_calc": true,
     "notes": "Final price, address availability, eligibility, installation, taxes, equipment fees, and credit approval must be confirmed by Bell Aliant or an authorized sales representative."
   },
   {
@@ -31,6 +32,7 @@
     "commission": 10,
     "requires": ["manual_confirmation", "credit_check", "pre_authorized_debit"],
     "display_price_requires_confirmation": true,
+    "use_for_savings_calc": true,
     "notes": "Final price, eligibility, plan terms, taxes, and credit approval require manual confirmation."
   },
   {
@@ -48,6 +50,7 @@
     "commission": 10,
     "requires": ["manual_confirmation", "credit_check", "pre_authorized_debit"],
     "display_price_requires_confirmation": true,
+    "use_for_savings_calc": true,
     "notes": "Final price, eligibility, roaming terms, taxes, and credit approval require manual confirmation."
   },
   {
@@ -65,6 +68,8 @@
     "commission": 10,
     "requires": ["manual_confirmation", "installation_check", "credit_check"],
     "display_price_requires_confirmation": true,
+    "use_for_savings_calc": true,
+    "bundle_services": ["internet", "tv"],
     "notes": "Final price, address availability, eligibility, installation, equipment fees, channel lineup, taxes, and credit approval require manual confirmation."
   },
   {
@@ -82,6 +87,8 @@
     "commission": 10,
     "requires": ["manual_confirmation", "installation_check", "credit_check"],
     "display_price_requires_confirmation": true,
+    "use_for_savings_calc": true,
+    "bundle_services": ["internet", "tv", "home_phone"],
     "notes": "Final price, address availability, eligibility, installation, equipment fees, channel lineup, home phone details, taxes, and credit approval require manual confirmation."
   },
   {

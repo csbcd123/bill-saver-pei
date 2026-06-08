@@ -90,8 +90,8 @@ const translations = {
     manualPick: "人工确认推荐",
     internetPick: "宽带参考方案",
     bundlePick: "组合参考方案",
-    bellWinbackTitle: "Bell Winback 套餐",
-    bellWinbackService: "Bell 手机回流 / Winback 方案",
+    bellWinbackTitle: "Bell 人工确认方案",
+    bellWinbackService: "Bell 手机可用优惠人工确认",
     bellPrice: "优惠价需人工确认",
     bellSavings: "提交信息后人工确认",
     bestPrice: "✨ 获得最佳价格 →",
@@ -204,9 +204,9 @@ const translations = {
     publicMobileNote: "Public Mobile 更适合自带手机、能接受线上自助服务、希望压低月费的用户。",
     koodoPrepaidNote: "Koodo 预付费适合不想做信用审核、想用 4G 低价套餐、且不需要手机分期的用户。",
     bellWinbackGoodFor:
-      "当前 Bell 手机用户，想判断是否有必要转出后等待回流优惠，或比较其他运营商方案。",
+      "希望人工确认当前可用 Bell 手机优惠，或比较其他运营商方案的用户。",
     bellWinbackNote:
-      "Bell Winback 通常需要满足特定资格，可能需要先转出或等待回流联系。最终价格、资格、自动付款、信用审核和促销条件以运营商或授权销售人员确认为准。"
+      "Bell 可用优惠通常需要满足特定资格。最终价格、资格、自动付款、信用审核和促销条件以运营商或授权销售人员确认为准。"
     ,
     purpleCowNote:
       "Purple Cow 适合价格敏感、希望降低宽带月费的用户。通常免安装费、免激活费，并提供首月不满意退款保证。最终可用性、速度、安装条件和退款条款以 Purple Cow 当前确认为准。",
@@ -292,8 +292,8 @@ const translations = {
     manualPick: "人工確認推薦",
     internetPick: "寬頻參考方案",
     bundlePick: "組合參考方案",
-    bellWinbackTitle: "Bell Winback 方案",
-    bellWinbackService: "Bell 手機回流 / Winback 方案",
+    bellWinbackTitle: "Bell 人工確認方案",
+    bellWinbackService: "Bell 手機可用優惠人工確認",
     bellPrice: "優惠價需人工確認",
     bellSavings: "提交資訊後人工確認",
     bestPrice: "✨ 取得最佳價格 →",
@@ -406,9 +406,9 @@ const translations = {
     publicMobileNote: "Public Mobile 較適合自帶手機、能接受線上自助服務、希望降低月費的用戶。",
     koodoPrepaidNote: "Koodo 預付費適合不想做信用審核、想用 4G 低價方案、且不需要手機分期的用戶。",
     bellWinbackGoodFor:
-      "目前 Bell 手機用戶，想判斷是否有必要轉出後等待回流優惠，或比較其他電信商方案。",
+      "希望人工確認目前可用 Bell 手機優惠，或比較其他電信商方案的用戶。",
     bellWinbackNote:
-      "Bell Winback 通常需要滿足特定資格，可能需要先轉出或等待回流聯絡。最終價格、資格、自動付款、信用審核和促銷條件以電信商或授權銷售人員確認為準。"
+      "Bell 可用優惠通常需要滿足特定資格。最終價格、資格、自動付款、信用審核和促銷條件以電信商或授權銷售人員確認為準。"
     ,
     purpleCowNote:
       "Purple Cow 適合價格敏感、希望降低寬頻月費的用戶。通常免安裝費、免啟用費，並提供首月不滿意退款保證。最終可用性、速度、安裝條件和退款條款以 Purple Cow 目前確認為準。",
@@ -495,8 +495,8 @@ const translations = {
     manualPick: "Manual Confirmation Pick",
     internetPick: "Internet Reference Pick",
     bundlePick: "Bundle Reference Pick",
-    bellWinbackTitle: "Bell Winback Plan",
-    bellWinbackService: "Bell mobile winback option",
+    bellWinbackTitle: "Bell Manual Confirmation Option",
+    bellWinbackService: "Bell mobile available offer confirmation",
     bellPrice: "Offer price requires confirmation",
     bellSavings: "Confirmed after submission",
     bestPrice: "✨ Get the Best Price →",
@@ -618,9 +618,9 @@ const translations = {
     koodoPrepaidNote:
       "Koodo Prepaid is suitable for users who want a lower-cost 4G prepaid plan, no credit check, and do not need phone financing.",
     bellWinbackGoodFor:
-      "Current Bell mobile users who want to check whether switching out and waiting for a winback offer may be worth it, or compare other provider options.",
+      "Users who want to manually confirm available Bell mobile offers or compare other provider options.",
     bellWinbackNote:
-      "Bell winback offers usually require specific eligibility and may require switching out first or waiting for a winback contact. Final pricing, eligibility, pre-authorized payment, credit approval, and promotional terms must be confirmed by the provider or an authorized sales representative."
+      "Available Bell offers usually require specific eligibility. Final pricing, eligibility, pre-authorized payment, credit approval, and promotional terms must be confirmed by the provider or an authorized sales representative."
     ,
     purpleCowNote:
       "Purple Cow may be a good fit for price-sensitive users who want to lower their internet bill. It typically has no installation fee, no activation fee, and a first-month money-back guarantee. Final availability, speed, installation conditions, and refund terms should be confirmed with Purple Cow.",
@@ -1028,7 +1028,7 @@ function isManualPrice(offer) {
 }
 
 function calculationMonthlyPrice(offer) {
-  if (offer.calculation_price_available === false) return null;
+  if (offer.calculation_price_available === false || offer.use_for_savings_calc === false) return null;
   const rawPrice = offer.bill_saver_target_price ?? offer.official_promo_price;
   if (rawPrice === null || rawPrice === undefined || rawPrice === "") return null;
   const price = Number(rawPrice);
