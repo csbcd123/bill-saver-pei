@@ -3379,3 +3379,64 @@ textarea:focus {
     color: rgba(31, 240, 170, 0.92);
   }
 }
+
+.bundle-form-split .form-split-right {
+  gap: 15px;
+}
+
+.compact-field {
+  margin-top: 0;
+}
+
+.bundle-form-split .compact-field > span:first-child {
+  margin-bottom: 7px;
+  font-size: 15px;
+}
+
+.bundle-form-split .compact-field .input-shell,
+.bundle-form-split .compact-field .input-shell select {
+  min-height: 50px;
+  height: 50px;
+}
+
+.segmented-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.segmented-toggle button {
+  height: 38px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 180ms ease, color 180ms ease, box-shadow 180ms ease;
+}
+
+.segmented-toggle button:hover {
+  color: #fff;
+}
+
+.segmented-toggle button.active {
+  background: linear-gradient(135deg, #16e39b, #0eb47d);
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+}
+
+.bundle-result-note {
+  border: 1px solid rgba(31, 240, 170, 0.24);
+  border-radius: 10px;
+  background: rgba(31, 240, 170, 0.08);
+  color: var(--ink);
+  padding: 12px 14px;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
