@@ -780,7 +780,7 @@ function serviceTypeSubtitle(language, type) {
   const subtitles = {
     internet: ["仅宽带服务", "僅寬頻服務", "Internet only"],
     mobile: ["仅手机服务", "僅手機服務", "Mobile only"],
-    both: ["宽带 / 手机 / TV / 电话", "寬頻 / 手機 / TV / 電話", "Internet / Mobile / TV / Phone"]
+    both: ["多项服务人工复核", "多項服務人工覆核", "Manual review for multiple services"]
   };
   const [zhHans, zhHant, en] = subtitles[type];
   return language === "en" ? en : language === "zhHant" ? zhHant : zhHans;
@@ -928,6 +928,12 @@ function speedBucket(speed) {
 function isBell(offerOrProvider) {
   const provider = typeof offerOrProvider === "string" ? offerOrProvider : offerOrProvider.provider;
   return /bell/i.test(provider || "");
+}
+
+function isRecommendableOffer(offer) {
+  if (offer.status === "inactive" || offer.recommendable === false || offer.exclude_from_recommendations === true) return false;
+  if (isBell(offer) && offer.service_type === "mobile" && parseDataGB(offer.mobile_data) === 0) return false;
+  return true;
 }
 
 function normalizeProviderName(value = "") {
@@ -1302,6 +1308,19 @@ function offerBadges(offer, language) {
       ? [creditCheckBadge]
       : [];
 
+  if (isBell(offer) && offer.service_type === "both") {
+    return [
+      ...(offer.tv_package ? [offer.tv_package] : []),
+      ...(offer.tv_highlights || []),
+      ...(offer.bundle_services?.includes("home_phone")
+        ? [textByLanguage(language, "包含家庭电话", "包含家居電話", "Includes home phone")]
+        : []),
+      textByLanguage(language, "需确认安装资格", "需確認安裝資格", "Installation eligibility check"),
+      textByLanguage(language, "优惠需人工确认", "優惠需人工確認", "Offer confirmation required"),
+      creditCheckBadge
+    ];
+  }
+
   if (/Koodo/i.test(offer.provider) && offer.service_type === "internet") {
     return [
       textByLanguage(language, "无激活费", "無啟用費", "No activation fee"),
@@ -1331,6 +1350,7 @@ function offerBadges(offer, language) {
     return [
       textByLanguage(language, "大网覆盖", "大網覆蓋", "Major network"),
       textByLanguage(language, "大流量方案", "大流量方案", "High-data option"),
+      ...(offer.requires_pad ? [textByLanguage(language, "需设置自动扣款", "需設定自動扣款", "Pre-authorized debit required")] : []),
       textByLanguage(language, "优惠需确认", "優惠需確認", "Offer confirmation"),
       textByLanguage(language, "适合重度用户", "適合重度用戶", "Good for heavy users"),
       ...mobilePlanBadges
@@ -1637,19 +1657,29 @@ function hasPublicMobileInternationalMinutes(offer) {
   return /Public Mobile/i.test(searchable) && /Canada-US-Mexico/i.test(searchable);
 }
 
-function premiumCtaContent(language) {
+function premiumCtaContent(language, offer) {
+  const isBundle = offer?.service_type === "both";
   return {
+    buttonLabel: isBundle
+      ? textByLanguage(language, "获取人工确认优惠 →", "取得人工確認優惠 →", "Get a Manually Confirmed Offer →")
+      : null,
     title: textByLanguage(
       language,
-      "通过 Bill Saver 获取人工确认优惠",
-      "透過 Bill Saver 取得人工確認優惠",
-      "Get manually confirmed offers through Bill Saver"
+      isBundle ? "让 Bill Saver 帮你人工复核多项服务" : "通过 Bill Saver 获取人工确认优惠",
+      isBundle ? "讓 Bill Saver 幫你人工覆核多項服務" : "透過 Bill Saver 取得人工確認優惠",
+      isBundle ? "Let Bill Saver manually review your services" : "Get manually confirmed offers through Bill Saver"
     ),
     body: textByLanguage(
       language,
-      "我们会帮你核对当前可用价格、安装资格和是否有更合适方案。你不需要向 Bill Saver 支付任何费用。",
-      "我們會幫你核對目前可用價格、安裝資格和是否有更合適方案。你不需要向 Bill Saver 支付任何費用。",
-      "We’ll help confirm available pricing, installation eligibility, and whether there is a better fit. You do not pay Bill Saver any fee."
+      isBundle
+        ? "提交后，我们会按你选择的宽带、手机、TV 和家庭电话服务，人工核对当前可用方案、安装资格和组合方式。"
+        : "我们会帮你核对当前可用价格、安装资格和是否有更合适方案。你不需要向 Bill Saver 支付任何费用。",
+      isBundle
+        ? "提交後，我們會按你選擇的寬頻、手機、TV 和家居電話服務，人工核對目前可用方案、安裝資格和組合方式。"
+        : "我們會幫你核對目前可用價格、安裝資格和是否有更合適方案。你不需要向 Bill Saver 支付任何費用。",
+      isBundle
+        ? "After submission, we will manually review available options, installation eligibility, and suitable combinations for your selected internet, mobile, TV, and home phone services."
+        : "We’ll help confirm available pricing, installation eligibility, and whether there is a better fit. You do not pay Bill Saver any fee."
     ),
     whyTitle: textByLanguage(language, "为什么通过 Bill Saver？", "為什麼透過 Bill Saver？", "Why use Bill Saver?"),
     items: [
@@ -1711,7 +1741,7 @@ function bestMobileProviderOffer(offers, provider, form) {
 
 function internetPicks(form) {
   const offers = filterOutCurrentProvider(
-    offerDatabase.filter((offer) => offer.service_type === "internet" && offer.status !== "inactive"),
+    offerDatabase.filter((offer) => offer.service_type === "internet" && isRecommendableOffer(offer)),
     form.current_provider
   );
   const currentIsBellAliant = isBell(form.current_provider);
@@ -1733,7 +1763,7 @@ function mobilePicks(form) {
         const offerPrice = mobileOfferPrice(offer);
         return (
           offer.service_type === "mobile" &&
-          offer.status !== "inactive" &&
+          isRecommendableOffer(offer) &&
           !isKoodoPrepaid(offer) &&
           isPlanDataSuitableForUsage(offer.mobile_data, form.current_mobile_data) &&
           !["Rogers", "Fido", "Virgin Plus"].includes(offer.provider) &&
@@ -1801,10 +1831,46 @@ function bundleProviderPreference(provider, form) {
   return preference;
 }
 
+function bellBundleDirections(form, internet) {
+  if (isBell(form.current_provider)) return [];
+
+  const bellBundles = offerDatabase.filter(
+    (offer) => offer.service_type === "both" && isBell(offer) && isRecommendableOffer(offer)
+  );
+
+  if (form.bundle_includes_tv && form.bundle_includes_home_phone) {
+    return bellBundles.filter((offer) => offer.bundle_services?.includes("tv") && offer.bundle_services?.includes("home_phone"));
+  }
+
+  if (form.bundle_includes_tv) {
+    return bellBundles.filter((offer) => offer.bundle_services?.includes("tv") && !offer.bundle_services?.includes("home_phone"));
+  }
+
+  if (form.bundle_includes_home_phone) {
+    const bellInternet = internet.find((offer) => isBell(offer));
+    if (!bellInternet) return [];
+    return [
+      {
+        ...bellInternet,
+        offer_id: `bundle_${bellInternet.offer_id}_home_phone`,
+        service_type: "both",
+        plan_name: "Bell Aliant Internet + Home Phone",
+        is_bundle: true,
+        requires_manual_confirmation: true,
+        display_price_requires_confirmation: true,
+        bundle_services: ["internet", "home_phone"],
+        pickTypeKey: "bundlePick"
+      }
+    ];
+  }
+
+  return [];
+}
+
 function bundlePicks(form) {
   const internet = internetPicks(form);
   if (!form.bundle_includes_mobile) {
-    return internet
+    const genericDirections = internet
       .map((offer) => ({
         ...offer,
         offer_id: `bundle_${offer.offer_id}`,
@@ -1817,6 +1883,16 @@ function bundlePicks(form) {
         pickTypeKey: "bundlePick"
       }))
       .sort((a, b) => a.bundle_sort_score - b.bundle_sort_score);
+
+    const preferredBellDirections = bellBundleDirections(form, internet).map((offer) => ({
+      ...offer,
+      pickTypeKey: "bundlePick",
+      bundle_sort_score: -10
+    }));
+
+    return [...preferredBellDirections, ...genericDirections].filter(
+      (offer, index, offers) => offers.findIndex((candidate) => candidate.offer_id === offer.offer_id) === index
+    );
   }
 
   const mobile = mobilePicks(form);
@@ -2519,7 +2595,7 @@ export default function Home() {
                     const includesInternet = offer.service_type === "internet" || offer.service_type === "both";
                     const includesMobile = offer.service_type === "mobile" || (offer.service_type === "both" && offer.mobile_data);
                     const referralLabels = publicMobileButtonLabels(language);
-                    const ctaContent = premiumCtaContent(language);
+                    const ctaContent = premiumCtaContent(language, offer);
 
                     return (
                       <article className="plan-card" key={offer.offer_id}>
@@ -2600,7 +2676,7 @@ export default function Home() {
                           <div className="premium-cta-wrap">
                             <div className="premium-cta-main">
                               <button className="premium-cta" type="button" onClick={openLeadFromResult}>
-                                {t.bestPrice}
+                                {ctaContent.buttonLabel || t.bestPrice}
                               </button>
                               <div>
                                 <strong>{ctaContent.title}</strong>
