@@ -3256,3 +3256,126 @@ textarea:focus {
     text-align: left;
   }
 }
+
+/* Final unified usage badges */
+.usage-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: center;
+  align-self: center;
+  width: 46px;
+  height: 46px;
+  min-width: 46px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(72, 125, 145, 0.72), rgba(42, 86, 106, 0.78));
+  color: #fff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 8px 18px rgba(0, 0, 0, 0.2);
+}
+
+.usage-badge span {
+  display: block;
+  color: #fff;
+  font-size: 19px;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  transform: translateY(-1px);
+}
+
+.usage-card.active .usage-badge,
+.mobile-usage-card.active .usage-badge {
+  background: linear-gradient(135deg, #22e6a6, #0eb47d);
+  box-shadow: 0 0 0 1px rgba(32, 232, 165, 0.36), 0 12px 26px rgba(0, 0, 0, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.usage-card,
+.bundle-usage-card {
+  grid-template-columns: 58px minmax(0, 1fr) 108px;
+  gap: 14px;
+  min-height: 88px;
+  padding: 14px 16px;
+}
+
+.usage-card-copy strong,
+.bundle-usage-card .usage-card-copy strong {
+  margin-bottom: 4px;
+  font-size: 17px;
+  line-height: 1.2;
+}
+
+.usage-card-copy span,
+.bundle-usage-card .usage-card-copy span {
+  font-size: 13px;
+  line-height: 1.38;
+}
+
+.usage-card .usage-card-check,
+.mobile-usage-check {
+  top: 10px;
+  right: 10px;
+  width: 24px;
+  height: 24px;
+  font-size: 16px;
+}
+
+.mobile-usage-card,
+.bundle-usage-card.mobile-usage-card {
+  grid-template-columns: 58px minmax(0, 1fr);
+  gap: 14px;
+  min-height: 88px;
+  padding: 14px 16px;
+}
+
+.mobile-usage-title {
+  font-size: 17px;
+  line-height: 1.2;
+}
+
+.mobile-usage-desc {
+  margin-top: 4px;
+  font-size: 13px;
+  line-height: 1.38;
+}
+
+.mobile-usage-amount {
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .usage-card,
+  .bundle-usage-card,
+  .mobile-usage-card,
+  .bundle-usage-card.mobile-usage-card {
+    grid-template-columns: 54px minmax(0, 1fr);
+    gap: 12px;
+    min-height: 84px;
+    padding: 13px 14px;
+  }
+
+  .usage-badge {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+  }
+
+  .usage-badge span {
+    font-size: 17px;
+  }
+
+  .usage-card-speed {
+    grid-column: 2;
+    margin-top: 4px;
+    text-align: left;
+  }
+
+  .mobile-usage-header {
+    display: block;
+  }
+
+  .mobile-usage-amount {
+    display: block;
+    margin-top: 4px;
+    color: rgba(31, 240, 170, 0.92);
+  }
+}

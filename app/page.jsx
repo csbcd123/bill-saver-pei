@@ -618,14 +618,14 @@ const providerOptionsByService = {
   ]
 };
 const usageLevels = [
-  { value: "light", currentSpeed: "100M" },
-  { value: "standard", currentSpeed: "300M" },
-  { value: "heavy", currentSpeed: "1G" }
+  { value: "light", currentSpeed: "100M", badge: "L" },
+  { value: "standard", currentSpeed: "300M", badge: "M" },
+  { value: "heavy", currentSpeed: "1G", badge: "H" }
 ];
 const mobileDataUsageLevels = [
-  { value: "0-20GB", type: "light" },
-  { value: "20-50GB", type: "daily" },
-  { value: "60GB+", type: "heavy" }
+  { value: "0-20GB", type: "light", badge: "S" },
+  { value: "20-50GB", type: "daily", badge: "M" },
+  { value: "60GB+", type: "heavy", badge: "L" }
 ];
 const mainUrbanAreas = ["Charlottetown", "Stratford", "Cornwall", "Summerside"];
 
@@ -694,33 +694,6 @@ function LineIcon({ name, size = 32, strokeWidth = 2.4 }) {
   if (name === "smartphone") {
     return <svg {...common}><rect x="6.5" y="2" width="11" height="20" rx="2" /><path d="M10 5h4" /><path d="M11.5 18.5h1" /></svg>;
   }
-  if (name === "leaf") {
-    return <svg {...common}><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5.2 19 2 19 2c.8 6.6-1.4 13.7-8 15.8" /><path d="M2 21c0-3 1.85-5.36 5.08-6.94C9.14 13.05 12 12 16 12" /></svg>;
-  }
-  if (name === "home") {
-    return <svg {...common}><path d="m3 11 9-8 9 8" /><path d="M5 10v10h14V10" /><path d="M9 20v-6h6v6" /></svg>;
-  }
-  if (name === "users") {
-    return <svg {...common}><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>;
-  }
-  if (name === "message-circle") {
-    return <svg {...common}><path d="M21 15a4 4 0 0 1-4 4H8l-5 3 1.7-5.1A8 8 0 1 1 21 15Z" /></svg>;
-  }
-  if (name === "message-square") {
-    return <svg {...common}><path d="M21 15a4 4 0 0 1-4 4H7l-4 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z" /></svg>;
-  }
-  if (name === "play") {
-    return <svg {...common}><path d="m7 4 13 8-13 8Z" /></svg>;
-  }
-  if (name === "signal-low") {
-    return <svg {...common}><path d="M4 20v-4" /><path d="M10 20v-8" /><path d="M16 20v-2" /><path d="M22 20v-2" /></svg>;
-  }
-  if (name === "signal-medium") {
-    return <svg {...common}><path d="M4 20v-4" /><path d="M10 20v-8" /><path d="M16 20v-12" /><path d="M22 20v-2" /></svg>;
-  }
-  if (name === "signal-high") {
-    return <svg {...common}><path d="M4 20v-4" /><path d="M10 20v-8" /><path d="M16 20v-12" /><path d="M22 20V4" /></svg>;
-  }
   if (name === "building") {
     return <svg {...common}><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18" /><path d="M2 22h20" /><path d="M9 6h1" /><path d="M14 6h1" /><path d="M9 10h1" /><path d="M14 10h1" /><path d="M9 14h1" /><path d="M14 14h1" /><path d="M10 22v-4h4v4" /></svg>;
   }
@@ -761,24 +734,18 @@ function serviceTypeSubtitle(language, type) {
   return language === "en" ? en : language === "zhHant" ? zhHant : zhHans;
 }
 
-function UsageIcon({ type }) {
-  const iconName = type === "light" ? "leaf" : type === "standard" ? "home" : type === "heavy" ? "users" : "data";
-  const iconSize = type === "heavy" ? 28 : 27;
-  return <span className={type === "heavy" ? "usage-card-icon usage-card-icon-heavy" : "usage-card-icon"} aria-hidden="true"><LineIcon name={iconName} size={iconSize} strokeWidth={2.5} /></span>;
+function UsageBadge({ badge }) {
+  return <span className="usage-badge" aria-hidden="true"><span>{badge}</span></span>;
 }
 
 function MobileUsageCard({ item, content, active, onClick, bundle = false }) {
-  const iconName = item.type === "light" ? "signal-low" : item.type === "daily" ? "signal-medium" : "signal-high";
-
   return (
     <button
       type="button"
       className={`mobile-usage-card${bundle ? " bundle-usage-card" : ""}${active ? " active" : ""}`}
       onClick={onClick}
     >
-      <span className="mobile-usage-icon" aria-hidden="true">
-        <LineIcon name={iconName} size={24} strokeWidth={2.5} />
-      </span>
+      <UsageBadge badge={item.badge} />
       <span className="mobile-usage-text">
         <span className="mobile-usage-header">
           <strong className="mobile-usage-title">{content.title}</strong>
@@ -2021,7 +1988,7 @@ export default function Home() {
                         className={`${form.internet_usage_level === item.value ? "usage-card active" : "usage-card"} ${showMobile ? "bundle-usage-card" : "internet-usage-card"}`}
                         onClick={() => update("internet_usage_level", item.value)}
                       >
-                        <UsageIcon type={item.value} />
+                        <UsageBadge badge={item.badge} />
                         <span className="usage-card-copy">
                           <strong>{t.usageCards[item.value].title}</strong>
                           <span>{t.usageCards[item.value].description}</span>
