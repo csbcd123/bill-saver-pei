@@ -642,14 +642,14 @@ const providerOptionsByService = {
   ]
 };
 const usageLevels = [
-  { value: "light", currentSpeed: "100M", badge: "L" },
-  { value: "standard", currentSpeed: "300M", badge: "M" },
-  { value: "heavy", currentSpeed: "1G", badge: "H" }
+  { value: "light", currentSpeed: "100M" },
+  { value: "standard", currentSpeed: "300M" },
+  { value: "heavy", currentSpeed: "1G" }
 ];
 const mobileDataUsageLevels = [
-  { value: "0-20GB", type: "light", badge: "S" },
-  { value: "20-50GB", type: "daily", badge: "M" },
-  { value: "60GB+", type: "heavy", badge: "L" }
+  { value: "0-20GB", type: "light" },
+  { value: "20-50GB", type: "daily" },
+  { value: "60GB+", type: "heavy" }
 ];
 const mainUrbanAreas = ["Charlottetown", "Stratford", "Cornwall", "Summerside"];
 
@@ -761,10 +761,6 @@ function serviceTypeSubtitle(language, type) {
   return language === "en" ? en : language === "zhHant" ? zhHant : zhHans;
 }
 
-function UsageBadge({ badge }) {
-  return <span className="usage-badge" aria-hidden="true"><span>{badge}</span></span>;
-}
-
 function MobileUsageCard({ item, content, active, onClick, bundle = false }) {
   return (
     <button
@@ -772,7 +768,6 @@ function MobileUsageCard({ item, content, active, onClick, bundle = false }) {
       className={`mobile-usage-card${bundle ? " bundle-usage-card" : ""}${active ? " active" : ""}`}
       onClick={onClick}
     >
-      <UsageBadge badge={item.badge} />
       <span className="mobile-usage-text">
         <span className="mobile-usage-header">
           <strong className="mobile-usage-title">{content.title}</strong>
@@ -2136,7 +2131,6 @@ export default function Home() {
                         className={`${form.internet_usage_level === item.value ? "usage-card active" : "usage-card"} ${showMobile ? "bundle-usage-card" : "internet-usage-card"}`}
                         onClick={() => update("internet_usage_level", item.value)}
                       >
-                        <UsageBadge badge={item.badge} />
                         <span className="usage-card-copy">
                           <strong>{t.usageCards[item.value].title}</strong>
                           <span>{t.usageCards[item.value].description}</span>
