@@ -3380,6 +3380,55 @@ textarea:focus {
   }
 }
 
+.bundle-services-block {
+  margin-bottom: 18px;
+}
+
+.bundle-services-block .form-side-title {
+  margin-bottom: 10px;
+}
+
+.bundle-service-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.bundle-service-chip {
+  min-height: 44px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.055);
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.bundle-service-chip.active {
+  border-color: #0fe0a0;
+  background:
+    radial-gradient(circle at 20% 50%, rgba(20, 224, 160, 0.18), transparent 34%),
+    rgba(0, 120, 95, 0.25);
+  color: #fff;
+}
+
+.bundle-service-chip.disabled {
+  cursor: default;
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .bundle-service-grid {
+    gap: 8px;
+  }
+
+  .bundle-service-chip {
+    min-height: 40px;
+    font-size: 14px;
+  }
+}
+
 .bundle-form-split .form-split-right {
   gap: 15px;
 }

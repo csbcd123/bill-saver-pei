@@ -44,11 +44,18 @@ const translations = {
     areaPlaceholder: "选择您所在的区域",
     billInfoInternet: "请填写您的宽带信息",
     billInfoMobile: "请填写您的手机信息",
-    billInfoBoth: "请填写您的账单信息",
+    billInfoBoth: "请填写您的组合账单信息",
     monthlyUnit: "加元 / 月",
     formSafetyNote: "安全可靠 · 仅用于为您找到更好优惠",
     validationRequired: "请先完成必填信息，再查看体检结果。",
     validationMobileLines: "请选择你家有几条手机线路。",
+    validationMobileLineMinimum: "如果组合账单包含手机，请选择至少 1 条手机线路。",
+    validationMobileData: "请选择您的手机流量使用情况。",
+    bundleServicesTitle: "你的组合账单包含哪些服务？",
+    bundleInternet: "宽带",
+    bundleMobile: "手机",
+    bundleTv: "TV 服务",
+    bundleHomePhone: "家庭电话",
     mobileLineCount: "你家有几条手机线路？",
     mobileLinePlaceholder: "选择手机线路数量",
     mobileLineOptions: ["1 条", "2 条", "3 条", "4 条", "5 条及以上"],
@@ -118,7 +125,7 @@ const translations = {
     close: "关闭",
     disclaimer: "最终价格、资格、地址覆盖、安装、税费、设备费和信用审核以运营商或授权销售人员确认为准。",
     footer: "请勿提交 SIN、银行卡、完整账号、完整账单或身份证件照片。本工具只需要大概账单信息来做初步判断。",
-    serviceCards: { mobile: "手机账单", internet: "宽带账单", both: "宽带 + 手机" },
+    serviceCards: { mobile: "手机账单", internet: "宽带账单", both: "组合账单" },
     usageCards: {
       light: {
         title: "轻度使用",
@@ -239,11 +246,18 @@ const translations = {
     areaPlaceholder: "選擇你所在的區域",
     billInfoInternet: "請填寫您的寬頻資訊",
     billInfoMobile: "請填寫您的手機資訊",
-    billInfoBoth: "請填寫您的帳單資訊",
+    billInfoBoth: "請填寫你的組合帳單資訊",
     monthlyUnit: "加元 / 月",
     formSafetyNote: "安全可靠 · 僅用於為你找到更好優惠",
     validationRequired: "請先完成必填資訊，再查看健檢結果。",
     validationMobileLines: "請選擇你家有幾條手機線路。",
+    validationMobileLineMinimum: "如果組合帳單包含手機，請選擇至少 1 條手機線路。",
+    validationMobileData: "請選擇你的手機流量使用情況。",
+    bundleServicesTitle: "你的組合帳單包含哪些服務？",
+    bundleInternet: "寬頻",
+    bundleMobile: "手機",
+    bundleTv: "TV 服務",
+    bundleHomePhone: "家居電話",
     mobileLineCount: "你家有幾條手機線路？",
     mobileLinePlaceholder: "選擇手機線路數量",
     mobileLineOptions: ["1 條", "2 條", "3 條", "4 條", "5 條及以上"],
@@ -313,7 +327,7 @@ const translations = {
     close: "關閉",
     disclaimer: "最終價格、資格、地址覆蓋、安裝、稅費、設備費和信用審核以電信商或授權銷售人員確認為準。",
     footer: "請勿提交 SIN、銀行卡、完整帳號、完整帳單或身分證件照片。本工具只需要大概帳單資訊來做初步判斷。",
-    serviceCards: { mobile: "手機帳單", internet: "寬頻帳單", both: "寬頻 + 手機" },
+    serviceCards: { mobile: "手機帳單", internet: "寬頻帳單", both: "組合帳單" },
     usageCards: {
       light: {
         title: "輕度使用",
@@ -434,11 +448,18 @@ const translations = {
     areaPlaceholder: "Select your area",
     billInfoInternet: "Enter your internet bill information",
     billInfoMobile: "Enter your mobile bill information",
-    billInfoBoth: "Enter your bill information",
+    billInfoBoth: "Enter your bundle bill information",
     monthlyUnit: "CAD / mo",
     formSafetyNote: "Secure · Used only to help find better offers",
     validationRequired: "Please complete the required information before viewing your result.",
     validationMobileLines: "Please select how many mobile lines you have.",
+    validationMobileLineMinimum: "If your bundle includes mobile service, please select at least 1 mobile line.",
+    validationMobileData: "Please choose your mobile data usage.",
+    bundleServicesTitle: "Which services are included in your bundle?",
+    bundleInternet: "Internet",
+    bundleMobile: "Mobile",
+    bundleTv: "TV",
+    bundleHomePhone: "Home Phone",
     mobileLineCount: "How many mobile lines do you have?",
     mobileLinePlaceholder: "Select number of mobile lines",
     mobileLineOptions: ["1 line", "2 lines", "3 lines", "4 lines", "5+ lines"],
@@ -511,7 +532,7 @@ const translations = {
       "Final pricing, eligibility, address availability, installation, taxes, equipment fees, and credit approval must be confirmed by the provider or an authorized sales representative.",
     footer:
       "Do not submit SIN, bank card details, full account numbers, full bills, or identity-document photos. This tool only needs approximate bill details for a preliminary check.",
-    serviceCards: { mobile: "Mobile bill", internet: "Internet bill", both: "Internet + Mobile" },
+    serviceCards: { mobile: "Mobile bill", internet: "Internet bill", both: "Bundle Bill" },
     usageCards: {
       light: {
         title: "Light use",
@@ -662,7 +683,11 @@ const initialForm = {
   internet_usage_level: "",
   current_speed: "",
   current_mobile_data: "",
-  mobile_line_count: "",
+  bundle_includes_internet: true,
+  bundle_includes_mobile: false,
+  bundle_includes_tv: false,
+  bundle_includes_home_phone: false,
+  mobile_line_count: "0",
   has_tv_service: "no",
   has_home_phone: "no",
   postal_code: "",
@@ -755,7 +780,7 @@ function serviceTypeSubtitle(language, type) {
   const subtitles = {
     internet: ["仅宽带服务", "僅寬頻服務", "Internet only"],
     mobile: ["仅手机服务", "僅手機服務", "Mobile only"],
-    both: ["组合服务", "組合服務", "Bundle service"]
+    both: ["宽带 / 手机 / TV / 电话", "寬頻 / 手機 / TV / 電話", "Internet / Mobile / TV / Phone"]
   };
   const [zhHans, zhHant, en] = subtitles[type];
   return language === "en" ? en : language === "zhHant" ? zhHant : zhHans;
@@ -1058,10 +1083,10 @@ function localizedGoodFor(offer, t, language) {
 
 function localizedNote(offer, t, language, form) {
   const bundleNotes = [];
-  if (offer.service_type === "both" && form.has_tv_service === "yes") {
+  if (offer.service_type === "both" && form.bundle_includes_tv) {
     bundleNotes.push(textByLanguage(language, "TV 组合需人工确认。", "電視組合需人工確認。", "TV bundle options require manual confirmation."));
   }
-  if (offer.service_type === "both" && form.has_home_phone === "yes") {
+  if (offer.service_type === "both" && form.bundle_includes_home_phone) {
     bundleNotes.push(
       textByLanguage(language, "家庭电话组合价格需要人工确认。", "家居電話組合價格需要人工確認。", "Home phone bundle pricing requires manual confirmation.")
     );
@@ -1070,7 +1095,7 @@ function localizedNote(offer, t, language, form) {
     const ruralNote = !isMainUrbanArea(form.city) ? ruralOfferNote(offer, language) : "";
     const minutesNote = hasPublicMobileInternationalMinutes(offer) ? publicMobileInternationalMinutes(language) : "";
     const multiLineNote =
-      offer.service_type === "both" && getLineCountNumber(form.mobile_line_count) >= 2
+      offer.service_type === "both" && form.bundle_includes_mobile && getLineCountNumber(form.mobile_line_count) >= 2
         ? textByLanguage(
             language,
             "Public Mobile 每条线需要独立订阅和账户管理，适合愿意自助管理的家庭。",
@@ -1103,31 +1128,53 @@ function localizedNote(offer, t, language, form) {
 
 function bundleResultNotes(form, language) {
   if (form.service_type !== "both") return [];
-  const lines = getLineCountNumber(form.mobile_line_count);
+  const services = [
+    textByLanguage(language, "宽带", "寬頻", "Internet"),
+    form.bundle_includes_mobile ? textByLanguage(language, "手机", "手機", "mobile") : "",
+    form.bundle_includes_tv ? textByLanguage(language, "TV 服务", "TV 服務", "TV service") : "",
+    form.bundle_includes_home_phone ? textByLanguage(language, "家庭电话", "家居電話", "home phone") : ""
+  ].filter(Boolean);
   const notes = [
-    lines === 1
-      ? textByLanguage(
-          language,
-          "你填写的是 1 条手机线路，因此系统优先比较单线手机套餐与宽带组合的总成本。",
-          "你填寫的是 1 條手機線路，因此系統會優先比較單線手機套餐與寬頻組合的總成本。",
-          "You entered 1 mobile line, so the system compares single-line mobile plans with internet options."
-        )
-      : lines >= 5
-        ? textByLanguage(
-            language,
-            "你填写的是 5 条及以上手机线路。多线路家庭价格差异较大，建议人工复核，以确认是否有家庭组合、企业/团体或本地可用优惠。",
-            "你填寫的是 5 條及以上手機線路。多線路家庭價格差異較大，建議人工覆核，以確認是否有家庭組合、企業/團體或本地可用優惠。",
-            "You entered 5 or more mobile lines. Pricing can vary significantly for larger households, so manual review is recommended to check family, group, or locally available offers."
-          )
-        : textByLanguage(
-            language,
-            "你填写的是多条手机线路。多线路家庭可能涉及后付费组合优惠、信用核查和号码转入，建议提交后由 Bill Saver 人工确认可用优惠。",
-            "你填寫的是多條手機線路。多線路家庭可能涉及後付費組合優惠、信用查核和號碼轉入，建議提交後由 Bill Saver 人工確認可用優惠。",
-            "You entered multiple mobile lines. Multi-line households may involve postpaid bundle offers, credit checks, and number transfers. Manual review is recommended."
-          )
+    textByLanguage(
+      language,
+      `你的组合账单包含：${services.join("、")}。`,
+      `你的組合帳單包含：${services.join("、")}。`,
+      `Your bundle includes: ${services.join(", ")}.`
+    )
   ];
 
-  if (form.has_tv_service === "yes") {
+  if (form.bundle_includes_tv || form.bundle_includes_home_phone) {
+    notes.push(
+      textByLanguage(
+        language,
+        "这类组合价格通常需要人工确认，尤其是 TV 套餐、家庭电话是否保留、安装资格和本周可用优惠。",
+        "這類組合價格通常需要人工覆核，尤其是 TV 套餐、家居電話是否保留、安裝資格和本週可用優惠。",
+        "These bundle prices usually require manual review, especially TV packages, home phone retention, installation eligibility, and currently available offers."
+      )
+    );
+  }
+
+  if (form.bundle_includes_mobile) {
+    notes.push(
+      textByLanguage(
+        language,
+        "系统会同时参考你的手机线路数量和手机流量需求。",
+        "系統會同時參考你的手機線路數量和手機流量需求。",
+        "The system also considers your mobile line count and mobile data needs."
+      )
+    );
+  } else {
+    notes.push(
+      textByLanguage(
+        language,
+        "你的组合账单不包含手机服务，因此系统不会推荐纯手机套餐。Bill Saver 会重点参考你的宽带、TV 服务和家庭电话情况进行人工确认。",
+        "你的組合帳單不包含手機服務，因此系統不會推薦純手機套餐。Bill Saver 會重點參考你的寬頻、TV 服務和家居電話情況進行人工確認。",
+        "Your bundle does not include mobile service, so the system will not recommend mobile-only plans. Bill Saver will focus on your internet, TV, and home phone services during manual review."
+      )
+    );
+  }
+
+  if (form.bundle_includes_tv) {
     notes.push(
       textByLanguage(
         language,
@@ -1137,7 +1184,7 @@ function bundleResultNotes(form, language) {
       )
     );
   }
-  if (form.has_home_phone === "yes") {
+  if (form.bundle_includes_home_phone) {
     notes.push(
       textByLanguage(
         language,
@@ -1242,7 +1289,9 @@ function offerBadges(offer, language) {
     textByLanguage(language, "预付卡订阅", "預付卡訂閱", "Prepaid subscription"),
     textByLanguage(language, "不需要信用核查", "不需要信用審查", "No credit check")
   ];
-  const hasPostpaidMobile = (offer.service_type === "mobile" || offer.service_type === "both") && /TELUS|Koodo|Bell/i.test(offer.provider || "");
+  const hasPostpaidMobile =
+    (offer.service_type === "mobile" || (offer.service_type === "both" && Boolean(offer.mobile_data))) &&
+    /TELUS|Koodo|Bell/i.test(offer.provider || "");
   const isPublicMobile = /Public Mobile/i.test(`${offer.provider || ""} ${offer.plan_name || ""}`);
   const publicMobileMinutesBadge = hasPublicMobileInternationalMinutes(offer)
     ? [textByLanguage(language, "1000 分钟国际长途", "1000 分鐘國際長途", "1000 international minutes")]
@@ -1721,10 +1770,11 @@ function mobilePicks(form) {
 function getLineCountNumber(value) {
   if (value === "5+") return 5;
   const count = Number(value);
-  return Number.isFinite(count) && count > 0 ? count : 1;
+  return Number.isFinite(count) && count >= 0 ? count : 0;
 }
 
 function bundleProviderPreference(provider, form) {
+  if (!form.bundle_includes_mobile) return 0;
   const lines = getLineCountNumber(form.mobile_line_count);
   const isPublicMobile = /Public Mobile/i.test(provider);
   const isKoodo = /Koodo/i.test(provider);
@@ -1753,6 +1803,22 @@ function bundleProviderPreference(provider, form) {
 
 function bundlePicks(form) {
   const internet = internetPicks(form);
+  if (!form.bundle_includes_mobile) {
+    return internet
+      .map((offer) => ({
+        ...offer,
+        offer_id: `bundle_${offer.offer_id}`,
+        service_type: "both",
+        is_bundle: true,
+        requires_manual_confirmation:
+          offer.requires_manual_confirmation || form.bundle_includes_tv || form.bundle_includes_home_phone,
+        bundle_sort_score:
+          form.bundle_includes_tv && /Bell|Eastlink|TELUS/i.test(offer.provider) ? -4 : 0,
+        pickTypeKey: "bundlePick"
+      }))
+      .sort((a, b) => a.bundle_sort_score - b.bundle_sort_score);
+  }
+
   const mobile = mobilePicks(form);
   const pairOrder = [
     [0, 0],
@@ -1794,12 +1860,12 @@ function bundlePicks(form) {
           internetOffer.requires_manual_confirmation ||
           mobileOffer.requires_manual_confirmation ||
           getLineCountNumber(form.mobile_line_count) >= 5 ||
-          form.has_tv_service === "yes" ||
-          form.has_home_phone === "yes",
+          form.bundle_includes_tv ||
+          form.bundle_includes_home_phone,
         caution: `${internetOffer.caution || ""} ${mobileOffer.caution || ""}`.trim(),
         bundle_sort_score:
           bundleProviderPreference(mobileOffer.provider, form) -
-          (form.has_tv_service === "yes" && /Bell|Eastlink|TELUS/i.test(internetOffer.provider) ? 4 : 0),
+          (form.bundle_includes_tv && /Bell|Eastlink|TELUS/i.test(internetOffer.provider) ? 4 : 0),
         pickTypeKey: "bundlePick"
       };
     })
@@ -1866,17 +1932,28 @@ function buildSheetPayload({ form, language, source, lead }) {
     monthly_price: form.monthly_price || "",
     price_type: "not_asked",
     current_speed: serviceType === "internet" || serviceType === "both" ? form.current_speed : "",
-    current_mobile_data: serviceType === "mobile" || serviceType === "both" ? form.current_mobile_data : "",
-    mobile_line_count: serviceType === "both" ? form.mobile_line_count : "",
-    has_tv_service: serviceType === "both" ? form.has_tv_service : "no",
-    has_home_phone: serviceType === "both" ? form.has_home_phone : "no",
+    current_mobile_data:
+      serviceType === "mobile" || (serviceType === "both" && form.bundle_includes_mobile) ? form.current_mobile_data : "",
+    bundle_includes_internet: serviceType === "both" ? true : serviceType === "internet",
+    bundle_includes_mobile: serviceType === "both" ? Boolean(form.bundle_includes_mobile) : serviceType === "mobile",
+    bundle_includes_tv: serviceType === "both" ? Boolean(form.bundle_includes_tv) : false,
+    bundle_includes_home_phone: serviceType === "both" ? Boolean(form.bundle_includes_home_phone) : false,
+    mobile_line_count: serviceType === "both" ? (form.bundle_includes_mobile ? form.mobile_line_count : "0") : "",
+    mobile_data_usage:
+      serviceType === "mobile" || (serviceType === "both" && form.bundle_includes_mobile) ? form.current_mobile_data : "",
+    has_tv_service: serviceType === "both" && form.bundle_includes_tv ? "yes" : "no",
+    has_home_phone: serviceType === "both" && form.bundle_includes_home_phone ? "yes" : "no",
     plan_details: JSON.stringify({
       internet_usage_level: form.internet_usage_level,
       selected_speed: form.current_speed,
       selected_mobile_data: form.current_mobile_data,
-      mobile_line_count: form.mobile_line_count,
-      has_tv_service: form.has_tv_service,
-      has_home_phone: form.has_home_phone
+      bundle_includes_internet: form.bundle_includes_internet,
+      bundle_includes_mobile: form.bundle_includes_mobile,
+      bundle_includes_tv: form.bundle_includes_tv,
+      bundle_includes_home_phone: form.bundle_includes_home_phone,
+      mobile_line_count: form.bundle_includes_mobile ? form.mobile_line_count : "0",
+      has_tv_service: form.bundle_includes_tv ? "yes" : "no",
+      has_home_phone: form.bundle_includes_home_phone ? "yes" : "no"
     }),
     willing_to_switch: "",
     notes: ""
@@ -1907,8 +1984,9 @@ export default function Home() {
   const [sheetError, setSheetError] = useState("");
   const [missingFields, setMissingFields] = useState([]);
   const t = translations[language];
-  const showInternet = form.service_type === "internet" || form.service_type === "both";
-  const showMobile = form.service_type === "mobile" || form.service_type === "both";
+  const isBundle = form.service_type === "both";
+  const showInternet = form.service_type === "internet" || isBundle;
+  const showMobile = form.service_type === "mobile" || (isBundle && form.bundle_includes_mobile);
   const recommendations = useMemo(() => getRecommendations(form), [form]);
   const score = useMemo(() => calculateScore(form, recommendations), [form, recommendations]);
   const yearlySavings = useMemo(() => yearlySavingsValue(recommendations, form), [recommendations, form]);
@@ -1958,13 +2036,56 @@ export default function Home() {
 
   function update(field, value) {
     setForm((current) => {
+      if (field === "service_type" && value === "both") {
+        return {
+          ...current,
+          service_type: value,
+          bundle_includes_internet: true,
+          bundle_includes_mobile: false,
+          bundle_includes_tv: false,
+          bundle_includes_home_phone: false,
+          current_mobile_data: "",
+          mobile_line_count: "0",
+          has_tv_service: "no",
+          has_home_phone: "no"
+        };
+      }
       if (field === "internet_usage_level") {
         return { ...current, internet_usage_level: value, current_speed: speedForUsage(value) };
       }
       return { ...current, [field]: value };
     });
     setMissingFields((current) => current.filter((item) => item !== field));
-    if (sheetError === t.validationRequired || sheetError === t.validationMobileLines) setSheetError("");
+    if ([t.validationRequired, t.validationMobileLines, t.validationMobileLineMinimum, t.validationMobileData].includes(sheetError)) {
+      setSheetError("");
+    }
+  }
+
+  function toggleBundleMobile() {
+    setForm((current) => {
+      const next = !current.bundle_includes_mobile;
+      return {
+        ...current,
+        bundle_includes_mobile: next,
+        mobile_line_count: next ? "" : "0",
+        current_mobile_data: ""
+      };
+    });
+    setMissingFields((current) => current.filter((item) => item !== "mobile_line_count" && item !== "current_mobile_data"));
+  }
+
+  function toggleBundleTv() {
+    setForm((current) => {
+      const next = !current.bundle_includes_tv;
+      return { ...current, bundle_includes_tv: next, has_tv_service: next ? "yes" : "no" };
+    });
+  }
+
+  function toggleBundleHomePhone() {
+    setForm((current) => {
+      const next = !current.bundle_includes_home_phone;
+      return { ...current, bundle_includes_home_phone: next, has_home_phone: next ? "yes" : "no" };
+    });
   }
 
   function updateLead(field, value) {
@@ -1999,11 +2120,22 @@ export default function Home() {
     const requiredFields = ["current_provider", "monthly_price", "city"];
     if (showInternet) requiredFields.push("internet_usage_level");
     if (showMobile) requiredFields.push("current_mobile_data");
-    if (form.service_type === "both") requiredFields.push("mobile_line_count");
+    if (isBundle && form.bundle_includes_mobile) requiredFields.push("mobile_line_count");
     const missing = requiredFields.filter((field) => !String(form[field] || "").trim());
     if (missing.length) {
       setMissingFields(missing);
-      setSheetError(missing.includes("mobile_line_count") ? t.validationMobileLines : t.validationRequired);
+      setSheetError(
+        missing.includes("mobile_line_count")
+          ? t.validationMobileLines
+          : missing.includes("current_mobile_data") && isBundle
+            ? t.validationMobileData
+            : t.validationRequired
+      );
+      return;
+    }
+    if (isBundle && form.bundle_includes_mobile && getLineCountNumber(form.mobile_line_count) < 1) {
+      setMissingFields(["mobile_line_count"]);
+      setSheetError(t.validationMobileLineMinimum);
       return;
     }
     setMissingFields([]);
@@ -2119,16 +2251,48 @@ export default function Home() {
           </div>
 
           {showInternet ? (
-            <div className={`form-split form-grid-top ${showMobile ? "bundle-form-split" : "internet-form-split"}`}>
+            <div className={`form-split form-grid-top ${isBundle ? "bundle-form-split" : "internet-form-split"}`}>
               <div className="form-split-left form-column">
-                <div className={`field ${showMobile ? "bundle-usage-group" : ""} ${missingFields.includes("internet_usage_level") ? "missing" : ""}`.trim()}>
+                {isBundle && (
+                  <div className="bundle-services-block">
+                    <h3 className="form-side-title">{t.bundleServicesTitle}</h3>
+                    <div className="bundle-service-grid">
+                      <button type="button" className="bundle-service-chip active disabled" disabled>
+                        {t.bundleInternet}
+                      </button>
+                      <button
+                        type="button"
+                        className={form.bundle_includes_mobile ? "bundle-service-chip active" : "bundle-service-chip"}
+                        onClick={toggleBundleMobile}
+                      >
+                        {t.bundleMobile}
+                      </button>
+                      <button
+                        type="button"
+                        className={form.bundle_includes_tv ? "bundle-service-chip active" : "bundle-service-chip"}
+                        onClick={toggleBundleTv}
+                      >
+                        {t.bundleTv}
+                      </button>
+                      <button
+                        type="button"
+                        className={form.bundle_includes_home_phone ? "bundle-service-chip active" : "bundle-service-chip"}
+                        onClick={toggleBundleHomePhone}
+                      >
+                        {t.bundleHomePhone}
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                <div className={`field ${isBundle ? "bundle-usage-group" : ""} ${missingFields.includes("internet_usage_level") ? "missing" : ""}`.trim()}>
                   <span>{t.internetUsageLevel}</span>
                   <div className="usage-card-grid compact">
                     {usageLevels.map((item) => (
                       <button
                         key={item.value}
                         type="button"
-                        className={`${form.internet_usage_level === item.value ? "usage-card active" : "usage-card"} ${showMobile ? "bundle-usage-card" : "internet-usage-card"}`}
+                        className={`${form.internet_usage_level === item.value ? "usage-card active" : "usage-card"} ${isBundle ? "bundle-usage-card" : "internet-usage-card"}`}
                         onClick={() => update("internet_usage_level", item.value)}
                       >
                         <span className="usage-card-copy">
@@ -2150,7 +2314,7 @@ export default function Home() {
                   </button>
                 </div>
 
-                {showMobile && (
+                {isBundle && form.bundle_includes_mobile && (
                   <div className={`field usage-section bundle-usage-group ${missingFields.includes("current_mobile_data") ? "missing" : ""}`.trim()}>
                     <span>{t.mobileDataUsageTitle}</span>
                     <div className="usage-card-grid compact">
@@ -2199,8 +2363,7 @@ export default function Home() {
                   />
                 </Field>
 
-                {form.service_type === "both" && (
-                  <>
+                {isBundle && form.bundle_includes_mobile && (
                     <Field icon="#" label={t.mobileLineCount} className={missingFields.includes("mobile_line_count") ? "missing compact-field" : "compact-field"}>
                       <Select value={form.mobile_line_count} onChange={(value) => update("mobile_line_count", value)}>
                         <option value="" disabled>
@@ -2213,39 +2376,6 @@ export default function Home() {
                         ))}
                       </Select>
                     </Field>
-
-                    <div className="field compact-field">
-                      <span>{t.hasTvService}</span>
-                      <div className="segmented-toggle">
-                        {["no", "yes"].map((value) => (
-                          <button
-                            key={value}
-                            type="button"
-                            className={form.has_tv_service === value ? "active" : ""}
-                            onClick={() => update("has_tv_service", value)}
-                          >
-                            {t[value]}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="field compact-field">
-                      <span>{t.hasHomePhone}</span>
-                      <div className="segmented-toggle">
-                        {["no", "yes"].map((value) => (
-                          <button
-                            key={value}
-                            type="button"
-                            className={form.has_home_phone === value ? "active" : ""}
-                            onClick={() => update("has_home_phone", value)}
-                          >
-                            {t[value]}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </>
                 )}
 
                 <Field icon={<LineIcon name="map-pin" size={22} strokeWidth={2.2} />} label={t.city} className={missingFields.includes("city") ? "missing" : ""}>
