@@ -481,7 +481,7 @@ const translations = {
     yearlySavingsValue: (value) => `About $${value} / year`,
     scoreStatus: "Clear room for improvement",
     savingsHelper: "Based on your current bill estimate",
-    planTitle: "Reference Optional Plans",
+    planTitle: "Recommended options",
     pickType: "Pick type:",
     providerLabel: "Provider:",
     service: "Reference service:",
@@ -2183,6 +2183,8 @@ export default function Home() {
   const recommendations = useMemo(() => getRecommendations(form), [form]);
   const score = useMemo(() => calculateScore(form, recommendations), [form, recommendations]);
   const yearlySavings = useMemo(() => yearlySavingsValue(recommendations, form), [recommendations, form]);
+  const savingsRequiresManualReview =
+    recommendations.length > 0 && recommendations.every((offer) => isManualPrice(offer));
   const currentStep = leadOpen ? 3 : resultOpen ? 2 : 1;
   const publicMobileReview = publicMobileLocalReviewContent(language);
   const usageGuidance = usageGuidanceContent(language);
@@ -2672,35 +2674,46 @@ export default function Home() {
 
             <div className="result-modal-body" onTouchMove={(event) => event.stopPropagation()}>
               <div className="result-stack">
-              <section className={`score-summary ${scoreTone(score)}`}>
-                <div className="score-summary-row">
-                  <div className="summary-copy">
-                    <span className="summary-icon">✓</span>
-                    <div>
-                      <h3>{t.billScore}</h3>
-                      <p>{scoreStatusText(score, language)}</p>
-                    </div>
+              <section className={`resultSummaryGrid ${scoreTone(score)}`}>
+                <div className="resultSummaryCard">
+                  <div className="summaryIcon scoreIcon" aria-hidden="true">
+                    <span className="scoreNeedle" />
                   </div>
-                  <strong className="summary-value">{score}</strong>
+                  <div className="summaryText">
+                    <div className="summaryTitle">{t.billScore}</div>
+                    <div className="summarySub">{scoreStatusText(score, language)}</div>
+                  </div>
+                  <div className="summaryValue">
+                    <strong>{score}</strong>
+                    <span>/100</span>
+                  </div>
                 </div>
-                <div className="score-summary-row">
-                  <div className="summary-copy">
-                    <span className="summary-icon">↘</span>
-                    <div>
-                      <h3>{t.estimatedYearlySavings}</h3>
-                      <p>{savingsHelperText(yearlySavings, t, language)}</p>
-                    </div>
+
+                <div className="resultSummaryCard">
+                  <div className="summaryIcon savingsIcon" aria-hidden="true">$</div>
+                  <div className="summaryText">
+                    <div className="summaryTitle">{t.estimatedYearlySavings}</div>
+                    <div className="summarySub">{savingsHelperText(yearlySavings, t, language)}</div>
                   </div>
-                  <strong className="summary-value savings-value">{t.yearlySavingsValue(yearlySavings)}</strong>
+                  <div className="summaryValue savingsValue">
+                    {savingsRequiresManualReview ? (
+                      <strong className="manualSummaryValue">
+                        {textByLanguage(language, "人工确认", "人工確認", "Manual review")}
+                      </strong>
+                    ) : (
+                      <>
+                        <span>{language === "en" ? "~" : language === "zhHant" ? "約" : "约"}</span>
+                        <strong>${yearlySavings}</strong>
+                        <em>{language === "en" ? "/ yr" : "/ 年"}</em>
+                      </>
+                    )}
+                  </div>
                 </div>
               </section>
 
-              {!isMainUrbanArea(form.city) && showInternet && <div className="rural-recommendation-note">{ruralRecommendationNote(language)}</div>}
-              {bundleResultNotes(form, language).map((note) => (
-                <div className="bundle-result-note" key={note}>
-                  {note}
-                </div>
-              ))}
+              {form.service_type !== "both" && !isMainUrbanArea(form.city) && showInternet && (
+                <div className="rural-recommendation-note">{ruralRecommendationNote(language)}</div>
+              )}
 
               <section>
                 <h3>{t.planTitle}</h3>
