@@ -712,6 +712,15 @@ function LineIcon({ name, size = 32, strokeWidth = 2.4 }) {
   if (name === "play") {
     return <svg {...common}><path d="m7 4 13 8-13 8Z" /></svg>;
   }
+  if (name === "signal-low") {
+    return <svg {...common}><path d="M4 20v-4" /><path d="M10 20v-8" /><path d="M16 20v-2" /><path d="M22 20v-2" /></svg>;
+  }
+  if (name === "signal-medium") {
+    return <svg {...common}><path d="M4 20v-4" /><path d="M10 20v-8" /><path d="M16 20v-12" /><path d="M22 20v-2" /></svg>;
+  }
+  if (name === "signal-high") {
+    return <svg {...common}><path d="M4 20v-4" /><path d="M10 20v-8" /><path d="M16 20v-12" /><path d="M22 20V4" /></svg>;
+  }
   if (name === "building") {
     return <svg {...common}><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18" /><path d="M2 22h20" /><path d="M9 6h1" /><path d="M14 6h1" /><path d="M9 10h1" /><path d="M14 10h1" /><path d="M9 14h1" /><path d="M14 14h1" /><path d="M10 22v-4h4v4" /></svg>;
   }
@@ -759,7 +768,7 @@ function UsageIcon({ type }) {
 }
 
 function MobileUsageCard({ item, content, active, onClick, bundle = false }) {
-  const iconName = item.type === "light" ? "message-circle" : item.type === "daily" ? "message-square" : "play";
+  const iconName = item.type === "light" ? "signal-low" : item.type === "daily" ? "signal-medium" : "signal-high";
 
   return (
     <button
@@ -768,13 +777,15 @@ function MobileUsageCard({ item, content, active, onClick, bundle = false }) {
       onClick={onClick}
     >
       <span className="mobile-usage-icon" aria-hidden="true">
-        <LineIcon name={iconName} size={26} strokeWidth={2.5} />
+        <LineIcon name={iconName} size={24} strokeWidth={2.5} />
       </span>
       <span className="mobile-usage-text">
-        <strong className="mobile-usage-title">{content.title}</strong>
+        <span className="mobile-usage-header">
+          <strong className="mobile-usage-title">{content.title}</strong>
+          <span className="mobile-usage-amount">{content.amount}</span>
+        </span>
         <span className="mobile-usage-desc">{content.description}</span>
       </span>
-      <span className="mobile-usage-amount">{content.amount}</span>
       {active && <span className="mobile-usage-check" aria-hidden="true">✓</span>}
     </button>
   );

@@ -2573,17 +2573,17 @@ textarea:focus {
 .bundle-usage-card.mobile-usage-card {
   position: relative;
   display: grid;
-  grid-template-columns: 58px minmax(0, 1fr) 96px;
+  grid-template-columns: 66px minmax(0, 1fr);
   align-items: center;
-  gap: 14px;
+  gap: 16px;
   width: 100%;
-  min-height: 78px;
-  margin: 0;
+  min-height: 96px;
+  margin: 0 0 12px;
   border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 13px;
+  border-radius: 14px;
   background: rgba(255, 255, 255, 0.055);
   color: #fff;
-  padding: 13px 16px;
+  padding: 15px 18px;
   text-align: left;
   cursor: pointer;
   transition: border-color 160ms ease, background 160ms ease, box-shadow 160ms ease, transform 160ms ease;
@@ -2599,59 +2599,77 @@ textarea:focus {
   background:
     radial-gradient(circle at 16% 50%, rgba(20, 224, 160, 0.2), transparent 32%),
     rgba(0, 120, 95, 0.26);
-  box-shadow: 0 0 0 1px rgba(15, 224, 160, 0.14);
+  box-shadow: 0 0 0 1px rgba(15, 224, 160, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 .mobile-usage-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 46px;
-  height: 46px;
-  flex: 0 0 46px;
+  justify-self: center;
+  align-self: center;
+  width: 52px;
+  height: 52px;
+  flex: 0 0 52px;
   border-radius: 999px;
-  background: rgba(70, 125, 145, 0.62);
+  background: linear-gradient(135deg, rgba(83, 136, 154, 0.72), rgba(47, 96, 116, 0.72));
   color: #fff;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 8px 18px rgba(0, 0, 0, 0.18);
 }
 
 .mobile-usage-card.active .mobile-usage-icon {
-  background: linear-gradient(135deg, #19e4a1, #0da87e);
+  background: linear-gradient(135deg, #1ee2a0, #0eb47d);
+  box-shadow: 0 0 0 1px rgba(32, 232, 165, 0.35), 0 12px 26px rgba(0, 0, 0, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
 .mobile-usage-icon svg {
   display: block;
+  width: 25px;
+  height: 25px;
   color: #fff;
   stroke: currentColor;
 }
 
 .mobile-usage-text {
-  display: flex;
   min-width: 0;
-  flex-direction: column;
+  transform: translateY(-1px);
+}
+
+.mobile-usage-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  min-width: 0;
+}
+
+.mobile-usage-card.active .mobile-usage-header {
+  padding-right: 28px;
 }
 
 .mobile-usage-title {
   color: #fff;
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 900;
-  line-height: 1.2;
+  letter-spacing: 0.01em;
+  line-height: 1.18;
+  min-width: 0;
 }
 
 .mobile-usage-desc {
   margin-top: 5px;
   color: rgba(255, 255, 255, 0.7);
   font-size: 13px;
-  line-height: 1.35;
+  font-weight: 500;
+  line-height: 1.42;
 }
 
 .mobile-usage-amount {
-  padding-right: 28px;
-  color: rgba(255, 255, 255, 0.82);
+  flex: 0 0 auto;
+  color: rgba(255, 255, 255, 0.88);
   font-size: 15px;
-  font-weight: 800;
+  font-weight: 900;
   line-height: 1.2;
-  text-align: right;
   white-space: nowrap;
 }
 
@@ -2904,6 +2922,56 @@ textarea:focus {
   .usage-card-icon-heavy svg {
     width: 25px;
     height: 25px;
+  }
+
+  .mobile-usage-card,
+  .bundle-usage-card.mobile-usage-card {
+    grid-template-columns: 58px minmax(0, 1fr);
+    min-height: 88px;
+    gap: 14px;
+    padding: 14px 16px;
+  }
+
+  .mobile-usage-icon {
+    width: 48px;
+    height: 48px;
+    flex-basis: 48px;
+  }
+
+  .mobile-usage-icon svg {
+    width: 23px;
+    height: 23px;
+  }
+
+  .mobile-usage-header {
+    display: block;
+    padding-right: 28px;
+  }
+
+  .mobile-usage-title {
+    font-size: 17px;
+    line-height: 1.2;
+  }
+
+  .mobile-usage-amount {
+    display: block;
+    margin-top: 4px;
+    color: rgba(31, 240, 170, 0.92);
+    font-size: 14px;
+    line-height: 1.2;
+  }
+
+  .mobile-usage-desc {
+    max-width: 100%;
+    margin-top: 5px;
+    font-size: 13px;
+    line-height: 1.38;
+  }
+
+  .mobile-usage-check {
+    width: 24px;
+    height: 24px;
+    font-size: 16px;
   }
 
   .usage-card-speed {
