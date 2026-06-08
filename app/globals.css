@@ -124,13 +124,111 @@ textarea {
   z-index: 3;
 }
 
-.heroBrandLogo {
-  display: block;
-  width: 220px;
-  max-width: 30vw;
-  height: auto;
-  object-fit: contain;
+.heroBrandText {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  color: #fff;
+  text-decoration: none;
+  user-select: none;
   filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.35));
+}
+
+.heroBrandIcon {
+  position: relative;
+  width: 58px;
+  height: 58px;
+  flex: 0 0 58px;
+}
+
+.heroBrandPaper {
+  position: absolute;
+  top: 8px;
+  left: 12px;
+  width: 34px;
+  height: 42px;
+  border: 3px solid rgba(255, 255, 255, 0.92);
+  border-radius: 8px;
+  transform: rotate(2deg);
+}
+
+.heroBrandPaper::before,
+.heroBrandPaper::after {
+  content: "";
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  height: 3px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.88);
+}
+
+.heroBrandPaper::before {
+  top: 12px;
+}
+
+.heroBrandPaper::after {
+  top: 23px;
+}
+
+.heroBrandSignal {
+  position: absolute;
+  top: 2px;
+  left: 0;
+  width: 22px;
+  height: 22px;
+  border-top: 3px solid #22e6a6;
+  border-left: 3px solid #22e6a6;
+  border-radius: 999px 0 0;
+  transform: rotate(8deg);
+}
+
+.heroBrandSignal::before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: 13px;
+  height: 13px;
+  border-top: 3px solid #22e6a6;
+  border-left: 3px solid #22e6a6;
+  border-radius: 999px 0 0;
+}
+
+.heroBrandDollar {
+  position: absolute;
+  right: 1px;
+  bottom: 2px;
+  display: grid;
+  width: 25px;
+  height: 30px;
+  place-items: center;
+  border-radius: 7px 7px 12px 12px;
+  background: linear-gradient(180deg, #ffe044, #ffbd13);
+  color: #06433b;
+  font-size: 18px;
+  font-weight: 950;
+  line-height: 1;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.26);
+}
+
+.heroBrandMain {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  color: #fff;
+  font-size: clamp(30px, 2.8vw, 42px);
+  font-style: italic;
+  font-weight: 950;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.heroBrandMain strong {
+  color: #22e6a6;
+  font-weight: 950;
+  letter-spacing: -0.05em;
 }
 
 .heroContent {
@@ -2876,9 +2974,64 @@ textarea:focus {
     font-size: 14px;
   }
 
-  .heroBrandLogo {
-    width: 145px;
-    max-width: 50vw;
+  .heroBrandText {
+    gap: 9px;
+  }
+
+  .heroBrandIcon {
+    width: 42px;
+    height: 42px;
+    flex-basis: 42px;
+  }
+
+  .heroBrandPaper {
+    top: 6px;
+    left: 9px;
+    width: 25px;
+    height: 31px;
+    border-width: 2px;
+    border-radius: 6px;
+  }
+
+  .heroBrandPaper::before,
+  .heroBrandPaper::after {
+    left: 6px;
+    right: 6px;
+    height: 2px;
+  }
+
+  .heroBrandPaper::before {
+    top: 9px;
+  }
+
+  .heroBrandPaper::after {
+    top: 17px;
+  }
+
+  .heroBrandSignal {
+    width: 17px;
+    height: 17px;
+    border-width: 2px;
+  }
+
+  .heroBrandSignal::before {
+    top: 5px;
+    left: 5px;
+    width: 10px;
+    height: 10px;
+    border-width: 2px;
+  }
+
+  .heroBrandDollar {
+    width: 19px;
+    height: 23px;
+    border-radius: 5px 5px 9px 9px;
+    font-size: 13px;
+  }
+
+  .heroBrandMain {
+    gap: 5px;
+    font-size: clamp(22px, 6vw, 30px);
   }
 
   .stepProgress {

@@ -1792,14 +1792,6 @@ export default function Home() {
   const recommendations = useMemo(() => getRecommendations(form), [form]);
   const score = useMemo(() => calculateScore(form, recommendations), [form, recommendations]);
   const yearlySavings = useMemo(() => yearlySavingsValue(recommendations, form), [recommendations, form]);
-  const heroLogoSrc =
-    language === "zhHans" ? "/bill-saver-logo-zh.png" : language === "zhHant" ? "/bill-saver-logo-zh-tw.png" : "/bill-saver-logo-en.png";
-  const heroLogoAlt =
-    language === "zhHans"
-      ? "Bill Saver｜PEI 手机宽带账单免费体检"
-      : language === "zhHant"
-        ? "Bill Saver｜PEI 手機寬頻帳單免費體檢"
-        : "Bill Saver | Free PEI Mobile & Internet Bill Check";
   const currentStep = leadOpen ? 3 : resultOpen ? 2 : 1;
   const publicMobileReview = publicMobileLocalReviewContent(language);
   const usageGuidance = usageGuidanceContent(language);
@@ -1899,7 +1891,19 @@ export default function Home() {
       <section className="hero heroSection">
         <div className="heroInner">
           <div className="heroTopBar">
-            <img src={heroLogoSrc} alt={heroLogoAlt} className="heroBrandLogo" />
+            <div className="heroBrandText" aria-label="Bill Saver PEI">
+              <div className="heroBrandIcon" aria-hidden="true">
+                <span className="heroBrandSignal" />
+                <span className="heroBrandPaper" />
+                <span className="heroBrandDollar">$</span>
+              </div>
+              <div className="heroBrandWords">
+                <div className="heroBrandMain">
+                  <span>Bill Saver</span>
+                  <strong>PEI</strong>
+                </div>
+              </div>
+            </div>
             <div className="language-switcher" aria-label="Language switcher">
               {languages.map((item) => (
                 <button
