@@ -1820,6 +1820,33 @@ export default function Home() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
 
+  const shouldLockBodyScroll = resultOpen || leadOpen || peiReviewOpen || showUsageGuidance || successOpen;
+
+  useEffect(() => {
+    if (!shouldLockBodyScroll) return;
+
+    const scrollY = window.scrollY;
+    const originalStyle = {
+      position: document.body.style.position,
+      top: document.body.style.top,
+      width: document.body.style.width,
+      overflow: document.body.style.overflow
+    };
+
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.width = "100%";
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.position = originalStyle.position;
+      document.body.style.top = originalStyle.top;
+      document.body.style.width = originalStyle.width;
+      document.body.style.overflow = originalStyle.overflow;
+      window.scrollTo(0, scrollY);
+    };
+  }, [shouldLockBodyScroll]);
+
   function update(field, value) {
     setForm((current) => {
       if (field === "internet_usage_level") {
@@ -2151,9 +2178,9 @@ export default function Home() {
       </section>
 
       {resultOpen && (
-        <div className="modal-backdrop" role="presentation" onMouseDown={() => setResultOpen(false)}>
+        <div className="modal-backdrop result-modal-backdrop" role="presentation" onMouseDown={() => setResultOpen(false)}>
           <div className="modal panel result-modal" role="dialog" aria-modal="true" onMouseDown={(event) => event.stopPropagation()}>
-            <div className="section-heading">
+            <div className="section-heading result-modal-header">
               <div>
                 <h2>{t.billScore}</h2>
               </div>
@@ -2162,7 +2189,8 @@ export default function Home() {
               </button>
             </div>
 
-            <div className="result-stack">
+            <div className="result-modal-body" onTouchMove={(event) => event.stopPropagation()}>
+              <div className="result-stack">
               <section className={`score-summary ${scoreTone(score)}`}>
                 <div className="score-summary-row">
                   <div className="summary-copy">
@@ -2320,6 +2348,7 @@ export default function Home() {
               </section>
 
               <p className="disclaimer">{t.disclaimer}</p>
+              </div>
             </div>
           </div>
         </div>
