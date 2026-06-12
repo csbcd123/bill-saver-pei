@@ -2106,7 +2106,8 @@ function ResultStepProgress({ language, currentStep = 2 }) {
   const labels = [
     textByLanguage(language, "输入账单", "輸入帳單", "Enter bill"),
     textByLanguage(language, "查看结果", "查看結果", "View result"),
-    textByLanguage(language, "获取优惠", "取得優惠", "Get offers")
+    textByLanguage(language, "获取优惠", "取得優惠", "Get offers"),
+    textByLanguage(language, "完成", "完成", "Complete")
   ];
   const steps = labels.map((label, index) => {
     const number = index + 1;
@@ -2123,7 +2124,7 @@ function ResultStepProgress({ language, currentStep = 2 }) {
       aria-label={textByLanguage(language, "账单体检进度", "帳單健檢進度", "Bill check progress")}
     >
       <div className="resultStepTrack" aria-hidden="true">
-        <span style={{ width: `${Math.max(0, Math.min(100, ((currentStep - 1) / 2) * 100))}%` }} />
+        <span style={{ width: `${Math.max(0, Math.min(100, ((currentStep - 1) / 3) * 100))}%` }} />
       </div>
       {steps.map((step) => (
         <div className={`resultStep resultStep-${step.status}`} key={step.number}>
@@ -2776,7 +2777,8 @@ export default function Home() {
   const savingsRequiresManualReview =
     recommendations.length > 0 && recommendations.every((offer) => calculationMonthlyPrice(offer) === null);
   const resultTrust = resultTrustContent(language);
-  const currentStep = leadOpen ? 3 : resultOpen ? 2 : 1;
+  const currentStep = successOpen ? 4 : leadOpen ? 3 : resultOpen ? 2 : 1;
+  const flowOpen = resultOpen || leadOpen || successOpen;
   const publicMobileReview = publicMobileLocalReviewContent(language);
   const usageGuidance = usageGuidanceContent(language);
 
@@ -2949,6 +2951,22 @@ export default function Home() {
     setLeadOfferIds([]);
     setMissingFields([]);
     setSheetError("");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function handleFlowBack() {
+    if (successOpen) {
+      returnHomeAfterSuccess();
+      return;
+    }
+
+    if (leadOpen) {
+      setLeadOpen(false);
+      setResultOpen(true);
+      return;
+    }
+
+    setResultOpen(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -3313,24 +3331,23 @@ export default function Home() {
         </form>
       </section>
 
-      {resultOpen && (
-        <div className="modal-backdrop result-modal-backdrop" role="presentation" onMouseDown={() => setResultOpen(false)}>
-          <div
-            className="modal panel result-modal"
-            role="dialog"
-            aria-modal="true"
-            aria-label={t.billScore}
-            onMouseDown={(event) => event.stopPropagation()}
-          >
-            <div className="section-heading result-modal-header">
-              <button className="modal-close" type="button" onClick={() => setResultOpen(false)} aria-label={t.close}>
-                ×
+      {flowOpen && (
+        <section className="bill-flow-screen" aria-label={textByLanguage(language, "账单体检流程", "帳單健檢流程", "Bill check flow")}>
+          <div className="bill-flow-shell">
+            <header className="bill-flow-header">
+              <button className="flow-back-button" type="button" onClick={handleFlowBack}>
+                <span aria-hidden="true">←</span>
+                {leadOpen
+                  ? textByLanguage(language, "返回结果", "返回結果", "Back to results")
+                  : textByLanguage(language, "重新开始", "重新開始", "Start over")}
               </button>
-              <ResultStepProgress language={language} currentStep={2} />
-              <span className="result-modal-header-spacer" aria-hidden="true" />
-            </div>
+              <ResultStepProgress language={language} currentStep={currentStep} />
+              <span className="bill-flow-header-spacer" aria-hidden="true" />
+            </header>
 
-            <div className="result-modal-body" onTouchMove={(event) => event.stopPropagation()}>
+            <div className="bill-flow-body">
+            {resultOpen && (
+              <div className="bill-flow-step bill-flow-result" aria-label={t.billScore}>
               <div className="result-stack">
               <section className={`resultSummaryGrid ${scoreTone(score)}`}>
                 <div className="resultSummaryCard">
@@ -3597,10 +3614,8 @@ export default function Home() {
                 </div>
               </section>
               </div>
-            </div>
-          </div>
-        </div>
-      )}
+              </div>
+            )}
 
       {peiReviewOpen && (
         <div className="modal-backdrop" role="presentation" onMouseDown={() => setPeiReviewOpen(false)}>
@@ -3635,16 +3650,7 @@ export default function Home() {
       )}
 
       {leadOpen && (
-        <div className="modal-backdrop lead-modal-backdrop" role="presentation" onMouseDown={() => setLeadOpen(false)}>
-          <form className="modal panel lead-modal" onSubmit={submitLead} onMouseDown={(event) => event.stopPropagation()}>
-            <div className="lead-modal-header">
-              <button className="modal-close" type="button" onClick={() => setLeadOpen(false)} aria-label={t.close}>
-                ×
-              </button>
-              <ResultStepProgress language={language} currentStep={3} />
-              <span className="lead-modal-header-spacer" aria-hidden="true" />
-            </div>
-
+          <form className="bill-flow-step bill-flow-lead" onSubmit={submitLead}>
             <div className="lead-modal-body">
               <section className="lead-offer-section">
                 <div className="lead-section-heading">
@@ -3739,12 +3745,10 @@ export default function Home() {
               </section>
             </div>
           </form>
-        </div>
       )}
 
       {successOpen && (
-        <div className="modal-backdrop" role="presentation" onMouseDown={returnHomeAfterSuccess}>
-          <div className="modal panel success-modal" role="dialog" aria-modal="true" onMouseDown={(event) => event.stopPropagation()}>
+          <div className="panel success-modal bill-flow-success">
             <div className="success-icon">✓</div>
             <h2>{t.successTitle}</h2>
             <p>{t.successBody}</p>
@@ -3753,7 +3757,10 @@ export default function Home() {
               {t.successButton}
             </button>
           </div>
-        </div>
+      )}
+            </div>
+          </div>
+        </section>
       )}
 
       <UsageGuidanceModal isOpen={showUsageGuidance} onClose={() => setShowUsageGuidance(false)} language={language} />

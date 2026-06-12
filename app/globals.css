@@ -1246,6 +1246,112 @@ textarea:focus {
   padding: clamp(18px, 3vw, 30px);
 }
 
+.bill-flow-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(26, 177, 139, 0.2), transparent 36%),
+    linear-gradient(180deg, #06242d, #001820);
+  padding: 20px;
+  overscroll-behavior: contain;
+}
+
+.bill-flow-shell {
+  width: min(1040px, 100%);
+  min-height: calc(100dvh - 40px);
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid rgba(174, 230, 216, 0.28);
+  border-radius: 22px;
+  background: #f3f8f6;
+  box-shadow: 0 30px 90px rgba(0, 12, 18, 0.48);
+}
+
+.bill-flow-header {
+  position: sticky;
+  top: 0;
+  z-index: 8;
+  display: grid;
+  grid-template-columns: minmax(130px, 1fr) minmax(0, 640px) minmax(130px, 1fr);
+  align-items: center;
+  gap: 14px;
+  min-height: 92px;
+  border-bottom: 1px solid rgba(15, 123, 104, 0.12);
+  background: rgba(255, 255, 255, 0.96);
+  padding: 10px 22px 8px;
+  backdrop-filter: blur(16px);
+}
+
+.flow-back-button {
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 7px;
+  justify-self: start;
+  border: 1px solid #d2e5df;
+  border-radius: 10px;
+  background: #f7fbf9;
+  color: #155d51;
+  padding: 8px 13px;
+  font-size: 0.82rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.flow-back-button span {
+  font-size: 1.05rem;
+}
+
+.bill-flow-header-spacer {
+  width: 1px;
+  height: 1px;
+}
+
+.bill-flow-body {
+  padding: 22px;
+}
+
+.bill-flow-step {
+  width: 100%;
+}
+
+.bill-flow-lead .lead-modal-body {
+  overflow: visible;
+  padding: 0;
+}
+
+.bill-flow-lead .grid {
+  gap: 10px 14px;
+}
+
+.bill-flow-lead .field {
+  margin-top: 8px;
+}
+
+.bill-flow-lead .grid .field:last-child {
+  grid-column: 1 / -1;
+}
+
+.bill-flow-lead .submit-button {
+  margin-top: 16px;
+  min-height: 48px;
+  border-radius: 10px;
+  box-shadow: 0 12px 24px rgba(15, 146, 117, 0.2);
+}
+
+.bill-flow-success {
+  width: min(620px, 100%);
+  margin: clamp(48px, 10vh, 120px) auto;
+  border: 1px solid rgba(15, 123, 104, 0.16);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 20px 55px rgba(9, 65, 62, 0.12);
+}
+
 .result-modal {
   display: flex;
   width: min(1120px, 100%);
@@ -1301,7 +1407,7 @@ textarea:focus {
   display: grid;
   width: min(640px, 100%);
   min-height: 68px;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   align-items: start;
   margin: 0 auto;
   border: 0;
@@ -1314,8 +1420,8 @@ textarea:focus {
 .resultStepTrack {
   position: absolute;
   top: 23px;
-  left: calc(16.666% + 20px);
-  right: calc(16.666% + 20px);
+  left: calc(12.5% + 20px);
+  right: calc(12.5% + 20px);
   z-index: 0;
   height: 2px;
   border-radius: 999px;
@@ -4212,6 +4318,50 @@ textarea:focus {
 }
 
 @media (max-width: 768px) {
+  .bill-flow-screen {
+    background: #f3f8f6;
+    padding: 0;
+  }
+
+  .bill-flow-shell {
+    width: 100%;
+    min-height: 100dvh;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .bill-flow-header {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 7px;
+    min-height: 88px;
+    padding: 7px 8px 6px;
+  }
+
+  .bill-flow-header-spacer {
+    display: none;
+  }
+
+  .flow-back-button {
+    min-width: 42px;
+    min-height: 42px;
+    justify-content: center;
+    padding: 7px 9px;
+    font-size: 0;
+  }
+
+  .flow-back-button span {
+    font-size: 1.25rem;
+  }
+
+  .bill-flow-body {
+    padding: 14px;
+  }
+
+  .bill-flow-success {
+    margin: 32px auto;
+  }
+
   .result-modal-header {
     grid-template-columns: 40px minmax(0, 1fr);
     gap: 8px;
@@ -4235,8 +4385,8 @@ textarea:focus {
 
   .resultStepTrack {
     top: 25px;
-    left: calc(16.666% + 18px);
-    right: calc(16.666% + 18px);
+    left: calc(12.5% + 17px);
+    right: calc(12.5% + 17px);
     height: 2px;
   }
 
@@ -4254,7 +4404,7 @@ textarea:focus {
   }
 
   .resultStepLabel {
-    font-size: 11px;
+    font-size: 10px;
   }
 
   .lead-modal-backdrop {
