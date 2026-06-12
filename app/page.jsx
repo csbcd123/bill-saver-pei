@@ -1835,15 +1835,6 @@ function resultTrustContent(language) {
   };
 }
 
-function planSectionIntro(language) {
-  return textByLanguage(
-    language,
-    "以下方案基于您当前账单、PEI 本地可用优惠、价格、稳定性与适用场景综合整理，仅供初步参考。",
-    "以下方案基於你目前帳單、PEI 本地可用優惠、價格、穩定性與適用場景綜合整理，僅供初步參考。",
-    "These options are organized from your current bill, available PEI offers, pricing, stability, and likely fit for preliminary reference."
-  );
-}
-
 function resultCautionItems(language) {
   return [
     textByLanguage(
@@ -3049,10 +3040,6 @@ export default function Home() {
               </section>
 
               <section className="recommendation-section">
-                <div className="recommendation-heading">
-                  <h3>{t.planTitle}</h3>
-                  <p>{planSectionIntro(language)}</p>
-                </div>
                 <div className="plan-list">
                   {recommendations.length === 0 && <div className="rural-recommendation-note">{noAlternativeMessage(language)}</div>}
                   {recommendations.map((offer, recommendationIndex) => {
