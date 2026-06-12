@@ -1344,12 +1344,13 @@ textarea:focus {
 }
 
 .bill-flow-success {
-  width: min(620px, 100%);
+  width: min(540px, 100%);
   margin: clamp(48px, 10vh, 120px) auto;
   border: 1px solid rgba(15, 123, 104, 0.16);
   border-radius: 16px;
   background: #fff;
   box-shadow: 0 20px 55px rgba(9, 65, 62, 0.12);
+  padding: clamp(26px, 5vw, 42px);
 }
 
 .result-modal {
@@ -1407,7 +1408,7 @@ textarea:focus {
   display: grid;
   width: min(640px, 100%);
   min-height: 68px;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: start;
   margin: 0 auto;
   border: 0;
@@ -1420,8 +1421,8 @@ textarea:focus {
 .resultStepTrack {
   position: absolute;
   top: 23px;
-  left: calc(12.5% + 20px);
-  right: calc(12.5% + 20px);
+  left: calc(16.666% + 20px);
+  right: calc(16.666% + 20px);
   z-index: 0;
   height: 2px;
   border-radius: 999px;
@@ -2001,18 +2002,49 @@ textarea:focus {
 }
 
 .success-modal h2 {
-  margin-bottom: 10px;
+  margin: 0 0 9px;
+  color: #073f38;
+  font-size: clamp(1.35rem, 4vw, 1.75rem);
 }
 
 .success-modal p {
+  margin: 0;
   color: var(--ink);
-  line-height: 1.65;
+  font-size: 1rem;
+  line-height: 1.55;
+  font-weight: 750;
 }
 
 .success-modal small {
   display: block;
+  max-width: 440px;
+  margin: 20px auto 0;
   color: var(--muted);
+  font-size: 0.76rem;
   line-height: 1.55;
+}
+
+.success-actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.success-actions .submit-button,
+.success-secondary-button {
+  min-height: 46px;
+  margin: 0;
+  border-radius: 10px;
+  font-size: 0.86rem;
+  font-weight: 850;
+}
+
+.success-secondary-button {
+  border: 1px solid #c7dfd8;
+  background: #f5faf8;
+  color: #176556;
+  cursor: pointer;
 }
 
 .group-section {
@@ -4398,6 +4430,10 @@ textarea:focus {
     margin: 32px auto;
   }
 
+  .success-actions {
+    grid-template-columns: 1fr;
+  }
+
   .result-modal-header {
     grid-template-columns: 40px minmax(0, 1fr);
     gap: 8px;
@@ -4421,8 +4457,8 @@ textarea:focus {
 
   .resultStepTrack {
     top: 25px;
-    left: calc(12.5% + 17px);
-    right: calc(12.5% + 17px);
+    left: calc(16.666% + 17px);
+    right: calc(16.666% + 17px);
     height: 2px;
   }
 

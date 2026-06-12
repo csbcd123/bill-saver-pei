@@ -119,10 +119,10 @@ const translations = {
     installationAddress: "宽带安装地址（选填）",
     installationAddressPlaceholder: "例如：街道地址或小区名称，可不填",
     leadSubmit: "提交",
-    successTitle: "提交成功",
-    successBody: "已收到你的反馈，我们会在 1-2 个工作日内联系你。",
-    successHelper: "你也可以返回主页，继续进行其他账单体检。",
-    successButton: "返回主页",
+    successTitle: "感谢你提交信息",
+    successBody: "我们会在 1 个工作日内回复。",
+    successHelper: "Bill Saver 不向你收取任何服务费。最终价格、资格、安装和账单以运营商官方或授权团队确认为准。",
+    successButton: "返回首页",
     close: "关闭",
     disclaimer: "Bill Saver 提供 PEI 本地手机 / 宽带账单免费分析服务。我们不会向你收取费用。部分运营商或合作渠道可能会向我们支付推荐佣金，但建议会综合考虑价格、速度、稳定性、地址可用性和你的实际需求。最终价格、资格、安装和信用审核以运营商官方或授权团队确认为准。",
     footer: "请勿提交 SIN、银行卡、完整账号、完整账单或身份证件照片。本工具只需要大概账单信息来做初步判断。",
@@ -322,9 +322,9 @@ const translations = {
     installationAddress: "寬頻安裝地址（選填）",
     installationAddressPlaceholder: "例如：街道地址或社區名稱，可不填",
     leadSubmit: "提交",
-    successTitle: "提交成功",
-    successBody: "已收到你的回饋，我們會在 1-2 個工作日內聯絡你。",
-    successHelper: "你也可以返回首頁，繼續進行其他帳單健檢。",
+    successTitle: "感謝你提交資訊",
+    successBody: "我們會在 1 個工作日內回覆。",
+    successHelper: "Bill Saver 不向你收取任何服務費。最終價格、資格、安裝和帳單以電信商官方或授權團隊確認為準。",
     successButton: "返回首頁",
     close: "關閉",
     disclaimer: "Bill Saver 提供 PEI 本地手機 / 寬頻帳單免費分析服務。我們不會向你收取費用。部分電信商或合作渠道可能會向我們支付推薦佣金，但建議會綜合考慮價格、速度、穩定性、地址可用性和你的實際需求。最終價格、資格、安裝和信用審核以電信商官方或授權團隊確認為準。",
@@ -526,9 +526,10 @@ const translations = {
     installationAddress: "Internet installation address (optional)",
     installationAddressPlaceholder: "Street address or building/community name, optional",
     leadSubmit: "Submit",
-    successTitle: "Submitted successfully",
-    successBody: "We've received your request and will contact you within 1-2 business days.",
-    successHelper: "You can also return to the homepage to check another bill.",
+    successTitle: "Thank you for submitting your information",
+    successBody: "We will reply within 1 business day.",
+    successHelper:
+      "Bill Saver does not charge you a service fee. Final pricing, eligibility, installation, and billing are confirmed by the provider or authorized team.",
     successButton: "Back to Home",
     close: "Close",
     disclaimer:
@@ -2102,19 +2103,18 @@ function resultCautionItems(language) {
   ];
 }
 
-function ResultStepProgress({ language, currentStep = 2 }) {
+function ResultStepProgress({ language, currentStep = 2, complete = false }) {
   const labels = [
     textByLanguage(language, "输入账单", "輸入帳單", "Enter bill"),
     textByLanguage(language, "查看结果", "查看結果", "View result"),
-    textByLanguage(language, "获取优惠", "取得優惠", "Get offers"),
-    textByLanguage(language, "完成", "完成", "Complete")
+    textByLanguage(language, "获取优惠", "取得優惠", "Get offers")
   ];
   const steps = labels.map((label, index) => {
     const number = index + 1;
     return {
       number,
       label,
-      status: number < currentStep ? "completed" : number === currentStep ? "active" : "pending"
+      status: complete || number < currentStep ? "completed" : number === currentStep ? "active" : "pending"
     };
   });
 
@@ -2124,7 +2124,7 @@ function ResultStepProgress({ language, currentStep = 2 }) {
       aria-label={textByLanguage(language, "账单体检进度", "帳單健檢進度", "Bill check progress")}
     >
       <div className="resultStepTrack" aria-hidden="true">
-        <span style={{ width: `${Math.max(0, Math.min(100, ((currentStep - 1) / 3) * 100))}%` }} />
+        <span style={{ width: `${complete ? 100 : Math.max(0, Math.min(100, ((currentStep - 1) / 2) * 100))}%` }} />
       </div>
       {steps.map((step) => (
         <div className={`resultStep resultStep-${step.status}`} key={step.number}>
@@ -2777,7 +2777,7 @@ export default function Home() {
   const savingsRequiresManualReview =
     recommendations.length > 0 && recommendations.every((offer) => calculationMonthlyPrice(offer) === null);
   const resultTrust = resultTrustContent(language);
-  const currentStep = successOpen ? 4 : leadOpen ? 3 : resultOpen ? 2 : 1;
+  const currentStep = leadOpen || successOpen ? 3 : resultOpen ? 2 : 1;
   const flowOpen = resultOpen || leadOpen || successOpen;
   const publicMobileReview = publicMobileLocalReviewContent(language);
   const usageGuidance = usageGuidanceContent(language);
@@ -2968,6 +2968,11 @@ export default function Home() {
 
     setResultOpen(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function reopenLeadAfterSuccess() {
+    setSuccessOpen(false);
+    setLeadOpen(true);
   }
 
   async function copyPublicMobileReferralCode() {
@@ -3341,7 +3346,7 @@ export default function Home() {
                   ? textByLanguage(language, "返回结果", "返回結果", "Back to results")
                   : textByLanguage(language, "重新开始", "重新開始", "Start over")}
               </button>
-              <ResultStepProgress language={language} currentStep={currentStep} />
+              <ResultStepProgress language={language} currentStep={currentStep} complete={successOpen} />
               <span className="bill-flow-header-spacer" aria-hidden="true" />
             </header>
 
@@ -3753,9 +3758,14 @@ export default function Home() {
             <h2>{t.successTitle}</h2>
             <p>{t.successBody}</p>
             <small>{t.successHelper}</small>
-            <button className="submit-button" type="button" onClick={returnHomeAfterSuccess}>
-              {t.successButton}
-            </button>
+            <div className="success-actions">
+              <button className="submit-button" type="button" onClick={returnHomeAfterSuccess}>
+                {t.successButton}
+              </button>
+              <button className="success-secondary-button" type="button" onClick={reopenLeadAfterSuccess}>
+                {textByLanguage(language, "重新填写", "重新填寫", "Fill in again")}
+              </button>
+            </div>
           </div>
       )}
             </div>
