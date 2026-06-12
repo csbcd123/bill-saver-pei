@@ -3434,6 +3434,42 @@ textarea:focus {
   }
 }
 
+@media (max-width: 640px) {
+  .bill-type-grid {
+    width: 100%;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .bill-type-card {
+    width: 100%;
+    min-width: 0;
+    min-height: 76px;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 14px 42px 14px 16px;
+    text-align: left;
+  }
+
+  .bill-type-text {
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .bill-type-title,
+  .bill-type-sub {
+    max-width: 100%;
+    white-space: normal;
+    word-break: normal;
+    overflow-wrap: break-word;
+  }
+
+  .bill-type-icon-wrap-combo {
+    width: 78px;
+    flex-basis: 78px;
+  }
+}
+
 @media (max-width: 768px) {
   .heroSection {
     min-height: 460px;
