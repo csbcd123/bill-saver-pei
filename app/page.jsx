@@ -1817,33 +1817,27 @@ function resultCautionItems(language) {
   return [
     textByLanguage(
       language,
-      "以上价格和节省金额为初步参考，实际结果取决于你的地址、当前账单、运营商资格和本周可用优惠。",
-      "以上價格和節省金額為初步參考，實際結果取決於你的地址、目前帳單、電信商資格和本週可用優惠。",
-      "Prices and savings are preliminary references and depend on your address, current bill, provider eligibility, and available weekly offers."
+      "以上价格和预计节省金额仅供初步参考，实际结果取决于你的地址、当前账单、运营商资格和本周可用优惠。",
+      "以上價格和預計節省金額僅供初步參考，實際結果取決於你的地址、目前帳單、電信商資格和本週可用優惠。",
+      "Prices and estimated savings are preliminary references only. Actual results depend on your address, current bill, provider eligibility, and available weekly offers."
     ),
     textByLanguage(
       language,
-      "最终价格、资格、安装方式和信用审核以运营商官方或授权团队确认为准。",
-      "最終價格、資格、安裝方式和信用審查以電信商官方或授權團隊確認為準。",
+      "最终价格、资格、安装方式和信用审核，以运营商官方或授权团队确认为准。",
+      "最終價格、資格、安裝方式和信用審查，以電信商官方或授權團隊確認為準。",
       "Final pricing, eligibility, installation options, and credit checks must be confirmed by the provider or an authorized team."
     ),
     textByLanguage(
       language,
-      "部分优惠可能每周变化，Bill Saver 会帮你人工确认当前可用方案。",
-      "部分優惠可能每週變化，Bill Saver 會幫你人工確認目前可用方案。",
-      "Some offers may change weekly. Bill Saver can manually confirm currently available options."
+      "Bill Saver 不向用户收取服务费。部分运营商或合作渠道可能会向我们支付推荐佣金，但我们会综合价格、速度、稳定性、地址可用性和你的实际需求来整理建议。",
+      "Bill Saver 不向用戶收取服務費。部分電信商或合作渠道可能會向我們支付推薦佣金，但我們會綜合價格、速度、穩定性、地址可用性和你的實際需求來整理建議。",
+      "Bill Saver does not charge users a service fee. Some providers or partner channels may pay us a referral commission, but our recommendations consider pricing, speed, stability, address availability, and your actual needs."
     ),
     textByLanguage(
       language,
-      "Bill Saver 不向用户收取服务费。",
-      "Bill Saver 不向用戶收取服務費。",
-      "Bill Saver does not charge users a service fee."
-    ),
-    textByLanguage(
-      language,
-      "如果后续价格上涨超出预期，Bill Saver 可以继续帮你重新评估替代方案。",
-      "如果後續價格上漲超出預期，Bill Saver 可以繼續幫你重新評估替代方案。",
-      "If prices later rise beyond expectations, Bill Saver can help reassess alternatives."
+      "如果后续价格上涨超出预期，Bill Saver 也可以继续帮你重新评估替代方案。",
+      "如果後續價格上漲超出預期，Bill Saver 也可以繼續幫你重新評估替代方案。",
+      "If prices later rise beyond expectations, Bill Saver can also help reassess alternatives."
     )
   ];
 }
@@ -3102,14 +3096,6 @@ export default function Home() {
               <section className="caution-box result-caution-box">
                 <div className="result-caution-heading">
                   <h3>{t.cautionTitle}</h3>
-                  <p>
-                    {textByLanguage(
-                      language,
-                      "确认这些细节后，再决定是否更换方案。",
-                      "確認這些細節後，再決定是否更換方案。",
-                      "Confirm these details before deciding whether to switch."
-                    )}
-                  </p>
                 </div>
                 <ul>
                   {resultCautionItems(language).map((item) => (
