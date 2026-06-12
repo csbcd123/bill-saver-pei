@@ -1083,6 +1083,34 @@ function mobileMeetsServiceLevel(offer, form) {
   return data === Infinity || (typeof data === "number" && data >= getRequiredMobileDataGB(form));
 }
 
+function isKoodoInternet(offer) {
+  return offer.service_type === "internet" && normalizeProviderName(offer.provider) === "koodo";
+}
+
+function isPurpleCowInternet(offer) {
+  return offer.service_type === "internet" && normalizeProviderName(offer.provider) === "purple_cow";
+}
+
+function getPlanMonthlyCost(offer) {
+  const price = offer.bundle_total_monthly_cost ?? offer.totalMonthlyCost ?? calculationMonthlyPrice(offer);
+  return Number.isFinite(Number(price)) ? Number(price) : null;
+}
+
+function pricesAreVeryClose(offerA, offerB, threshold = 2) {
+  const priceA = getPlanMonthlyCost(offerA);
+  const priceB = getPlanMonthlyCost(offerB);
+  return priceA !== null && priceB !== null && Math.abs(priceA - priceB) <= threshold;
+}
+
+function compareKoodoPurpleCowTieBreaker(offerA, offerB, form) {
+  const isPair =
+    (isKoodoInternet(offerA) && isPurpleCowInternet(offerB)) ||
+    (isPurpleCowInternet(offerA) && isKoodoInternet(offerB));
+  if (!isPair || !internetMeetsServiceLevel(offerA, form) || !internetMeetsServiceLevel(offerB, form)) return 0;
+  if (!pricesAreVeryClose(offerA, offerB)) return 0;
+  return isKoodoInternet(offerA) ? -1 : 1;
+}
+
 function classifyRecommendation(offer, form) {
   const annualSavings = getAnnualSavings(form, offer);
   const includesInternet = offer.service_type === "internet" || offer.service_type === "both";
@@ -1129,7 +1157,7 @@ function classifyRecommendation(offer, form) {
 
 function sortRecommendations(recommendations, form) {
   const typeRank = { strong_savings: 1, best_savings: 1, small_savings: 2, upgrade_option: 3, manual_review: 4, backup_option: 5, low_priority: 9 };
-  const sorted = recommendations
+  const enriched = recommendations
     .filter(isRecommendableOffer)
     .map((offer, originalIndex) => {
       const classification = classifyRecommendation(offer, form);
@@ -1141,13 +1169,21 @@ function sortRecommendations(recommendations, form) {
         sortScore += 80;
       }
       return { ...offer, ...classification, sortScore };
-    })
-    .sort((a, b) => a.sortScore - b.sortScore);
+    });
+  const sorted = enriched
+    .map((offer) => ({
+      ...offer,
+      similarPricePreferred:
+        isKoodoInternet(offer) &&
+        enriched.some(
+          (candidate) =>
+            isPurpleCowInternet(candidate) &&
+            internetMeetsServiceLevel(candidate, form) &&
+            pricesAreVeryClose(offer, candidate)
+        )
+    }))
+    .sort((a, b) => compareKoodoPurpleCowTieBreaker(a, b, form) || a.sortScore - b.sortScore);
 
-  if (sorted[0]?.notPrimaryRecommendation) {
-    const firstEligibleIndex = sorted.findIndex((offer) => !offer.notPrimaryRecommendation);
-    if (firstEligibleIndex > 0) sorted.unshift(sorted.splice(firstEligibleIndex, 1)[0]);
-  }
   return sorted;
 }
 
@@ -1899,6 +1935,9 @@ function premiumCtaContent(language, offer) {
 }
 
 function recommendationTag(offer, index, language) {
+  if (offer.similarPricePreferred) {
+    return textByLanguage(language, "价格接近，优先推荐", "價格接近，優先推薦", "Similar price, preferred option");
+  }
   if (offer.recommendationType === "strong_savings") return textByLanguage(language, "明显节省", "明顯節省", "Strong savings");
   if (offer.recommendationType === "best_savings") return textByLanguage(language, "明显节省", "明顯節省", "Strong savings");
   if (offer.recommendationType === "small_savings") return textByLanguage(language, "小幅节省", "小幅節省", "Modest savings");
@@ -1916,6 +1955,7 @@ function recommendationTag(offer, index, language) {
 }
 
 function recommendationTagTone(offer, index) {
+  if (offer.similarPricePreferred) return "value";
   if (offer.recommendationType === "strong_savings") return "primary";
   if (offer.recommendationType === "best_savings") return "primary";
   if (offer.recommendationType === "small_savings") return "value";
