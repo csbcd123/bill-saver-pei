@@ -1864,24 +1864,20 @@ function resultCautionItems(language) {
   ];
 }
 
-function ResultStepProgress({ language }) {
-  const steps = [
-    {
-      number: 1,
-      status: "completed",
-      label: textByLanguage(language, "输入账单", "輸入帳單", "Enter bill")
-    },
-    {
-      number: 2,
-      status: "active",
-      label: textByLanguage(language, "查看结果", "查看結果", "View result")
-    },
-    {
-      number: 3,
-      status: "pending",
-      label: textByLanguage(language, "获取优惠", "取得優惠", "Get offers")
-    }
+function ResultStepProgress({ language, currentStep = 2 }) {
+  const labels = [
+    textByLanguage(language, "输入账单", "輸入帳單", "Enter bill"),
+    textByLanguage(language, "查看结果", "查看結果", "View result"),
+    textByLanguage(language, "获取优惠", "取得優惠", "Get offers")
   ];
+  const steps = labels.map((label, index) => {
+    const number = index + 1;
+    return {
+      number,
+      label,
+      status: number < currentStep ? "completed" : number === currentStep ? "active" : "pending"
+    };
+  });
 
   return (
     <nav
@@ -1889,7 +1885,7 @@ function ResultStepProgress({ language }) {
       aria-label={textByLanguage(language, "账单体检进度", "帳單健檢進度", "Bill check progress")}
     >
       <div className="resultStepTrack" aria-hidden="true">
-        <span />
+        <span style={{ width: `${Math.max(0, Math.min(100, ((currentStep - 1) / 2) * 100))}%` }} />
       </div>
       {steps.map((step) => (
         <div className={`resultStep resultStep-${step.status}`} key={step.number}>
@@ -2978,7 +2974,7 @@ export default function Home() {
               <button className="modal-close" type="button" onClick={() => setResultOpen(false)} aria-label={t.close}>
                 ×
               </button>
-              <ResultStepProgress language={language} />
+              <ResultStepProgress language={language} currentStep={2} />
               <span className="result-modal-header-spacer" aria-hidden="true" />
             </div>
 
@@ -3266,58 +3262,70 @@ export default function Home() {
       )}
 
       {leadOpen && (
-        <div className="modal-backdrop" role="presentation" onMouseDown={() => setLeadOpen(false)}>
+        <div className="modal-backdrop lead-modal-backdrop" role="presentation" onMouseDown={() => setLeadOpen(false)}>
           <form className="modal panel lead-modal" onSubmit={submitLead} onMouseDown={(event) => event.stopPropagation()}>
-            <div className="section-heading">
-              <div>
-                <h2>{t.leadTitle}</h2>
-                <p>{t.leadIntro}</p>
-              </div>
+            <div className="lead-modal-header">
               <button className="modal-close" type="button" onClick={() => setLeadOpen(false)} aria-label={t.close}>
                 ×
               </button>
+              <ResultStepProgress language={language} currentStep={3} />
+              <span className="lead-modal-header-spacer" aria-hidden="true" />
             </div>
 
-            <div className="trust-box">
-              <strong>{t.trustTitle}</strong>
-              <ol>
-                {t.trustItems.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ol>
-            </div>
+            <div className="lead-modal-body">
+              <div className="lead-modal-intro">
+                <span className="lead-modal-kicker">
+                  {textByLanguage(language, "第 3 步 · 人工确认", "第 3 步 · 人工確認", "Step 3 · Manual confirmation")}
+                </span>
+                <h2>{t.leadTitle}</h2>
+                <p>{t.leadIntro}</p>
+              </div>
 
-            <div className="grid">
-              <Field label={t.name}>
-                <input value={lead.name} onChange={(event) => updateLead("name", event.target.value)} required />
-              </Field>
-              <Field label={t.email}>
-                <input type="email" value={lead.email} onChange={(event) => updateLead("email", event.target.value)} required />
-              </Field>
-              <Field label={t.phone}>
-                <input type="tel" value={lead.phone} onChange={(event) => updateLead("phone", event.target.value)} />
-              </Field>
-              <Field label={t.preferredContact}>
-                <Select value={lead.preferred_contact} onChange={(value) => updateLead("preferred_contact", value)}>
-                  {["email", "text", "phone"].map((value) => (
-                    <option key={value} value={value}>
-                      {t.options[value]}
-                    </option>
-                  ))}
-                </Select>
-              </Field>
-              <Field label={t.installationAddress}>
-                <input
-                  value={lead.wechat}
-                  onChange={(event) => updateLead("wechat", event.target.value)}
-                  placeholder={t.installationAddressPlaceholder}
-                />
-              </Field>
-            </div>
+              <div className="lead-modal-content">
+                <div className="trust-box lead-trust-panel">
+                  <strong>{t.trustTitle}</strong>
+                  <ol>
+                    {t.trustItems.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ol>
+                </div>
 
-            <button className="submit-button" type="submit" disabled={submitting}>
-              {submitting ? t.submitting : t.leadSubmit}
-            </button>
+                <div className="lead-form-panel">
+                  <div className="grid">
+                    <Field label={t.name}>
+                      <input value={lead.name} onChange={(event) => updateLead("name", event.target.value)} required />
+                    </Field>
+                    <Field label={t.email}>
+                      <input type="email" value={lead.email} onChange={(event) => updateLead("email", event.target.value)} required />
+                    </Field>
+                    <Field label={t.phone}>
+                      <input type="tel" value={lead.phone} onChange={(event) => updateLead("phone", event.target.value)} />
+                    </Field>
+                    <Field label={t.preferredContact}>
+                      <Select value={lead.preferred_contact} onChange={(value) => updateLead("preferred_contact", value)}>
+                        {["email", "text", "phone"].map((value) => (
+                          <option key={value} value={value}>
+                            {t.options[value]}
+                          </option>
+                        ))}
+                      </Select>
+                    </Field>
+                    <Field label={t.installationAddress}>
+                      <input
+                        value={lead.wechat}
+                        onChange={(event) => updateLead("wechat", event.target.value)}
+                        placeholder={t.installationAddressPlaceholder}
+                      />
+                    </Field>
+                  </div>
+
+                  <button className="submit-button" type="submit" disabled={submitting}>
+                    {submitting ? t.submitting : t.leadSubmit}
+                  </button>
+                </div>
+              </div>
+            </div>
           </form>
         </div>
       )}
