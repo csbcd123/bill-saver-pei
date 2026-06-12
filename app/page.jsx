@@ -1039,6 +1039,18 @@ function monthlyPrice(form) {
   return Number(form.monthly_price || 0);
 }
 
+function getAnnualSavings(form, offer) {
+  const current = monthlyPrice(form);
+  const recommended = calculationMonthlyPrice(offer);
+  if (!Number.isFinite(current) || current <= 0 || !Number.isFinite(recommended)) return null;
+  return Math.max(0, current - recommended) * 12;
+}
+
+function isKoodoOrTelusInternet(offer) {
+  const provider = normalizeProviderName(offer.provider);
+  return offer.service_type === "internet" && (provider === "koodo" || provider === "telus");
+}
+
 function money(value, language) {
   if (typeof value !== "number") return value;
   return language === "en" ? `$${value}/mo` : `$${value}/月`;
@@ -1141,7 +1153,21 @@ function localizedNote(offer, t, language, form) {
     if (ruralNote) return [ruralNote, ...bundleNotes].filter(Boolean).join(" ");
   }
   if (offer.offer_id === "bell_mobile_winback_manual") return bellAliantDisplayText(t.bellWinbackNote);
-  if (/Purple Cow/i.test(offer.provider)) return [...bundleNotes, t.purpleCowNote].filter(Boolean).join(" ");
+  if (/Purple Cow/i.test(offer.provider)) {
+    const description = offer.description?.[language === "zhHant" ? "zh-TW" : language === "en" ? "en" : "zh"];
+    return [...bundleNotes, description || t.purpleCowNote].filter(Boolean).join(" ");
+  }
+  if (offer.lowSavingsWarning) {
+    return [
+      ...bundleNotes,
+      textByLanguage(
+        language,
+        "预计节省有限，是否值得切换需确认。",
+        "預計節省有限，是否值得轉換需確認。",
+        "Estimated savings are limited. Manual review is recommended before switching."
+      )
+    ].join(" ");
+  }
   if (/TELUS/i.test(offer.provider)) return [...bundleNotes, telusDisclaimer(language)].filter(Boolean).join(" ");
   if (/Koodo/i.test(offer.provider) && offer.service_type === "internet") {
     if (offer.offer_id === "koodo_internet_100") {
@@ -1363,14 +1389,12 @@ function offerBadges(offer, language, form) {
   }
   if (/Purple Cow/i.test(offer.provider)) {
     return [
-      textByLanguage(language, "免安装费", "免安裝費", "No installation fee"),
+      textByLanguage(language, "Bill Saver 可免 $55 安装费", "Bill Saver 可免 $55 安裝費", "Bill Saver can waive $55 installation fee"),
       textByLanguage(language, "无合约", "無合約", "No contract"),
-      textByLanguage(language, "不限流量", "不限流量", "Unlimited data"),
-      textByLanguage(language, "免费设备", "免費設備", "Free equipment"),
-      textByLanguage(language, "本地客服", "本地客服", "Local support"),
-      textByLanguage(language, "30 天满意保证", "30 天滿意保證", "30-day satisfaction guarantee"),
+      textByLanguage(language, "不限流量", "不限流量", "No usage fees"),
+      "Wireless Router",
       ...(form?.bundle_includes_tv
-        ? [textByLanguage(language, "可加 TV，需人工确认", "可加 TV，需人工確認", "TV available with manual confirmation")]
+        ? [textByLanguage(language, "TV 需人工确认", "TV 需人工確認", "TV requires manual confirmation")]
         : []),
       ...(form?.bundle_includes_home_phone
         ? [textByLanguage(language, "家庭电话需人工确认", "家居電話需人工確認", "Home phone requires manual confirmation")]
@@ -1430,7 +1454,12 @@ function offerBadges(offer, language, form) {
 function displayBadge(badge, offer, index, language) {
   if (/Purple Cow/i.test(offer.provider || "") && index === 0) {
     return {
-      label: textByLanguage(language, "免安装费", "免安裝費", "No installation fee"),
+      label: textByLanguage(
+        language,
+        "Bill Saver 可免 $55 安装费",
+        "Bill Saver 可免 $55 安裝費",
+        "Bill Saver can waive $55 installation fee"
+      ),
       subLabel: textByLanguage(language, "Bill Saver 专享", "Bill Saver 專享", "Bill Saver exclusive")
     };
   }
@@ -1744,6 +1773,7 @@ function premiumCtaContent(language, offer) {
 }
 
 function recommendationTag(offer, index, language) {
+  if (offer.lowSavingsWarning) return textByLanguage(language, "节省有限", "節省有限", "Limited savings");
   if (index === 0 || isBell(offer)) return textByLanguage(language, "首选推荐", "首選推薦", "Top recommendation");
   if (/Koodo|TELUS|Public Mobile/i.test(offer.provider || "")) {
     return textByLanguage(language, "性价比推荐", "性價比推薦", "Best value");
@@ -1752,6 +1782,7 @@ function recommendationTag(offer, index, language) {
 }
 
 function recommendationTagTone(offer, index) {
+  if (offer.lowSavingsWarning) return "alternative";
   if (index === 0 || isBell(offer)) return "primary";
   if (/Koodo|TELUS|Public Mobile/i.test(offer.provider || "")) return "value";
   return "alternative";
@@ -1978,13 +2009,34 @@ function scoreOffer(offer, form) {
   return score;
 }
 
+function internetUsageMatchScore(offer, usage) {
+  const speed = Number(offer.speedMbps) || speedRank(offer.speed_down);
+  if (usage === "heavy") return speed >= 900 ? 30 : speed >= 300 ? -10 : -55;
+  if (usage === "standard") return speed >= 300 ? 22 : -28;
+  if (usage === "light") return speed >= 100 && speed <= 300 ? 14 : speed > 300 ? 4 : -20;
+  return 0;
+}
+
+function internetRecommendationScore(offer, form) {
+  const annualSavings = getAnnualSavings(form, offer);
+  let score = scoreOffer(offer, form) + internetUsageMatchScore(offer, form.internet_usage_level);
+  if (annualSavings !== null) score += Math.min(30, annualSavings / 12);
+  if (/Purple Cow/i.test(offer.provider) && offer.installationFeeWaivedByBillSaver) score += 5;
+  if (offer.notPrimaryRecommendation) score -= 80;
+  return score;
+}
+
 function bestProviderOffer(offers, provider, form) {
   const matches = offers.filter((offer) => (provider === "Bell Aliant" ? isBell(offer) : offer.provider === provider));
   if (provider === "Purple Cow" && matches.length) {
-    const sorted = [...matches].sort((a, b) => speedRank(a.speed_down) - speedRank(b.speed_down));
+    const sorted = [...matches].sort(
+      (a, b) => (Number(a.speedMbps) || speedRank(a.speed_down)) - (Number(b.speedMbps) || speedRank(b.speed_down))
+    );
     if (form.internet_usage_level === "heavy") return sorted[sorted.length - 1];
-    if (form.internet_usage_level === "standard") return sorted.find((offer) => speedRank(offer.speed_down) >= 300) || sorted[sorted.length - 1];
-    return sorted.find((offer) => speedRank(offer.speed_down) >= 100) || sorted[0];
+    if (form.internet_usage_level === "standard") {
+      return sorted.find((offer) => (Number(offer.speedMbps) || speedRank(offer.speed_down)) >= 300) || sorted[sorted.length - 1];
+    }
+    return sorted.find((offer) => (Number(offer.speedMbps) || speedRank(offer.speed_down)) >= 100) || sorted[0];
   }
   return matches.sort((a, b) => scoreOffer(b, form) - scoreOffer(a, form))[0];
 }
@@ -2001,13 +2053,31 @@ function internetPicks(form) {
   );
   const currentIsBellAliant = isBell(form.current_provider);
   const providerOrder = isMainUrbanArea(form.city)
-    ? ["Koodo", "Purple Cow", currentIsBellAliant ? "Eastlink" : "Bell Aliant"]
+    ? ["Koodo", "TELUS", "Purple Cow", currentIsBellAliant ? "Eastlink" : "Bell Aliant"]
     : ["Bell Aliant", "Starlink", "Xplore"];
 
-  return providerOrder
+  const picks = providerOrder
     .map((provider) => bestProviderOffer(offers, provider, form))
     .filter(Boolean)
-    .map((offer) => ({ ...offer, pickTypeKey: "internetPick" }));
+    .map((offer) => {
+      const annualSavings = getAnnualSavings(form, offer);
+      const lowSavingsWarning =
+        form.service_type === "internet" && isKoodoOrTelusInternet(offer) && annualSavings !== null && annualSavings < 100;
+      return {
+        ...offer,
+        annualSavings,
+        notPrimaryRecommendation: lowSavingsWarning,
+        lowSavingsWarning,
+        pickTypeKey: "internetPick"
+      };
+    });
+
+  if (!isMainUrbanArea(form.city)) return picks;
+
+  return picks.sort((a, b) => {
+    if (a.notPrimaryRecommendation !== b.notPrimaryRecommendation) return a.notPrimaryRecommendation ? 1 : -1;
+    return internetRecommendationScore(b, form) - internetRecommendationScore(a, form);
+  });
 }
 
 function mobilePicks(form) {
@@ -2178,27 +2248,31 @@ function bundlePicks(form) {
   if (!form.bundle_includes_mobile) {
     const genericDirections = internet
       .filter((offer) => !(isBell(offer) && (form.bundle_includes_tv || form.bundle_includes_home_phone)))
-      .map((offer) => ({
-        ...offer,
-        offer_id: `bundle_${offer.offer_id}`,
-        service_type: "both",
-        is_bundle: true,
-        is_sensitive_price: form.bundle_includes_tv || form.bundle_includes_home_phone || offer.is_sensitive_price,
-        is_public_price: form.bundle_includes_tv || form.bundle_includes_home_phone ? false : offer.is_public_price,
-        display_price_requires_confirmation: form.bundle_includes_tv || form.bundle_includes_home_phone || offer.display_price_requires_confirmation,
-        manual_tv_direction: Boolean(form.bundle_includes_tv),
-        manual_home_phone_direction: Boolean(form.bundle_includes_home_phone),
-        bundle_services: [
-          "internet",
-          ...(form.bundle_includes_tv ? ["tv"] : []),
-          ...(form.bundle_includes_home_phone ? ["home_phone"] : [])
-        ],
-        requires_manual_confirmation:
-          offer.requires_manual_confirmation || form.bundle_includes_tv || form.bundle_includes_home_phone,
-        calculation_price_available: !(form.bundle_includes_tv || form.bundle_includes_home_phone),
-        bundle_sort_score: 0,
-        pickTypeKey: "bundlePick"
-      }))
+      .map((offer) => {
+        const hasManualAddOn = form.bundle_includes_tv || form.bundle_includes_home_phone;
+        const keepPurpleCowInternetPriceVisible = /Purple Cow/i.test(offer.provider) && hasManualAddOn;
+        return {
+          ...offer,
+          offer_id: `bundle_${offer.offer_id}`,
+          service_type: "both",
+          is_bundle: true,
+          is_sensitive_price: keepPurpleCowInternetPriceVisible ? false : hasManualAddOn || offer.is_sensitive_price,
+          is_public_price: keepPurpleCowInternetPriceVisible ? true : hasManualAddOn ? false : offer.is_public_price,
+          display_price_requires_confirmation:
+            keepPurpleCowInternetPriceVisible ? false : hasManualAddOn || offer.display_price_requires_confirmation,
+          manual_tv_direction: Boolean(form.bundle_includes_tv),
+          manual_home_phone_direction: Boolean(form.bundle_includes_home_phone),
+          bundle_services: [
+            "internet",
+            ...(form.bundle_includes_tv ? ["tv"] : []),
+            ...(form.bundle_includes_home_phone ? ["home_phone"] : [])
+          ],
+          requires_manual_confirmation: offer.requires_manual_confirmation || hasManualAddOn,
+          calculation_price_available: !hasManualAddOn,
+          bundle_sort_score: 0,
+          pickTypeKey: "bundlePick"
+        };
+      })
       .map((offer) => ({ ...offer, bundle_sort_score: bundleServiceMatchScore(offer, form) }))
       .sort((a, b) => a.bundle_sort_score - b.bundle_sort_score);
 
