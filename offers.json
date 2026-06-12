@@ -109,24 +109,41 @@
     "notes": "Good value for many households; upload performance and installation availability should be checked."
   },
   {
-    "id": "eastlink-internet-pei",
+    "id": "eastlink_internet_350",
     "provider": "Eastlink",
-    "name": "Eastlink Internet",
+    "name": "Eastlink Internet 350",
     "service_type": "internet",
     "region": "PEI",
     "technology": "cable",
-    "min_price": 80,
-    "max_price": 100,
-    "speed_label": "Cable internet plans",
+    "min_price": 85,
+    "max_price": 85,
+    "speed_label": "350 Mbps down / 10 Mbps up",
     "priority_1_5": 3,
     "risk": "medium",
     "commission": 0,
     "requires": [],
     "weak_upload": true,
-    "notes": "Often useful as a Bell alternative; promo terms and upload speeds should be confirmed."
+    "notes": "Unlimited data. Price, installation eligibility, and availability should be confirmed by address."
   },
   {
-    "id": "purple-cow-internet-100-pei",
+    "id": "eastlink_gig_internet",
+    "provider": "Eastlink",
+    "name": "Eastlink Gig Internet",
+    "service_type": "internet",
+    "region": "PEI",
+    "technology": "cable",
+    "min_price": 90,
+    "max_price": 90,
+    "speed_label": "940 Mbps down / 15 Mbps up",
+    "priority_1_5": 3,
+    "risk": "medium",
+    "commission": 0,
+    "requires": [],
+    "weak_upload": true,
+    "notes": "Unlimited data. Price, installation eligibility, and availability should be confirmed by address."
+  },
+  {
+    "id": "purple_cow_internet_100",
     "provider": "Purple Cow",
     "name": "Purple Cow Internet 100 Mbps",
     "service_type": "internet",
@@ -143,7 +160,7 @@
     "notes": "Includes wireless router, no usage fees, no contracts, and Bill Saver can help waive the $55 installation fee."
   },
   {
-    "id": "purple-cow-internet-300-pei",
+    "id": "purple_cow_internet_300",
     "provider": "Purple Cow",
     "name": "Purple Cow Internet 300 Mbps",
     "service_type": "internet",
@@ -160,7 +177,7 @@
     "notes": "Includes wireless router, no usage fees, no contracts, and Bill Saver can help waive the $55 installation fee."
   },
   {
-    "id": "purple-cow-internet-gig-pei",
+    "id": "purple_cow_internet_gig",
     "provider": "Purple Cow",
     "name": "Purple Cow Internet Gig",
     "service_type": "internet",
@@ -169,7 +186,7 @@
     "min_price": 99,
     "max_price": 99,
     "speed_label": "1 Gig down / 15 Mbps up",
-    "priority_1_5": 4,
+    "priority_1_5": 1,
     "risk": "medium",
     "commission": 0,
     "requires": [],

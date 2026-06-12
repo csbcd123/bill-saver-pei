@@ -1157,6 +1157,10 @@ function localizedNote(offer, t, language, form) {
     const description = offer.description?.[language === "zhHant" ? "zh-TW" : language === "en" ? "en" : "zh"];
     return [...bundleNotes, description || t.purpleCowNote].filter(Boolean).join(" ");
   }
+  if (/Eastlink/i.test(offer.provider)) {
+    const description = offer.description?.[language === "zhHant" ? "zh-TW" : language === "en" ? "en" : "zh"];
+    return [...bundleNotes, description || bellAliantDisplayText(offer.caution)].filter(Boolean).join(" ");
+  }
   if (offer.lowSavingsWarning) {
     return [
       ...bundleNotes,
@@ -1307,6 +1311,9 @@ function fieldLabel(language, key) {
 }
 
 function speedText(offer, language) {
+  if (offer.speedLabel && typeof offer.speedLabel === "object") {
+    return offer.speedLabel[language === "zhHant" ? "zh-TW" : language === "en" ? "en" : "zh"];
+  }
   if (!offer.speed_down && !offer.speed_up) {
     return textByLanguage(language, "具体上下行速度需确认", "具體上下行速度需確認", "Download/upload speeds require confirmation");
   }
@@ -1389,7 +1396,7 @@ function offerBadges(offer, language, form) {
   }
   if (/Purple Cow/i.test(offer.provider)) {
     return [
-      textByLanguage(language, "Bill Saver 可免 $55 安装费", "Bill Saver 可免 $55 安裝費", "Bill Saver can waive $55 installation fee"),
+      textByLanguage(language, "Bill Saver 专享免安装费", "Bill Saver 專享免安裝費", "Bill Saver exclusive installation fee waiver"),
       textByLanguage(language, "无合约", "無合約", "No contract"),
       textByLanguage(language, "不限流量", "不限流量", "No usage fees"),
       "Wireless Router",
@@ -1400,6 +1407,14 @@ function offerBadges(offer, language, form) {
         ? [textByLanguage(language, "家庭电话需人工确认", "家居電話需人工確認", "Home phone requires manual confirmation")]
         : []),
       ...mobilePlanBadges
+    ];
+  }
+  if (/Eastlink/i.test(offer.provider) && offer.service_type === "internet") {
+    return [
+      Number(offer.speedMbps) >= 900 ? "Gig Internet" : "350 Mbps",
+      textByLanguage(language, "不限流量", "不限流量", "Unlimited data"),
+      textByLanguage(language, "本地运营商", "本地電信商", "Local provider"),
+      textByLanguage(language, "安装资格需确认", "安裝資格需確認", "Installation eligibility required")
     ];
   }
   if (isBell(offer) && offer.service_type === "internet") {
@@ -1456,9 +1471,9 @@ function displayBadge(badge, offer, index, language) {
     return {
       label: textByLanguage(
         language,
-        "Bill Saver 可免 $55 安装费",
-        "Bill Saver 可免 $55 安裝費",
-        "Bill Saver can waive $55 installation fee"
+        "Bill Saver 专享免安装费",
+        "Bill Saver 專享免安裝費",
+        "Bill Saver exclusive installation fee waiver"
       ),
       subLabel: textByLanguage(language, "Bill Saver 专享", "Bill Saver 專享", "Bill Saver exclusive")
     };
@@ -2019,11 +2034,17 @@ function bestProviderOffer(offers, provider, form) {
     const sorted = [...matches].sort(
       (a, b) => (Number(a.speedMbps) || speedRank(a.speed_down)) - (Number(b.speedMbps) || speedRank(b.speed_down))
     );
-    if (form.internet_usage_level === "heavy") return sorted[sorted.length - 1];
-    if (form.internet_usage_level === "standard") {
+    if (form.internet_usage_level === "standard" || form.internet_usage_level === "heavy") {
       return sorted.find((offer) => (Number(offer.speedMbps) || speedRank(offer.speed_down)) >= 300) || sorted[sorted.length - 1];
     }
     return sorted.find((offer) => (Number(offer.speedMbps) || speedRank(offer.speed_down)) >= 100) || sorted[0];
+  }
+  if (provider === "Eastlink" && matches.length) {
+    const sorted = [...matches].sort(
+      (a, b) => (Number(a.speedMbps) || speedRank(a.speed_down)) - (Number(b.speedMbps) || speedRank(b.speed_down))
+    );
+    if (form.internet_usage_level === "heavy") return sorted.find((offer) => (Number(offer.speedMbps) || speedRank(offer.speed_down)) >= 900) || sorted[sorted.length - 1];
+    return sorted.find((offer) => (Number(offer.speedMbps) || speedRank(offer.speed_down)) >= 300) || sorted[0];
   }
   return matches.sort((a, b) => scoreOffer(b, form) - scoreOffer(a, form))[0];
 }
