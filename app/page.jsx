@@ -1049,6 +1049,104 @@ function getAnnualSavings(form, offer) {
   return Math.max(0, current - recommended) * 12;
 }
 
+function getRequiredInternetSpeedMbps(form) {
+  if (form.internet_usage_level === "standard" || form.internet_usage_level === "heavy") return 300;
+  if (form.internet_usage_level === "light") return 100;
+  const explicitSpeed = speedRank(form.currentInternetSpeedMbps || form.current_speed);
+  if (explicitSpeed > 0) return explicitSpeed;
+  return 100;
+}
+
+function internetOfferSpeedMbps(offer) {
+  return Number(offer.speedMbps || offer.downloadMbps) || speedRank(offer.speed_down || offer.speed_label);
+}
+
+function internetMeetsServiceLevel(offer, form) {
+  return internetOfferSpeedMbps(offer) >= getRequiredInternetSpeedMbps(form);
+}
+
+function getRequiredMobileDataGB(form) {
+  const explicitData = Number(form.currentMobileDataGB);
+  if (Number.isFinite(explicitData) && explicitData > 0) return explicitData;
+  const bucket = getMobileUsageBucket(form.current_mobile_data || form.mobile_data_usage);
+  if (bucket === "50to100" || bucket === "over60") return 60;
+  if (bucket === "over100") return 100;
+  return 20;
+}
+
+function mobileOfferDataGB(offer) {
+  return parseDataGB(offer.mobile_data || offer.data_label);
+}
+
+function mobileMeetsServiceLevel(offer, form) {
+  const data = mobileOfferDataGB(offer);
+  return data === Infinity || (typeof data === "number" && data >= getRequiredMobileDataGB(form));
+}
+
+function classifyRecommendation(offer, form) {
+  const annualSavings = getAnnualSavings(form, offer);
+  const includesInternet = offer.service_type === "internet" || offer.service_type === "both";
+  const includesMobile = offer.service_type === "mobile" || (offer.service_type === "both" && form.bundle_includes_mobile);
+  let meetsServiceLevel = true;
+  let betterServiceLevel = false;
+
+  if (includesInternet) {
+    const speed = internetOfferSpeedMbps(offer);
+    const requiredSpeed = getRequiredInternetSpeedMbps(form);
+    meetsServiceLevel = meetsServiceLevel && speed >= requiredSpeed;
+    betterServiceLevel = betterServiceLevel || speed > requiredSpeed;
+  }
+
+  if (includesMobile) {
+    const data = mobileOfferDataGB(offer);
+    const requiredData = getRequiredMobileDataGB(form);
+    meetsServiceLevel = meetsServiceLevel && (data === Infinity || (typeof data === "number" && data >= requiredData));
+    betterServiceLevel = betterServiceLevel || data === Infinity || (typeof data === "number" && data > requiredData);
+  }
+
+  let recommendationType = "low_priority";
+  if (meetsServiceLevel && annualSavings !== null && annualSavings >= 150) recommendationType = "best_savings";
+  else if (meetsServiceLevel && annualSavings !== null && annualSavings > 0) recommendationType = "small_savings";
+  else if (meetsServiceLevel && (betterServiceLevel || offer.requires_manual_confirmation)) recommendationType = "upgrade_option";
+
+  return { recommendationType, annualSavings, meetsServiceLevel, betterServiceLevel };
+}
+
+function sortRecommendations(recommendations, form) {
+  const typeRank = { best_savings: 1, small_savings: 2, upgrade_option: 3, low_priority: 9 };
+  const sorted = recommendations
+    .filter(isRecommendableOffer)
+    .map((offer, originalIndex) => {
+      const classification = classifyRecommendation(offer, form);
+      let sortScore = typeRank[classification.recommendationType] * 10000;
+      if (classification.annualSavings !== null) sortScore -= classification.annualSavings;
+      if (classification.betterServiceLevel) sortScore -= 80;
+      sortScore += originalIndex;
+      if (isKoodoOrTelusInternet(offer) && classification.annualSavings !== null && classification.annualSavings < 100) {
+        sortScore += 80;
+      }
+      return { ...offer, ...classification, sortScore };
+    })
+    .sort((a, b) => a.sortScore - b.sortScore);
+
+  if (sorted[0]?.notPrimaryRecommendation) {
+    const firstEligibleIndex = sorted.findIndex((offer) => !offer.notPrimaryRecommendation);
+    if (firstEligibleIndex > 0) sorted.unshift(sorted.splice(firstEligibleIndex, 1)[0]);
+  }
+  return sorted;
+}
+
+function pickTopRecommendations(recommendations, form) {
+  const sorted = sortRecommendations(recommendations, form);
+  const result = [];
+  for (const type of ["best_savings", "small_savings", "upgrade_option"]) {
+    for (const offer of sorted.filter((candidate) => candidate.recommendationType === type)) {
+      if (result.length < 3) result.push(offer);
+    }
+  }
+  return result.slice(0, 3);
+}
+
 function isKoodoOrTelusInternet(offer) {
   const provider = normalizeProviderName(offer.provider);
   return offer.service_type === "internet" && (provider === "koodo" || provider === "telus");
@@ -1791,6 +1889,11 @@ function premiumCtaContent(language, offer) {
 }
 
 function recommendationTag(offer, index, language) {
+  if (offer.recommendationType === "best_savings") return textByLanguage(language, "明显节省", "明顯節省", "Strong savings");
+  if (offer.recommendationType === "small_savings") return textByLanguage(language, "小幅节省", "小幅節省", "Modest savings");
+  if (offer.recommendationType === "upgrade_option") {
+    return textByLanguage(language, "价格接近，规格更好", "價格接近，規格更好", "Similar price, better service");
+  }
   if (offer.lowSavingsWarning) return textByLanguage(language, "节省有限", "節省有限", "Limited savings");
   if (index === 0 || isBell(offer)) return textByLanguage(language, "首选推荐", "首選推薦", "Top recommendation");
   if (/Koodo|TELUS|Public Mobile/i.test(offer.provider || "")) {
@@ -1800,6 +1903,9 @@ function recommendationTag(offer, index, language) {
 }
 
 function recommendationTagTone(offer, index) {
+  if (offer.recommendationType === "best_savings") return "primary";
+  if (offer.recommendationType === "small_savings") return "value";
+  if (offer.recommendationType === "upgrade_option") return "alternative";
   if (offer.lowSavingsWarning) return "alternative";
   if (index === 0 || isBell(offer)) return "primary";
   if (/Koodo|TELUS|Public Mobile/i.test(offer.provider || "")) return "value";
@@ -2037,19 +2143,17 @@ function bestProviderOffer(offers, provider, form) {
     const sorted = [...matches].sort(
       (a, b) => (Number(a.speedMbps) || speedRank(a.speed_down)) - (Number(b.speedMbps) || speedRank(b.speed_down))
     );
-    if (form.internet_usage_level === "standard" || form.internet_usage_level === "heavy") {
-      return sorted.find((offer) => (Number(offer.speedMbps) || speedRank(offer.speed_down)) >= 300) || sorted[sorted.length - 1];
-    }
-    return sorted.find((offer) => (Number(offer.speedMbps) || speedRank(offer.speed_down)) >= 100) || sorted[0];
+    const requiredSpeed = getRequiredInternetSpeedMbps(form);
+    return sorted.find((offer) => internetOfferSpeedMbps(offer) >= requiredSpeed) || sorted[sorted.length - 1];
   }
   if (provider === "Eastlink" && matches.length) {
     const sorted = [...matches].sort(
       (a, b) => (Number(a.speedMbps) || speedRank(a.speed_down)) - (Number(b.speedMbps) || speedRank(b.speed_down))
     );
-    if (form.internet_usage_level === "heavy") return sorted.find((offer) => (Number(offer.speedMbps) || speedRank(offer.speed_down)) >= 900) || sorted[sorted.length - 1];
-    return sorted.find((offer) => (Number(offer.speedMbps) || speedRank(offer.speed_down)) >= 300) || sorted[0];
+    return sorted.find((offer) => internetOfferSpeedMbps(offer) >= getRequiredInternetSpeedMbps(form)) || sorted[sorted.length - 1];
   }
-  return matches.sort((a, b) => scoreOffer(b, form) - scoreOffer(a, form))[0];
+  const serviceLevelMatches = matches.filter((offer) => offer.service_type !== "internet" || internetMeetsServiceLevel(offer, form));
+  return (serviceLevelMatches.length ? serviceLevelMatches : matches).sort((a, b) => scoreOffer(b, form) - scoreOffer(a, form))[0];
 }
 
 function bestMobileProviderOffer(offers, provider, form) {
@@ -2101,9 +2205,9 @@ function mobilePicks(form) {
           offer.service_type === "mobile" &&
           isRecommendableOffer(offer) &&
           !isKoodoPrepaid(offer) &&
-          isPlanDataSuitableForUsage(offer.mobile_data, form.current_mobile_data) &&
+          mobileMeetsServiceLevel(offer, form) &&
           !["Rogers", "Fido", "Virgin Plus"].includes(offer.provider) &&
-          (offerPrice === null || currentPrice <= 0 || offerPrice < currentPrice)
+          (offerPrice === null || currentPrice <= 0 || offerPrice <= currentPrice)
         );
       }
     ),
@@ -2126,7 +2230,6 @@ function mobilePicks(form) {
     .map((provider) => bestMobileProviderOffer(offers, provider, form))
     .filter(Boolean)
     .sort((a, b) => mobileOfferSortScore(a, form) - mobileOfferSortScore(b, form))
-    .slice(0, 3)
     .map((offer, index) => ({
       ...offer,
       pickTypeKey: index === 0 ? "highQualityPick" : /Public Mobile/i.test(offer.provider) ? "lowestCostPick" : "manualPick"
@@ -2384,9 +2487,9 @@ function bundlePicks(form) {
 }
 
 function getRecommendations(form) {
-  if (form.service_type === "internet") return internetPicks(form);
-  if (form.service_type === "mobile") return mobilePicks(form);
-  return bundlePicks(form).slice(0, 5);
+  if (form.service_type === "internet") return pickTopRecommendations(internetPicks(form), form);
+  if (form.service_type === "mobile") return pickTopRecommendations(mobilePicks(form), form);
+  return pickTopRecommendations(bundlePicks(form), form);
 }
 
 function calculateScore(form, offers) {
