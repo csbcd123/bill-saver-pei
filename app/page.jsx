@@ -47,6 +47,7 @@ const translations = {
     billInfoBoth: "请填写您的组合账单信息",
     monthlyUnit: "加元 / 月",
     formSafetyNote: "安全可靠 · 仅用于为您找到更好优惠",
+    leadSafetyNote: "安全可靠 · 仅用于为您人工确认优惠",
     validationRequired: "请先完成必填信息，再查看体检结果。",
     validationMobileLines: "请选择你家有几条手机线路。",
     validationMobileLineMinimum: "如果组合账单包含手机，请选择至少 1 条手机线路。",
@@ -249,6 +250,7 @@ const translations = {
     billInfoBoth: "請填寫你的組合帳單資訊",
     monthlyUnit: "加元 / 月",
     formSafetyNote: "安全可靠 · 僅用於為你找到更好優惠",
+    leadSafetyNote: "安全可靠 · 僅用於為你人工確認優惠",
     validationRequired: "請先完成必填資訊，再查看健檢結果。",
     validationMobileLines: "請選擇你家有幾條手機線路。",
     validationMobileLineMinimum: "如果組合帳單包含手機，請選擇至少 1 條手機線路。",
@@ -451,6 +453,7 @@ const translations = {
     billInfoBoth: "Enter your bundle bill information",
     monthlyUnit: "CAD / mo",
     formSafetyNote: "Secure · Used only to help find better offers",
+    leadSafetyNote: "Secure & private · Only used to manually confirm your offer",
     validationRequired: "Please complete the required information before viewing your result.",
     validationMobileLines: "Please select how many mobile lines you have.",
     validationMobileLineMinimum: "If your bundle includes mobile service, please select at least 1 mobile line.",
@@ -3344,6 +3347,10 @@ export default function Home() {
                   <button className="submit-button" type="submit" disabled={submitting}>
                     {submitting ? t.submitting : t.leadSubmit}
                   </button>
+                  <p className="form-safe-note contact-safe-note">
+                    <span aria-hidden="true">🔒</span>
+                    {t.leadSafetyNote}
+                  </p>
                 </div>
               </div>
             </div>
