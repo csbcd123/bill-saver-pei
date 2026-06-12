@@ -1558,6 +1558,33 @@ textarea:focus {
   align-content: start;
 }
 
+.selectedOfferSummary {
+  margin-bottom: 14px;
+  padding: 12px 14px;
+  border: 1px solid rgba(20, 184, 166, 0.18);
+  border-radius: 14px;
+  background: rgba(20, 184, 166, 0.08);
+}
+
+.selectedOfferLabel {
+  margin-bottom: 4px;
+  color: rgba(0, 45, 54, 0.58);
+  font-size: 12px;
+}
+
+.selectedOfferName {
+  color: #073b3a;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.selectedOfferPrice {
+  margin-top: 4px;
+  color: rgba(0, 45, 54, 0.72);
+  font-size: 13px;
+  font-weight: 700;
+}
+
 .lead-modal .grid {
   gap: 10px 14px;
 }

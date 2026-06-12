@@ -2477,9 +2477,13 @@ function bundlePicks(form) {
 }
 
 function getRecommendations(form) {
-  if (form.service_type === "internet") return pickVisibleRecommendations(internetPicks(form), form);
-  if (form.service_type === "mobile") return pickVisibleRecommendations(mobilePicks(form), form);
-  return pickVisibleRecommendations(bundlePicks(form), form);
+  const visible =
+    form.service_type === "internet"
+      ? pickVisibleRecommendations(internetPicks(form), form)
+      : form.service_type === "mobile"
+        ? pickVisibleRecommendations(mobilePicks(form), form)
+        : pickVisibleRecommendations(bundlePicks(form), form);
+  return visible.map((offer, index) => ({ ...offer, rank: index + 1 }));
 }
 
 function calculateScore(form, offers) {
@@ -2524,9 +2528,26 @@ function savingsHelperText(yearlySavings, t, language) {
   return t.savingsHelper;
 }
 
-function buildSheetPayload({ form, language, source, lead }) {
+function payloadOfferName(offer, language) {
+  const localized = offer.serviceName || offer.service_name;
+  if (localized && typeof localized === "object") {
+    const key = language === "en" ? "en" : language === "zhHant" ? "zh-TW" : "zh";
+    if (localized[key]) return localized[key];
+  }
+  return offer.plan_name || offer.display_name || offer.name || "";
+}
+
+function buildSheetPayload({ form, language, source, lead, selectedOffer, recommendations }) {
   const serviceType = form.service_type || "";
+  const sortedRecommendations = Array.isArray(recommendations) ? recommendations : [];
+  const topRecommendation = sortedRecommendations[0] || {};
+  const selected = selectedOffer || {};
+  const selectedMonthlyPrice = selected.monthlyPrice ?? "";
+  const selectedTotalMonthlyCost = selected.totalMonthlyCost ?? "";
+  const selectedMonthlySavings = selected.estimatedMonthlySavings ?? "";
+  const selectedAnnualSavings = selected.estimatedAnnualSavings ?? "";
   return {
+    // Legacy fields retained for compatibility with the existing Sheet.
     source: source,
     language: language,
     name: lead.name || "",
@@ -2566,7 +2587,59 @@ function buildSheetPayload({ form, language, source, lead }) {
       has_home_phone: form.bundle_includes_home_phone ? "yes" : "no"
     }),
     willing_to_switch: "",
-    notes: ""
+    notes: "",
+
+    // Expanded lead and recommendation tracking fields.
+    submitted_at: new Date().toISOString(),
+    page_version: "bill_saver_pei_v1",
+    lead_source: "bill_saver_result",
+    click_source: selected.clickSource || "general_cta",
+    customer_name: lead.name || "",
+    customer_phone: lead.phone || "",
+    customer_email: lead.email || "",
+    preferred_contact_method: lead.preferred_contact || "",
+    best_contact_time: "",
+    customer_note: "",
+    current_monthly_bill: form.monthly_price || "",
+    region: "PEI",
+    city_or_area: form.city || "",
+    postal_code_or_address: lead.wechat || form.postal_code || "",
+    internet_usage: form.internet_usage_level || "",
+    current_internet_speed_mbps: form.current_speed || "",
+    internet_required_speed_mbps:
+      serviceType === "internet" || serviceType === "both" ? getRequiredInternetSpeedMbps(form) : "",
+    current_mobile_data_gb: form.current_mobile_data || "",
+    mobile_required_data_gb:
+      serviceType === "mobile" || (serviceType === "both" && form.bundle_includes_mobile) ? getRequiredMobileDataGB(form) : "",
+    selected_offer_id: selected.offerId || "",
+    selected_offer_provider: selected.provider || "",
+    selected_offer_category: selected.category || "",
+    selected_offer_service_type: selected.serviceType || "",
+    selected_offer_name: selected.serviceName || "",
+    selected_offer_display_price: selected.displayPrice || "",
+    selected_offer_monthly_price: selectedMonthlyPrice,
+    selected_offer_total_monthly_cost: selectedTotalMonthlyCost,
+    selected_offer_estimated_monthly_savings: selectedMonthlySavings,
+    selected_offer_estimated_annual_savings: selectedAnnualSavings,
+    selected_offer_recommendation_type: selected.recommendationType || "",
+    selected_offer_rank: selected.rank ?? "",
+    selected_offer_requires_manual_review: Boolean(selected.requiresManualReview),
+    selected_offer_price_hidden: Boolean(selected.displayPriceRequiresConfirmation),
+    selected_offer_tags: selected.tags || "",
+    all_recommendation_ids: sortedRecommendations.map((offer) => offer.offer_id).filter(Boolean).join(", "),
+    all_recommendation_names: sortedRecommendations.map((offer) => payloadOfferName(offer, language)).filter(Boolean).join(" | "),
+    all_recommendation_providers: sortedRecommendations.map((offer) => offer.provider).filter(Boolean).join(" | "),
+    all_recommendation_count: sortedRecommendations.length,
+    top_recommendation_id: topRecommendation.offer_id || "",
+    top_recommendation_name: payloadOfferName(topRecommendation, language),
+    top_recommendation_provider: topRecommendation.provider || "",
+    top_recommendation_annual_savings: topRecommendation.annualSavings ?? getAnnualSavings(form, topRecommendation) ?? "",
+    user_agent: typeof navigator !== "undefined" ? navigator.userAgent : "",
+    referrer: typeof document !== "undefined" ? document.referrer : "",
+    landing_page: typeof window !== "undefined" ? window.location.href : "",
+    utm_source: typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("utm_source") || "" : "",
+    utm_medium: typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("utm_medium") || "" : "",
+    utm_campaign: typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("utm_campaign") || "" : ""
   };
 }
 
@@ -2585,6 +2658,7 @@ export default function Home() {
   const [language, setLanguage] = useState("zhHans");
   const [form, setForm] = useState(initialForm);
   const [lead, setLead] = useState(initialLead);
+  const [selectedOffer, setSelectedOffer] = useState(null);
   const [resultOpen, setResultOpen] = useState(false);
   const [leadOpen, setLeadOpen] = useState(false);
   const [peiReviewOpen, setPeiReviewOpen] = useState(false);
@@ -2706,6 +2780,56 @@ export default function Home() {
   }
 
   function openLeadFromResult() {
+    setSelectedOffer({
+      offerId: "",
+      provider: "",
+      category: "",
+      serviceType: "",
+      serviceName: "General Bill Saver Review",
+      displayPrice: "",
+      monthlyPrice: "",
+      totalMonthlyCost: "",
+      estimatedMonthlySavings: "",
+      estimatedAnnualSavings: "",
+      recommendationType: "general_review",
+      rank: "",
+      requiresManualReview: true,
+      displayPriceRequiresConfirmation: true,
+      tags: "",
+      clickSource: "general_cta"
+    });
+    setResultOpen(false);
+    setLeadOpen(true);
+  }
+
+  function openLeadForOffer(offer) {
+    const monthlyCost = calculationMonthlyPrice(offer);
+    const monthlySavings =
+      monthlyCost === null ? "" : Math.max(0, Math.round(monthlyPrice(form) - monthlyCost));
+    const tags = offerBadges(offer, language, form)
+      .map((badge, index) => displayBadge(badge, offer, index, language).label)
+      .filter(Boolean)
+      .join(", ");
+    setSelectedOffer({
+      offerId: offer.offer_id || "",
+      provider: displayProviderName(offer.provider || ""),
+      category: offer.category || offer.service_type || "",
+      serviceType: offer.service_type || "",
+      serviceName: displayPlanName(offer, t),
+      displayPrice: displayPrice(offer, t, language),
+      monthlyPrice: monthlyCost ?? "",
+      totalMonthlyCost: offer.bundle_total_monthly_cost ?? monthlyCost ?? "",
+      estimatedMonthlySavings: monthlySavings,
+      estimatedAnnualSavings: offer.annualSavings ?? (monthlySavings === "" ? "" : monthlySavings * 12),
+      recommendationType: offer.recommendationType || "",
+      rank: offer.rank ?? "",
+      requiresManualReview: Boolean(offer.requires_manual_confirmation),
+      displayPriceRequiresConfirmation: Boolean(
+        offer.display_price_requires_confirmation || isManualPrice(offer)
+      ),
+      tags,
+      clickSource: "offer_card_cta"
+    });
     setResultOpen(false);
     setLeadOpen(true);
   }
@@ -2714,6 +2838,7 @@ export default function Home() {
     setSuccessOpen(false);
     setForm(initialForm);
     setLead(initialLead);
+    setSelectedOffer(null);
     setMissingFields([]);
     setSheetError("");
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -2766,7 +2891,9 @@ export default function Home() {
           form,
           language,
           source: "lead_contact_modal",
-          lead
+          lead,
+          selectedOffer,
+          recommendations
         })
       );
       setLead(initialLead);
@@ -3219,7 +3346,7 @@ export default function Home() {
                           <div className="plan-conversion">
                             <span>{t.savings}</span>
                             <strong>{savingsText(offer, form, t, language)}</strong>
-                            <button type="button" onClick={openLeadFromResult}>{providerCtaLabel(offer, language)}</button>
+                            <button type="button" onClick={() => openLeadForOffer(offer)}>{providerCtaLabel(offer, language)}</button>
                           </div>
                         </div>
                         <p>
@@ -3307,7 +3434,7 @@ export default function Home() {
                         {false && isPremiumProvider(offer) && (
                           <div className="premium-cta-wrap">
                             <div className="premium-cta-main">
-                              <button className="premium-cta" type="button" onClick={openLeadFromResult}>
+                              <button className="premium-cta" type="button" onClick={() => openLeadForOffer(offer)}>
                                 {ctaContent.buttonLabel || t.bestPrice}
                               </button>
                               <div>
@@ -3430,6 +3557,21 @@ export default function Home() {
                 </div>
 
                 <div className="lead-form-panel">
+                  {selectedOffer?.serviceName && selectedOffer.recommendationType !== "general_review" && (
+                    <div className="selectedOfferSummary">
+                      <div className="selectedOfferLabel">
+                        {textByLanguage(language, "你选择的是：", "你選擇的是：", "Selected option:")}
+                      </div>
+                      <div className="selectedOfferName">
+                        {selectedOffer.provider} · {selectedOffer.serviceName}
+                      </div>
+                      <div className="selectedOfferPrice">
+                        {selectedOffer.displayPriceRequiresConfirmation
+                          ? textByLanguage(language, "优惠价需人工确认", "優惠價需人工確認", "Offer price requires manual confirmation")
+                          : selectedOffer.displayPrice}
+                      </div>
+                    </div>
+                  )}
                   <div className="grid">
                     <Field label={t.name}>
                       <input value={lead.name} onChange={(event) => updateLead("name", event.target.value)} required />
