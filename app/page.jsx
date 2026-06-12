@@ -2757,6 +2757,7 @@ export default function Home() {
   const [form, setForm] = useState(initialForm);
   const [lead, setLead] = useState(initialLead);
   const [selectedOffer, setSelectedOffer] = useState(null);
+  const [leadOfferIds, setLeadOfferIds] = useState([]);
   const [resultOpen, setResultOpen] = useState(false);
   const [leadOpen, setLeadOpen] = useState(false);
   const [peiReviewOpen, setPeiReviewOpen] = useState(false);
@@ -2878,6 +2879,7 @@ export default function Home() {
   }
 
   function openLeadFromResult() {
+    setLeadOfferIds(recommendations.map((offer) => offer.offer_id).filter(Boolean));
     setSelectedOffer({
       offerId: "",
       provider: "",
@@ -2928,8 +2930,15 @@ export default function Home() {
       tags,
       clickSource: "offer_card_cta"
     });
+    setLeadOfferIds(offer.offer_id ? [offer.offer_id] : []);
     setResultOpen(false);
     setLeadOpen(true);
+  }
+
+  function toggleLeadOffer(offerId) {
+    setLeadOfferIds((current) =>
+      current.includes(offerId) ? current.filter((id) => id !== offerId) : [...current, offerId]
+    );
   }
 
   function returnHomeAfterSuccess() {
@@ -2937,6 +2946,7 @@ export default function Home() {
     setForm(initialForm);
     setLead(initialLead);
     setSelectedOffer(null);
+    setLeadOfferIds([]);
     setMissingFields([]);
     setSheetError("");
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -3636,40 +3646,55 @@ export default function Home() {
             </div>
 
             <div className="lead-modal-body">
-              <div className="lead-modal-intro">
-                <span className="lead-modal-kicker">
-                  {textByLanguage(language, "第 3 步 · 人工确认", "第 3 步 · 人工確認", "Step 3 · Manual confirmation")}
-                </span>
-                <h2>{t.leadTitle}</h2>
-                <p>{t.leadIntro}</p>
-              </div>
-
-              <div className="lead-modal-content">
-                <div className="trust-box lead-trust-panel">
-                  <strong>{t.trustTitle}</strong>
-                  <ol>
-                    {t.trustItems.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ol>
+              <section className="lead-offer-section">
+                <div className="lead-section-heading">
+                  <h2>{textByLanguage(language, "确认你想人工核对的方案", "確認你想人工核對的方案", "Confirm the options you want reviewed")}</h2>
+                  <p>
+                    {textByLanguage(
+                      language,
+                      "你可以选择一个或多个方案，我们会帮你核对当前真实可用价格和资格。",
+                      "你可以選擇一個或多個方案，我們會幫你核對目前實際可用價格和資格。",
+                      "Select one or more options and we will help confirm current pricing and eligibility."
+                    )}
+                  </p>
                 </div>
+                <div className="lead-offer-list">
+                  {recommendations.map((offer) => {
+                    const checked = leadOfferIds.includes(offer.offer_id);
+                    return (
+                      <button
+                        className={checked ? "lead-offer-card selected" : "lead-offer-card"}
+                        key={offer.offer_id}
+                        type="button"
+                        onClick={() => toggleLeadOffer(offer.offer_id)}
+                        aria-pressed={checked}
+                      >
+                        <span className="lead-offer-check" aria-hidden="true">{checked ? "✓" : ""}</span>
+                        <span className="lead-offer-copy">
+                          <strong>{displayProviderName(offer.provider)} · {displayPlanName(offer, t)}</strong>
+                          <span>{displayPrice(offer, t, language)} · {savingsText(offer, form, t, language)}</span>
+                        </span>
+                        <span className={`recommendation-tag ${recommendationTagTone(offer, offer.rank - 1)}`}>
+                          {recommendationTag(offer, offer.rank - 1, language)}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </section>
 
-                <div className="lead-form-panel">
-                  {selectedOffer?.serviceName && selectedOffer.recommendationType !== "general_review" && (
-                    <div className="selectedOfferSummary">
-                      <div className="selectedOfferLabel">
-                        {textByLanguage(language, "你选择的是：", "你選擇的是：", "Selected option:")}
-                      </div>
-                      <div className="selectedOfferName">
-                        {selectedOffer.provider} · {selectedOffer.serviceName}
-                      </div>
-                      <div className="selectedOfferPrice">
-                        {selectedOffer.displayPriceRequiresConfirmation
-                          ? textByLanguage(language, "优惠价需人工确认", "優惠價需人工確認", "Offer price requires manual confirmation")
-                          : selectedOffer.displayPrice}
-                      </div>
-                    </div>
-                  )}
+              <section className="lead-form-panel">
+                  <div className="lead-section-heading lead-form-heading">
+                    <h2>{textByLanguage(language, "填写联系方式", "填寫聯絡方式", "Enter contact details")}</h2>
+                    <p>
+                      {textByLanguage(
+                        language,
+                        "我们会根据你选择的方案，帮你人工确认当前可用价格、资格和安装方式。",
+                        "我們會根據你選擇的方案，幫你人工確認目前可用價格、資格和安裝方式。",
+                        "We will use your selected options to manually confirm current pricing, eligibility, and installation."
+                      )}
+                    </p>
+                  </div>
                   <div className="grid">
                     <Field label={t.name}>
                       <input value={lead.name} onChange={(event) => updateLead("name", event.target.value)} required />
@@ -3699,14 +3724,19 @@ export default function Home() {
                   </div>
 
                   <button className="submit-button" type="submit" disabled={submitting}>
-                    {submitting ? t.submitting : t.leadSubmit}
+                    {submitting
+                      ? t.submitting
+                      : textByLanguage(language, "提交并人工确认", "提交並人工確認", "Submit for manual confirmation")}
                   </button>
-                  <p className="form-safe-note contact-safe-note">
-                    <span aria-hidden="true">🔒</span>
-                    {t.leadSafetyNote}
+                  <p className="lead-minimal-disclaimer">
+                    {textByLanguage(
+                      language,
+                      "Bill Saver 不向你收取任何服务费。最终价格、资格、安装和账单以运营商官方或授权团队确认为准。",
+                      "Bill Saver 不向你收取任何服務費。最終價格、資格、安裝和帳單以電信商官方或授權團隊確認為準。",
+                      "Bill Saver does not charge you a service fee. Final pricing, eligibility, installation, and billing are confirmed by the provider or authorized team."
+                    )}
                   </p>
-                </div>
-              </div>
+              </section>
             </div>
           </form>
         </div>
