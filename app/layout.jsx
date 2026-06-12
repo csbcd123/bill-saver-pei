@@ -5,6 +5,11 @@ export const metadata = {
   description: "PEI internet and mobile bill savings MVP"
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1
+};
+
 export default function RootLayout({ children }) {
   return (
     <html lang="zh-CN">
