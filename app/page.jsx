@@ -2902,18 +2902,22 @@ export default function Home() {
 
       {resultOpen && (
         <div className="modal-backdrop result-modal-backdrop" role="presentation" onMouseDown={() => setResultOpen(false)}>
-          <div className="modal panel result-modal" role="dialog" aria-modal="true" onMouseDown={(event) => event.stopPropagation()}>
+          <div
+            className="modal panel result-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-label={t.billScore}
+            onMouseDown={(event) => event.stopPropagation()}
+          >
             <div className="section-heading result-modal-header">
-              <div>
-                <h2>{t.billScore}</h2>
-              </div>
               <button className="modal-close" type="button" onClick={() => setResultOpen(false)} aria-label={t.close}>
                 ×
               </button>
+              <ResultStepProgress language={language} />
+              <span className="result-modal-header-spacer" aria-hidden="true" />
             </div>
 
             <div className="result-modal-body" onTouchMove={(event) => event.stopPropagation()}>
-              <ResultStepProgress language={language} />
               <div className="result-stack">
               <section className={`resultSummaryGrid ${scoreTone(score)}`}>
                 <div className="resultSummaryCard">

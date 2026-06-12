@@ -1268,10 +1268,21 @@ textarea:focus {
 }
 
 .result-modal-header {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 640px) 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
   flex: 0 0 auto;
   margin: 0;
-  padding: 18px 22px 16px;
+  border-bottom: 1px solid rgba(15, 123, 104, 0.12);
+  padding: 10px 22px 9px;
   background: #fff;
+}
+
+.result-modal-header-spacer {
+  width: 44px;
+  height: 44px;
 }
 
 .result-modal-body {
@@ -1288,30 +1299,27 @@ textarea:focus {
 .resultStepProgress {
   position: relative;
   display: grid;
-  width: min(720px, 100%);
-  min-height: 110px;
+  width: min(640px, 100%);
+  min-height: 68px;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: start;
-  margin: 0 auto 20px;
-  border: 1px solid rgba(34, 230, 166, 0.22);
-  border-radius: 16px;
-  background:
-    radial-gradient(circle at 50% 0%, rgba(34, 230, 166, 0.14), transparent 42%),
-    linear-gradient(145deg, #06313a, #031f29);
-  padding: 18px 18px 12px;
-  box-shadow: 0 16px 34px rgba(0, 25, 34, 0.2);
-  overflow: hidden;
+  margin: 0 auto;
+  border: 0;
+  background: transparent;
+  padding: 3px 0 0;
+  box-shadow: none;
+  overflow: visible;
 }
 
 .resultStepTrack {
   position: absolute;
-  top: 45px;
-  left: calc(16.666% + 25px);
-  right: calc(16.666% + 25px);
+  top: 23px;
+  left: calc(16.666% + 20px);
+  right: calc(16.666% + 20px);
   z-index: 0;
-  height: 3px;
+  height: 2px;
   border-radius: 999px;
-  background: rgba(201, 235, 227, 0.24);
+  background: #d5e3df;
 }
 
 .resultStepTrack span {
@@ -1319,8 +1327,8 @@ textarea:focus {
   width: 50%;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, #18b982, #24e9aa);
-  box-shadow: 0 0 12px rgba(36, 233, 170, 0.38);
+  background: linear-gradient(90deg, #159672, #20c994);
+  box-shadow: none;
 }
 
 .resultStep {
@@ -1328,48 +1336,47 @@ textarea:focus {
   z-index: 1;
   display: grid;
   justify-items: center;
-  gap: 9px;
+  gap: 6px;
   min-width: 0;
 }
 
 .resultStepCircle {
   display: grid;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   place-items: center;
-  border: 2px solid rgba(196, 231, 223, 0.55);
+  border: 2px solid #b9cec8;
   border-radius: 50%;
-  background: #082c35;
-  color: rgba(236, 250, 247, 0.7);
-  font-size: 20px;
+  background: #f7faf9;
+  color: #748681;
+  font-size: 16px;
   line-height: 1;
   font-weight: 900;
-  box-shadow: 0 0 0 5px #052630;
+  box-shadow: 0 0 0 4px #fff;
 }
 
 .resultStep-completed .resultStepCircle {
-  border-color: rgba(34, 230, 166, 0.78);
-  background: #0d8f6c;
-  color: #fff;
+  border-color: #39b991;
+  background: #e2f7ef;
+  color: #08715f;
 }
 
 .resultStep-active .resultStepCircle {
-  width: 58px;
-  height: 58px;
-  margin-top: -4px;
-  border-color: #eafff8;
-  background: linear-gradient(145deg, #26e9aa, #0da87b);
+  width: 46px;
+  height: 46px;
+  margin-top: -3px;
+  border-color: #0f9275;
+  background: linear-gradient(145deg, #24dba3, #0f9275);
   color: #fff;
-  font-size: 24px;
+  font-size: 19px;
   box-shadow:
-    0 0 0 6px rgba(36, 233, 170, 0.18),
-    0 0 24px rgba(36, 233, 170, 0.48),
-    0 12px 24px rgba(0, 0, 0, 0.22);
+    0 0 0 4px rgba(36, 219, 163, 0.15),
+    0 7px 16px rgba(15, 146, 117, 0.24);
 }
 
 .resultStepLabel {
-  color: rgba(221, 241, 237, 0.68);
-  font-size: 14px;
+  color: #7b8c87;
+  font-size: 12px;
   line-height: 1.2;
   font-weight: 750;
   text-align: center;
@@ -1377,11 +1384,11 @@ textarea:focus {
 }
 
 .resultStep-completed .resultStepLabel {
-  color: rgba(176, 241, 222, 0.84);
+  color: #43806f;
 }
 
 .resultStep-active .resultStepLabel {
-  color: #2af0b0;
+  color: #08715f;
   font-weight: 900;
 }
 
@@ -4022,36 +4029,50 @@ textarea:focus {
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
+  .result-modal-header {
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 8px;
+    min-height: 90px;
+    padding: 8px 10px 7px;
+  }
+
+  .result-modal-header-spacer {
+    display: none;
+  }
+
+  .result-modal-header .modal-close {
+    width: 40px;
+    height: 40px;
+  }
+
   .resultStepProgress {
-    min-height: 100px;
-    margin-bottom: 14px;
-    border-radius: 13px;
-    padding: 15px 6px 10px;
+    min-height: 70px;
+    padding: 6px 0 0;
   }
 
   .resultStepTrack {
-    top: 40px;
-    left: calc(16.666% + 23px);
-    right: calc(16.666% + 23px);
-    height: 3px;
+    top: 25px;
+    left: calc(16.666% + 18px);
+    right: calc(16.666% + 18px);
+    height: 2px;
   }
 
   .resultStepCircle {
-    width: 48px;
-    height: 48px;
-    font-size: 18px;
-    box-shadow: 0 0 0 4px #052630;
+    width: 38px;
+    height: 38px;
+    font-size: 15px;
+    box-shadow: 0 0 0 3px #fff;
   }
 
   .resultStep-active .resultStepCircle {
-    width: 56px;
-    height: 56px;
-    font-size: 22px;
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
   }
 
   .resultStepLabel {
-    font-size: 13px;
+    font-size: 11px;
   }
 }
 
