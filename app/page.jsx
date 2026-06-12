@@ -1842,6 +1842,45 @@ function resultCautionItems(language) {
   ];
 }
 
+function ResultStepProgress({ language }) {
+  const steps = [
+    {
+      number: 1,
+      status: "completed",
+      label: textByLanguage(language, "输入账单", "輸入帳單", "Enter bill")
+    },
+    {
+      number: 2,
+      status: "active",
+      label: textByLanguage(language, "查看结果", "查看結果", "View result")
+    },
+    {
+      number: 3,
+      status: "pending",
+      label: textByLanguage(language, "获取优惠", "取得優惠", "Get offers")
+    }
+  ];
+
+  return (
+    <nav
+      className="resultStepProgress"
+      aria-label={textByLanguage(language, "账单体检进度", "帳單健檢進度", "Bill check progress")}
+    >
+      <div className="resultStepTrack" aria-hidden="true">
+        <span />
+      </div>
+      {steps.map((step) => (
+        <div className={`resultStep resultStep-${step.status}`} key={step.number}>
+          <div className="resultStepCircle" aria-current={step.status === "active" ? "step" : undefined}>
+            {step.number}
+          </div>
+          <div className="resultStepLabel">{step.label}</div>
+        </div>
+      ))}
+    </nav>
+  );
+}
+
 function displayPlanName(offer, t) {
   if (offer.offer_id === "bell_mobile_winback_manual") return bellAliantDisplayText(t.bellWinbackService);
   if (offer.offer_id === "bell_internet_mobile_bundle") {
@@ -2874,6 +2913,7 @@ export default function Home() {
             </div>
 
             <div className="result-modal-body" onTouchMove={(event) => event.stopPropagation()}>
+              <ResultStepProgress language={language} />
               <div className="result-stack">
               <section className={`resultSummaryGrid ${scoreTone(score)}`}>
                 <div className="resultSummaryCard">
