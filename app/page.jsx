@@ -1091,6 +1091,15 @@ function isPurpleCowInternet(offer) {
   return offer.service_type === "internet" && normalizeProviderName(offer.provider) === "purple_cow";
 }
 
+function isEastlinkPlan(offer) {
+  const provider = normalizeProviderName(offer.provider);
+  return provider === "eastlink" || provider.startsWith("eastlink_");
+}
+
+function isInternetOrBundlePlan(offer) {
+  return offer.service_type === "internet" || offer.service_type === "both";
+}
+
 function getPlanMonthlyCost(offer) {
   const price = offer.bundle_total_monthly_cost ?? offer.totalMonthlyCost ?? calculationMonthlyPrice(offer);
   return Number.isFinite(Number(price)) ? Number(price) : null;
@@ -1109,6 +1118,42 @@ function compareKoodoPurpleCowTieBreaker(offerA, offerB, form) {
   if (!isPair || !internetMeetsServiceLevel(offerA, form) || !internetMeetsServiceLevel(offerB, form)) return 0;
   if (!pricesAreVeryClose(offerA, offerB)) return 0;
   return isKoodoInternet(offerA) ? -1 : 1;
+}
+
+function isPriorityBellTvBundle(offer, form) {
+  return (
+    form.service_type === "both" &&
+    form.bundle_includes_tv &&
+    !isBell(form.current_provider) &&
+    isBell(offer) &&
+    offer.service_type === "both" &&
+    (offer.bundle_services?.includes("tv") || offer.manual_tv_direction)
+  );
+}
+
+function compareBellTvBundlePriority(offerA, offerB, form) {
+  const aPriority = isPriorityBellTvBundle(offerA, form);
+  const bPriority = isPriorityBellTvBundle(offerB, form);
+  return aPriority === bPriority ? 0 : aPriority ? -1 : 1;
+}
+
+function compareEastlinkTieBreaker(offerA, offerB, form) {
+  const aIsEastlink = isEastlinkPlan(offerA);
+  const bIsEastlink = isEastlinkPlan(offerB);
+  if (aIsEastlink === bIsEastlink) return 0;
+
+  const eastlinkOffer = aIsEastlink ? offerA : offerB;
+  const otherOffer = aIsEastlink ? offerB : offerA;
+  if (!isInternetOrBundlePlan(eastlinkOffer) || !isInternetOrBundlePlan(otherOffer)) return 0;
+  if (normalizeProviderName(form.current_provider) === "eastlink") return 0;
+
+  const eastlinkPrice = getPlanMonthlyCost(eastlinkOffer);
+  const otherPrice = getPlanMonthlyCost(otherOffer);
+  if (eastlinkPrice === null || otherPrice === null) return 0;
+
+  const priceDifference = eastlinkPrice - otherPrice;
+  if (priceDifference < -5) return 0;
+  return Math.abs(priceDifference) <= 5 || priceDifference > 0 ? (aIsEastlink ? 1 : -1) : 0;
 }
 
 function classifyRecommendation(offer, form) {
@@ -1180,9 +1225,18 @@ function sortRecommendations(recommendations, form) {
             isPurpleCowInternet(candidate) &&
             internetMeetsServiceLevel(candidate, form) &&
             pricesAreVeryClose(offer, candidate)
-        )
+        ),
+      eastlinkLocalBackup:
+        isEastlinkPlan(offer) &&
+        enriched.some((candidate) => candidate !== offer && compareEastlinkTieBreaker(offer, candidate, form) > 0)
     }))
-    .sort((a, b) => compareKoodoPurpleCowTieBreaker(a, b, form) || a.sortScore - b.sortScore);
+    .sort(
+      (a, b) =>
+        compareBellTvBundlePriority(a, b, form) ||
+        compareKoodoPurpleCowTieBreaker(a, b, form) ||
+        compareEastlinkTieBreaker(a, b, form) ||
+        a.sortScore - b.sortScore
+    );
 
   return sorted;
 }
@@ -1935,6 +1989,9 @@ function premiumCtaContent(language, offer) {
 }
 
 function recommendationTag(offer, index, language) {
+  if (offer.eastlinkLocalBackup) {
+    return textByLanguage(language, "本地运营商备选", "本地電信商備選", "Local provider backup option");
+  }
   if (offer.similarPricePreferred) {
     return textByLanguage(language, "价格接近，优先推荐", "價格接近，優先推薦", "Similar price, preferred option");
   }
@@ -1955,6 +2012,7 @@ function recommendationTag(offer, index, language) {
 }
 
 function recommendationTagTone(offer, index) {
+  if (offer.eastlinkLocalBackup) return "alternative";
   if (offer.similarPricePreferred) return "value";
   if (offer.recommendationType === "strong_savings") return "primary";
   if (offer.recommendationType === "best_savings") return "primary";
