@@ -3710,11 +3710,53 @@ textarea:focus {
   gap: 12px;
 }
 
+.recommendation-list-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 18px;
+  margin: 0 0 14px;
+}
+
+.recommendation-list-heading h2,
+.recommendation-list-heading p {
+  margin: 0;
+}
+
+.recommendation-list-heading h2 {
+  color: #073f38;
+  font-size: 1.2rem;
+}
+
+.recommendation-list-heading p {
+  margin-top: 5px;
+  color: #58726d;
+  font-size: 0.82rem;
+}
+
+.recommendation-list-heading > strong {
+  color: #08715f;
+  font-size: 0.82rem;
+  white-space: nowrap;
+}
+
 .recommendation-section .plan-card {
   border-color: rgba(68, 187, 157, 0.2);
   background: linear-gradient(135deg, #fbfefd, #f3faf7);
   padding: 15px;
   box-shadow: 0 12px 28px rgba(10, 65, 62, 0.08);
+}
+
+@media (max-width: 768px) {
+  .recommendation-list-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .recommendation-list-heading > strong {
+    white-space: normal;
+  }
 }
 
 .plan-card-overview {

@@ -1104,16 +1104,31 @@ function classifyRecommendation(offer, form) {
     betterServiceLevel = betterServiceLevel || data === Infinity || (typeof data === "number" && data > requiredData);
   }
 
+  const manualReview =
+    offer.requires_manual_confirmation ||
+    offer.display_price_requires_confirmation ||
+    offer.manual_tv_direction ||
+    offer.manual_home_phone_direction;
+  const backupOption =
+    offer.notDefaultPrimary ||
+    offer.notPrimaryRecommendation ||
+    /Starlink|Xplore/i.test(offer.provider || "");
+
   let recommendationType = "low_priority";
-  if (meetsServiceLevel && annualSavings !== null && annualSavings >= 150) recommendationType = "best_savings";
+  if (!meetsServiceLevel) recommendationType = "low_priority";
+  else if (manualReview) recommendationType = "manual_review";
+  else if (backupOption) recommendationType = "backup_option";
+  else if (annualSavings !== null && annualSavings >= 300) recommendationType = "strong_savings";
+  else if (annualSavings !== null && annualSavings >= 150) recommendationType = "best_savings";
   else if (meetsServiceLevel && annualSavings !== null && annualSavings > 0) recommendationType = "small_savings";
-  else if (meetsServiceLevel && (betterServiceLevel || offer.requires_manual_confirmation)) recommendationType = "upgrade_option";
+  else if (betterServiceLevel) recommendationType = "upgrade_option";
+  else if (meetsServiceLevel) recommendationType = "backup_option";
 
   return { recommendationType, annualSavings, meetsServiceLevel, betterServiceLevel };
 }
 
 function sortRecommendations(recommendations, form) {
-  const typeRank = { best_savings: 1, small_savings: 2, upgrade_option: 3, low_priority: 9 };
+  const typeRank = { strong_savings: 1, best_savings: 1, small_savings: 2, upgrade_option: 3, manual_review: 4, backup_option: 5, low_priority: 9 };
   const sorted = recommendations
     .filter(isRecommendableOffer)
     .map((offer, originalIndex) => {
@@ -1136,15 +1151,10 @@ function sortRecommendations(recommendations, form) {
   return sorted;
 }
 
-function pickTopRecommendations(recommendations, form) {
-  const sorted = sortRecommendations(recommendations, form);
-  const result = [];
-  for (const type of ["best_savings", "small_savings", "upgrade_option"]) {
-    for (const offer of sorted.filter((candidate) => candidate.recommendationType === type)) {
-      if (result.length < 3) result.push(offer);
-    }
-  }
-  return result.slice(0, 3);
+function pickVisibleRecommendations(recommendations, form) {
+  return sortRecommendations(recommendations, form).filter(
+    (offer) => offer.recommendationType !== "low_priority" && offer.visible !== false
+  );
 }
 
 function isKoodoOrTelusInternet(offer) {
@@ -1889,11 +1899,14 @@ function premiumCtaContent(language, offer) {
 }
 
 function recommendationTag(offer, index, language) {
+  if (offer.recommendationType === "strong_savings") return textByLanguage(language, "明显节省", "明顯節省", "Strong savings");
   if (offer.recommendationType === "best_savings") return textByLanguage(language, "明显节省", "明顯節省", "Strong savings");
   if (offer.recommendationType === "small_savings") return textByLanguage(language, "小幅节省", "小幅節省", "Modest savings");
   if (offer.recommendationType === "upgrade_option") {
     return textByLanguage(language, "价格接近，规格更好", "價格接近，規格更好", "Similar price, better service");
   }
+  if (offer.recommendationType === "manual_review") return textByLanguage(language, "人工确认", "人工確認", "Manual review");
+  if (offer.recommendationType === "backup_option") return textByLanguage(language, "备选方案", "備選方案", "Backup option");
   if (offer.lowSavingsWarning) return textByLanguage(language, "节省有限", "節省有限", "Limited savings");
   if (index === 0 || isBell(offer)) return textByLanguage(language, "首选推荐", "首選推薦", "Top recommendation");
   if (/Koodo|TELUS|Public Mobile/i.test(offer.provider || "")) {
@@ -1903,9 +1916,12 @@ function recommendationTag(offer, index, language) {
 }
 
 function recommendationTagTone(offer, index) {
+  if (offer.recommendationType === "strong_savings") return "primary";
   if (offer.recommendationType === "best_savings") return "primary";
   if (offer.recommendationType === "small_savings") return "value";
   if (offer.recommendationType === "upgrade_option") return "alternative";
+  if (offer.recommendationType === "manual_review") return "value";
+  if (offer.recommendationType === "backup_option") return "alternative";
   if (offer.lowSavingsWarning) return "alternative";
   if (index === 0 || isBell(offer)) return "primary";
   if (/Koodo|TELUS|Public Mobile/i.test(offer.provider || "")) return "value";
@@ -2162,18 +2178,17 @@ function bestMobileProviderOffer(offers, provider, form) {
 }
 
 function internetPicks(form) {
-  const offers = filterOutCurrentProvider(
+  const eligibleOffers = filterOutCurrentProvider(
     offerDatabase.filter((offer) => offer.service_type === "internet" && isRecommendableOffer(offer)),
     form.current_provider
   );
-  const currentIsBellAliant = isBell(form.current_provider);
-  const providerOrder = isMainUrbanArea(form.city)
-    ? ["Koodo", "TELUS", "Purple Cow", currentIsBellAliant ? "Eastlink" : "Bell Aliant"]
-    : ["Bell Aliant", "Starlink", "Xplore"];
+  const allowedProviders = isMainUrbanArea(form.city)
+    ? ["koodo", "telus", "purple_cow", "eastlink", "bell_aliant"]
+    : ["bell_aliant", "starlink", "xplore"];
 
-  const picks = providerOrder
-    .map((provider) => bestProviderOffer(offers, provider, form))
-    .filter(Boolean)
+  const picks = eligibleOffers
+    .filter((offer) => allowedProviders.includes(normalizeProviderName(offer.provider)))
+    .filter((offer) => internetMeetsServiceLevel(offer, form))
     .map((offer) => {
       const annualSavings = getAnnualSavings(form, offer);
       const lowSavingsWarning =
@@ -2187,8 +2202,6 @@ function internetPicks(form) {
       };
     });
 
-  if (!isMainUrbanArea(form.city)) return picks;
-
   return picks.sort((a, b) => {
     if (a.notPrimaryRecommendation !== b.notPrimaryRecommendation) return a.notPrimaryRecommendation ? 1 : -1;
     return internetRecommendationScore(b, form) - internetRecommendationScore(a, form);
@@ -2196,39 +2209,26 @@ function internetPicks(form) {
 }
 
 function mobilePicks(form) {
-  const currentPrice = monthlyPrice(form);
   const offers = filterOutCurrentProvider(
     offerDatabase.filter(
       (offer) => {
-        const offerPrice = mobileOfferPrice(offer);
         return (
           offer.service_type === "mobile" &&
           isRecommendableOffer(offer) &&
           !isKoodoPrepaid(offer) &&
           mobileMeetsServiceLevel(offer, form) &&
-          !["Rogers", "Fido", "Virgin Plus"].includes(offer.provider) &&
-          (offerPrice === null || currentPrice <= 0 || offerPrice <= currentPrice)
+          !["Rogers", "Fido", "Virgin Plus"].includes(offer.provider)
         );
       }
     ),
     form.current_provider
   );
-  const currentIsBellAliant = isBell(form.current_provider);
-  let providerOrder;
+  const allowedProviders = isMainUrbanArea(form.city)
+    ? ["public_mobile", "koodo", "telus", "bell_aliant", "eastlink"]
+    : ["public_mobile", "telus", "bell_aliant"];
 
-  if (!isMainUrbanArea(form.city)) {
-    providerOrder = ["TELUS", "Bell Aliant", "Public Mobile"];
-  } else if (isMobileDataUnder50GB(form.current_mobile_data)) {
-    providerOrder = currentIsBellAliant ? ["Public Mobile", "Koodo", "TELUS"] : ["Public Mobile", "Koodo", "TELUS", "Bell Aliant"];
-  } else if (isMobileData50GBOrMore(form.current_mobile_data)) {
-    providerOrder = currentIsBellAliant ? ["Koodo", "TELUS", "Public Mobile"] : ["Koodo", "TELUS", "Bell Aliant", "Public Mobile"];
-  } else {
-    providerOrder = currentIsBellAliant ? ["Koodo", "TELUS", "Public Mobile"] : ["Koodo", "TELUS", "Bell Aliant", "Public Mobile"];
-  }
-
-  return providerOrder
-    .map((provider) => bestMobileProviderOffer(offers, provider, form))
-    .filter(Boolean)
+  return offers
+    .filter((offer) => allowedProviders.includes(normalizeProviderName(offer.provider)))
     .sort((a, b) => mobileOfferSortScore(a, form) - mobileOfferSortScore(b, form))
     .map((offer, index) => ({
       ...offer,
@@ -2402,17 +2402,7 @@ function bundlePicks(form) {
   }
 
   const mobile = mobilePicks(form);
-  const pairOrder = [
-    [0, 0],
-    [0, 1],
-    [0, 2],
-    [1, 0],
-    [1, 1],
-    [1, 2],
-    [2, 0],
-    [2, 1],
-    [2, 2]
-  ];
+  const pairOrder = internet.flatMap((_, internetIndex) => mobile.map((__, mobileIndex) => [internetIndex, mobileIndex]));
 
   return pairOrder
     .map(([internetIndex, mobileIndex]) => {
@@ -2487,9 +2477,9 @@ function bundlePicks(form) {
 }
 
 function getRecommendations(form) {
-  if (form.service_type === "internet") return pickTopRecommendations(internetPicks(form), form);
-  if (form.service_type === "mobile") return pickTopRecommendations(mobilePicks(form), form);
-  return pickTopRecommendations(bundlePicks(form), form);
+  if (form.service_type === "internet") return pickVisibleRecommendations(internetPicks(form), form);
+  if (form.service_type === "mobile") return pickVisibleRecommendations(mobilePicks(form), form);
+  return pickVisibleRecommendations(bundlePicks(form), form);
 }
 
 function calculateScore(form, offers) {
@@ -3163,6 +3153,27 @@ export default function Home() {
               </section>
 
               <section className="recommendation-section">
+                <div className="recommendation-list-heading">
+                  <div>
+                    <h2>{textByLanguage(language, "参考可选方案", "參考可選方案", "Available options")}</h2>
+                    <p>
+                      {textByLanguage(
+                        language,
+                        "已按节省空间、服务匹配度和人工确认需求排序",
+                        "已按節省空間、服務匹配度和人工確認需求排序",
+                        "Sorted by savings, service fit, and manual review needs"
+                      )}
+                    </p>
+                  </div>
+                  <strong>
+                    {textByLanguage(
+                      language,
+                      `共找到 ${recommendations.length} 个参考方案`,
+                      `共找到 ${recommendations.length} 個參考方案`,
+                      `${recommendations.length} available options found`
+                    )}
+                  </strong>
+                </div>
                 <div className="plan-list">
                   {recommendations.length === 0 && <div className="rural-recommendation-note">{noAlternativeMessage(language)}</div>}
                   {recommendations.map((offer, recommendationIndex) => {
