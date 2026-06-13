@@ -52,7 +52,8 @@ const translations = {
     validationMobileLines: "请选择你家有几条手机线路。",
     validationMobileLineMinimum: "如果组合账单包含手机，请选择至少 1 条手机线路。",
     validationMobileData: "请选择您的手机流量使用情况。",
-    bundleServicesTitle: "你的组合账单包含哪些服务？",
+    bundleServicesTitle: "你的组合账单主要包含什么？",
+    bundleServicesSubtitle: "选择最接近的一项即可，后续我们可以再人工确认细节。",
     bundleInternet: "宽带",
     bundleMobile: "手机",
     bundleTv: "TV 服务",
@@ -255,7 +256,8 @@ const translations = {
     validationMobileLines: "請選擇你家有幾條手機線路。",
     validationMobileLineMinimum: "如果組合帳單包含手機，請選擇至少 1 條手機線路。",
     validationMobileData: "請選擇你的手機流量使用情況。",
-    bundleServicesTitle: "你的組合帳單包含哪些服務？",
+    bundleServicesTitle: "你的組合帳單主要包含什麼？",
+    bundleServicesSubtitle: "選擇最接近的一項即可，後續我們可以再人工確認細節。",
     bundleInternet: "寬頻",
     bundleMobile: "手機",
     bundleTv: "TV 服務",
@@ -458,7 +460,8 @@ const translations = {
     validationMobileLines: "Please select how many mobile lines you have.",
     validationMobileLineMinimum: "If your bundle includes mobile service, please select at least 1 mobile line.",
     validationMobileData: "Please choose your mobile data usage.",
-    bundleServicesTitle: "Which services are included in your bundle?",
+    bundleServicesTitle: "Which bundle best matches your bill?",
+    bundleServicesSubtitle: "Choose the closest match. We can still manually review the details later.",
     bundleInternet: "Internet",
     bundleMobile: "Mobile",
     bundleTv: "TV",
@@ -645,6 +648,59 @@ const areaOptions = [
 ];
 
 const serviceOrder = ["internet", "mobile", "both"];
+const BUNDLE_TYPE_OPTIONS = [
+  {
+    value: "internet_tv",
+    includes: { internet: true, mobile: false, tv: true, homePhone: false },
+    title: { zhHans: "宽带 + TV", zhHant: "寬頻 + TV", en: "Internet + TV" },
+    description: {
+      zhHans: "最常见的电视组合账单",
+      zhHant: "最常見的電視組合帳單",
+      en: "Most common bundle for cable TV households"
+    }
+  },
+  {
+    value: "internet_tv_home_phone",
+    includes: { internet: true, mobile: false, tv: true, homePhone: true },
+    title: { zhHans: "宽带 + TV + 家庭电话", zhHant: "寬頻 + TV + 家居電話", en: "Internet + TV + Home Phone" },
+    description: {
+      zhHans: "传统三件套组合账单",
+      zhHant: "傳統三件套組合帳單",
+      en: "Traditional triple-service bundle"
+    }
+  },
+  {
+    value: "internet_mobile",
+    includes: { internet: true, mobile: true, tv: false, homePhone: false },
+    title: { zhHans: "宽带 + 手机", zhHant: "寬頻 + 手機", en: "Internet + Mobile" },
+    description: {
+      zhHans: "一起比较家庭宽带和手机月费",
+      zhHant: "一起比較家庭寬頻和手機月費",
+      en: "Compare home internet and mobile plans together"
+    }
+  },
+  {
+    value: "internet_mobile_tv",
+    includes: { internet: true, mobile: true, tv: true, homePhone: false },
+    title: { zhHans: "宽带 + 手机 + TV", zhHant: "寬頻 + 手機 + TV", en: "Internet + Mobile + TV" },
+    description: {
+      zhHans: "多项服务，建议人工复核",
+      zhHant: "多項服務，建議人工覆核",
+      en: "Multiple services, manual review recommended"
+    }
+  },
+  {
+    value: "other_or_not_sure",
+    includes: { internet: true, mobile: false, tv: false, homePhone: false },
+    needsManualReview: true,
+    title: { zhHans: "不确定 / 其他组合", zhHant: "不確定 / 其他組合", en: "Not sure / Other bundle" },
+    description: {
+      zhHans: "账单里有其他服务，或不确定怎么分类",
+      zhHant: "帳單裡有其他服務，或不確定怎麼分類",
+      en: "Choose this if your bill has extra services or you are not sure"
+    }
+  }
+];
 const internetUsageSpeeds = {
   zhHans: { light: "100M 左右", standard: "300–500M 左右", heavy: "1 Gig+ 高速" },
   zhHant: { light: "100M 左右", standard: "300–500M 左右", heavy: "1 Gig+ 高速" },
@@ -691,12 +747,15 @@ const initialForm = {
   internet_usage_level: "",
   current_speed: "",
   current_mobile_data: "",
+  bundle_type: "internet_tv",
   bundle_includes_internet: true,
   bundle_includes_mobile: false,
-  bundle_includes_tv: false,
+  bundle_includes_tv: true,
   bundle_includes_home_phone: false,
+  bundle_needs_manual_review: false,
+  bundle_other_or_not_sure: false,
   mobile_line_count: "0",
-  has_tv_service: "no",
+  has_tv_service: "yes",
   has_home_phone: "no",
   postal_code: "",
   willing_to_switch: "",
@@ -2542,7 +2601,8 @@ function bundlePicks(form) {
     const genericDirections = internet
       .filter((offer) => !(isBell(offer) && (form.bundle_includes_tv || form.bundle_includes_home_phone)))
       .map((offer) => {
-        const hasManualAddOn = form.bundle_includes_tv || form.bundle_includes_home_phone;
+        const hasManualAddOn =
+          form.bundle_includes_tv || form.bundle_includes_home_phone || form.bundle_needs_manual_review;
         const keepPurpleCowInternetPriceVisible = /Purple Cow/i.test(offer.provider) && hasManualAddOn;
         return {
           ...offer,
@@ -2615,6 +2675,7 @@ function bundlePicks(form) {
           isManualPrice(mobileOffer) ||
           form.bundle_includes_tv ||
           form.bundle_includes_home_phone ||
+          form.bundle_needs_manual_review ||
           lineCountRequiresManualReview,
         is_public_price:
           !form.bundle_includes_tv &&
@@ -2625,6 +2686,7 @@ function bundlePicks(form) {
         display_price_requires_confirmation:
           form.bundle_includes_tv ||
           form.bundle_includes_home_phone ||
+          form.bundle_needs_manual_review ||
           internetOffer.display_price_requires_confirmation ||
           mobileOffer.display_price_requires_confirmation,
         manual_tv_direction: Boolean(form.bundle_includes_tv),
@@ -2640,9 +2702,13 @@ function bundlePicks(form) {
           mobileOffer.requires_manual_confirmation ||
           lineCountRequiresManualReview ||
           form.bundle_includes_tv ||
-          form.bundle_includes_home_phone,
+          form.bundle_includes_home_phone ||
+          form.bundle_needs_manual_review,
         calculation_price_available:
-          !lineCountRequiresManualReview && !form.bundle_includes_tv && !form.bundle_includes_home_phone,
+          !lineCountRequiresManualReview &&
+          !form.bundle_includes_tv &&
+          !form.bundle_includes_home_phone &&
+          !form.bundle_needs_manual_review,
         caution: `${internetOffer.caution || ""} ${mobileOffer.caution || ""}`.trim(),
         bundle_sort_score:
           bundleProviderPreference(mobileOffer.provider, form) +
@@ -2748,6 +2814,9 @@ function buildSheetPayload({ form, language, source, lead, selectedOffer, recomm
     bundle_includes_mobile: serviceType === "both" ? Boolean(form.bundle_includes_mobile) : serviceType === "mobile",
     bundle_includes_tv: serviceType === "both" ? Boolean(form.bundle_includes_tv) : false,
     bundle_includes_home_phone: serviceType === "both" ? Boolean(form.bundle_includes_home_phone) : false,
+    bundle_type: serviceType === "both" ? form.bundle_type || "internet_tv" : "",
+    bundle_needs_manual_review: serviceType === "both" && form.bundle_needs_manual_review ? "yes" : "no",
+    bundle_other_or_not_sure: serviceType === "both" && form.bundle_other_or_not_sure ? "yes" : "no",
     mobile_line_count: serviceType === "both" ? (form.bundle_includes_mobile ? form.mobile_line_count : "0") : "",
     mobile_data_usage:
       serviceType === "mobile" || (serviceType === "both" && form.bundle_includes_mobile) ? form.current_mobile_data : "",
@@ -2761,6 +2830,9 @@ function buildSheetPayload({ form, language, source, lead, selectedOffer, recomm
       bundle_includes_mobile: form.bundle_includes_mobile,
       bundle_includes_tv: form.bundle_includes_tv,
       bundle_includes_home_phone: form.bundle_includes_home_phone,
+      bundle_type: form.bundle_type,
+      bundle_needs_manual_review: form.bundle_needs_manual_review,
+      bundle_other_or_not_sure: form.bundle_other_or_not_sure,
       mobile_line_count: form.bundle_includes_mobile ? form.mobile_line_count : "0",
       has_tv_service: form.bundle_includes_tv ? "yes" : "no",
       has_home_phone: form.bundle_includes_home_phone ? "yes" : "no"
@@ -2916,13 +2988,16 @@ export default function Home() {
         return {
           ...current,
           service_type: value,
+          bundle_type: "internet_tv",
           bundle_includes_internet: true,
           bundle_includes_mobile: false,
-          bundle_includes_tv: false,
+          bundle_includes_tv: true,
           bundle_includes_home_phone: false,
+          bundle_needs_manual_review: false,
+          bundle_other_or_not_sure: false,
           current_mobile_data: "",
           mobile_line_count: "0",
-          has_tv_service: "no",
+          has_tv_service: "yes",
           has_home_phone: "no"
         };
       }
@@ -2937,31 +3012,25 @@ export default function Home() {
     }
   }
 
-  function toggleBundleMobile() {
-    setForm((current) => {
-      const next = !current.bundle_includes_mobile;
-      return {
-        ...current,
-        bundle_includes_mobile: next,
-        mobile_line_count: next ? "" : "0",
-        current_mobile_data: ""
-      };
-    });
+  function applyBundleType(value) {
+    const option = BUNDLE_TYPE_OPTIONS.find((item) => item.value === value);
+    if (!option) return;
+
+    setForm((current) => ({
+      ...current,
+      bundle_type: value,
+      bundle_includes_internet: true,
+      bundle_includes_mobile: option.includes.mobile,
+      bundle_includes_tv: option.includes.tv,
+      bundle_includes_home_phone: option.includes.homePhone,
+      bundle_needs_manual_review: Boolean(option.needsManualReview),
+      bundle_other_or_not_sure: value === "other_or_not_sure",
+      mobile_line_count: option.includes.mobile ? current.mobile_line_count || "" : "0",
+      current_mobile_data: option.includes.mobile ? current.current_mobile_data || "" : "",
+      has_tv_service: option.includes.tv ? "yes" : "no",
+      has_home_phone: option.includes.homePhone ? "yes" : "no"
+    }));
     setMissingFields((current) => current.filter((item) => item !== "mobile_line_count" && item !== "current_mobile_data"));
-  }
-
-  function toggleBundleTv() {
-    setForm((current) => {
-      const next = !current.bundle_includes_tv;
-      return { ...current, bundle_includes_tv: next, has_tv_service: next ? "yes" : "no" };
-    });
-  }
-
-  function toggleBundleHomePhone() {
-    setForm((current) => {
-      const next = !current.bundle_includes_home_phone;
-      return { ...current, bundle_includes_home_phone: next, has_home_phone: next ? "yes" : "no" };
-    });
   }
 
   function updateLead(field, value) {
@@ -3220,31 +3289,23 @@ export default function Home() {
                 {isBundle && (
                   <div className="bundle-services-block">
                     <h3 className="form-side-title">{t.bundleServicesTitle}</h3>
-                    <div className="bundle-service-grid">
-                      <button type="button" className="bundle-service-chip active disabled" disabled>
-                        {t.bundleInternet}
-                      </button>
-                      <button
-                        type="button"
-                        className={form.bundle_includes_mobile ? "bundle-service-chip active" : "bundle-service-chip"}
-                        onClick={toggleBundleMobile}
-                      >
-                        {t.bundleMobile}
-                      </button>
-                      <button
-                        type="button"
-                        className={form.bundle_includes_tv ? "bundle-service-chip active" : "bundle-service-chip"}
-                        onClick={toggleBundleTv}
-                      >
-                        {t.bundleTv}
-                      </button>
-                      <button
-                        type="button"
-                        className={form.bundle_includes_home_phone ? "bundle-service-chip active" : "bundle-service-chip"}
-                        onClick={toggleBundleHomePhone}
-                      >
-                        {t.bundleHomePhone}
-                      </button>
+                    <p className="bundle-type-subtitle">{t.bundleServicesSubtitle}</p>
+                    <div className="bundle-type-grid">
+                      {BUNDLE_TYPE_OPTIONS.map((option) => {
+                        const active = form.bundle_type === option.value;
+                        return (
+                          <button
+                            key={option.value}
+                            type="button"
+                            className={`bundle-type-card${active ? " active" : ""}`}
+                            onClick={() => applyBundleType(option.value)}
+                          >
+                            <span className="bundle-type-title">{option.title[language]}</span>
+                            <span className="bundle-type-description">{option.description[language]}</span>
+                            {active && <span className="bundle-type-check" aria-hidden="true">✓</span>}
+                          </button>
+                        );
+                      })}
                     </div>
                   </div>
                 )}

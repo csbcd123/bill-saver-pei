@@ -4341,47 +4341,96 @@ textarea:focus {
 }
 
 .bundle-services-block .form-side-title {
-  margin-bottom: 10px;
+  margin-bottom: 6px;
 }
 
-.bundle-service-grid {
+.bundle-type-subtitle {
+  margin: 0 0 12px;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.bundle-type-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+  gap: 12px;
 }
 
-.bundle-service-chip {
-  min-height: 44px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.055);
-  color: rgba(255, 255, 255, 0.78);
-  font-size: 15px;
-  font-weight: 800;
+.bundle-type-card {
+  position: relative;
+  width: 100%;
+  min-height: 88px;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  border-radius: 16px;
+  padding: 16px 42px 16px 18px;
+  background: rgba(15, 45, 55, 0.72);
+  color: rgba(255, 255, 255, 0.88);
+  text-align: left;
   cursor: pointer;
+  transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
 }
 
-.bundle-service-chip.active {
-  border-color: #0fe0a0;
-  background:
-    radial-gradient(circle at 20% 50%, rgba(20, 224, 160, 0.18), transparent 34%),
-    rgba(0, 120, 95, 0.25);
-  color: #fff;
+.bundle-type-card:hover {
+  border-color: rgba(45, 212, 191, 0.55);
+  background: rgba(13, 78, 80, 0.72);
 }
 
-.bundle-service-chip.disabled {
-  cursor: default;
-  opacity: 0.9;
+.bundle-type-card.active {
+  border-color: rgba(45, 212, 191, 0.95);
+  background: linear-gradient(135deg, rgba(6, 95, 70, 0.92), rgba(13, 78, 80, 0.82));
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
 }
 
-@media (max-width: 768px) {
-  .bundle-service-grid {
-    gap: 8px;
+.bundle-type-title,
+.bundle-type-description {
+  display: block;
+}
+
+.bundle-type-title {
+  font-size: 17px;
+  font-weight: 850;
+  line-height: 1.25;
+}
+
+.bundle-type-description {
+  margin-top: 6px;
+  color: rgba(255, 255, 255, 0.66);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.bundle-type-check {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: rgba(45, 212, 191, 0.22);
+  color: #5eead4;
+  font-weight: 900;
+}
+
+@media (max-width: 640px) {
+  .bundle-type-grid {
+    grid-template-columns: 1fr;
   }
 
-  .bundle-service-chip {
-    min-height: 40px;
-    font-size: 14px;
+  .bundle-type-card {
+    min-height: 78px;
+    padding: 15px 42px 15px 16px;
+  }
+
+  .bundle-type-title {
+    font-size: 16px;
+  }
+
+  .bundle-type-description,
+  .bundle-type-subtitle {
+    font-size: 12px;
   }
 }
 
