@@ -52,8 +52,7 @@ const translations = {
     validationMobileLines: "请选择你家有几条手机线路。",
     validationMobileLineMinimum: "如果组合账单包含手机，请选择至少 1 条手机线路。",
     validationMobileData: "请选择您的手机流量使用情况。",
-    bundleServicesTitle: "你的组合账单主要包含什么？",
-    bundleServicesSubtitle: "选择最接近的一项即可，后续我们可以再人工确认细节。",
+    bundleServicesTitle: "你的组合账单包含什么？",
     bundleInternet: "宽带",
     bundleMobile: "手机",
     bundleTv: "TV 服务",
@@ -256,8 +255,7 @@ const translations = {
     validationMobileLines: "請選擇你家有幾條手機線路。",
     validationMobileLineMinimum: "如果組合帳單包含手機，請選擇至少 1 條手機線路。",
     validationMobileData: "請選擇你的手機流量使用情況。",
-    bundleServicesTitle: "你的組合帳單主要包含什麼？",
-    bundleServicesSubtitle: "選擇最接近的一項即可，後續我們可以再人工確認細節。",
+    bundleServicesTitle: "你的組合帳單包含什麼？",
     bundleInternet: "寬頻",
     bundleMobile: "手機",
     bundleTv: "TV 服務",
@@ -460,8 +458,7 @@ const translations = {
     validationMobileLines: "Please select how many mobile lines you have.",
     validationMobileLineMinimum: "If your bundle includes mobile service, please select at least 1 mobile line.",
     validationMobileData: "Please choose your mobile data usage.",
-    bundleServicesTitle: "Which bundle best matches your bill?",
-    bundleServicesSubtitle: "Choose the closest match. We can still manually review the details later.",
+    bundleServicesTitle: "What does your bundle include?",
     bundleInternet: "Internet",
     bundleMobile: "Mobile",
     bundleTv: "TV",
@@ -652,53 +649,28 @@ const BUNDLE_TYPE_OPTIONS = [
   {
     value: "internet_tv",
     includes: { internet: true, mobile: false, tv: true, homePhone: false },
-    title: { zhHans: "宽带 + TV", zhHant: "寬頻 + TV", en: "Internet + TV" },
-    description: {
-      zhHans: "最常见的电视组合账单",
-      zhHant: "最常見的電視組合帳單",
-      en: "Most common bundle for cable TV households"
-    }
+    label: { zhHans: "宽带 + TV", zhHant: "寬頻 + TV", en: "Internet + TV" }
   },
   {
     value: "internet_tv_home_phone",
     includes: { internet: true, mobile: false, tv: true, homePhone: true },
-    title: { zhHans: "宽带 + TV + 家庭电话", zhHant: "寬頻 + TV + 家居電話", en: "Internet + TV + Home Phone" },
-    description: {
-      zhHans: "传统三件套组合账单",
-      zhHant: "傳統三件套組合帳單",
-      en: "Traditional triple-service bundle"
-    }
+    label: { zhHans: "宽带 + TV + 家庭电话", zhHant: "寬頻 + TV + 家居電話", en: "Internet + TV + Home Phone" }
   },
   {
     value: "internet_mobile",
     includes: { internet: true, mobile: true, tv: false, homePhone: false },
-    title: { zhHans: "宽带 + 手机", zhHant: "寬頻 + 手機", en: "Internet + Mobile" },
-    description: {
-      zhHans: "一起比较家庭宽带和手机月费",
-      zhHant: "一起比較家庭寬頻和手機月費",
-      en: "Compare home internet and mobile plans together"
-    }
+    label: { zhHans: "宽带 + 手机", zhHant: "寬頻 + 手機", en: "Internet + Mobile" }
   },
   {
     value: "internet_mobile_tv",
     includes: { internet: true, mobile: true, tv: true, homePhone: false },
-    title: { zhHans: "宽带 + 手机 + TV", zhHant: "寬頻 + 手機 + TV", en: "Internet + Mobile + TV" },
-    description: {
-      zhHans: "多项服务，建议人工复核",
-      zhHant: "多項服務，建議人工覆核",
-      en: "Multiple services, manual review recommended"
-    }
+    label: { zhHans: "宽带 + 手机 + TV", zhHant: "寬頻 + 手機 + TV", en: "Internet + Mobile + TV" }
   },
   {
     value: "other_or_not_sure",
     includes: { internet: true, mobile: false, tv: false, homePhone: false },
     needsManualReview: true,
-    title: { zhHans: "不确定 / 其他组合", zhHant: "不確定 / 其他組合", en: "Not sure / Other bundle" },
-    description: {
-      zhHans: "账单里有其他服务，或不确定怎么分类",
-      zhHant: "帳單裡有其他服務，或不確定怎麼分類",
-      en: "Choose this if your bill has extra services or you are not sure"
-    }
+    label: { zhHans: "不确定 / 其他组合", zhHant: "不確定 / 其他組合", en: "Not sure / Other bundle" }
   }
 ];
 const internetUsageSpeeds = {
@@ -3287,25 +3259,24 @@ export default function Home() {
             <div className={`form-split form-grid-top ${isBundle ? "bundle-form-split" : "internet-form-split"}`}>
               <div className="form-split-left form-column">
                 {isBundle && (
-                  <div className="bundle-services-block">
-                    <h3 className="form-side-title">{t.bundleServicesTitle}</h3>
-                    <p className="bundle-type-subtitle">{t.bundleServicesSubtitle}</p>
-                    <div className="bundle-type-grid">
-                      {BUNDLE_TYPE_OPTIONS.map((option) => {
-                        const active = form.bundle_type === option.value;
-                        return (
-                          <button
-                            key={option.value}
-                            type="button"
-                            className={`bundle-type-card${active ? " active" : ""}`}
-                            onClick={() => applyBundleType(option.value)}
-                          >
-                            <span className="bundle-type-title">{option.title[language]}</span>
-                            <span className="bundle-type-description">{option.description[language]}</span>
-                            {active && <span className="bundle-type-check" aria-hidden="true">✓</span>}
-                          </button>
-                        );
-                      })}
+                  <div className="bundle-select-block">
+                    <label className="bundle-select-label" htmlFor="bundleType">
+                      {t.bundleServicesTitle}
+                    </label>
+                    <div className="bundle-select-wrap">
+                      <select
+                        id="bundleType"
+                        className="bundle-select"
+                        value={form.bundle_type || "internet_tv"}
+                        onChange={(event) => applyBundleType(event.target.value)}
+                      >
+                        {BUNDLE_TYPE_OPTIONS.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label[language]}
+                          </option>
+                        ))}
+                      </select>
+                      <span className="bundle-select-chevron" aria-hidden="true">▾</span>
                     </div>
                   </div>
                 )}
