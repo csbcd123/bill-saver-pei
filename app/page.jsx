@@ -130,15 +130,15 @@ const translations = {
     usageCards: {
       light: {
         title: "轻度使用",
-        description: "浏览网页、社交媒体、收发邮件\n1–3 台设备"
+        description: "适合刷网页、微信、视频通话、高清视频、1–2 人家庭日常使用"
       },
       standard: {
         title: "普通家庭",
-        description: "高清视频、在线学习、视频通话\n3–6 台设备"
+        description: "适合多人同时使用、4K 视频、视频会议、孩子上网课、多设备和普通游戏"
       },
       heavy: {
-        title: "重度家庭",
-        description: "4K 串流、游戏、智能家居、多设备\n6 台设备以上"
+        title: "高速 / 多人家庭",
+        description: "适合多人同时 4K、远程办公、大文件下载、多设备、游戏和智能家居"
       }
     },
     mobileDataUsageCards: {
@@ -333,15 +333,15 @@ const translations = {
     usageCards: {
       light: {
         title: "輕度使用",
-        description: "瀏覽網頁、社交媒體、收發電郵\n1–3 台設備"
+        description: "適合瀏覽網頁、微信、視訊通話、高清影片、1–2 人家庭日常使用"
       },
       standard: {
-        title: "一般家庭",
-        description: "高清影片、線上學習、視訊通話\n3–6 台設備"
+        title: "普通家庭",
+        description: "適合多人同時使用、4K 影片、視訊會議、孩子線上課、多設備和普通遊戲"
       },
       heavy: {
-        title: "重度家庭",
-        description: "4K 串流、遊戲、智能家居、多設備\n6 台設備以上"
+        title: "高速 / 多人家庭",
+        description: "適合多人同時 4K、遠端辦公、大型檔案下載、多設備、遊戲和智能家居"
       }
     },
     mobileDataUsageCards: {
@@ -540,15 +540,15 @@ const translations = {
     usageCards: {
       light: {
         title: "Light use",
-        description: "Browsing, social media, and email\n1–3 devices"
+        description: "Good for browsing, messaging, video calls, HD video, and daily use for 1–2 people"
       },
       standard: {
         title: "Standard household",
-        description: "HD video, online learning, and video calls\n3–6 devices"
+        description: "Good for multiple users, 4K video, video calls, online learning, multiple devices, and casual gaming"
       },
       heavy: {
-        title: "Heavy household",
-        description: "4K streaming, gaming, smart home, and many devices\n6+ devices"
+        title: "Heavy / multi-user household",
+        description: "Good for multiple 4K streams, remote work, large downloads, many devices, gaming, and smart home devices"
       }
     },
     mobileDataUsageCards: {
@@ -645,7 +645,11 @@ const areaOptions = [
 ];
 
 const serviceOrder = ["internet", "mobile", "both"];
-const internetUsageSpeeds = { light: "25–100 Mbps", standard: "100–300 Mbps", heavy: "300+ Mbps" };
+const internetUsageSpeeds = {
+  zhHans: { light: "100M 左右", standard: "300–500M 左右", heavy: "1 Gig+ 高速" },
+  zhHant: { light: "100M 左右", standard: "300–500M 左右", heavy: "1 Gig+ 高速" },
+  en: { light: "Around 100 Mbps", standard: "Around 300–500 Mbps", heavy: "1 Gig+ speed" }
+};
 const providerOptionsByService = {
   internet: ["Bell Aliant", "TELUS", "Koodo", "Eastlink", "Purple Cow", "Xplore", "Starlink", "Other", "Not sure"],
   mobile: ["Bell Aliant", "TELUS", "Koodo", "Public Mobile", "Eastlink", "Rogers", "Fido", "Virgin Plus", "Other", "Not sure"],
@@ -1043,19 +1047,69 @@ function getAnnualSavings(form, offer) {
 }
 
 function getRequiredInternetSpeedMbps(form) {
-  if (form.internet_usage_level === "standard" || form.internet_usage_level === "heavy") return 300;
-  if (form.internet_usage_level === "light") return 100;
   const explicitSpeed = speedRank(form.currentInternetSpeedMbps || form.current_speed);
   if (explicitSpeed > 0) return explicitSpeed;
+  const usage = form.internet_usage_level || form.internetUsage || form.selectedInternetUsage;
+  if (usage === "heavy") return 900;
+  if (usage === "standard") return 300;
+  if (usage === "light") return 100;
   return 100;
+}
+
+function getPreferredInternetSpeedMbps(form) {
+  const usage = form.internet_usage_level || form.internetUsage || form.selectedInternetUsage;
+  if (usage === "heavy") return 1000;
+  if (usage === "standard") return 500;
+  if (usage === "light") return 100;
+  return getRequiredInternetSpeedMbps(form);
 }
 
 function internetOfferSpeedMbps(offer) {
   return Number(offer.speedMbps || offer.downloadMbps) || speedRank(offer.speed_down || offer.speed_label);
 }
 
+function getInternetUsageSpeedBand(form) {
+  const usage = form.internet_usage_level || form.internetUsage || form.selectedInternetUsage;
+  if (usage === "heavy") return "gig_plus";
+  if (usage === "standard") return "300_500";
+  return "100";
+}
+
+function getPlanSpeedBand(offer) {
+  if (offer.speedBand) return offer.speedBand;
+  if (offer.speed_band) return offer.speed_band;
+  const speed = internetOfferSpeedMbps(offer);
+  if (speed >= 900) return "gig_plus";
+  if (speed >= 300) return "300_500";
+  if (speed >= 100) return "100";
+  return "unknown";
+}
+
 function internetMeetsServiceLevel(offer, form) {
   return internetOfferSpeedMbps(offer) >= getRequiredInternetSpeedMbps(form);
+}
+
+function internetMatchesPreferredBand(offer, form) {
+  return getPlanSpeedBand(offer) === getInternetUsageSpeedBand(form);
+}
+
+function internetBandSortAdjustment(offer, form) {
+  if (!isInternetOrBundlePlan(offer)) return 0;
+  const userBand = getInternetUsageSpeedBand(form);
+  const planBand = getPlanSpeedBand(offer);
+  if (planBand === userBand) return -300;
+  if (userBand === "100" && planBand === "gig_plus") return 500;
+  if (userBand === "300_500" && planBand === "gig_plus") return 120;
+  if (userBand === "gig_plus" && planBand === "300_500") return 120;
+  return 0;
+}
+
+function compareInternetBandPriority(offerA, offerB, form) {
+  if (!isInternetOrBundlePlan(offerA) || !isInternetOrBundlePlan(offerB)) return 0;
+  const aMatches = internetMatchesPreferredBand(offerA, form);
+  const bMatches = internetMatchesPreferredBand(offerB, form);
+  if (aMatches !== bMatches) return aMatches ? -1 : 1;
+  return internetBandSortAdjustment(offerA, form) - internetBandSortAdjustment(offerB, form);
 }
 
 function getRequiredMobileDataGB(form) {
@@ -1109,6 +1163,7 @@ function compareKoodoPurpleCowTieBreaker(offerA, offerB, form) {
     (isKoodoInternet(offerA) && isPurpleCowInternet(offerB)) ||
     (isPurpleCowInternet(offerA) && isKoodoInternet(offerB));
   if (!isPair || !internetMeetsServiceLevel(offerA, form) || !internetMeetsServiceLevel(offerB, form)) return 0;
+  if (!internetMatchesPreferredBand(offerA, form) || !internetMatchesPreferredBand(offerB, form)) return 0;
   if (!pricesAreVeryClose(offerA, offerB)) return 0;
   return isKoodoInternet(offerA) ? -1 : 1;
 }
@@ -1181,7 +1236,8 @@ function classifyRecommendation(offer, form) {
     /Starlink|Xplore/i.test(offer.provider || "");
 
   let recommendationType = "low_priority";
-  if (!meetsServiceLevel) recommendationType = "low_priority";
+  if (!meetsServiceLevel && includesInternet && internetOfferSpeedMbps(offer) >= 100) recommendationType = "backup_option";
+  else if (!meetsServiceLevel) recommendationType = "low_priority";
   else if (manualReview) recommendationType = "manual_review";
   else if (backupOption) recommendationType = "backup_option";
   else if (annualSavings !== null && annualSavings >= 300) recommendationType = "strong_savings";
@@ -1202,6 +1258,7 @@ function sortRecommendations(recommendations, form) {
       let sortScore = typeRank[classification.recommendationType] * 10000;
       if (classification.annualSavings !== null) sortScore -= classification.annualSavings;
       if (classification.betterServiceLevel) sortScore -= 80;
+      sortScore += internetBandSortAdjustment(offer, form);
       sortScore += originalIndex;
       if (isKoodoOrTelusInternet(offer) && classification.annualSavings !== null && classification.annualSavings < 100) {
         sortScore += 80;
@@ -1226,6 +1283,8 @@ function sortRecommendations(recommendations, form) {
     .sort(
       (a, b) =>
         compareBellTvBundlePriority(a, b, form) ||
+        (a.notPrimaryRecommendation !== b.notPrimaryRecommendation ? (a.notPrimaryRecommendation ? 1 : -1) : 0) ||
+        compareInternetBandPriority(a, b, form) ||
         compareKoodoPurpleCowTieBreaker(a, b, form) ||
         compareEastlinkTieBreaker(a, b, form) ||
         a.sortScore - b.sortScore
@@ -1542,6 +1601,26 @@ function priceNoteText(offer, language) {
 }
 
 function offerBadges(offer, language, form) {
+  const internetBandBadges =
+    offer.service_type === "internet" || offer.service_type === "both"
+      ? [
+          textByLanguage(
+            language,
+            getPlanSpeedBand(offer) === "gig_plus" ? "1 Gig+ 高速" : getPlanSpeedBand(offer) === "300_500" ? "300–500M 档" : "100M 左右",
+            getPlanSpeedBand(offer) === "gig_plus" ? "1 Gig+ 高速" : getPlanSpeedBand(offer) === "300_500" ? "300–500M 檔" : "100M 左右",
+            getPlanSpeedBand(offer) === "gig_plus" ? "1 Gig+ speed" : getPlanSpeedBand(offer) === "300_500" ? "300–500 Mbps tier" : "Around 100 Mbps"
+          ),
+          ...(getInternetUsageSpeedBand(form) === "100" && getPlanSpeedBand(offer) === "gig_plus"
+            ? [textByLanguage(language, "速度更高，价格也可能更高", "速度更高，價格也可能更高", "Faster speed, potentially higher price")]
+            : []),
+          ...(getInternetUsageSpeedBand(form) === "300_500" && getPlanSpeedBand(offer) === "gig_plus"
+            ? [textByLanguage(language, "高速备选", "高速備選", "High-speed alternative")]
+            : []),
+          ...(getInternetUsageSpeedBand(form) === "gig_plus" && getPlanSpeedBand(offer) === "300_500"
+            ? [textByLanguage(language, "低价备选，速度低一档", "低價備選，速度低一檔", "Lower-cost option, one speed tier down")]
+            : [])
+        ]
+      : [];
   const creditCheckBadge = textByLanguage(language, "需要信用核查", "需要信用審查", "Credit check required");
   const prepaidBadges = [
     textByLanguage(language, "预付卡订阅", "預付卡訂閱", "Prepaid subscription"),
@@ -1575,6 +1654,7 @@ function offerBadges(offer, language, form) {
 
   if (/Koodo/i.test(offer.provider) && (offer.service_type === "internet" || offer.service_type === "both")) {
     return [
+      ...internetBandBadges,
       textByLanguage(language, "无合约", "無合約", "No contract"),
       textByLanguage(language, "30 天可免费试用", "30 天可免費試用", "30-day risk-free trial"),
       textByLanguage(language, "免费设备租用", "免費設備租用", "Free equipment rental"),
@@ -1590,6 +1670,7 @@ function offerBadges(offer, language, form) {
   }
   if (/Purple Cow/i.test(offer.provider)) {
     return [
+      ...internetBandBadges,
       textByLanguage(language, "Bill Saver 专享免安装费", "Bill Saver 專享免安裝費", "Bill Saver exclusive installation fee waiver"),
       textByLanguage(language, "无合约", "無合約", "No contract"),
       textByLanguage(language, "不限流量", "不限流量", "No usage fees"),
@@ -1605,6 +1686,7 @@ function offerBadges(offer, language, form) {
   }
   if (/Eastlink/i.test(offer.provider) && offer.service_type === "internet") {
     return [
+      ...internetBandBadges,
       Number(offer.speedMbps) >= 900 ? "Gig Internet" : "350 Mbps",
       textByLanguage(language, "不限流量", "不限流量", "Unlimited data"),
       textByLanguage(language, "本地运营商", "本地電信商", "Local provider"),
@@ -1613,6 +1695,7 @@ function offerBadges(offer, language, form) {
   }
   if (isBell(offer) && offer.service_type === "internet") {
     return [
+      ...internetBandBadges,
       textByLanguage(language, "光纤稳定", "光纖穩定", "Stable Fibre"),
       textByLanguage(language, "免安装费", "免安裝費", "No installation fee"),
       textByLanguage(language, "免激活费", "免啟用費", "No activation fee"),
@@ -2228,10 +2311,13 @@ function scoreOffer(offer, form) {
 }
 
 function internetUsageMatchScore(offer, usage) {
-  const speed = Number(offer.speedMbps) || speedRank(offer.speed_down);
-  if (usage === "heavy") return speed >= 900 ? 30 : speed >= 300 ? -10 : -55;
-  if (usage === "standard") return speed >= 300 ? 22 : -28;
-  if (usage === "light") return speed >= 100 && speed <= 300 ? 14 : speed > 300 ? 4 : -20;
+  const planBand = getPlanSpeedBand(offer);
+  const userBand = usage === "heavy" ? "gig_plus" : usage === "standard" ? "300_500" : usage === "light" ? "100" : "";
+  if (!userBand) return 0;
+  if (planBand === userBand) return 40;
+  if (userBand === "100" && planBand === "gig_plus") return -35;
+  if (userBand === "300_500" && planBand === "gig_plus") return 5;
+  if (userBand === "gig_plus" && planBand === "300_500") return -10;
   return 0;
 }
 
@@ -2241,6 +2327,7 @@ function internetRecommendationScore(offer, form) {
   if (annualSavings !== null) score += Math.min(30, annualSavings / 12);
   if (/Purple Cow/i.test(offer.provider) && offer.installationFeeWaivedByBillSaver) score += 5;
   if (offer.notPrimaryRecommendation) score -= 80;
+  score -= internetBandSortAdjustment(offer, form);
   return score;
 }
 
@@ -2279,7 +2366,6 @@ function internetPicks(form) {
 
   const picks = eligibleOffers
     .filter((offer) => allowedProviders.includes(normalizeProviderName(offer.provider)))
-    .filter((offer) => internetMeetsServiceLevel(offer, form))
     .map((offer) => {
       const annualSavings = getAnnualSavings(form, offer);
       const lowSavingsWarning =
@@ -2295,6 +2381,8 @@ function internetPicks(form) {
 
   return picks.sort((a, b) => {
     if (a.notPrimaryRecommendation !== b.notPrimaryRecommendation) return a.notPrimaryRecommendation ? 1 : -1;
+    const bandPriority = compareInternetBandPriority(a, b, form);
+    if (bandPriority !== 0) return bandPriority;
     return internetRecommendationScore(b, form) - internetRecommendationScore(a, form);
   });
 }
@@ -2699,6 +2787,12 @@ function buildSheetPayload({ form, language, source, lead, selectedOffer, recomm
     current_internet_speed_mbps: form.current_speed || "",
     internet_required_speed_mbps:
       serviceType === "internet" || serviceType === "both" ? getRequiredInternetSpeedMbps(form) : "",
+    internet_preferred_speed_mbps:
+      serviceType === "internet" || serviceType === "both" ? getPreferredInternetSpeedMbps(form) : "",
+    internet_usage_speed_band:
+      serviceType === "internet" || serviceType === "both" ? getInternetUsageSpeedBand(form) : "",
+    internet_preferred_speed_band:
+      serviceType === "internet" || serviceType === "both" ? getInternetUsageSpeedBand(form) : "",
     current_mobile_data_gb: form.current_mobile_data || "",
     mobile_required_data_gb:
       serviceType === "mobile" || (serviceType === "both" && form.bundle_includes_mobile) ? getRequiredMobileDataGB(form) : "",
@@ -2717,6 +2811,8 @@ function buildSheetPayload({ form, language, source, lead, selectedOffer, recomm
     selected_offer_requires_manual_review: Boolean(selected.requiresManualReview),
     selected_offer_price_hidden: Boolean(selected.displayPriceRequiresConfirmation),
     selected_offer_tags: selected.tags || "",
+    selected_offer_speed_band: selected.speedBand || "",
+    selected_offer_speed_mbps: selected.speedMbps || "",
     all_recommendation_ids: sortedRecommendations.map((offer) => offer.offer_id).filter(Boolean).join(", "),
     all_recommendation_names: sortedRecommendations.map((offer) => payloadOfferName(offer, language)).filter(Boolean).join(" | "),
     all_recommendation_providers: sortedRecommendations.map((offer) => offer.provider).filter(Boolean).join(" | "),
@@ -2889,6 +2985,8 @@ export default function Home() {
       rank: "",
       requiresManualReview: true,
       displayPriceRequiresConfirmation: true,
+      speedBand: "",
+      speedMbps: "",
       tags: "",
       clickSource: "general_cta"
     });
@@ -2921,6 +3019,9 @@ export default function Home() {
       displayPriceRequiresConfirmation: Boolean(
         offer.display_price_requires_confirmation || isManualPrice(offer)
       ),
+      speedBand: getPlanSpeedBand(offer),
+      speedMbps: internetOfferSpeedMbps(offer) || "",
+      downloadMbps: Number(offer.downloadMbps) || internetOfferSpeedMbps(offer) || "",
       tags,
       clickSource: "offer_card_cta"
     });
@@ -3164,7 +3265,7 @@ export default function Home() {
                         </span>
                         <span className="usage-card-speed">
                           <small>{language === "en" ? "Recommended" : language === "zhHant" ? "建議頻寬" : "推荐带宽"}</small>
-                          <strong>{internetUsageSpeeds[item.value]}</strong>
+                          <strong>{internetUsageSpeeds[language][item.value]}</strong>
                         </span>
                         {form.internet_usage_level === item.value && <span className="usage-card-check" aria-hidden="true">✓</span>}
                       </button>
