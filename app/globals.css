@@ -2671,6 +2671,14 @@ textarea:focus {
   transform: translateY(-1px);
 }
 
+.bill-type-icon-wrap-internet {
+  margin-top: 1px;
+}
+
+.bill-type-icon-wrap-internet svg {
+  transform: translateY(-2px);
+}
+
 .bill-type-icon-wrap-bundle {
   color: #8af2ca;
 }

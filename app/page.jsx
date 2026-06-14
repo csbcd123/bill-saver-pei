@@ -807,7 +807,10 @@ function LineIcon({ name, size = 32, strokeWidth = 2.4 }) {
 
 function ServiceTypeIcon({ type }) {
   return (
-    <span className={`bill-type-icon-wrap${type === "both" ? " bill-type-icon-wrap-bundle" : ""}`} aria-hidden="true">
+    <span
+      className={`bill-type-icon-wrap${type === "internet" ? " bill-type-icon-wrap-internet" : ""}${type === "both" ? " bill-type-icon-wrap-bundle" : ""}`}
+      aria-hidden="true"
+    >
       {type === "internet" && <LineIcon name="wifi" size={30} strokeWidth={2.7} />}
       {type === "mobile" && <LineIcon name="smartphone" size={28} strokeWidth={2.6} />}
       {type === "both" && <LineIcon name="bundle" size={31} strokeWidth={2.35} />}
