@@ -2672,19 +2672,19 @@ textarea:focus {
 }
 
 .bill-type-icon-wrap-internet {
-  margin-top: 1px;
+  margin-top: 2px;
 }
 
 .bill-type-icon-wrap-internet svg {
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
 .bill-type-icon-wrap-bundle {
-  color: #8af2ca;
+  color: #fff;
 }
 
 .bill-type-icon-wrap-bundle svg {
-  color: #8af2ca;
+  color: #fff;
 }
 
 .bill-type-card.active .bill-type-icon-wrap-bundle {

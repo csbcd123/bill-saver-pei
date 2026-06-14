@@ -780,7 +780,14 @@ function LineIcon({ name, size = 32, strokeWidth = 2.4 }) {
   };
 
   if (name === "wifi") {
-    return <svg {...common}><path d="M5 12.55a11 11 0 0 1 14 0" /><path d="M8.5 16a6 6 0 0 1 7 0" /><path d="M12 20h.01" /></svg>;
+    return (
+      <svg {...common}>
+        <path d="M2.8 8.8a14 14 0 0 1 18.4 0" />
+        <path d="M6.1 12.4a9 9 0 0 1 11.8 0" />
+        <path d="M9.3 16a4.2 4.2 0 0 1 5.4 0" />
+        <circle cx="12" cy="19.4" r="1" fill="currentColor" stroke="none" />
+      </svg>
+    );
   }
   if (name === "smartphone") {
     return <svg {...common}><rect x="6.5" y="2" width="11" height="20" rx="2" /><path d="M10 5h4" /><path d="M11.5 18.5h1" /></svg>;
@@ -811,7 +818,7 @@ function ServiceTypeIcon({ type }) {
       className={`bill-type-icon-wrap${type === "internet" ? " bill-type-icon-wrap-internet" : ""}${type === "both" ? " bill-type-icon-wrap-bundle" : ""}`}
       aria-hidden="true"
     >
-      {type === "internet" && <LineIcon name="wifi" size={30} strokeWidth={2.7} />}
+      {type === "internet" && <LineIcon name="wifi" size={34} strokeWidth={2.5} />}
       {type === "mobile" && <LineIcon name="smartphone" size={28} strokeWidth={2.6} />}
       {type === "both" && <LineIcon name="bundle" size={31} strokeWidth={2.35} />}
     </span>
