@@ -1644,7 +1644,7 @@ textarea:focus {
 .lead-offer-card {
   min-height: 58px;
   display: grid;
-  grid-template-columns: 24px minmax(0, 1fr) auto;
+  grid-template-columns: 24px minmax(0, 1fr);
   align-items: center;
   gap: 10px;
   border: 1px solid #d8e8e3;
@@ -3981,7 +3981,9 @@ textarea:focus {
 .recommendation-section .plan-card {
   border-color: rgba(68, 187, 157, 0.2);
   background: linear-gradient(135deg, #fbfefd, #f3faf7);
-  padding: 15px;
+  border-radius: 18px;
+  padding: 18px;
+  line-height: 1.45;
   box-shadow: 0 12px 28px rgba(10, 65, 62, 0.08);
 }
 
@@ -4009,22 +4011,7 @@ textarea:focus {
   grid-area: provider;
   display: flex;
   align-items: flex-start;
-  gap: 10px;
   min-width: 0;
-}
-
-.provider-mark {
-  width: 40px;
-  height: 40px;
-  flex: 0 0 40px;
-  display: grid;
-  place-items: center;
-  border: 1px solid rgba(15, 123, 104, 0.2);
-  border-radius: 9px;
-  background: #eaf7f2;
-  color: #08715f;
-  font-size: 0.78rem;
-  font-weight: 950;
 }
 
 .plan-provider > div {
@@ -4035,8 +4022,9 @@ textarea:focus {
   display: block;
   overflow-wrap: anywhere;
   color: var(--ink);
-  font-size: 0.98rem;
+  font-size: 1.05rem;
   line-height: 1.25;
+  font-weight: 900;
 }
 
 .recommendation-tag {
@@ -4097,7 +4085,7 @@ textarea:focus {
 
 .plan-field strong {
   color: #29464b;
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   line-height: 1.45;
 }
 
@@ -4110,7 +4098,7 @@ textarea:focus {
 
 .plan-price-area > strong {
   color: #08715f;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   line-height: 1.2;
   font-weight: 950;
 }
@@ -4129,7 +4117,7 @@ textarea:focus {
   margin: 2px 0 0;
   overflow: hidden;
   color: #718286;
-  font-size: 0.7rem;
+  font-size: 0.78rem;
   line-height: 1.4;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
@@ -4144,13 +4132,17 @@ textarea:focus {
 
 .plan-conversion strong {
   color: #08715f;
-  font-size: 0.88rem;
+  font-size: 0.94rem;
   line-height: 1.4;
   font-weight: 900;
 }
 
-.plan-conversion button {
+.plan-conversion button,
+.plan-conversion a {
   min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: 0;
   border-radius: 9px;
   background: linear-gradient(135deg, #0f9275, #08715f);
@@ -4159,6 +4151,15 @@ textarea:focus {
   font-size: 0.78rem;
   font-weight: 850;
   cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+}
+
+.eastlink-cta-note {
+  color: #6c7c80;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  font-weight: 750;
 }
 
 .recommendation-section .plan-card > p,
@@ -4314,7 +4315,8 @@ textarea:focus {
     border-bottom: 1px solid rgba(15, 123, 104, 0.12);
   }
 
-  .plan-conversion button {
+  .plan-conversion button,
+  .plan-conversion a {
     width: 100%;
   }
 }
@@ -4358,7 +4360,8 @@ textarea:focus {
     font-size: 0.78rem;
   }
 
-  .plan-conversion button {
+  .plan-conversion button,
+  .plan-conversion a {
     min-height: 44px;
     padding: 9px 8px;
   }

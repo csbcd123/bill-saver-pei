@@ -681,22 +681,7 @@ const internetUsageSpeeds = {
 const providerOptionsByService = {
   internet: ["Bell Aliant", "TELUS", "Koodo", "Eastlink", "Purple Cow", "Xplore", "Starlink", "Other", "Not sure"],
   mobile: ["Bell Aliant", "TELUS", "Koodo", "Public Mobile", "Eastlink", "Rogers", "Fido", "Virgin Plus", "Other", "Not sure"],
-  both: [
-    "Bell Aliant",
-    "TELUS",
-    "Koodo",
-    "Eastlink",
-    "Public Mobile",
-    "Rogers",
-    "Fido",
-    "Virgin Plus",
-    "Purple Cow",
-    "Xplore",
-    "Starlink",
-    "Multiple providers",
-    "Other",
-    "Not sure"
-  ]
+  both: ["bell_aliant", "eastlink", "koodo_telus", "purple_cow", "other_not_sure"]
 };
 const usageLevels = [
   { value: "light", currentSpeed: "100M" },
@@ -739,7 +724,14 @@ const initialLead = {
   email: "",
   phone: "",
   preferred_contact: "email",
-  wechat: ""
+  wechat: "",
+  postal_code: "",
+  is_byod: "",
+  keep_phone_number: "",
+  contract_status: "",
+  contract_end_date: "",
+  best_contact_time: "",
+  notes: ""
 };
 
 function Field({ label, children, className = "", icon = "", unit = "" }) {
@@ -855,6 +847,11 @@ function MobileUsageCard({ item, content, active, onClick, bundle = false }) {
 }
 
 function optionLabel(t, value) {
+  if (value === "bell_aliant") return "Bell Aliant";
+  if (value === "eastlink") return "Eastlink";
+  if (value === "koodo_telus") return "Koodo / TELUS";
+  if (value === "purple_cow") return "Purple Cow";
+  if (value === "other_not_sure") return `${t.options.other || "Other"} / ${t.options.not_sure || "Not sure"}`;
   if (value === "Other") return t.options.other || "Other";
   if (value === "Not sure" || value === "not_sure") return t.options.not_sure;
   return t.options[value] || value;
@@ -1015,6 +1012,7 @@ function isRecommendableOffer(offer) {
 
 function normalizeProviderName(value = "") {
   const normalized = String(value).toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  if (normalized === "koodo telus") return "koodo_telus";
   if (normalized.includes("bell aliant") || normalized === "bell") return "bell_aliant";
   if (normalized.includes("public mobile")) return "public_mobile";
   if (normalized.includes("purple cow")) return "purple_cow";
@@ -1028,7 +1026,10 @@ function normalizeProviderName(value = "") {
 
 function isSameProvider(a, b) {
   const normalizedA = normalizeProviderName(a);
-  return Boolean(normalizedA) && normalizedA === normalizeProviderName(b);
+  const normalizedB = normalizeProviderName(b);
+  if (normalizedA === "koodo_telus") return normalizedB === "koodo" || normalizedB === "telus";
+  if (normalizedB === "koodo_telus") return normalizedA === "koodo" || normalizedA === "telus";
+  return Boolean(normalizedA) && normalizedA === normalizedB;
 }
 
 function filterOutCurrentProvider(offers, currentProvider) {
@@ -1391,8 +1392,28 @@ function savingsText(offer, form, t, language) {
   if (targetPrice === null) return t.bellSavings;
   const saving = Math.max(0, Math.round(monthlyPrice(form) - targetPrice));
   const annualSaving = saving * 12;
+  if (saving <= 0) {
+    return offer.betterServiceLevel
+      ? textByLanguage(language, "价格接近，但规格更好", "價格接近，但規格更好", "Similar price, better service")
+      : textByLanguage(language, "适合作为备选方案", "適合作為備選方案", "Suitable as a backup option");
+  }
   if (language === "en") return `About $${saving}/mo, about $${annualSaving}/yr`;
   return language === "zhHant" ? `約 $${saving}/月，約 $${annualSaving}/年` : `约 $${saving}/月，约 $${annualSaving}/年`;
+}
+
+function requiresServiceAddress(form) {
+  return ["internet", "both", "bundle", "internet_mobile"].includes(form.service_type);
+}
+
+function shouldShowInManualReviewList(offer) {
+  return !isEastlinkPlan(offer) && offer.ctaType !== "external_website";
+}
+
+function eastlinkCtaText(language) {
+  return {
+    note: textByLanguage(language, "无特别优惠 · 需官网预定", "無特別優惠 · 需官網預訂", "No special offer · Book on official website"),
+    button: textByLanguage(language, "查看 Eastlink 官网", "查看 Eastlink 官網", "Visit Eastlink website")
+  };
 }
 
 function relevantTargets(offers, form) {
@@ -2171,16 +2192,6 @@ function providerCtaLabel(offer, language) {
   return textByLanguage(language, "人工确认优惠", "人工確認優惠", "Confirm available offer");
 }
 
-function providerMark(provider) {
-  return displayProviderName(provider)
-    .split(/\s|\+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0])
-    .join("")
-    .toUpperCase();
-}
-
 function resultTrustContent(language) {
   return {
     action: textByLanguage(language, "获得最佳价格 →", "取得最佳價格 →", "Get the Best Price →"),
@@ -2815,7 +2826,7 @@ function buildSheetPayload({ form, language, source, lead, selectedOffer, recomm
     // Temporarily using wechat field to store optional installation address until Google Sheet schema is updated.
     wechat: lead.wechat || "",
     city: form.city || "",
-    postal_code: "",
+    postal_code: lead.postal_code || "",
     service_type: serviceType,
     current_provider: form.current_provider || "",
     monthly_price: form.monthly_price || "",
@@ -2848,10 +2859,14 @@ function buildSheetPayload({ form, language, source, lead, selectedOffer, recomm
       bundle_other_or_not_sure: form.bundle_other_or_not_sure,
       mobile_line_count: form.bundle_includes_mobile ? form.mobile_line_count : "0",
       has_tv_service: form.bundle_includes_tv ? "yes" : "no",
-      has_home_phone: form.bundle_includes_home_phone ? "yes" : "no"
+      has_home_phone: form.bundle_includes_home_phone ? "yes" : "no",
+      is_byod: lead.is_byod || "",
+      keep_phone_number: lead.keep_phone_number || "",
+      contract_status: lead.contract_status || "",
+      contract_end_date: lead.contract_end_date || ""
     }),
     willing_to_switch: "",
-    notes: "",
+    notes: lead.notes || "",
 
     // Expanded lead and recommendation tracking fields.
     submitted_at: new Date().toISOString(),
@@ -2862,12 +2877,12 @@ function buildSheetPayload({ form, language, source, lead, selectedOffer, recomm
     customer_phone: lead.phone || "",
     customer_email: lead.email || "",
     preferred_contact_method: lead.preferred_contact || "",
-    best_contact_time: "",
-    customer_note: "",
+    best_contact_time: lead.best_contact_time || "",
+    customer_note: lead.notes || "",
     current_monthly_bill: form.monthly_price || "",
     region: "PEI",
     city_or_area: form.city || "",
-    postal_code_or_address: lead.wechat || form.postal_code || "",
+    postal_code_or_address: [lead.wechat, lead.postal_code || form.postal_code].filter(Boolean).join(", "),
     internet_usage: form.internet_usage_level || "",
     current_internet_speed_mbps: form.current_speed || "",
     internet_required_speed_mbps:
@@ -3051,7 +3066,7 @@ export default function Home() {
   }
 
   function openLeadFromResult() {
-    setLeadOfferIds(recommendations.map((offer) => offer.offer_id).filter(Boolean));
+    setLeadOfferIds(recommendations.filter(shouldShowInManualReviewList).map((offer) => offer.offer_id).filter(Boolean));
     setSelectedOffer({
       offerId: "",
       provider: "",
@@ -3077,6 +3092,10 @@ export default function Home() {
   }
 
   function openLeadForOffer(offer) {
+    if (isEastlinkPlan(offer)) {
+      window.open("https://www.eastlink.ca/", "_blank", "noopener,noreferrer");
+      return;
+    }
     const monthlyCost = calculationMonthlyPrice(offer);
     const monthlySavings =
       monthlyCost === null ? "" : Math.max(0, Math.round(monthlyPrice(form) - monthlyCost));
@@ -3189,6 +3208,17 @@ export default function Home() {
   async function submitLead(event) {
     event.preventDefault();
     if (submitting) return;
+    if (requiresServiceAddress(form) && (!lead.wechat.trim() || !lead.postal_code.trim())) {
+      setSheetError(
+        textByLanguage(
+          language,
+          "请填写安装地址和邮政编码。",
+          "請填寫安裝地址和郵遞區號。",
+          "Please enter the installation address and postal code."
+        )
+      );
+      return;
+    }
     setSubmitting(true);
     setSheetError("");
     try {
@@ -3375,7 +3405,15 @@ export default function Home() {
                 <h3 className="form-side-title">
                   {form.service_type === "internet" ? t.billInfoInternet : t.billInfoBoth}
                 </h3>
-                <Field icon={<LineIcon name="building" size={22} strokeWidth={2.2} />} label={form.service_type === "internet" ? t.providerInternet : t.providerBoth} className={missingFields.includes("current_provider") ? "missing" : ""}>
+                <Field
+                  icon={<LineIcon name="building" size={22} strokeWidth={2.2} />}
+                  label={
+                    form.service_type === "internet"
+                      ? t.providerInternet
+                      : textByLanguage(language, "当前运营商", "目前服務商", "Current provider")
+                  }
+                  className={missingFields.includes("current_provider") ? "missing" : ""}
+                >
                   <Select value={form.current_provider} onChange={(value) => update("current_provider", value)}>
                     <option value="" disabled>
                       {t.providerPlaceholder}
@@ -3612,7 +3650,6 @@ export default function Home() {
                       <article className="plan-card" key={offer.offer_id}>
                         <div className="plan-card-overview">
                           <div className="plan-provider">
-                            <span className="provider-mark" aria-hidden="true">{providerMark(offer.provider)}</span>
                             <div>
                               <strong>{displayProviderName(offer.provider)}</strong>
                               <span className={`recommendation-tag ${recommendationTagTone(offer, recommendationIndex)}`}>
@@ -3646,7 +3683,16 @@ export default function Home() {
                           <div className="plan-conversion">
                             <span>{t.savings}</span>
                             <strong>{savingsText(offer, form, t, language)}</strong>
-                            <button type="button" onClick={() => openLeadForOffer(offer)}>{providerCtaLabel(offer, language)}</button>
+                            {isEastlinkPlan(offer) ? (
+                              <>
+                                <small className="eastlink-cta-note">{eastlinkCtaText(language).note}</small>
+                                <a href="https://www.eastlink.ca/" target="_blank" rel="noreferrer">
+                                  {eastlinkCtaText(language).button}
+                                </a>
+                              </>
+                            ) : (
+                              <button type="button" onClick={() => openLeadForOffer(offer)}>{providerCtaLabel(offer, language)}</button>
+                            )}
                           </div>
                         </div>
                         <p>
@@ -3843,7 +3889,7 @@ export default function Home() {
                   </p>
                 </div>
                 <div className="lead-offer-list">
-                  {recommendations.map((offer) => {
+                  {recommendations.filter(shouldShowInManualReviewList).map((offer) => {
                     const checked = leadOfferIds.includes(offer.offer_id);
                     return (
                       <button
@@ -3857,9 +3903,6 @@ export default function Home() {
                         <span className="lead-offer-copy">
                           <strong>{displayProviderName(offer.provider)} · {displayPlanName(offer, t)}</strong>
                           <span>{displayPrice(offer, t, language)} · {savingsText(offer, form, t, language)}</span>
-                        </span>
-                        <span className={`recommendation-tag ${recommendationTagTone(offer, offer.rank - 1)}`}>
-                          {recommendationTag(offer, offer.rank - 1, language)}
                         </span>
                       </button>
                     );
@@ -3898,12 +3941,79 @@ export default function Home() {
                         ))}
                       </Select>
                     </Field>
-                    <Field label={t.installationAddress}>
-                      <input
-                        value={lead.wechat}
-                        onChange={(event) => updateLead("wechat", event.target.value)}
-                        placeholder={t.installationAddressPlaceholder}
-                      />
+                    <Field label={textByLanguage(language, "当前运营商", "目前服務商", "Current provider")}>
+                      <input value={optionLabel(t, form.current_provider)} readOnly />
+                    </Field>
+                    <Field label={textByLanguage(language, "最佳联系时间", "最佳聯絡時間", "Best contact time")}>
+                      <Select value={lead.best_contact_time} onChange={(value) => updateLead("best_contact_time", value)}>
+                        <option value="">{textByLanguage(language, "请选择", "請選擇", "Please select")}</option>
+                        <option value="morning">{textByLanguage(language, "上午", "上午", "Morning")}</option>
+                        <option value="afternoon">{textByLanguage(language, "下午", "下午", "Afternoon")}</option>
+                        <option value="evening">{textByLanguage(language, "晚上", "晚上", "Evening")}</option>
+                      </Select>
+                    </Field>
+                    {requiresServiceAddress(form) && (
+                      <>
+                        <Field label={textByLanguage(language, "安装街道地址", "安裝街道地址", "Installation street address")}>
+                          <input
+                            value={lead.wechat}
+                            onChange={(event) => updateLead("wechat", event.target.value)}
+                            placeholder={textByLanguage(language, "请输入街道地址", "請輸入街道地址", "Enter street address")}
+                            required
+                          />
+                        </Field>
+                        <Field label={textByLanguage(language, "安装地址邮政编码", "安裝地址郵遞區號", "Installation postal code")}>
+                          <input
+                            value={lead.postal_code}
+                            onChange={(event) => updateLead("postal_code", event.target.value)}
+                            placeholder="C1A 1A1"
+                            required
+                          />
+                        </Field>
+                        <Field label={textByLanguage(language, "安装城市 / 区域", "安裝城市 / 區域", "Installation city / area")}>
+                          <input value={form.city} readOnly />
+                        </Field>
+                        <Field label={textByLanguage(language, "省份", "省份", "Province")}>
+                          <input value="Prince Edward Island" readOnly />
+                        </Field>
+                      </>
+                    )}
+                    {form.service_type === "mobile" && (
+                      <>
+                        <Field label={textByLanguage(language, "城市 / 区域", "城市 / 區域", "City / area")}>
+                          <input value={form.city} readOnly />
+                        </Field>
+                        <Field label={textByLanguage(language, "是否自带手机（BYOD）", "是否自帶手機（BYOD）", "Bring your own device (BYOD)")}>
+                          <Select value={lead.is_byod} onChange={(value) => updateLead("is_byod", value)}>
+                            <option value="">{textByLanguage(language, "请选择", "請選擇", "Please select")}</option>
+                            <option value="yes">{textByLanguage(language, "是", "是", "Yes")}</option>
+                            <option value="no">{textByLanguage(language, "否", "否", "No")}</option>
+                          </Select>
+                        </Field>
+                        <Field label={textByLanguage(language, "是否保留现有号码", "是否保留現有號碼", "Keep your current phone number")}>
+                          <Select value={lead.keep_phone_number} onChange={(value) => updateLead("keep_phone_number", value)}>
+                            <option value="">{textByLanguage(language, "请选择", "請選擇", "Please select")}</option>
+                            <option value="yes">{textByLanguage(language, "是", "是", "Yes")}</option>
+                            <option value="no">{textByLanguage(language, "否", "否", "No")}</option>
+                          </Select>
+                        </Field>
+                        <Field label={textByLanguage(language, "当前合约状态", "目前合約狀態", "Current contract status")}>
+                          <Select value={lead.contract_status} onChange={(value) => updateLead("contract_status", value)}>
+                            <option value="">{textByLanguage(language, "请选择", "請選擇", "Please select")}</option>
+                            <option value="no_contract">{textByLanguage(language, "无合约", "無合約", "No contract")}</option>
+                            <option value="contract">{textByLanguage(language, "合约中", "合約中", "In contract")}</option>
+                            <option value="not_sure">{textByLanguage(language, "不确定", "不確定", "Not sure")}</option>
+                          </Select>
+                        </Field>
+                        {lead.contract_status === "contract" && (
+                          <Field label={textByLanguage(language, "合约到期日（选填）", "合約到期日（選填）", "Contract end date (optional)")}>
+                            <input type="date" value={lead.contract_end_date} onChange={(event) => updateLead("contract_end_date", event.target.value)} />
+                          </Field>
+                        )}
+                      </>
+                    )}
+                    <Field label={textByLanguage(language, "备注（选填）", "備註（選填）", "Notes (optional)")}>
+                      <textarea value={lead.notes} onChange={(event) => updateLead("notes", event.target.value)} />
                     </Field>
                   </div>
 
