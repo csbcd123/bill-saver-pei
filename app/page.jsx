@@ -1,15 +1,16 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { offerDatabase } from "@/lib/offerDatabase";
 
 const GOOGLE_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbyIzob_u06H4LUyIE783HC9O9K_XmCckwyKz3u8y2h05MHX__C4XZ-9DskK__XBcBltxw/exec";
 
 const languages = [
-  { code: "zhHans", label: "简" },
-  { code: "zhHant", label: "繁" },
-  { code: "en", label: "EN" }
+  { code: "en", label: "English" },
+  { code: "zh", label: "简体中文" },
+  { code: "fr", label: "Français" },
+  { code: "zh-TW", label: "繁體中文" }
 ];
 
 const translations = {
@@ -52,7 +53,7 @@ const translations = {
     validationMobileLines: "请选择你家有几条手机线路。",
     validationMobileLineMinimum: "如果组合账单包含手机，请选择至少 1 条手机线路。",
     validationMobileData: "请选择您的手机流量使用情况。",
-    bundleServicesTitle: "你的组合账单包含哪些服务？",
+    bundleServicesTitle: "你的组合账单包含什么？",
     bundleInternet: "宽带",
     bundleMobile: "手机",
     bundleTv: "TV 服务",
@@ -130,15 +131,15 @@ const translations = {
     usageCards: {
       light: {
         title: "轻度使用",
-        description: "浏览网页、社交媒体、收发邮件\n1–3 台设备"
+        description: "适合刷网页、微信、视频通话、高清视频、1–2 人家庭日常使用"
       },
       standard: {
         title: "普通家庭",
-        description: "高清视频、在线学习、视频通话\n3–6 台设备"
+        description: "适合多人同时使用、4K 视频、视频会议、孩子上网课、多设备和普通游戏"
       },
       heavy: {
-        title: "重度家庭",
-        description: "4K 串流、游戏、智能家居、多设备\n6 台设备以上"
+        title: "高速 / 多人家庭",
+        description: "适合多人同时 4K、远程办公、大文件下载、多设备、游戏和智能家居"
       }
     },
     mobileDataUsageCards: {
@@ -210,7 +211,7 @@ const translations = {
       "Bell 可用优惠通常需要满足特定资格。最终价格、资格、自动付款、信用审核和促销条件以运营商或授权销售人员确认为准。"
     ,
     purpleCowNote:
-      "Purple Cow 适合价格敏感、希望降低宽带月费的用户。通常免安装费、免激活费，并提供首月不满意退款保证。最终可用性、速度、安装条件和退款条款以 Purple Cow 当前确认为准。",
+      "Purple Cow 适合价格敏感、希望降低宽带月费的用户。通过 Bill Saver 下单可协助申请免 $55 安装费，并提供无合约和不限流量方案。最终可用性、安装资格、优惠和价格以 Purple Cow 当前确认为准。",
     purpleCowBadges: ["免安装费", "免激活费", "首月不满意可退款"],
     koodoInternetNote:
       "Koodo Internet 适合希望降低宽带月费、接受自助安装、又想保留较好性价比的用户。通常无激活费，并支持免费自助安装；如需要人工指导或上门安装，可以根据地址和资格进一步确认。Koodo 也提供 30 天免费试用 / 不满意退款政策，具体安装方式、退款条件、资格和最终价格以 Koodo 当前条款确认为准。",
@@ -255,7 +256,7 @@ const translations = {
     validationMobileLines: "請選擇你家有幾條手機線路。",
     validationMobileLineMinimum: "如果組合帳單包含手機，請選擇至少 1 條手機線路。",
     validationMobileData: "請選擇你的手機流量使用情況。",
-    bundleServicesTitle: "你的組合帳單包含哪些服務？",
+    bundleServicesTitle: "你的組合帳單包含什麼？",
     bundleInternet: "寬頻",
     bundleMobile: "手機",
     bundleTv: "TV 服務",
@@ -333,15 +334,15 @@ const translations = {
     usageCards: {
       light: {
         title: "輕度使用",
-        description: "瀏覽網頁、社交媒體、收發電郵\n1–3 台設備"
+        description: "適合瀏覽網頁、微信、視訊通話、高清影片、1–2 人家庭日常使用"
       },
       standard: {
-        title: "一般家庭",
-        description: "高清影片、線上學習、視訊通話\n3–6 台設備"
+        title: "普通家庭",
+        description: "適合多人同時使用、4K 影片、視訊會議、孩子線上課、多設備和普通遊戲"
       },
       heavy: {
-        title: "重度家庭",
-        description: "4K 串流、遊戲、智能家居、多設備\n6 台設備以上"
+        title: "高速 / 多人家庭",
+        description: "適合多人同時 4K、遠端辦公、大型檔案下載、多設備、遊戲和智能家居"
       }
     },
     mobileDataUsageCards: {
@@ -413,7 +414,7 @@ const translations = {
       "Bell 可用優惠通常需要滿足特定資格。最終價格、資格、自動付款、信用審核和促銷條件以電信商或授權銷售人員確認為準。"
     ,
     purpleCowNote:
-      "Purple Cow 適合價格敏感、希望降低寬頻月費的用戶。通常免安裝費、免啟用費，並提供首月不滿意退款保證。最終可用性、速度、安裝條件和退款條款以 Purple Cow 目前確認為準。",
+      "Purple Cow 適合價格敏感、希望降低寬頻月費的用戶。透過 Bill Saver 下單可協助申請免 $55 安裝費，並提供無合約和不限流量方案。最終可用性、安裝資格、優惠和價格以 Purple Cow 目前確認為準。",
     purpleCowBadges: ["免安裝費", "免啟用費", "首月不滿意可退款"],
     koodoInternetNote:
       "Koodo Internet 適合希望降低寬頻月費、接受自助安裝、又想保留較好性價比的用戶。通常無啟用費，並支援免費自助安裝；如需要人工指導或上門安裝，可以根據地址和資格進一步確認。Koodo 也提供 30 天免費試用 / 不滿意退款政策，具體安裝方式、退款條件、資格和最終價格以 Koodo 目前條款確認為準。",
@@ -458,7 +459,7 @@ const translations = {
     validationMobileLines: "Please select how many mobile lines you have.",
     validationMobileLineMinimum: "If your bundle includes mobile service, please select at least 1 mobile line.",
     validationMobileData: "Please choose your mobile data usage.",
-    bundleServicesTitle: "Which services are included in your bundle?",
+    bundleServicesTitle: "What does your bundle include?",
     bundleInternet: "Internet",
     bundleMobile: "Mobile",
     bundleTv: "TV",
@@ -540,15 +541,15 @@ const translations = {
     usageCards: {
       light: {
         title: "Light use",
-        description: "Browsing, social media, and email\n1–3 devices"
+        description: "Good for browsing, messaging, video calls, HD video, and daily use for 1–2 people"
       },
       standard: {
         title: "Standard household",
-        description: "HD video, online learning, and video calls\n3–6 devices"
+        description: "Good for multiple users, 4K video, video calls, online learning, multiple devices, and casual gaming"
       },
       heavy: {
-        title: "Heavy household",
-        description: "4K streaming, gaming, smart home, and many devices\n6+ devices"
+        title: "Heavy / multi-user household",
+        description: "Good for multiple 4K streams, remote work, large downloads, many devices, gaming, and smart home devices"
       }
     },
     mobileDataUsageCards: {
@@ -627,12 +628,34 @@ const translations = {
       "Available Bell offers usually require specific eligibility. Final pricing, eligibility, pre-authorized payment, credit approval, and promotional terms must be confirmed by the provider or an authorized sales representative."
     ,
     purpleCowNote:
-      "Purple Cow may be a good fit for price-sensitive users who want to lower their internet bill. It typically has no installation fee, no activation fee, and a first-month money-back guarantee. Final availability, speed, installation conditions, and refund terms should be confirmed with Purple Cow.",
+      "Purple Cow may be a good fit for price-sensitive users who want to lower their internet bill. Ordering through Bill Saver may qualify for a $55 installation fee waiver, with no-contract and no-usage-fee options. Final availability, installation eligibility, offers, and pricing must be confirmed with Purple Cow.",
     purpleCowBadges: ["No installation fee", "No activation fee", "First-month money-back"],
     koodoInternetNote:
       "Koodo Internet may be a strong fit for users who want to lower their internet bill, are comfortable with self-installation, and still want good overall value. It typically has no activation fee and supports free self-installation. If technician guidance or in-home installation is needed, availability can be confirmed based on address and eligibility. Koodo also offers a 30-day free trial / money-back policy. Installation method, refund terms, eligibility, and final pricing should be confirmed with Koodo's current terms.",
     koodoBadges: ["No activation fee", "Free self-installation", "30-day free trial"]
   }
+};
+
+translations.zh = translations.zhHans;
+translations["zh-TW"] = translations.zhHant;
+translations.en.heroHeadline = "Free Internet & Mobile Bill Check";
+translations.fr = {
+  ...translations.en,
+  languageName: "Français",
+  heroHeadline: "Vérification gratuite de votre facture Internet et mobile",
+  serviceType: "Que souhaitez-vous vérifier?",
+  serviceCards: { mobile: "Facture mobile", internet: "Facture Internet", both: "Facture groupée" },
+  submit: "Vérifier ma facture",
+  bestPrice: "Obtenir cette offre",
+  manualPick: "Vérification manuelle",
+  installationAddress: "Adresse du service",
+  postalPrefix: "Code postal",
+  city: "Ville / région",
+  name: "Nom",
+  phone: "Téléphone",
+  email: "Courriel",
+  leadSubmit: "Soumettre",
+  preferredContact: "Méthode de contact préférée"
 };
 
 const areaOptions = [
@@ -645,26 +668,43 @@ const areaOptions = [
 ];
 
 const serviceOrder = ["internet", "mobile", "both"];
-const internetUsageSpeeds = { light: "25–100 Mbps", standard: "100–300 Mbps", heavy: "300+ Mbps" };
+const BUNDLE_TYPE_OPTIONS = [
+  {
+    value: "internet_tv",
+    includes: { internet: true, mobile: false, tv: true, homePhone: false },
+    label: { zhHans: "宽带 + TV", zhHant: "寬頻 + TV", en: "Internet + TV" }
+  },
+  {
+    value: "internet_tv_home_phone",
+    includes: { internet: true, mobile: false, tv: true, homePhone: true },
+    label: { zhHans: "宽带 + TV + 家庭电话", zhHant: "寬頻 + TV + 家居電話", en: "Internet + TV + Home Phone" }
+  },
+  {
+    value: "internet_mobile",
+    includes: { internet: true, mobile: true, tv: false, homePhone: false },
+    label: { zhHans: "宽带 + 手机", zhHant: "寬頻 + 手機", en: "Internet + Mobile" }
+  },
+  {
+    value: "internet_mobile_tv",
+    includes: { internet: true, mobile: true, tv: true, homePhone: false },
+    label: { zhHans: "宽带 + 手机 + TV", zhHant: "寬頻 + 手機 + TV", en: "Internet + Mobile + TV" }
+  },
+  {
+    value: "other_or_not_sure",
+    includes: { internet: true, mobile: false, tv: false, homePhone: false },
+    needsManualReview: true,
+    label: { zhHans: "不确定 / 其他组合", zhHant: "不確定 / 其他組合", en: "Not sure / Other bundle" }
+  }
+];
+const internetUsageSpeeds = {
+  zhHans: { light: "100M 左右", standard: "300–500M 左右", heavy: "1 Gig+ 高速" },
+  zhHant: { light: "100M 左右", standard: "300–500M 左右", heavy: "1 Gig+ 高速" },
+  en: { light: "Around 100 Mbps", standard: "Around 300–500 Mbps", heavy: "1 Gig+ speed" }
+};
 const providerOptionsByService = {
   internet: ["Bell Aliant", "TELUS", "Koodo", "Eastlink", "Purple Cow", "Xplore", "Starlink", "Other", "Not sure"],
   mobile: ["Bell Aliant", "TELUS", "Koodo", "Public Mobile", "Eastlink", "Rogers", "Fido", "Virgin Plus", "Other", "Not sure"],
-  both: [
-    "Bell Aliant",
-    "TELUS",
-    "Koodo",
-    "Eastlink",
-    "Public Mobile",
-    "Rogers",
-    "Fido",
-    "Virgin Plus",
-    "Purple Cow",
-    "Xplore",
-    "Starlink",
-    "Multiple providers",
-    "Other",
-    "Not sure"
-  ]
+  both: ["bell_aliant", "eastlink", "koodo_telus", "purple_cow", "other_not_sure"]
 };
 const usageLevels = [
   { value: "light", currentSpeed: "100M" },
@@ -687,12 +727,15 @@ const initialForm = {
   internet_usage_level: "",
   current_speed: "",
   current_mobile_data: "",
+  bundle_type: "internet_tv",
   bundle_includes_internet: true,
   bundle_includes_mobile: false,
-  bundle_includes_tv: false,
+  bundle_includes_tv: true,
   bundle_includes_home_phone: false,
+  bundle_needs_manual_review: false,
+  bundle_other_or_not_sure: false,
   mobile_line_count: "0",
-  has_tv_service: "no",
+  has_tv_service: "yes",
   has_home_phone: "no",
   postal_code: "",
   willing_to_switch: "",
@@ -704,7 +747,17 @@ const initialLead = {
   email: "",
   phone: "",
   preferred_contact: "email",
-  wechat: ""
+  wechat: "",
+  postal_code: "",
+  is_byod: "",
+  keep_phone_number: "",
+  current_contract_status: "not_sure",
+  contract_end_date: "",
+  wants_contract_reminder: false,
+  reminder_days_before: "60",
+  consent_to_contact: false,
+  best_contact_time: "",
+  notes: ""
 };
 
 function Field({ label, children, className = "", icon = "", unit = "" }) {
@@ -745,10 +798,28 @@ function LineIcon({ name, size = 32, strokeWidth = 2.4 }) {
   };
 
   if (name === "wifi") {
-    return <svg {...common}><path d="M5 12.55a11 11 0 0 1 14 0" /><path d="M8.5 16a6 6 0 0 1 7 0" /><path d="M12 20h.01" /></svg>;
+    return (
+      <svg {...common}>
+        <path d="M2.8 8.8a14 14 0 0 1 18.4 0" />
+        <path d="M6.1 12.4a9 9 0 0 1 11.8 0" />
+        <path d="M9.3 16a4.2 4.2 0 0 1 5.4 0" />
+        <circle cx="12" cy="19.4" r="1" fill="currentColor" stroke="none" />
+      </svg>
+    );
   }
   if (name === "smartphone") {
     return <svg {...common}><rect x="6.5" y="2" width="11" height="20" rx="2" /><path d="M10 5h4" /><path d="M11.5 18.5h1" /></svg>;
+  }
+  if (name === "bundle") {
+    return (
+      <svg {...common}>
+        <rect x="3" y="3" width="7" height="7" rx="1.5" />
+        <rect x="14" y="3" width="7" height="7" rx="1.5" />
+        <rect x="3" y="14" width="7" height="7" rx="1.5" />
+        <path d="M17.5 14v7" />
+        <path d="M14 17.5h7" />
+      </svg>
+    );
   }
   if (name === "building") {
     return <svg {...common}><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18" /><path d="M2 22h20" /><path d="M9 6h1" /><path d="M14 6h1" /><path d="M9 10h1" /><path d="M14 10h1" /><path d="M9 14h1" /><path d="M14 14h1" /><path d="M10 22v-4h4v4" /></svg>;
@@ -760,22 +831,14 @@ function LineIcon({ name, size = 32, strokeWidth = 2.4 }) {
 }
 
 function ServiceTypeIcon({ type }) {
-  if (type === "both") {
-    return (
-      <span className="bill-type-icon-wrap bill-type-icon-wrap-combo" aria-hidden="true">
-        <span className="bill-type-combo-icon">
-          <LineIcon name="wifi" size={30} strokeWidth={2.7} />
-          <span>+</span>
-          <LineIcon name="smartphone" size={28} strokeWidth={2.6} />
-        </span>
-      </span>
-    );
-  }
-
   return (
-    <span className="bill-type-icon-wrap" aria-hidden="true">
-      {type === "internet" && <LineIcon name="wifi" size={30} strokeWidth={2.7} />}
+    <span
+      className={`bill-type-icon-wrap${type === "internet" ? " bill-type-icon-wrap-internet" : ""}${type === "both" ? " bill-type-icon-wrap-bundle" : ""}`}
+      aria-hidden="true"
+    >
+      {type === "internet" && <LineIcon name="wifi" size={34} strokeWidth={2.5} />}
       {type === "mobile" && <LineIcon name="smartphone" size={28} strokeWidth={2.6} />}
+      {type === "both" && <LineIcon name="bundle" size={31} strokeWidth={2.35} />}
     </span>
   );
 }
@@ -787,7 +850,7 @@ function serviceTypeSubtitle(language, type) {
     both: ["多项服务人工复核", "多項服務人工覆核", "Manual review for multiple services"]
   };
   const [zhHans, zhHant, en] = subtitles[type];
-  return language === "en" ? en : language === "zhHant" ? zhHant : zhHans;
+  return language === "en" || language === "fr" ? en : language === "zhHant" || language === "zh-TW" ? zhHant : zhHans;
 }
 
 function MobileUsageCard({ item, content, active, onClick, bundle = false }) {
@@ -810,6 +873,11 @@ function MobileUsageCard({ item, content, active, onClick, bundle = false }) {
 }
 
 function optionLabel(t, value) {
+  if (value === "bell_aliant") return "Bell Aliant";
+  if (value === "eastlink") return "Eastlink";
+  if (value === "koodo_telus") return "Koodo / TELUS";
+  if (value === "purple_cow") return "Purple Cow";
+  if (value === "other_not_sure") return `${t.options.other || "Other"} / ${t.options.not_sure || "Not sure"}`;
   if (value === "Other") return t.options.other || "Other";
   if (value === "Not sure" || value === "not_sure") return t.options.not_sure;
   return t.options[value] || value;
@@ -921,6 +989,87 @@ function mobileOfferSortScore(offer, form) {
   return price * 2 - estimatedSaving * 1.5 + mobileDataOverprovisionPenalty(offer.mobile_data, form.current_mobile_data);
 }
 
+function compareMobileOfferValue(offerA, offerB, form) {
+  const currentPrice = monthlyPrice(form);
+  const priceA = mobileOfferPrice(offerA);
+  const priceB = mobileOfferPrice(offerB);
+
+  if (currentPrice > 0 && priceA !== null && priceB !== null) {
+    const differenceA = Math.abs(currentPrice - priceA);
+    const differenceB = Math.abs(currentPrice - priceB);
+    const bothWithinTwelve = differenceA < 12 && differenceB < 12;
+
+    if (bothWithinTwelve) {
+      const aWithinFive = differenceA <= 5;
+      const bWithinFive = differenceB <= 5;
+      if (aWithinFive !== bWithinFive) return aWithinFive ? -1 : 1;
+
+      if (aWithinFive && bWithinFive) {
+        const dataA = mobileOfferDataGB(offerA);
+        const dataB = mobileOfferDataGB(offerB);
+        const comparableDataA = dataA === Infinity ? Number.MAX_SAFE_INTEGER : Number(dataA || 0);
+        const comparableDataB = dataB === Infinity ? Number.MAX_SAFE_INTEGER : Number(dataB || 0);
+        if (comparableDataA !== comparableDataB) return comparableDataB - comparableDataA;
+      }
+    }
+  }
+
+  return mobileOfferSortScore(offerA, form) - mobileOfferSortScore(offerB, form);
+}
+
+function getMobileProviderTier(providerName) {
+  const provider = normalizeProviderName(providerName);
+  if (provider === "bell_aliant" || provider === "telus") return 1;
+  if (provider === "koodo") return 2;
+  if (provider === "public_mobile") return 3;
+  return 4;
+}
+
+function compareMobileClosePriceMoreData(offerA, offerB) {
+  const priceA = mobileOfferPrice(offerA);
+  const priceB = mobileOfferPrice(offerB);
+  if (priceA === null || priceB === null || Math.abs(priceA - priceB) >= 12) return 0;
+
+  const dataA = mobileOfferDataGB(offerA);
+  const dataB = mobileOfferDataGB(offerB);
+  const comparableA = dataA === Infinity ? Number.MAX_SAFE_INTEGER : Number(dataA || 0);
+  const comparableB = dataB === Infinity ? Number.MAX_SAFE_INTEGER : Number(dataB || 0);
+  return comparableA !== comparableB ? comparableB - comparableA : priceA - priceB;
+}
+
+function isPublicMobileClearlyAhead(publicPlan, nonPublicPlans, form) {
+  const publicPrice = mobileOfferPrice(publicPlan);
+  const publicAnnualSavings = getAnnualSavings(form, publicPlan);
+  const bestNonPublic = nonPublicPlans
+    .map((plan) => ({ plan, price: mobileOfferPrice(plan), annualSavings: getAnnualSavings(form, plan) }))
+    .filter((item) => item.price !== null)
+    .sort((a, b) => a.price - b.price)[0];
+
+  if (!bestNonPublic || publicPrice === null) return false;
+  const annualSavingsLead =
+    publicAnnualSavings !== null &&
+    bestNonPublic.annualSavings !== null &&
+    publicAnnualSavings - bestNonPublic.annualSavings >= 180;
+  const monthlyPriceLead = bestNonPublic.price - publicPrice >= 15;
+  return annualSavingsLead || monthlyPriceLead;
+}
+
+function finalizeMobileRecommendationOrder(offers, form) {
+  const publicPlan = offers.find((offer) => normalizeProviderName(offer.provider) === "public_mobile");
+  const nonPublicPlans = offers
+    .filter((offer) => normalizeProviderName(offer.provider) !== "public_mobile")
+    .sort(
+      (a, b) =>
+        compareMobileClosePriceMoreData(a, b) ||
+        getMobileProviderTier(a.provider) - getMobileProviderTier(b.provider) ||
+        compareMobileOfferValue(a, b, form)
+    );
+
+  if (!publicPlan) return nonPublicPlans.slice(0, 3);
+  if (isPublicMobileClearlyAhead(publicPlan, nonPublicPlans, form)) return [publicPlan, ...nonPublicPlans].slice(0, 3);
+  return [...nonPublicPlans.slice(0, 2), publicPlan, ...nonPublicPlans.slice(2)].slice(0, 3);
+}
+
 function speedBucket(speed) {
   const rank = speedRank(speed);
   if (rank <= 150) return "low";
@@ -942,6 +1091,7 @@ function isRecommendableOffer(offer) {
 
 function normalizeProviderName(value = "") {
   const normalized = String(value).toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  if (normalized === "koodo telus") return "koodo_telus";
   if (normalized.includes("bell aliant") || normalized === "bell") return "bell_aliant";
   if (normalized.includes("public mobile")) return "public_mobile";
   if (normalized.includes("purple cow")) return "purple_cow";
@@ -955,7 +1105,10 @@ function normalizeProviderName(value = "") {
 
 function isSameProvider(a, b) {
   const normalizedA = normalizeProviderName(a);
-  return Boolean(normalizedA) && normalizedA === normalizeProviderName(b);
+  const normalizedB = normalizeProviderName(b);
+  if (normalizedA === "koodo_telus") return normalizedB === "koodo" || normalizedB === "telus";
+  if (normalizedB === "koodo_telus") return normalizedA === "koodo" || normalizedA === "telus";
+  return Boolean(normalizedA) && normalizedA === normalizedB;
 }
 
 function filterOutCurrentProvider(offers, currentProvider) {
@@ -1051,19 +1204,69 @@ function getAnnualSavings(form, offer) {
 }
 
 function getRequiredInternetSpeedMbps(form) {
-  if (form.internet_usage_level === "standard" || form.internet_usage_level === "heavy") return 300;
-  if (form.internet_usage_level === "light") return 100;
   const explicitSpeed = speedRank(form.currentInternetSpeedMbps || form.current_speed);
   if (explicitSpeed > 0) return explicitSpeed;
+  const usage = form.internet_usage_level || form.internetUsage || form.selectedInternetUsage;
+  if (usage === "heavy") return 900;
+  if (usage === "standard") return 300;
+  if (usage === "light") return 100;
   return 100;
+}
+
+function getPreferredInternetSpeedMbps(form) {
+  const usage = form.internet_usage_level || form.internetUsage || form.selectedInternetUsage;
+  if (usage === "heavy") return 1000;
+  if (usage === "standard") return 500;
+  if (usage === "light") return 100;
+  return getRequiredInternetSpeedMbps(form);
 }
 
 function internetOfferSpeedMbps(offer) {
   return Number(offer.speedMbps || offer.downloadMbps) || speedRank(offer.speed_down || offer.speed_label);
 }
 
+function getInternetUsageSpeedBand(form) {
+  const usage = form.internet_usage_level || form.internetUsage || form.selectedInternetUsage;
+  if (usage === "heavy") return "gig_plus";
+  if (usage === "standard") return "300_500";
+  return "100";
+}
+
+function getPlanSpeedBand(offer) {
+  if (offer.speedBand) return offer.speedBand;
+  if (offer.speed_band) return offer.speed_band;
+  const speed = internetOfferSpeedMbps(offer);
+  if (speed >= 900) return "gig_plus";
+  if (speed >= 300) return "300_500";
+  if (speed >= 100) return "100";
+  return "unknown";
+}
+
 function internetMeetsServiceLevel(offer, form) {
   return internetOfferSpeedMbps(offer) >= getRequiredInternetSpeedMbps(form);
+}
+
+function internetMatchesPreferredBand(offer, form) {
+  return getPlanSpeedBand(offer) === getInternetUsageSpeedBand(form);
+}
+
+function internetBandSortAdjustment(offer, form) {
+  if (!isInternetOrBundlePlan(offer)) return 0;
+  const userBand = getInternetUsageSpeedBand(form);
+  const planBand = getPlanSpeedBand(offer);
+  if (planBand === userBand) return -300;
+  if (userBand === "100" && planBand === "gig_plus") return 500;
+  if (userBand === "300_500" && planBand === "gig_plus") return 120;
+  if (userBand === "gig_plus" && planBand === "300_500") return 120;
+  return 0;
+}
+
+function compareInternetBandPriority(offerA, offerB, form) {
+  if (!isInternetOrBundlePlan(offerA) || !isInternetOrBundlePlan(offerB)) return 0;
+  const aMatches = internetMatchesPreferredBand(offerA, form);
+  const bMatches = internetMatchesPreferredBand(offerB, form);
+  if (aMatches !== bMatches) return aMatches ? -1 : 1;
+  return internetBandSortAdjustment(offerA, form) - internetBandSortAdjustment(offerB, form);
 }
 
 function getRequiredMobileDataGB(form) {
@@ -1117,6 +1320,7 @@ function compareKoodoPurpleCowTieBreaker(offerA, offerB, form) {
     (isKoodoInternet(offerA) && isPurpleCowInternet(offerB)) ||
     (isPurpleCowInternet(offerA) && isKoodoInternet(offerB));
   if (!isPair || !internetMeetsServiceLevel(offerA, form) || !internetMeetsServiceLevel(offerB, form)) return 0;
+  if (!internetMatchesPreferredBand(offerA, form) || !internetMatchesPreferredBand(offerB, form)) return 0;
   if (!pricesAreVeryClose(offerA, offerB)) return 0;
   return isKoodoInternet(offerA) ? -1 : 1;
 }
@@ -1189,7 +1393,8 @@ function classifyRecommendation(offer, form) {
     /Starlink|Xplore/i.test(offer.provider || "");
 
   let recommendationType = "low_priority";
-  if (!meetsServiceLevel) recommendationType = "low_priority";
+  if (!meetsServiceLevel && includesInternet && internetOfferSpeedMbps(offer) >= 100) recommendationType = "backup_option";
+  else if (!meetsServiceLevel) recommendationType = "low_priority";
   else if (manualReview) recommendationType = "manual_review";
   else if (backupOption) recommendationType = "backup_option";
   else if (annualSavings !== null && annualSavings >= 300) recommendationType = "strong_savings";
@@ -1210,6 +1415,7 @@ function sortRecommendations(recommendations, form) {
       let sortScore = typeRank[classification.recommendationType] * 10000;
       if (classification.annualSavings !== null) sortScore -= classification.annualSavings;
       if (classification.betterServiceLevel) sortScore -= 80;
+      sortScore += internetBandSortAdjustment(offer, form);
       sortScore += originalIndex;
       if (isKoodoOrTelusInternet(offer) && classification.annualSavings !== null && classification.annualSavings < 100) {
         sortScore += 80;
@@ -1234,6 +1440,8 @@ function sortRecommendations(recommendations, form) {
     .sort(
       (a, b) =>
         compareBellTvBundlePriority(a, b, form) ||
+        (a.notPrimaryRecommendation !== b.notPrimaryRecommendation ? (a.notPrimaryRecommendation ? 1 : -1) : 0) ||
+        compareInternetBandPriority(a, b, form) ||
         compareKoodoPurpleCowTieBreaker(a, b, form) ||
         compareEastlinkTieBreaker(a, b, form) ||
         a.sortScore - b.sortScore
@@ -1255,7 +1463,7 @@ function isKoodoOrTelusInternet(offer) {
 
 function money(value, language) {
   if (typeof value !== "number") return value;
-  return language === "en" ? `$${value}/mo` : `$${value}/月`;
+  return language === "en" || language === "fr" ? `$${value}/mo` : `$${value}/月`;
 }
 
 function savingsText(offer, form, t, language) {
@@ -1263,8 +1471,59 @@ function savingsText(offer, form, t, language) {
   if (targetPrice === null) return t.bellSavings;
   const saving = Math.max(0, Math.round(monthlyPrice(form) - targetPrice));
   const annualSaving = saving * 12;
-  if (language === "en") return `About $${saving}/mo, about $${annualSaving}/yr`;
-  return language === "zhHant" ? `約 $${saving}/月，約 $${annualSaving}/年` : `约 $${saving}/月，约 $${annualSaving}/年`;
+  if (saving <= 0) {
+    return textByLanguage(language, "价格接近", "價格接近", "Similar price");
+  }
+  if (offer.service_type === "mobile") {
+    if (language === "en" || language === "fr") return `Save about $${annualSaving}/yr`;
+    return language === "zhHant" || language === "zh-TW" ? `預計每年節省約 $${annualSaving}` : `预计每年节省约 $${annualSaving}`;
+  }
+  if (language === "en" || language === "fr") return `About $${saving}/mo, about $${annualSaving}/yr`;
+  return language === "zhHant" || language === "zh-TW" ? `約 $${saving}/月，約 $${annualSaving}/年` : `约 $${saving}/月，约 $${annualSaving}/年`;
+}
+
+function confirmationSavingsText(offer, form, t, language) {
+  const targetPrice = calculationMonthlyPrice(offer);
+  if (targetPrice === null || isManualPrice(offer)) {
+    return textByLanguage(language, "优惠需确认", "優惠需確認", "Offer requires confirmation");
+  }
+  const annualSaving = Math.max(0, Math.round((monthlyPrice(form) - targetPrice) * 12));
+  if (annualSaving <= 0) {
+    return offer.service_type === "mobile" || Boolean(offer.mobile_data)
+      ? textByLanguage(language, "价格接近，但流量更多", "價格接近，但流量更多", "Similar price, more data")
+      : textByLanguage(language, "价格接近，适合作为备选", "價格接近，適合作為備選", "Similar price, suitable as a backup");
+  }
+  return textByLanguage(
+    language,
+    `预计每年节省约 $${annualSaving}`,
+    `預計每年節省約 $${annualSaving}`,
+    `Estimated annual savings: about $${annualSaving}`
+  );
+}
+
+function confirmationShortNote(offer, language) {
+  if (offer.purple_cow_tv_bundle) {
+    return textByLanguage(language, "频道和可用性需确认", "頻道和可用性需確認", "Channels and availability require confirmation");
+  }
+  if (offer.koodo_tv_separate) {
+    return textByLanguage(language, "不含 TV，TV 需另行选择", "不含 TV，TV 需另行選擇", "TV not included; arrange TV separately");
+  }
+  return "";
+}
+
+function requiresServiceAddress(form) {
+  return ["internet", "both", "bundle", "internet_mobile"].includes(form.service_type);
+}
+
+function shouldShowInManualReviewList(offer) {
+  return !isEastlinkPlan(offer) && offer.ctaType !== "external_website";
+}
+
+function eastlinkCtaText(language) {
+  return {
+    note: textByLanguage(language, "无特别优惠 · 需官网预定", "無特別優惠 · 需官網預訂", "No special offer · Book on official website"),
+    button: textByLanguage(language, "查看 Eastlink 官网", "查看 Eastlink 官網", "Visit Eastlink website")
+  };
 }
 
 function relevantTargets(offers, form) {
@@ -1312,6 +1571,30 @@ function localizedGoodFor(offer, t, language) {
 
 function localizedNote(offer, t, language, form) {
   const bundleNotes = [];
+  if (offer.purple_cow_tv_bundle) {
+    return textByLanguage(
+      language,
+      "包含 Purple Cow Internet 和 Herd Essentials TV。频道、设备和最终可用性需确认。",
+      "包含 Purple Cow Internet 和 Herd Essentials TV。頻道、設備和最終可用性需確認。",
+      "Includes Purple Cow Internet and Herd Essentials TV. Channels, equipment, and final availability must be confirmed."
+    );
+  }
+  if (offer.koodo_tv_separate) {
+    return textByLanguage(
+      language,
+      "Koodo 仅作为宽带备选，不包含 TV；TV 服务需另行选择。",
+      "Koodo 僅作為寬頻備選，不包含 TV；TV 服務需另行選擇。",
+      "Koodo is an internet-only alternative. TV is not included and must be arranged separately."
+    );
+  }
+  if (offer.eastlink_tv_reference) {
+    return textByLanguage(
+      language,
+      "具体价格和频道包请参考 Eastlink 官网。",
+      "具體價格和頻道包請參考 Eastlink 官網。",
+      "Please check Eastlink’s official website for current pricing and channel packages."
+    );
+  }
   if (offer.service_type === "both" && form.bundle_includes_tv) {
     bundleNotes.push(textByLanguage(language, "TV 组合需人工确认。", "電視組合需人工確認。", "TV bundle options require manual confirmation."));
   }
@@ -1356,11 +1639,19 @@ function localizedNote(offer, t, language, form) {
   }
   if (offer.offer_id === "bell_mobile_winback_manual") return bellAliantDisplayText(t.bellWinbackNote);
   if (/Purple Cow/i.test(offer.provider)) {
-    const description = offer.description?.[language === "zhHant" ? "zh-TW" : language === "en" ? "en" : "zh"];
-    return [...bundleNotes, description || t.purpleCowNote].filter(Boolean).join(" ");
+    const description = offer.description?.[language === "zhHant" || language === "zh-TW" ? "zh-TW" : language === "en" || language === "fr" ? "en" : "zh"];
+    const publicDescription = offer.notDefaultPrimary
+      ? textByLanguage(
+          language,
+          "适合明确需要千兆、重度使用，或更看重无合约和本地服务的用户。",
+          "適合明確需要千兆、重度使用，或更看重無合約和本地服務的用戶。",
+          "Suitable for users who specifically need gigabit service, heavy use, or prioritize no-contract local service."
+        )
+      : description || t.purpleCowNote;
+    return [...bundleNotes, publicDescription].filter(Boolean).join(" ");
   }
   if (/Eastlink/i.test(offer.provider)) {
-    const description = offer.description?.[language === "zhHant" ? "zh-TW" : language === "en" ? "en" : "zh"];
+    const description = offer.description?.[language === "zhHant" || language === "zh-TW" ? "zh-TW" : language === "en" || language === "fr" ? "en" : "zh"];
     return [...bundleNotes, description || bellAliantDisplayText(offer.caution)].filter(Boolean).join(" ");
   }
   if (offer.lowSavingsWarning) {
@@ -1461,9 +1752,24 @@ function bundleResultNotes(form, language) {
 }
 
 function textByLanguage(language, zhHans, zhHant, en) {
-  if (language === "en") return en;
-  if (language === "zhHant") return zhHant;
+  if (language === "en" || language === "fr") return en;
+  if (language === "zhHant" || language === "zh-TW") return zhHant;
   return zhHans;
+}
+
+function getInitialLanguage() {
+  if (typeof window === "undefined") return "en";
+  const language = new URLSearchParams(window.location.search).get("lang");
+  return ["en", "zh", "fr", "zh-TW"].includes(language) ? language : "en";
+}
+
+function calculateReminderDueDate(contractEndDate, daysBefore) {
+  if (!contractEndDate || !daysBefore) return "";
+  const date = new Date(`${contractEndDate}T00:00:00`);
+  const days = Number(daysBefore);
+  if (Number.isNaN(date.getTime()) || !Number.isFinite(days)) return "";
+  date.setDate(date.getDate() - days);
+  return date.toISOString().slice(0, 10);
 }
 
 function telusDisclaimer(language) {
@@ -1514,7 +1820,7 @@ function fieldLabel(language, key) {
 
 function speedText(offer, language) {
   if (offer.speedLabel && typeof offer.speedLabel === "object") {
-    return offer.speedLabel[language === "zhHant" ? "zh-TW" : language === "en" ? "en" : "zh"];
+    return offer.speedLabel[language === "zhHant" || language === "zh-TW" ? "zh-TW" : language === "en" || language === "fr" ? "en" : "zh"];
   }
   if (!offer.speed_down && !offer.speed_up) {
     return textByLanguage(language, "具体上下行速度需确认", "具體上下行速度需確認", "Download/upload speeds require confirmation");
@@ -1543,13 +1849,14 @@ function priceNoteText(offer, language) {
   if (!/Koodo/i.test(offer.provider) || offer.service_type !== "internet") return "";
   return textByLanguage(
     language,
-    "TELUS / Koodo 后付费手机用户可能额外优惠 $10/月，预付费用户不包含在内，最终资格和价格以 Koodo 确认为准。",
-    "TELUS / Koodo 後付費手機用戶可能額外優惠 $10/月，預付費用戶不包含在內，最終資格和價格以 Koodo 確認為準。",
-    "TELUS / Koodo postpaid mobile customers may qualify for an extra $10/month discount. Prepaid users are not included. Final eligibility and pricing must be confirmed with Koodo."
+    "符合资格的 Koodo 后付费手机用户可能额外优惠 $10/月；预付费用户不包含在内。最终优惠、资格和价格以 Koodo 确认为准。",
+    "符合資格的 Koodo 後付費手機用戶可能額外優惠 $10/月；預付費用戶不包含在內。最終優惠、資格和價格以 Koodo 確認為準。",
+    "Eligible Koodo postpaid mobile customers may qualify for an extra $10/month discount. Prepaid customers are not included. Final discount, eligibility, and pricing must be confirmed with Koodo."
   );
 }
 
 function offerBadges(offer, language, form) {
+  const internetBandBadges = [];
   const creditCheckBadge = textByLanguage(language, "需要信用核查", "需要信用審查", "Credit check required");
   const prepaidBadges = [
     textByLanguage(language, "预付卡订阅", "預付卡訂閱", "Prepaid subscription"),
@@ -1582,12 +1889,27 @@ function offerBadges(offer, language, form) {
   }
 
   if (/Koodo/i.test(offer.provider) && (offer.service_type === "internet" || offer.service_type === "both")) {
+    if (offer.koodo_tv_separate) {
+      return [
+        textByLanguage(language, "宽带备选", "寬頻備選", "Internet option"),
+        textByLanguage(language, "不含 TV", "不含 TV", "TV not included"),
+        textByLanguage(language, "TV 需另行选择", "TV 需另行選擇", "TV must be arranged separately"),
+        textByLanguage(language, "无合约", "無合約", "No contract")
+      ];
+    }
     return [
+      ...internetBandBadges,
+      textByLanguage(
+        language,
+        "Koodo 后付费手机用户可优惠 $10/月*",
+        "Koodo 後付費手機用戶可優惠 $10/月*",
+        "Koodo postpaid mobile customers may save $10/mo*"
+      ),
       textByLanguage(language, "无合约", "無合約", "No contract"),
       textByLanguage(language, "30 天可免费试用", "30 天可免費試用", "30-day risk-free trial"),
       textByLanguage(language, "免费设备租用", "免費設備租用", "Free equipment rental"),
       textByLanguage(language, "安装资格需确认", "安裝資格需確認", "Installation eligibility required"),
-      ...(form?.bundle_includes_tv
+      ...(form?.service_type === "both" && form?.bundle_includes_tv
         ? [textByLanguage(language, "TV 需人工确认", "TV 需人工確認", "TV requires manual confirmation")]
         : []),
       ...(form?.bundle_includes_home_phone
@@ -1598,12 +1920,19 @@ function offerBadges(offer, language, form) {
   }
   if (/Purple Cow/i.test(offer.provider)) {
     return [
-      textByLanguage(language, "Bill Saver 专享免安装费", "Bill Saver 專享免安裝費", "Bill Saver exclusive installation fee waiver"),
+      ...internetBandBadges,
+      {
+        label: textByLanguage(language, "Bill Saver 下单可免 $55 安装费", "Bill Saver 下單可免 $55 安裝費", "Order through Bill Saver: waive $55 installation fee"),
+        subLabel: textByLanguage(language, "资格需确认", "資格需確認", "Eligibility confirmation required"),
+        className: "badge-bill-saver-exclusive"
+      },
       textByLanguage(language, "无合约", "無合約", "No contract"),
       textByLanguage(language, "不限流量", "不限流量", "No usage fees"),
       "Wireless Router",
-      ...(form?.bundle_includes_tv
-        ? [textByLanguage(language, "TV 需人工确认", "TV 需人工確認", "TV requires manual confirmation")]
+      ...(offer.purple_cow_tv_bundle
+        ? ["Herd Essentials TV", textByLanguage(language, "$25/月起 TV", "$25/月起 TV", "TV from $25/mo")]
+        : form?.service_type === "both" && form?.bundle_includes_tv
+          ? [textByLanguage(language, "TV 需人工确认", "TV 需人工確認", "TV requires manual confirmation")]
         : []),
       ...(form?.bundle_includes_home_phone
         ? [textByLanguage(language, "家庭电话需人工确认", "家居電話需人工確認", "Home phone requires manual confirmation")]
@@ -1611,16 +1940,18 @@ function offerBadges(offer, language, form) {
       ...mobilePlanBadges
     ];
   }
-  if (/Eastlink/i.test(offer.provider) && offer.service_type === "internet") {
+  if (/Eastlink/i.test(offer.provider) && (offer.service_type === "internet" || offer.service_type === "both")) {
     return [
+      ...internetBandBadges,
       Number(offer.speedMbps) >= 900 ? "Gig Internet" : "350 Mbps",
       textByLanguage(language, "不限流量", "不限流量", "Unlimited data"),
       textByLanguage(language, "本地运营商", "本地電信商", "Local provider"),
-      textByLanguage(language, "安装资格需确认", "安裝資格需確認", "Installation eligibility required")
+      textByLanguage(language, "无特别优惠 · 需官网预定", "無特別優惠 · 需官網預訂", "No special offer · Book on official website")
     ];
   }
   if (isBell(offer) && offer.service_type === "internet") {
     return [
+      ...internetBandBadges,
       textByLanguage(language, "光纤稳定", "光纖穩定", "Stable Fibre"),
       textByLanguage(language, "免安装费", "免安裝費", "No installation fee"),
       textByLanguage(language, "免激活费", "免啟用費", "No activation fee"),
@@ -1662,6 +1993,15 @@ function offerBadges(offer, language, form) {
       textByLanguage(language, "性价比推荐", "性價比推薦", "Good Value Pick"),
       planBadge,
       textByLanguage(language, "免费 Perk", "免費 Perk", "Free Perk"),
+      {
+        label: textByLanguage(language, "Bundle 可减 $10/月", "Bundle 可減 $10/月", "$10/mo bundle discount available"),
+        subLabel: textByLanguage(
+          language,
+          "需与 Koodo Internet 搭配，资格需确认",
+          "需與 Koodo Internet 搭配，資格需確認",
+          "Requires Koodo Internet; eligibility confirmation required"
+        )
+      },
       ...mobilePlanBadges
     ];
   }
@@ -1669,17 +2009,6 @@ function offerBadges(offer, language, form) {
 }
 
 function displayBadge(badge, offer, index, language) {
-  if (/Purple Cow/i.test(offer.provider || "") && index === 0) {
-    return {
-      label: textByLanguage(
-        language,
-        "Bill Saver 专享免安装费",
-        "Bill Saver 專享免安裝費",
-        "Bill Saver exclusive installation fee waiver"
-      ),
-      subLabel: textByLanguage(language, "Bill Saver 专享", "Bill Saver 專享", "Bill Saver exclusive")
-    };
-  }
   return typeof badge === "string" ? { label: badge } : badge;
 }
 
@@ -1810,7 +2139,12 @@ function usageGuidanceContent(language) {
           "微信、網頁、電郵、YouTube/Netflix、一般高清影片、視訊通話、刷短影片、偶爾在家工作。",
           "Messaging, browsing, email, YouTube/Netflix, regular HD video, video calls, short videos, and occasional work from home."
         ),
-        estimate: textByLanguage(language, "50–100 Mbps 通常够用。", "50–100 Mbps 通常夠用。", "50–100 Mbps is usually enough."),
+        estimate: textByLanguage(
+          language,
+          "100M 左右，适合轻度使用。",
+          "100M 左右，適合輕度使用。",
+          "Around 100 Mbps for light use."
+        ),
         caution: textByLanguage(
           language,
           "如果多人同时 4K、游戏、直播、上传文件，100 Mbps / 上传 10 Mbps 可能不够稳。",
@@ -1831,9 +2165,9 @@ function usageGuidanceContent(language) {
         ),
         estimate: textByLanguage(
           language,
-          "100–300 Mbps 比较合适。对大多数 PEI 普通家庭来说，300 Mbps 通常已经比较舒服。",
-          "100–300 Mbps 比較合適。對大多數 PEI 一般家庭來說，300 Mbps 通常已經比較舒服。",
-          "100–300 Mbps is usually a good range. For many PEI households, 300 Mbps is already comfortable."
+          "300–500M 左右，适合大多数 PEI 普通家庭。",
+          "300–500M 左右，適合大多數 PEI 普通家庭。",
+          "Around 300–500 Mbps for most standard PEI households."
         ),
         caution: textByLanguage(
           language,
@@ -1855,9 +2189,9 @@ function usageGuidanceContent(language) {
         ),
         estimate: textByLanguage(
           language,
-          "400 Mbps–1 Gbps 更合适。如果追求稳定体验，尤其是多人同时使用，Gigabit / Fibre 会更稳。",
-          "400 Mbps–1 Gbps 更合適。如果追求穩定體驗，尤其是多人同時使用，Gigabit / Fibre 會更穩。",
-          "400 Mbps–1 Gbps is usually more suitable. For the most stable experience, especially with many simultaneous users, Gigabit / Fibre can be a better fit."
+          "1 Gig+ 高速，适合多人家庭和重度使用。",
+          "1 Gig+ 高速，適合多人家庭和重度使用。",
+          "1 Gig+ speed for multi-user households and heavy use."
         ),
         caution: textByLanguage(
           language,
@@ -1990,6 +2324,9 @@ function premiumCtaContent(language, offer) {
 }
 
 function recommendationTag(offer, index, language) {
+  if (isEastlinkPlan(offer)) {
+    return textByLanguage(language, "官网参考方案", "官網參考方案", "Official website reference");
+  }
   if (offer.eastlinkLocalBackup) {
     return textByLanguage(language, "本地运营商备选", "本地電信商備選", "Local provider backup option");
   }
@@ -2000,7 +2337,7 @@ function recommendationTag(offer, index, language) {
   if (offer.recommendationType === "best_savings") return textByLanguage(language, "明显节省", "明顯節省", "Strong savings");
   if (offer.recommendationType === "small_savings") return textByLanguage(language, "小幅节省", "小幅節省", "Modest savings");
   if (offer.recommendationType === "upgrade_option") {
-    return textByLanguage(language, "价格接近，规格更好", "價格接近，規格更好", "Similar price, better service");
+    return textByLanguage(language, "升级备选", "升級備選", "Upgrade option");
   }
   if (offer.recommendationType === "manual_review") return textByLanguage(language, "人工确认", "人工確認", "Manual review");
   if (offer.recommendationType === "backup_option") return textByLanguage(language, "备选方案", "備選方案", "Backup option");
@@ -2013,6 +2350,7 @@ function recommendationTag(offer, index, language) {
 }
 
 function recommendationTagTone(offer, index) {
+  if (isEastlinkPlan(offer)) return "alternative";
   if (offer.eastlinkLocalBackup) return "alternative";
   if (offer.similarPricePreferred) return "value";
   if (offer.recommendationType === "strong_savings") return "primary";
@@ -2028,20 +2366,11 @@ function recommendationTagTone(offer, index) {
 }
 
 function providerCtaLabel(offer, language) {
+  if (language === "fr") return "Obtenir cette offre";
   if (isBell(offer)) return textByLanguage(language, "获取可用优惠", "取得可用優惠", "Check available offer");
   if (/Koodo|TELUS/i.test(offer.provider || "")) return textByLanguage(language, "查看是否适合我", "查看是否適合我", "See if it fits");
   if (/Purple Cow/i.test(offer.provider || "")) return textByLanguage(language, "咨询本周方案", "諮詢本週方案", "Ask about this week's option");
   return textByLanguage(language, "人工确认优惠", "人工確認優惠", "Confirm available offer");
-}
-
-function providerMark(provider) {
-  return displayProviderName(provider)
-    .split(/\s|\+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0])
-    .join("")
-    .toUpperCase();
 }
 
 function resultTrustContent(language) {
@@ -2141,11 +2470,11 @@ function ResultStepProgress({ language, currentStep = 2, complete = false }) {
 function displayPlanName(offer, t) {
   if (offer.offer_id === "bell_mobile_winback_manual") return bellAliantDisplayText(t.bellWinbackService);
   if (offer.offer_id === "bell_internet_mobile_bundle") {
-    const language = t === translations.en ? "en" : t === translations.zhHant ? "zhHant" : "zhHans";
+    const language = t === translations.en || t === translations.fr ? "en" : t === translations.zhHant ? "zhHant" : "zhHans";
     return textByLanguage(language, "Bell Aliant 宽带 + Better TV", "Bell Aliant 寬頻 + Better TV", "Bell Aliant Internet + Better TV");
   }
   if (offer.offer_id === "bell_internet_better_tv_home_phone_bundle") {
-    const language = t === translations.en ? "en" : t === translations.zhHant ? "zhHant" : "zhHans";
+    const language = t === translations.en || t === translations.fr ? "en" : t === translations.zhHant ? "zhHant" : "zhHans";
     return textByLanguage(
       language,
       "Bell Aliant 宽带 + Better TV + 家庭电话",
@@ -2154,7 +2483,7 @@ function displayPlanName(offer, t) {
     );
   }
   if (offer.service_type === "both" && (offer.manual_tv_direction || offer.manual_home_phone_direction)) {
-    const language = t === translations.en ? "en" : t === translations.zhHant ? "zhHant" : "zhHans";
+    const language = t === translations.en || t === translations.fr ? "en" : t === translations.zhHant ? "zhHant" : "zhHans";
     const directions = [
       offer.manual_tv_direction ? textByLanguage(language, "TV 服务人工确认", "TV 服務人工確認", "TV service manual confirmation") : "",
       offer.manual_home_phone_direction
@@ -2171,7 +2500,10 @@ function displayPrice(offer, t, language) {
     if (isBell(offer)) return t.bellPrice;
     return textByLanguage(language, "价格需人工确认", "價格需人工確認", "Price requires confirmation");
   }
-  return money(offer.bill_saver_target_price, language);
+  const price = money(offer.bill_saver_target_price, language);
+  return offer.price_from
+    ? textByLanguage(language, `${price}起`, `${price}起`, `From ${price}`)
+    : price;
 }
 
 function bundleCostRows(offer, language) {
@@ -2236,10 +2568,13 @@ function scoreOffer(offer, form) {
 }
 
 function internetUsageMatchScore(offer, usage) {
-  const speed = Number(offer.speedMbps) || speedRank(offer.speed_down);
-  if (usage === "heavy") return speed >= 900 ? 30 : speed >= 300 ? -10 : -55;
-  if (usage === "standard") return speed >= 300 ? 22 : -28;
-  if (usage === "light") return speed >= 100 && speed <= 300 ? 14 : speed > 300 ? 4 : -20;
+  const planBand = getPlanSpeedBand(offer);
+  const userBand = usage === "heavy" ? "gig_plus" : usage === "standard" ? "300_500" : usage === "light" ? "100" : "";
+  if (!userBand) return 0;
+  if (planBand === userBand) return 40;
+  if (userBand === "100" && planBand === "gig_plus") return -35;
+  if (userBand === "300_500" && planBand === "gig_plus") return 5;
+  if (userBand === "gig_plus" && planBand === "300_500") return -10;
   return 0;
 }
 
@@ -2249,6 +2584,7 @@ function internetRecommendationScore(offer, form) {
   if (annualSavings !== null) score += Math.min(30, annualSavings / 12);
   if (/Purple Cow/i.test(offer.provider) && offer.installationFeeWaivedByBillSaver) score += 5;
   if (offer.notPrimaryRecommendation) score -= 80;
+  score -= internetBandSortAdjustment(offer, form);
   return score;
 }
 
@@ -2273,7 +2609,7 @@ function bestProviderOffer(offers, provider, form) {
 
 function bestMobileProviderOffer(offers, provider, form) {
   const matches = offers.filter((offer) => (provider === "Bell Aliant" ? isBell(offer) : offer.provider === provider));
-  return matches.sort((a, b) => mobileOfferSortScore(a, form) - mobileOfferSortScore(b, form))[0];
+  return matches.sort((a, b) => compareMobileOfferValue(a, b, form))[0];
 }
 
 function internetPicks(form) {
@@ -2287,7 +2623,6 @@ function internetPicks(form) {
 
   const picks = eligibleOffers
     .filter((offer) => allowedProviders.includes(normalizeProviderName(offer.provider)))
-    .filter((offer) => internetMeetsServiceLevel(offer, form))
     .map((offer) => {
       const annualSavings = getAnnualSavings(form, offer);
       const lowSavingsWarning =
@@ -2303,6 +2638,8 @@ function internetPicks(form) {
 
   return picks.sort((a, b) => {
     if (a.notPrimaryRecommendation !== b.notPrimaryRecommendation) return a.notPrimaryRecommendation ? 1 : -1;
+    const bandPriority = compareInternetBandPriority(a, b, form);
+    if (bandPriority !== 0) return bandPriority;
     return internetRecommendationScore(b, form) - internetRecommendationScore(a, form);
   });
 }
@@ -2326,9 +2663,18 @@ function mobilePicks(form) {
     ? ["public_mobile", "koodo", "telus", "bell_aliant", "eastlink"]
     : ["public_mobile", "telus", "bell_aliant"];
 
-  return offers
+  const sortedOffers = offers
     .filter((offer) => allowedProviders.includes(normalizeProviderName(offer.provider)))
-    .sort((a, b) => mobileOfferSortScore(a, form) - mobileOfferSortScore(b, form))
+    .sort((a, b) => compareMobileOfferValue(a, b, form));
+  const seenProviders = new Set();
+  const providerPicks = sortedOffers.filter((offer) => {
+    const provider = normalizeProviderName(offer.provider);
+    if (seenProviders.has(provider)) return false;
+    seenProviders.add(provider);
+    return true;
+  });
+
+  return finalizeMobileRecommendationOrder(providerPicks, form)
     .map((offer, index) => ({
       ...offer,
       pickTypeKey: index === 0 ? "highQualityPick" : /Public Mobile/i.test(offer.provider) ? "lowestCostPick" : "manualPick"
@@ -2438,7 +2784,7 @@ function bundleServiceMatchScore(offer, form) {
   if (form.bundle_includes_tv) {
     if (/Purple Cow/i.test(offer.provider)) score -= 8;
     if (/Koodo/i.test(offer.provider)) score -= 5;
-    if (/Eastlink/i.test(offer.provider)) score -= 3;
+    if (/Eastlink/i.test(offer.provider)) score += 80;
   }
   if (form.bundle_includes_home_phone && /Eastlink/i.test(offer.provider)) score -= 8;
 
@@ -2462,26 +2808,60 @@ function bundlePicks(form) {
     const genericDirections = internet
       .filter((offer) => !(isBell(offer) && (form.bundle_includes_tv || form.bundle_includes_home_phone)))
       .map((offer) => {
-        const hasManualAddOn = form.bundle_includes_tv || form.bundle_includes_home_phone;
-        const keepPurpleCowInternetPriceVisible = /Purple Cow/i.test(offer.provider) && hasManualAddOn;
+        const hasManualAddOn =
+          form.bundle_includes_tv || form.bundle_includes_home_phone || form.bundle_needs_manual_review;
+        const isPurpleCow = /Purple Cow/i.test(offer.provider);
+        const isKoodo = /Koodo/i.test(offer.provider);
+        const isEastlink = /Eastlink/i.test(offer.provider);
+        const purpleCowTvBundle = isPurpleCow && form.bundle_includes_tv;
+        const koodoTvSeparate = isKoodo && form.bundle_includes_tv;
+        const eastlinkTvReference = isEastlink && form.bundle_includes_tv;
+        const purpleCowInternetPrice = calculationMonthlyPrice(offer);
+        const purpleCowTvTotal =
+          purpleCowTvBundle && purpleCowInternetPrice !== null ? purpleCowInternetPrice + 25 : null;
+        const keepPurpleCowInternetPriceVisible = isPurpleCow && hasManualAddOn;
         return {
           ...offer,
           offer_id: `bundle_${offer.offer_id}`,
           service_type: "both",
+          plan_name: purpleCowTvBundle
+            ? `${offer.plan_name} + Herd Essentials TV`
+            : eastlinkTvReference
+              ? `${offer.plan_name} + TV`
+              : offer.plan_name,
           is_bundle: true,
-          is_sensitive_price: keepPurpleCowInternetPriceVisible ? false : hasManualAddOn || offer.is_sensitive_price,
-          is_public_price: keepPurpleCowInternetPriceVisible ? true : hasManualAddOn ? false : offer.is_public_price,
+          purple_cow_tv_bundle: purpleCowTvBundle,
+          koodo_tv_separate: koodoTvSeparate,
+          eastlink_tv_reference: eastlinkTvReference,
+          ctaType: isEastlink ? "external_website" : offer.ctaType,
+          ctaUrl: isEastlink ? "https://www.eastlink.ca/" : offer.ctaUrl,
+          tv_package: purpleCowTvBundle ? "Herd Essentials TV" : offer.tv_package,
+          tv_base_price: purpleCowTvBundle ? 25 : offer.tv_base_price,
+          price_from: purpleCowTvBundle,
+          bill_saver_target_price: purpleCowTvBundle ? purpleCowTvTotal : offer.bill_saver_target_price,
+          bundle_total_monthly_cost: purpleCowTvBundle ? purpleCowTvTotal : offer.bundle_total_monthly_cost,
+          is_sensitive_price:
+            keepPurpleCowInternetPriceVisible || koodoTvSeparate || eastlinkTvReference
+              ? false
+              : hasManualAddOn || offer.is_sensitive_price,
+          is_public_price:
+            keepPurpleCowInternetPriceVisible || koodoTvSeparate || eastlinkTvReference
+              ? true
+              : hasManualAddOn ? false : offer.is_public_price,
           display_price_requires_confirmation:
-            keepPurpleCowInternetPriceVisible ? false : hasManualAddOn || offer.display_price_requires_confirmation,
-          manual_tv_direction: Boolean(form.bundle_includes_tv),
+            keepPurpleCowInternetPriceVisible || koodoTvSeparate || eastlinkTvReference
+              ? false
+              : hasManualAddOn || offer.display_price_requires_confirmation,
+          manual_tv_direction: Boolean(form.bundle_includes_tv && !purpleCowTvBundle && !koodoTvSeparate && !eastlinkTvReference),
           manual_home_phone_direction: Boolean(form.bundle_includes_home_phone),
           bundle_services: [
             "internet",
-            ...(form.bundle_includes_tv ? ["tv"] : []),
+            ...(form.bundle_includes_tv && !koodoTvSeparate ? ["tv"] : []),
             ...(form.bundle_includes_home_phone ? ["home_phone"] : [])
           ],
-          requires_manual_confirmation: offer.requires_manual_confirmation || hasManualAddOn,
-          calculation_price_available: !hasManualAddOn,
+          requires_manual_confirmation: eastlinkTvReference ? false : offer.requires_manual_confirmation || hasManualAddOn,
+          calculation_price_available: purpleCowTvBundle || koodoTvSeparate || eastlinkTvReference ? true : !hasManualAddOn,
+          notPrimaryRecommendation: koodoTvSeparate || eastlinkTvReference || offer.notPrimaryRecommendation,
           bundle_sort_score: 0,
           pickTypeKey: "bundlePick"
         };
@@ -2535,6 +2915,7 @@ function bundlePicks(form) {
           isManualPrice(mobileOffer) ||
           form.bundle_includes_tv ||
           form.bundle_includes_home_phone ||
+          form.bundle_needs_manual_review ||
           lineCountRequiresManualReview,
         is_public_price:
           !form.bundle_includes_tv &&
@@ -2545,6 +2926,7 @@ function bundlePicks(form) {
         display_price_requires_confirmation:
           form.bundle_includes_tv ||
           form.bundle_includes_home_phone ||
+          form.bundle_needs_manual_review ||
           internetOffer.display_price_requires_confirmation ||
           mobileOffer.display_price_requires_confirmation,
         manual_tv_direction: Boolean(form.bundle_includes_tv),
@@ -2560,9 +2942,13 @@ function bundlePicks(form) {
           mobileOffer.requires_manual_confirmation ||
           lineCountRequiresManualReview ||
           form.bundle_includes_tv ||
-          form.bundle_includes_home_phone,
+          form.bundle_includes_home_phone ||
+          form.bundle_needs_manual_review,
         calculation_price_available:
-          !lineCountRequiresManualReview && !form.bundle_includes_tv && !form.bundle_includes_home_phone,
+          !lineCountRequiresManualReview &&
+          !form.bundle_includes_tv &&
+          !form.bundle_includes_home_phone &&
+          !form.bundle_needs_manual_review,
         caution: `${internetOffer.caution || ""} ${mobileOffer.caution || ""}`.trim(),
         bundle_sort_score:
           bundleProviderPreference(mobileOffer.provider, form) +
@@ -2582,7 +2968,8 @@ function getRecommendations(form) {
       : form.service_type === "mobile"
         ? pickVisibleRecommendations(mobilePicks(form), form)
         : pickVisibleRecommendations(bundlePicks(form), form);
-  return visible.map((offer, index) => ({ ...offer, rank: index + 1 }));
+  const ordered = form.service_type === "mobile" ? finalizeMobileRecommendationOrder(visible, form) : visible;
+  return ordered.map((offer, index) => ({ ...offer, rank: index + 1 }));
 }
 
 function calculateScore(form, offers) {
@@ -2630,7 +3017,7 @@ function savingsHelperText(yearlySavings, t, language) {
 function payloadOfferName(offer, language) {
   const localized = offer.serviceName || offer.service_name;
   if (localized && typeof localized === "object") {
-    const key = language === "en" ? "en" : language === "zhHant" ? "zh-TW" : "zh";
+    const key = language === "en" || language === "fr" ? "en" : language === "zhHant" || language === "zh-TW" ? "zh-TW" : "zh";
     if (localized[key]) return localized[key];
   }
   return offer.plan_name || offer.display_name || offer.name || "";
@@ -2656,7 +3043,7 @@ function buildSheetPayload({ form, language, source, lead, selectedOffer, recomm
     // Temporarily using wechat field to store optional installation address until Google Sheet schema is updated.
     wechat: lead.wechat || "",
     city: form.city || "",
-    postal_code: "",
+    postal_code: lead.postal_code || "",
     service_type: serviceType,
     current_provider: form.current_provider || "",
     monthly_price: form.monthly_price || "",
@@ -2668,6 +3055,9 @@ function buildSheetPayload({ form, language, source, lead, selectedOffer, recomm
     bundle_includes_mobile: serviceType === "both" ? Boolean(form.bundle_includes_mobile) : serviceType === "mobile",
     bundle_includes_tv: serviceType === "both" ? Boolean(form.bundle_includes_tv) : false,
     bundle_includes_home_phone: serviceType === "both" ? Boolean(form.bundle_includes_home_phone) : false,
+    bundle_type: serviceType === "both" ? form.bundle_type || "internet_tv" : "",
+    bundle_needs_manual_review: serviceType === "both" && form.bundle_needs_manual_review ? "yes" : "no",
+    bundle_other_or_not_sure: serviceType === "both" && form.bundle_other_or_not_sure ? "yes" : "no",
     mobile_line_count: serviceType === "both" ? (form.bundle_includes_mobile ? form.mobile_line_count : "0") : "",
     mobile_data_usage:
       serviceType === "mobile" || (serviceType === "both" && form.bundle_includes_mobile) ? form.current_mobile_data : "",
@@ -2681,12 +3071,19 @@ function buildSheetPayload({ form, language, source, lead, selectedOffer, recomm
       bundle_includes_mobile: form.bundle_includes_mobile,
       bundle_includes_tv: form.bundle_includes_tv,
       bundle_includes_home_phone: form.bundle_includes_home_phone,
+      bundle_type: form.bundle_type,
+      bundle_needs_manual_review: form.bundle_needs_manual_review,
+      bundle_other_or_not_sure: form.bundle_other_or_not_sure,
       mobile_line_count: form.bundle_includes_mobile ? form.mobile_line_count : "0",
       has_tv_service: form.bundle_includes_tv ? "yes" : "no",
-      has_home_phone: form.bundle_includes_home_phone ? "yes" : "no"
+      has_home_phone: form.bundle_includes_home_phone ? "yes" : "no",
+      is_byod: lead.is_byod || "",
+      keep_phone_number: lead.keep_phone_number || "",
+      current_contract_status: lead.current_contract_status || "",
+      contract_end_date: lead.contract_end_date || ""
     }),
     willing_to_switch: "",
-    notes: "",
+    notes: lead.notes || "",
 
     // Expanded lead and recommendation tracking fields.
     submitted_at: new Date().toISOString(),
@@ -2697,16 +3094,32 @@ function buildSheetPayload({ form, language, source, lead, selectedOffer, recomm
     customer_phone: lead.phone || "",
     customer_email: lead.email || "",
     preferred_contact_method: lead.preferred_contact || "",
-    best_contact_time: "",
-    customer_note: "",
+    best_contact_time: lead.best_contact_time || "",
+    customer_note: lead.notes || "",
+    current_contract_status: lead.current_contract_status || "",
+    contract_end_date: lead.contract_end_date || "",
+    wants_contract_reminder: Boolean(lead.wants_contract_reminder),
+    reminder_days_before: lead.wants_contract_reminder ? lead.reminder_days_before || "60" : "",
+    reminder_due_date: lead.wants_contract_reminder
+      ? calculateReminderDueDate(lead.contract_end_date, lead.reminder_days_before)
+      : "",
+    reminder_sent: false,
+    reminder_sent_at: "",
+    consent_to_contact: Boolean(lead.consent_to_contact),
     current_monthly_bill: form.monthly_price || "",
     region: "PEI",
     city_or_area: form.city || "",
-    postal_code_or_address: lead.wechat || form.postal_code || "",
+    postal_code_or_address: [lead.wechat, lead.postal_code || form.postal_code].filter(Boolean).join(", "),
     internet_usage: form.internet_usage_level || "",
     current_internet_speed_mbps: form.current_speed || "",
     internet_required_speed_mbps:
       serviceType === "internet" || serviceType === "both" ? getRequiredInternetSpeedMbps(form) : "",
+    internet_preferred_speed_mbps:
+      serviceType === "internet" || serviceType === "both" ? getPreferredInternetSpeedMbps(form) : "",
+    internet_usage_speed_band:
+      serviceType === "internet" || serviceType === "both" ? getInternetUsageSpeedBand(form) : "",
+    internet_preferred_speed_band:
+      serviceType === "internet" || serviceType === "both" ? getInternetUsageSpeedBand(form) : "",
     current_mobile_data_gb: form.current_mobile_data || "",
     mobile_required_data_gb:
       serviceType === "mobile" || (serviceType === "both" && form.bundle_includes_mobile) ? getRequiredMobileDataGB(form) : "",
@@ -2725,6 +3138,8 @@ function buildSheetPayload({ form, language, source, lead, selectedOffer, recomm
     selected_offer_requires_manual_review: Boolean(selected.requiresManualReview),
     selected_offer_price_hidden: Boolean(selected.displayPriceRequiresConfirmation),
     selected_offer_tags: selected.tags || "",
+    selected_offer_speed_band: selected.speedBand || "",
+    selected_offer_speed_mbps: selected.speedMbps || "",
     all_recommendation_ids: sortedRecommendations.map((offer) => offer.offer_id).filter(Boolean).join(", "),
     all_recommendation_names: sortedRecommendations.map((offer) => payloadOfferName(offer, language)).filter(Boolean).join(" | "),
     all_recommendation_providers: sortedRecommendations.map((offer) => offer.provider).filter(Boolean).join(" | "),
@@ -2754,7 +3169,7 @@ async function submitToGoogleSheet(payload) {
 }
 
 export default function Home() {
-  const [language, setLanguage] = useState("zhHans");
+  const [language, setLanguage] = useState("en");
   const [form, setForm] = useState(initialForm);
   const [lead, setLead] = useState(initialLead);
   const [selectedOffer, setSelectedOffer] = useState(null);
@@ -2767,6 +3182,8 @@ export default function Home() {
   const [submitting, setSubmitting] = useState(false);
   const [sheetError, setSheetError] = useState("");
   const [missingFields, setMissingFields] = useState([]);
+  const flowBodyRef = useRef(null);
+  const flowHistoryPushedRef = useRef(false);
   const t = translations[language];
   const isBundle = form.service_type === "both";
   const showInternet = form.service_type === "internet" || isBundle;
@@ -2783,10 +3200,27 @@ export default function Home() {
   const usageGuidance = usageGuidanceContent(language);
 
   useEffect(() => {
+    setLanguage(getInitialLanguage());
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.lang =
+      language === "fr" ? "fr" : language === "en" ? "en" : language === "zh-TW" ? "zh-Hant" : "zh-CN";
+    document.title = `Bill Saver | ${translations[language].heroHeadline}`;
+  }, [language]);
+
+  function setLanguageAndUrl(nextLanguage) {
+    setLanguage(nextLanguage);
+    if (typeof window === "undefined") return;
+    const url = new URL(window.location.href);
+    url.searchParams.set("lang", nextLanguage);
+    window.history.replaceState({}, "", url.toString());
+  }
+
+  useEffect(() => {
     function onKeyDown(event) {
       if (event.key === "Escape") {
-        setResultOpen(false);
-        setLeadOpen(false);
+        closeFlow();
         setPeiReviewOpen(false);
         setShowUsageGuidance(false);
       }
@@ -2794,6 +3228,38 @@ export default function Home() {
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
+
+  useEffect(() => {
+    if (flowOpen && !flowHistoryPushedRef.current) {
+      window.history.pushState({ billSaverFlow: true, stage: leadOpen ? "lead" : resultOpen ? "result" : "success" }, "");
+      flowHistoryPushedRef.current = true;
+    }
+    if (!flowOpen) flowHistoryPushedRef.current = false;
+  }, [flowOpen, leadOpen, resultOpen]);
+
+  useEffect(() => {
+    function handlePopState() {
+      if (leadOpen || successOpen) {
+        setLeadOpen(false);
+        setSuccessOpen(false);
+        setResultOpen(true);
+        window.history.pushState({ billSaverFlow: true, stage: "result" }, "");
+        flowHistoryPushedRef.current = true;
+        return;
+      }
+      if (resultOpen) {
+        setResultOpen(false);
+        flowHistoryPushedRef.current = false;
+      }
+    }
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [leadOpen, resultOpen, successOpen]);
+
+  useEffect(() => {
+    if (flowOpen && flowBodyRef.current) flowBodyRef.current.scrollTop = 0;
+  }, [leadOpen, resultOpen, successOpen, flowOpen]);
 
   const shouldLockBodyScroll = resultOpen || leadOpen || peiReviewOpen || showUsageGuidance || successOpen;
 
@@ -2828,13 +3294,16 @@ export default function Home() {
         return {
           ...current,
           service_type: value,
+          bundle_type: "internet_tv",
           bundle_includes_internet: true,
           bundle_includes_mobile: false,
-          bundle_includes_tv: false,
+          bundle_includes_tv: true,
           bundle_includes_home_phone: false,
+          bundle_needs_manual_review: false,
+          bundle_other_or_not_sure: false,
           current_mobile_data: "",
           mobile_line_count: "0",
-          has_tv_service: "no",
+          has_tv_service: "yes",
           has_home_phone: "no"
         };
       }
@@ -2849,31 +3318,25 @@ export default function Home() {
     }
   }
 
-  function toggleBundleMobile() {
-    setForm((current) => {
-      const next = !current.bundle_includes_mobile;
-      return {
-        ...current,
-        bundle_includes_mobile: next,
-        mobile_line_count: next ? "" : "0",
-        current_mobile_data: ""
-      };
-    });
+  function applyBundleType(value) {
+    const option = BUNDLE_TYPE_OPTIONS.find((item) => item.value === value);
+    if (!option) return;
+
+    setForm((current) => ({
+      ...current,
+      bundle_type: value,
+      bundle_includes_internet: true,
+      bundle_includes_mobile: option.includes.mobile,
+      bundle_includes_tv: option.includes.tv,
+      bundle_includes_home_phone: option.includes.homePhone,
+      bundle_needs_manual_review: Boolean(option.needsManualReview),
+      bundle_other_or_not_sure: value === "other_or_not_sure",
+      mobile_line_count: option.includes.mobile ? current.mobile_line_count || "" : "0",
+      current_mobile_data: option.includes.mobile ? current.current_mobile_data || "" : "",
+      has_tv_service: option.includes.tv ? "yes" : "no",
+      has_home_phone: option.includes.homePhone ? "yes" : "no"
+    }));
     setMissingFields((current) => current.filter((item) => item !== "mobile_line_count" && item !== "current_mobile_data"));
-  }
-
-  function toggleBundleTv() {
-    setForm((current) => {
-      const next = !current.bundle_includes_tv;
-      return { ...current, bundle_includes_tv: next, has_tv_service: next ? "yes" : "no" };
-    });
-  }
-
-  function toggleBundleHomePhone() {
-    setForm((current) => {
-      const next = !current.bundle_includes_home_phone;
-      return { ...current, bundle_includes_home_phone: next, has_home_phone: next ? "yes" : "no" };
-    });
   }
 
   function updateLead(field, value) {
@@ -2881,7 +3344,7 @@ export default function Home() {
   }
 
   function openLeadFromResult() {
-    setLeadOfferIds(recommendations.map((offer) => offer.offer_id).filter(Boolean));
+    setLeadOfferIds(recommendations.filter(shouldShowInManualReviewList).map((offer) => offer.offer_id).filter(Boolean));
     setSelectedOffer({
       offerId: "",
       provider: "",
@@ -2897,6 +3360,8 @@ export default function Home() {
       rank: "",
       requiresManualReview: true,
       displayPriceRequiresConfirmation: true,
+      speedBand: "",
+      speedMbps: "",
       tags: "",
       clickSource: "general_cta"
     });
@@ -2905,6 +3370,10 @@ export default function Home() {
   }
 
   function openLeadForOffer(offer) {
+    if (isEastlinkPlan(offer)) {
+      window.open("https://www.eastlink.ca/", "_blank", "noopener,noreferrer");
+      return;
+    }
     const monthlyCost = calculationMonthlyPrice(offer);
     const monthlySavings =
       monthlyCost === null ? "" : Math.max(0, Math.round(monthlyPrice(form) - monthlyCost));
@@ -2929,6 +3398,9 @@ export default function Home() {
       displayPriceRequiresConfirmation: Boolean(
         offer.display_price_requires_confirmation || isManualPrice(offer)
       ),
+      speedBand: getPlanSpeedBand(offer),
+      speedMbps: internetOfferSpeedMbps(offer) || "",
+      downloadMbps: Number(offer.downloadMbps) || internetOfferSpeedMbps(offer) || "",
       tags,
       clickSource: "offer_card_cta"
     });
@@ -2968,6 +3440,16 @@ export default function Home() {
 
     setResultOpen(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function closeFlow() {
+    setResultOpen(false);
+    setLeadOpen(false);
+    setSuccessOpen(false);
+    if (flowHistoryPushedRef.current) {
+      window.history.replaceState({}, "", window.location.href);
+      flowHistoryPushedRef.current = false;
+    }
   }
 
   function reopenLeadAfterSuccess() {
@@ -3014,6 +3496,38 @@ export default function Home() {
   async function submitLead(event) {
     event.preventDefault();
     if (submitting) return;
+    if (requiresServiceAddress(form) && (!lead.wechat.trim() || !lead.postal_code.trim())) {
+      setSheetError(
+        textByLanguage(
+          language,
+          "请填写安装地址和邮政编码。",
+          "請填寫安裝地址和郵遞區號。",
+          "Please enter the installation address and postal code."
+        )
+      );
+      return;
+    }
+    if (!lead.consent_to_contact) {
+      setSheetError(
+        language === "fr"
+          ? "Veuillez accepter avant de soumettre."
+          : textByLanguage(language, "请先同意后再提交。", "請先同意後再提交。", "Please agree before submitting.")
+      );
+      return;
+    }
+    if (lead.wants_contract_reminder && !lead.contract_end_date) {
+      setSheetError(
+        language === "fr"
+          ? "Veuillez saisir la date de fin du contrat pour activer le rappel."
+          : textByLanguage(
+              language,
+              "请先填写合约到期时间，再启用提醒。",
+              "請先填寫合約到期時間，再啟用提醒。",
+              "Please enter the contract end date before enabling a reminder."
+            )
+      );
+      return;
+    }
     setSubmitting(true);
     setSheetError("");
     try {
@@ -3038,7 +3552,7 @@ export default function Home() {
   }
 
   return (
-    <main className="page-shell billSaverPage" lang={language === "en" ? "en" : language === "zhHant" ? "zh-Hant" : "zh-CN"}>
+    <main className="page-shell billSaverPage" lang={language === "fr" ? "fr" : language === "en" ? "en" : language === "zh-TW" ? "zh-Hant" : "zh-CN"}>
       <section className="hero heroSection">
         <div className="heroInner">
           <div className="heroTopBar">
@@ -3055,18 +3569,17 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="language-switcher" aria-label="Language switcher">
-              {languages.map((item) => (
-                <button
-                  key={item.code}
-                  type="button"
-                  className={language === item.code ? "active" : ""}
-                  onClick={() => setLanguage(item.code)}
-                  aria-label={translations[item.code].languageName}
-                >
-                  {item.label}
-                </button>
-              ))}
+            <div className="language-switcher">
+              <select
+                className="languageSelect"
+                value={language}
+                onChange={(event) => setLanguageAndUrl(event.target.value)}
+                aria-label={language === "fr" ? "Langue" : "Language"}
+              >
+                {languages.map((item) => (
+                  <option key={item.code} value={item.code}>{item.label}</option>
+                ))}
+              </select>
             </div>
           </div>
 
@@ -3125,33 +3638,24 @@ export default function Home() {
             <div className={`form-split form-grid-top ${isBundle ? "bundle-form-split" : "internet-form-split"}`}>
               <div className="form-split-left form-column">
                 {isBundle && (
-                  <div className="bundle-services-block">
-                    <h3 className="form-side-title">{t.bundleServicesTitle}</h3>
-                    <div className="bundle-service-grid">
-                      <button type="button" className="bundle-service-chip active disabled" disabled>
-                        {t.bundleInternet}
-                      </button>
-                      <button
-                        type="button"
-                        className={form.bundle_includes_mobile ? "bundle-service-chip active" : "bundle-service-chip"}
-                        onClick={toggleBundleMobile}
+                  <div className="bundle-select-block">
+                    <label className="bundle-select-label" htmlFor="bundleType">
+                      {t.bundleServicesTitle}
+                    </label>
+                    <div className="bundle-select-wrap">
+                      <select
+                        id="bundleType"
+                        className="bundle-select"
+                        value={form.bundle_type || "internet_tv"}
+                        onChange={(event) => applyBundleType(event.target.value)}
                       >
-                        {t.bundleMobile}
-                      </button>
-                      <button
-                        type="button"
-                        className={form.bundle_includes_tv ? "bundle-service-chip active" : "bundle-service-chip"}
-                        onClick={toggleBundleTv}
-                      >
-                        {t.bundleTv}
-                      </button>
-                      <button
-                        type="button"
-                        className={form.bundle_includes_home_phone ? "bundle-service-chip active" : "bundle-service-chip"}
-                        onClick={toggleBundleHomePhone}
-                      >
-                        {t.bundleHomePhone}
-                      </button>
+                        {BUNDLE_TYPE_OPTIONS.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label[language] || option.label.en}
+                          </option>
+                        ))}
+                      </select>
+                      <span className="bundle-select-chevron" aria-hidden="true">▾</span>
                     </div>
                   </div>
                 )}
@@ -3171,8 +3675,8 @@ export default function Home() {
                           <span>{t.usageCards[item.value].description}</span>
                         </span>
                         <span className="usage-card-speed">
-                          <small>{language === "en" ? "Recommended" : language === "zhHant" ? "建議頻寬" : "推荐带宽"}</small>
-                          <strong>{internetUsageSpeeds[item.value]}</strong>
+                          <small>{language === "en" || language === "fr" ? "Recommended" : language === "zhHant" || language === "zh-TW" ? "建議頻寬" : "推荐带宽"}</small>
+                          <strong>{(internetUsageSpeeds[language] || internetUsageSpeeds.en)[item.value]}</strong>
                         </span>
                         {form.internet_usage_level === item.value && <span className="usage-card-check" aria-hidden="true">✓</span>}
                       </button>
@@ -3209,7 +3713,15 @@ export default function Home() {
                 <h3 className="form-side-title">
                   {form.service_type === "internet" ? t.billInfoInternet : t.billInfoBoth}
                 </h3>
-                <Field icon={<LineIcon name="building" size={22} strokeWidth={2.2} />} label={form.service_type === "internet" ? t.providerInternet : t.providerBoth} className={missingFields.includes("current_provider") ? "missing" : ""}>
+                <Field
+                  icon={<LineIcon name="building" size={22} strokeWidth={2.2} />}
+                  label={
+                    form.service_type === "internet"
+                      ? t.providerInternet
+                      : textByLanguage(language, "当前运营商", "目前服務商", "Current provider")
+                  }
+                  className={missingFields.includes("current_provider") ? "missing" : ""}
+                >
                   <Select value={form.current_provider} onChange={(value) => update("current_provider", value)}>
                     <option value="" disabled>
                       {t.providerPlaceholder}
@@ -3347,10 +3859,10 @@ export default function Home() {
                   : textByLanguage(language, "重新开始", "重新開始", "Start over")}
               </button>
               <ResultStepProgress language={language} currentStep={currentStep} complete={successOpen} />
-              <span className="bill-flow-header-spacer" aria-hidden="true" />
+              <button className="flow-close-button" type="button" onClick={closeFlow} aria-label={t.close}>×</button>
             </header>
 
-            <div className="bill-flow-body">
+            <div className="bill-flow-body" ref={flowBodyRef}>
             {resultOpen && (
               <div className="bill-flow-step bill-flow-result" aria-label={t.billScore}>
               <div className="result-stack">
@@ -3382,9 +3894,9 @@ export default function Home() {
                       </strong>
                     ) : (
                       <>
-                        <span>{language === "en" ? "~" : language === "zhHant" ? "約" : "约"}</span>
+                        <span>{language === "en" || language === "fr" ? "~" : language === "zhHant" || language === "zh-TW" ? "約" : "约"}</span>
                         <strong>${yearlySavings}</strong>
-                        <em>{language === "en" ? "/ yr" : "/ 年"}</em>
+                        <em>{language === "en" || language === "fr" ? "/ yr" : "/ 年"}</em>
                       </>
                     )}
                   </div>
@@ -3446,9 +3958,11 @@ export default function Home() {
                       <article className="plan-card" key={offer.offer_id}>
                         <div className="plan-card-overview">
                           <div className="plan-provider">
-                            <span className="provider-mark" aria-hidden="true">{providerMark(offer.provider)}</span>
                             <div>
-                              <strong>{displayProviderName(offer.provider)}</strong>
+                              <div className="plan-provider-heading">
+                                <strong>{displayProviderName(offer.provider)}</strong>
+                                <strong className="plan-provider-price">{displayPrice(offer, t, language)}</strong>
+                              </div>
                               <span className={`recommendation-tag ${recommendationTagTone(offer, recommendationIndex)}`}>
                                 {recommendationTag(offer, recommendationIndex, language)}
                               </span>
@@ -3468,7 +3982,17 @@ export default function Home() {
                             <div className="badge-row">
                               {badges.map((badge, index) => {
                                 const visibleBadge = displayBadge(badge, offer, index, language);
-                                return <span key={badgeKey(visibleBadge, index)}>{visibleBadge.label}</span>;
+                                return (
+                                  <span
+                                    className={[visibleBadge.subLabel ? "badge-with-sub-label" : "", visibleBadge.className || ""]
+                                      .filter(Boolean)
+                                      .join(" ")}
+                                    key={badgeKey(visibleBadge, index)}
+                                  >
+                                    <span>{visibleBadge.label}</span>
+                                    {visibleBadge.subLabel && <small>{visibleBadge.subLabel}</small>}
+                                  </span>
+                                );
                               })}
                             </div>
                             <p>{localizedGoodFor(offer, t, language)}</p>
@@ -3476,7 +4000,16 @@ export default function Home() {
                           <div className="plan-conversion">
                             <span>{t.savings}</span>
                             <strong>{savingsText(offer, form, t, language)}</strong>
-                            <button type="button" onClick={() => openLeadForOffer(offer)}>{providerCtaLabel(offer, language)}</button>
+                            {isEastlinkPlan(offer) ? (
+                              <>
+                                <small className="eastlink-cta-note">{eastlinkCtaText(language).note}</small>
+                                <a href="https://www.eastlink.ca/" target="_blank" rel="noreferrer">
+                                  {eastlinkCtaText(language).button}
+                                </a>
+                              </>
+                            ) : (
+                              <button type="button" onClick={() => openLeadForOffer(offer)}>{providerCtaLabel(offer, language)}</button>
+                            )}
                           </div>
                         </div>
                         <p>
@@ -3514,7 +4047,10 @@ export default function Home() {
                                 const visibleBadge = displayBadge(badge, offer, index, language);
 
                                 return (
-                                  <span className={visibleBadge.subLabel ? "badge-with-sub-label" : ""} key={badgeKey(visibleBadge, index)}>
+                                  <span
+                                    className={[visibleBadge.subLabel ? "badge-with-sub-label" : "", visibleBadge.className || ""].filter(Boolean).join(" ")}
+                                    key={badgeKey(visibleBadge, index)}
+                                  >
                                     <span>{visibleBadge.label}</span>
                                     {visibleBadge.subLabel && <small>{visibleBadge.subLabel}</small>}
                                   </span>
@@ -3655,7 +4191,7 @@ export default function Home() {
       )}
 
       {leadOpen && (
-          <form className="bill-flow-step bill-flow-lead" onSubmit={submitLead}>
+          <form className="bill-flow-step bill-flow-lead" id="bill-saver-lead-form" onSubmit={submitLead}>
             <div className="lead-modal-body">
               <section className="lead-offer-section">
                 <div className="lead-section-heading">
@@ -3670,7 +4206,7 @@ export default function Home() {
                   </p>
                 </div>
                 <div className="lead-offer-list">
-                  {recommendations.map((offer) => {
+                  {recommendations.filter(shouldShowInManualReviewList).map((offer) => {
                     const checked = leadOfferIds.includes(offer.offer_id);
                     return (
                       <button
@@ -3683,10 +4219,8 @@ export default function Home() {
                         <span className="lead-offer-check" aria-hidden="true">{checked ? "✓" : ""}</span>
                         <span className="lead-offer-copy">
                           <strong>{displayProviderName(offer.provider)} · {displayPlanName(offer, t)}</strong>
-                          <span>{displayPrice(offer, t, language)} · {savingsText(offer, form, t, language)}</span>
-                        </span>
-                        <span className={`recommendation-tag ${recommendationTagTone(offer, offer.rank - 1)}`}>
-                          {recommendationTag(offer, offer.rank - 1, language)}
+                          <span>{displayPrice(offer, t, language)} · {confirmationSavingsText(offer, form, t, language)}</span>
+                          {confirmationShortNote(offer, language) && <small>{confirmationShortNote(offer, language)}</small>}
                         </span>
                       </button>
                     );
@@ -3725,16 +4259,130 @@ export default function Home() {
                         ))}
                       </Select>
                     </Field>
-                    <Field label={t.installationAddress}>
-                      <input
-                        value={lead.wechat}
-                        onChange={(event) => updateLead("wechat", event.target.value)}
-                        placeholder={t.installationAddressPlaceholder}
-                      />
+                    <Field label={textByLanguage(language, "当前运营商", "目前服務商", "Current provider")}>
+                      <input value={optionLabel(t, form.current_provider)} readOnly />
                     </Field>
+                    <Field label={textByLanguage(language, "最佳联系时间", "最佳聯絡時間", "Best contact time")}>
+                      <Select value={lead.best_contact_time} onChange={(value) => updateLead("best_contact_time", value)}>
+                        <option value="">{textByLanguage(language, "请选择", "請選擇", "Please select")}</option>
+                        <option value="morning">{textByLanguage(language, "上午", "上午", "Morning")}</option>
+                        <option value="afternoon">{textByLanguage(language, "下午", "下午", "Afternoon")}</option>
+                        <option value="evening">{textByLanguage(language, "晚上", "晚上", "Evening")}</option>
+                      </Select>
+                    </Field>
+                    {requiresServiceAddress(form) && (
+                      <>
+                        <Field label={language === "fr" ? "Adresse du service" : textByLanguage(language, "安装街道地址", "安裝街道地址", "Installation street address")}>
+                          <input
+                            value={lead.wechat}
+                            onChange={(event) => updateLead("wechat", event.target.value)}
+                            placeholder={textByLanguage(language, "请输入街道地址", "請輸入街道地址", "Enter street address")}
+                            required
+                          />
+                        </Field>
+                        <Field label={language === "fr" ? "Code postal" : textByLanguage(language, "安装地址邮政编码", "安裝地址郵遞區號", "Installation postal code")}>
+                          <input
+                            value={lead.postal_code}
+                            onChange={(event) => updateLead("postal_code", event.target.value)}
+                            placeholder="C1A 1A1"
+                            required
+                          />
+                        </Field>
+                        <Field label={language === "fr" ? "Ville / région" : textByLanguage(language, "安装城市 / 区域", "安裝城市 / 區域", "Installation city / area")}>
+                          <input value={form.city} readOnly />
+                        </Field>
+                        <Field label={textByLanguage(language, "省份", "省份", "Province")}>
+                          <input value="Prince Edward Island" readOnly />
+                        </Field>
+                      </>
+                    )}
+                    {form.service_type === "mobile" && (
+                      <>
+                        <Field label={language === "fr" ? "Ville / région" : textByLanguage(language, "城市 / 区域", "城市 / 區域", "City / area")}>
+                          <input value={form.city} readOnly />
+                        </Field>
+                        <Field label={textByLanguage(language, "是否自带手机（BYOD）", "是否自帶手機（BYOD）", "Bring your own device (BYOD)")}>
+                          <Select value={lead.is_byod} onChange={(value) => updateLead("is_byod", value)}>
+                            <option value="">{textByLanguage(language, "请选择", "請選擇", "Please select")}</option>
+                            <option value="yes">{textByLanguage(language, "是", "是", "Yes")}</option>
+                            <option value="no">{textByLanguage(language, "否", "否", "No")}</option>
+                          </Select>
+                        </Field>
+                        <Field label={textByLanguage(language, "是否保留现有号码", "是否保留現有號碼", "Keep your current phone number")}>
+                          <Select value={lead.keep_phone_number} onChange={(value) => updateLead("keep_phone_number", value)}>
+                            <option value="">{textByLanguage(language, "请选择", "請選擇", "Please select")}</option>
+                            <option value="yes">{textByLanguage(language, "是", "是", "Yes")}</option>
+                            <option value="no">{textByLanguage(language, "否", "否", "No")}</option>
+                          </Select>
+                        </Field>
+                      </>
+                    )}
+                    <Field label={language === "fr" ? "Statut du contrat actuel" : textByLanguage(language, "当前合约状态", "目前合約狀態", "Current contract status")}>
+                      <Select
+                        value={lead.current_contract_status}
+                        onChange={(value) =>
+                          setLead((current) => ({
+                            ...current,
+                            current_contract_status: value,
+                            contract_end_date: value === "in_contract" ? current.contract_end_date : "",
+                            wants_contract_reminder: value === "in_contract" ? current.wants_contract_reminder : false
+                          }))
+                        }
+                      >
+                        <option value="no_contract">{language === "fr" ? "Sans contrat" : textByLanguage(language, "无合约", "無合約", "No contract")}</option>
+                        <option value="in_contract">{language === "fr" ? "Encore sous contrat" : textByLanguage(language, "合约中", "合約中", "Still in contract")}</option>
+                        <option value="not_sure">{language === "fr" ? "Pas sûr" : textByLanguage(language, "不确定", "不確定", "Not sure")}</option>
+                      </Select>
+                    </Field>
+                    {lead.current_contract_status === "in_contract" && (
+                      <>
+                        <Field label={language === "fr" ? "Date de fin du contrat" : textByLanguage(language, "合约到期时间", "合約到期時間", "Contract end date")}>
+                          <input type="date" value={lead.contract_end_date} onChange={(event) => updateLead("contract_end_date", event.target.value)} />
+                        </Field>
+                        <label className="lead-checkbox-field">
+                          <input
+                            type="checkbox"
+                            checked={lead.wants_contract_reminder}
+                            onChange={(event) => updateLead("wants_contract_reminder", event.target.checked)}
+                          />
+                          <span>{language === "fr" ? "Me rappeler avant la fin de mon contrat" : textByLanguage(language, "合约到期前提醒我", "合約到期前提醒我", "Remind me before my contract ends")}</span>
+                        </label>
+                        {lead.wants_contract_reminder && (
+                          <Field label={language === "fr" ? "Délai du rappel" : textByLanguage(language, "提前提醒时间", "提前提醒時間", "Reminder timing")}>
+                            <Select value={lead.reminder_days_before} onChange={(value) => updateLead("reminder_days_before", value)}>
+                              {["30", "60", "90"].map((days) => (
+                                <option key={days} value={days}>
+                                  {language === "fr" ? `${days} jours avant` : language === "en" ? `${days} days` : textByLanguage(language, `提前 ${days} 天`, `提前 ${days} 天`, `${days} days`)}
+                                </option>
+                              ))}
+                            </Select>
+                          </Field>
+                        )}
+                      </>
+                    )}
+                    <Field label={textByLanguage(language, "备注（选填）", "備註（選填）", "Notes (optional)")}>
+                      <textarea value={lead.notes} onChange={(event) => updateLead("notes", event.target.value)} />
+                    </Field>
+                    <label className="lead-checkbox-field lead-consent-field">
+                      <input
+                        type="checkbox"
+                        checked={lead.consent_to_contact}
+                        onChange={(event) => updateLead("consent_to_contact", event.target.checked)}
+                      />
+                      <span>
+                        {language === "fr"
+                          ? "J’accepte que Bill Saver me contacte pour confirmer les offres disponibles ou me rappeler avant la fin de mon contrat."
+                          : textByLanguage(
+                              language,
+                              "我同意 Bill Saver 联系我，帮我人工确认可用优惠，或在合约到期前提醒我。",
+                              "我同意 Bill Saver 聯絡我，幫我人工確認可用優惠，或在合約到期前提醒我。",
+                              "I agree that Bill Saver may contact me to manually confirm available offers or remind me before my contract ends."
+                            )}
+                      </span>
+                    </label>
                   </div>
 
-                  <button className="submit-button" type="submit" disabled={submitting}>
+                  <button className="submit-button lead-inline-submit" type="submit" disabled={submitting}>
                     {submitting
                       ? t.submitting
                       : textByLanguage(language, "提交并人工确认", "提交並人工確認", "Submit for manual confirmation")}
@@ -3769,6 +4417,37 @@ export default function Home() {
           </div>
       )}
             </div>
+            {(resultOpen || leadOpen) && (
+              <footer className="bill-flow-footer">
+                <div className="bill-flow-footer-actions">
+                  <button className="flow-footer-secondary" type="button" onClick={handleFlowBack}>
+                    {leadOpen
+                      ? textByLanguage(language, "返回方案", "返回方案", "Back to options")
+                      : textByLanguage(language, "返回修改", "返回修改", "Edit bill details")}
+                  </button>
+                  {resultOpen ? (
+                    <button className="flow-footer-primary" type="button" onClick={openLeadFromResult}>
+                      {textByLanguage(language, "提交信息 / 获取优惠", "提交資訊 / 取得優惠", "Submit details / Get offers")}
+                    </button>
+                  ) : (
+                    <button
+                      className="flow-footer-primary"
+                      type="submit"
+                      form="bill-saver-lead-form"
+                      disabled={submitting}
+                    >
+                      {submitting
+                        ? t.submitting
+                        : textByLanguage(language, "提交信息", "提交資訊", "Submit details")}
+                    </button>
+                  )}
+                </div>
+                <div className="bill-flow-footer-safe-note">
+                  <span aria-hidden="true">🔒</span>
+                  <span>{t.leadSafetyNote}</span>
+                </div>
+              </footer>
+            )}
           </div>
         </section>
       )}
