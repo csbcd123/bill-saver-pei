@@ -991,6 +991,59 @@ function compareMobileOfferValue(offerA, offerB, form) {
   return mobileOfferSortScore(offerA, form) - mobileOfferSortScore(offerB, form);
 }
 
+function getMobileProviderTier(providerName) {
+  const provider = normalizeProviderName(providerName);
+  if (provider === "bell_aliant" || provider === "telus") return 1;
+  if (provider === "koodo") return 2;
+  if (provider === "public_mobile") return 3;
+  return 4;
+}
+
+function compareMobileClosePriceMoreData(offerA, offerB) {
+  const priceA = mobileOfferPrice(offerA);
+  const priceB = mobileOfferPrice(offerB);
+  if (priceA === null || priceB === null || Math.abs(priceA - priceB) >= 12) return 0;
+
+  const dataA = mobileOfferDataGB(offerA);
+  const dataB = mobileOfferDataGB(offerB);
+  const comparableA = dataA === Infinity ? Number.MAX_SAFE_INTEGER : Number(dataA || 0);
+  const comparableB = dataB === Infinity ? Number.MAX_SAFE_INTEGER : Number(dataB || 0);
+  return comparableA !== comparableB ? comparableB - comparableA : priceA - priceB;
+}
+
+function isPublicMobileClearlyAhead(publicPlan, nonPublicPlans, form) {
+  const publicPrice = mobileOfferPrice(publicPlan);
+  const publicAnnualSavings = getAnnualSavings(form, publicPlan);
+  const bestNonPublic = nonPublicPlans
+    .map((plan) => ({ plan, price: mobileOfferPrice(plan), annualSavings: getAnnualSavings(form, plan) }))
+    .filter((item) => item.price !== null)
+    .sort((a, b) => a.price - b.price)[0];
+
+  if (!bestNonPublic || publicPrice === null) return false;
+  const annualSavingsLead =
+    publicAnnualSavings !== null &&
+    bestNonPublic.annualSavings !== null &&
+    publicAnnualSavings - bestNonPublic.annualSavings >= 180;
+  const monthlyPriceLead = bestNonPublic.price - publicPrice >= 15;
+  return annualSavingsLead || monthlyPriceLead;
+}
+
+function finalizeMobileRecommendationOrder(offers, form) {
+  const publicPlan = offers.find((offer) => normalizeProviderName(offer.provider) === "public_mobile");
+  const nonPublicPlans = offers
+    .filter((offer) => normalizeProviderName(offer.provider) !== "public_mobile")
+    .sort(
+      (a, b) =>
+        compareMobileClosePriceMoreData(a, b) ||
+        getMobileProviderTier(a.provider) - getMobileProviderTier(b.provider) ||
+        compareMobileOfferValue(a, b, form)
+    );
+
+  if (!publicPlan) return nonPublicPlans.slice(0, 3);
+  if (isPublicMobileClearlyAhead(publicPlan, nonPublicPlans, form)) return [publicPlan, ...nonPublicPlans].slice(0, 3);
+  return [...nonPublicPlans.slice(0, 2), publicPlan, ...nonPublicPlans.slice(2)].slice(0, 3);
+}
+
 function speedBucket(speed) {
   const rank = speedRank(speed);
   if (rank <= 150) return "low";
@@ -1401,6 +1454,35 @@ function savingsText(offer, form, t, language) {
   return language === "zhHant" ? `約 $${saving}/月，約 $${annualSaving}/年` : `约 $${saving}/月，约 $${annualSaving}/年`;
 }
 
+function confirmationSavingsText(offer, form, t, language) {
+  const targetPrice = calculationMonthlyPrice(offer);
+  if (targetPrice === null || isManualPrice(offer)) {
+    return textByLanguage(language, "优惠需确认", "優惠需確認", "Offer requires confirmation");
+  }
+  const annualSaving = Math.max(0, Math.round((monthlyPrice(form) - targetPrice) * 12));
+  if (annualSaving <= 0) {
+    return offer.service_type === "mobile" || Boolean(offer.mobile_data)
+      ? textByLanguage(language, "价格接近，但流量更多", "價格接近，但流量更多", "Similar price, more data")
+      : textByLanguage(language, "价格接近，适合作为备选", "價格接近，適合作為備選", "Similar price, suitable as a backup");
+  }
+  return textByLanguage(
+    language,
+    `预计每年节省约 $${annualSaving}`,
+    `預計每年節省約 $${annualSaving}`,
+    `Estimated annual savings: about $${annualSaving}`
+  );
+}
+
+function confirmationShortNote(offer, language) {
+  if (offer.purple_cow_tv_bundle) {
+    return textByLanguage(language, "频道和可用性需确认", "頻道和可用性需確認", "Channels and availability require confirmation");
+  }
+  if (offer.koodo_tv_separate) {
+    return textByLanguage(language, "不含 TV，TV 需另行选择", "不含 TV，TV 需另行選擇", "TV not included; arrange TV separately");
+  }
+  return "";
+}
+
 function requiresServiceAddress(form) {
   return ["internet", "both", "bundle", "internet_mobile"].includes(form.service_type);
 }
@@ -1461,6 +1543,30 @@ function localizedGoodFor(offer, t, language) {
 
 function localizedNote(offer, t, language, form) {
   const bundleNotes = [];
+  if (offer.purple_cow_tv_bundle) {
+    return textByLanguage(
+      language,
+      "包含 Purple Cow Internet 和 Herd Essentials TV。频道、设备和最终可用性需确认。",
+      "包含 Purple Cow Internet 和 Herd Essentials TV。頻道、設備和最終可用性需確認。",
+      "Includes Purple Cow Internet and Herd Essentials TV. Channels, equipment, and final availability must be confirmed."
+    );
+  }
+  if (offer.koodo_tv_separate) {
+    return textByLanguage(
+      language,
+      "Koodo 仅作为宽带备选，不包含 TV；TV 服务需另行选择。",
+      "Koodo 僅作為寬頻備選，不包含 TV；TV 服務需另行選擇。",
+      "Koodo is an internet-only alternative. TV is not included and must be arranged separately."
+    );
+  }
+  if (offer.eastlink_tv_reference) {
+    return textByLanguage(
+      language,
+      "具体价格和频道包请参考 Eastlink 官网。",
+      "具體價格和頻道包請參考 Eastlink 官網。",
+      "Please check Eastlink’s official website for current pricing and channel packages."
+    );
+  }
   if (offer.service_type === "both" && form.bundle_includes_tv) {
     bundleNotes.push(textByLanguage(language, "TV 组合需人工确认。", "電視組合需人工確認。", "TV bundle options require manual confirmation."));
   }
@@ -1506,7 +1612,15 @@ function localizedNote(offer, t, language, form) {
   if (offer.offer_id === "bell_mobile_winback_manual") return bellAliantDisplayText(t.bellWinbackNote);
   if (/Purple Cow/i.test(offer.provider)) {
     const description = offer.description?.[language === "zhHant" ? "zh-TW" : language === "en" ? "en" : "zh"];
-    return [...bundleNotes, description || t.purpleCowNote].filter(Boolean).join(" ");
+    const publicDescription = offer.notDefaultPrimary
+      ? textByLanguage(
+          language,
+          "适合明确需要千兆、重度使用，或更看重无合约和本地服务的用户。",
+          "適合明確需要千兆、重度使用，或更看重無合約和本地服務的用戶。",
+          "Suitable for users who specifically need gigabit service, heavy use, or prioritize no-contract local service."
+        )
+      : description || t.purpleCowNote;
+    return [...bundleNotes, publicDescription].filter(Boolean).join(" ");
   }
   if (/Eastlink/i.test(offer.provider)) {
     const description = offer.description?.[language === "zhHant" ? "zh-TW" : language === "en" ? "en" : "zh"];
@@ -1732,6 +1846,14 @@ function offerBadges(offer, language, form) {
   }
 
   if (/Koodo/i.test(offer.provider) && (offer.service_type === "internet" || offer.service_type === "both")) {
+    if (offer.koodo_tv_separate) {
+      return [
+        textByLanguage(language, "宽带备选", "寬頻備選", "Internet option"),
+        textByLanguage(language, "不含 TV", "不含 TV", "TV not included"),
+        textByLanguage(language, "TV 需另行选择", "TV 需另行選擇", "TV must be arranged separately"),
+        textByLanguage(language, "无合约", "無合約", "No contract")
+      ];
+    }
     return [
       ...internetBandBadges,
       textByLanguage(
@@ -1764,8 +1886,10 @@ function offerBadges(offer, language, form) {
       textByLanguage(language, "无合约", "無合約", "No contract"),
       textByLanguage(language, "不限流量", "不限流量", "No usage fees"),
       "Wireless Router",
-      ...(form?.service_type === "both" && form?.bundle_includes_tv
-        ? [textByLanguage(language, "TV 需人工确认", "TV 需人工確認", "TV requires manual confirmation")]
+      ...(offer.purple_cow_tv_bundle
+        ? ["Herd Essentials TV", textByLanguage(language, "$25/月起 TV", "$25/月起 TV", "TV from $25/mo")]
+        : form?.service_type === "both" && form?.bundle_includes_tv
+          ? [textByLanguage(language, "TV 需人工确认", "TV 需人工確認", "TV requires manual confirmation")]
         : []),
       ...(form?.bundle_includes_home_phone
         ? [textByLanguage(language, "家庭电话需人工确认", "家居電話需人工確認", "Home phone requires manual confirmation")]
@@ -1773,13 +1897,13 @@ function offerBadges(offer, language, form) {
       ...mobilePlanBadges
     ];
   }
-  if (/Eastlink/i.test(offer.provider) && offer.service_type === "internet") {
+  if (/Eastlink/i.test(offer.provider) && (offer.service_type === "internet" || offer.service_type === "both")) {
     return [
       ...internetBandBadges,
       Number(offer.speedMbps) >= 900 ? "Gig Internet" : "350 Mbps",
       textByLanguage(language, "不限流量", "不限流量", "Unlimited data"),
       textByLanguage(language, "本地运营商", "本地電信商", "Local provider"),
-      textByLanguage(language, "安装资格需确认", "安裝資格需確認", "Installation eligibility required")
+      textByLanguage(language, "无特别优惠 · 需官网预定", "無特別優惠 · 需官網預訂", "No special offer · Book on official website")
     ];
   }
   if (isBell(offer) && offer.service_type === "internet") {
@@ -1826,6 +1950,15 @@ function offerBadges(offer, language, form) {
       textByLanguage(language, "性价比推荐", "性價比推薦", "Good Value Pick"),
       planBadge,
       textByLanguage(language, "免费 Perk", "免費 Perk", "Free Perk"),
+      {
+        label: textByLanguage(language, "Bundle 可减 $10/月", "Bundle 可減 $10/月", "$10/mo bundle discount available"),
+        subLabel: textByLanguage(
+          language,
+          "需与 Koodo Internet 搭配，资格需确认",
+          "需與 Koodo Internet 搭配，資格需確認",
+          "Requires Koodo Internet; eligibility confirmation required"
+        )
+      },
       ...mobilePlanBadges
     ];
   }
@@ -2319,7 +2452,10 @@ function displayPrice(offer, t, language) {
     if (isBell(offer)) return t.bellPrice;
     return textByLanguage(language, "价格需人工确认", "價格需人工確認", "Price requires confirmation");
   }
-  return money(offer.bill_saver_target_price, language);
+  const price = money(offer.bill_saver_target_price, language);
+  return offer.price_from
+    ? textByLanguage(language, `${price}起`, `${price}起`, `From ${price}`)
+    : price;
 }
 
 function bundleCostRows(offer, language) {
@@ -2490,8 +2626,7 @@ function mobilePicks(form) {
     return true;
   });
 
-  return providerPicks
-    .slice(0, 3)
+  return finalizeMobileRecommendationOrder(providerPicks, form)
     .map((offer, index) => ({
       ...offer,
       pickTypeKey: index === 0 ? "highQualityPick" : /Public Mobile/i.test(offer.provider) ? "lowestCostPick" : "manualPick"
@@ -2627,25 +2762,54 @@ function bundlePicks(form) {
       .map((offer) => {
         const hasManualAddOn =
           form.bundle_includes_tv || form.bundle_includes_home_phone || form.bundle_needs_manual_review;
-        const keepPurpleCowInternetPriceVisible = /Purple Cow/i.test(offer.provider) && hasManualAddOn;
+        const isPurpleCow = /Purple Cow/i.test(offer.provider);
+        const isKoodo = /Koodo/i.test(offer.provider);
+        const isEastlink = /Eastlink/i.test(offer.provider);
+        const purpleCowTvBundle = isPurpleCow && form.bundle_includes_tv;
+        const koodoTvSeparate = isKoodo && form.bundle_includes_tv;
+        const eastlinkTvReference = isEastlink && form.bundle_includes_tv;
+        const purpleCowInternetPrice = calculationMonthlyPrice(offer);
+        const purpleCowTvTotal =
+          purpleCowTvBundle && purpleCowInternetPrice !== null ? purpleCowInternetPrice + 25 : null;
+        const keepPurpleCowInternetPriceVisible = isPurpleCow && hasManualAddOn;
         return {
           ...offer,
           offer_id: `bundle_${offer.offer_id}`,
           service_type: "both",
+          plan_name: purpleCowTvBundle
+            ? `${offer.plan_name} + Herd Essentials TV`
+            : eastlinkTvReference
+              ? `${offer.plan_name} + TV`
+              : offer.plan_name,
           is_bundle: true,
-          is_sensitive_price: keepPurpleCowInternetPriceVisible ? false : hasManualAddOn || offer.is_sensitive_price,
-          is_public_price: keepPurpleCowInternetPriceVisible ? true : hasManualAddOn ? false : offer.is_public_price,
+          purple_cow_tv_bundle: purpleCowTvBundle,
+          koodo_tv_separate: koodoTvSeparate,
+          eastlink_tv_reference: eastlinkTvReference,
+          ctaType: isEastlink ? "external_website" : offer.ctaType,
+          ctaUrl: isEastlink ? "https://www.eastlink.ca/" : offer.ctaUrl,
+          tv_package: purpleCowTvBundle ? "Herd Essentials TV" : offer.tv_package,
+          tv_base_price: purpleCowTvBundle ? 25 : offer.tv_base_price,
+          price_from: purpleCowTvBundle,
+          bill_saver_target_price: purpleCowTvBundle ? purpleCowTvTotal : offer.bill_saver_target_price,
+          bundle_total_monthly_cost: purpleCowTvBundle ? purpleCowTvTotal : offer.bundle_total_monthly_cost,
+          is_sensitive_price:
+            keepPurpleCowInternetPriceVisible || koodoTvSeparate ? false : hasManualAddOn || offer.is_sensitive_price,
+          is_public_price:
+            keepPurpleCowInternetPriceVisible || koodoTvSeparate ? true : hasManualAddOn ? false : offer.is_public_price,
           display_price_requires_confirmation:
-            keepPurpleCowInternetPriceVisible ? false : hasManualAddOn || offer.display_price_requires_confirmation,
-          manual_tv_direction: Boolean(form.bundle_includes_tv),
+            keepPurpleCowInternetPriceVisible || koodoTvSeparate
+              ? false
+              : hasManualAddOn || offer.display_price_requires_confirmation,
+          manual_tv_direction: Boolean(form.bundle_includes_tv && !purpleCowTvBundle && !koodoTvSeparate && !eastlinkTvReference),
           manual_home_phone_direction: Boolean(form.bundle_includes_home_phone),
           bundle_services: [
             "internet",
-            ...(form.bundle_includes_tv ? ["tv"] : []),
+            ...(form.bundle_includes_tv && !koodoTvSeparate ? ["tv"] : []),
             ...(form.bundle_includes_home_phone ? ["home_phone"] : [])
           ],
           requires_manual_confirmation: offer.requires_manual_confirmation || hasManualAddOn,
-          calculation_price_available: !hasManualAddOn,
+          calculation_price_available: purpleCowTvBundle || koodoTvSeparate ? true : !hasManualAddOn,
+          notPrimaryRecommendation: koodoTvSeparate || offer.notPrimaryRecommendation,
           bundle_sort_score: 0,
           pickTypeKey: "bundlePick"
         };
@@ -2752,7 +2916,8 @@ function getRecommendations(form) {
       : form.service_type === "mobile"
         ? pickVisibleRecommendations(mobilePicks(form), form)
         : pickVisibleRecommendations(bundlePicks(form), form);
-  return visible.map((offer, index) => ({ ...offer, rank: index + 1 }));
+  const ordered = form.service_type === "mobile" ? finalizeMobileRecommendationOrder(visible, form) : visible;
+  return ordered.map((offer, index) => ({ ...offer, rank: index + 1 }));
 }
 
 function calculateScore(form, offers) {
@@ -3672,8 +3837,14 @@ export default function Home() {
                               {badges.map((badge, index) => {
                                 const visibleBadge = displayBadge(badge, offer, index, language);
                                 return (
-                                  <span className={visibleBadge.className || ""} key={badgeKey(visibleBadge, index)}>
-                                    {visibleBadge.label}
+                                  <span
+                                    className={[visibleBadge.subLabel ? "badge-with-sub-label" : "", visibleBadge.className || ""]
+                                      .filter(Boolean)
+                                      .join(" ")}
+                                    key={badgeKey(visibleBadge, index)}
+                                  >
+                                    <span>{visibleBadge.label}</span>
+                                    {visibleBadge.subLabel && <small>{visibleBadge.subLabel}</small>}
                                   </span>
                                 );
                               })}
@@ -3902,7 +4073,8 @@ export default function Home() {
                         <span className="lead-offer-check" aria-hidden="true">{checked ? "✓" : ""}</span>
                         <span className="lead-offer-copy">
                           <strong>{displayProviderName(offer.provider)} · {displayPlanName(offer, t)}</strong>
-                          <span>{displayPrice(offer, t, language)} · {savingsText(offer, form, t, language)}</span>
+                          <span>{displayPrice(offer, t, language)} · {confirmationSavingsText(offer, form, t, language)}</span>
+                          {confirmationShortNote(offer, language) && <small>{confirmationShortNote(offer, language)}</small>}
                         </span>
                       </button>
                     );

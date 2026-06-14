@@ -1696,6 +1696,12 @@ textarea:focus {
   font-size: 0.75rem;
 }
 
+.lead-offer-copy small {
+  color: #6f827e;
+  font-size: 0.7rem;
+  line-height: 1.35;
+}
+
 .lead-minimal-disclaimer {
   margin: 11px 0 0;
   color: rgba(0, 45, 54, 0.58);
