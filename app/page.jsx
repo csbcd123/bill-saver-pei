@@ -1650,26 +1650,7 @@ function priceNoteText(offer, language) {
 }
 
 function offerBadges(offer, language, form) {
-  const internetBandBadges =
-    offer.service_type === "internet" || offer.service_type === "both"
-      ? [
-          textByLanguage(
-            language,
-            getPlanSpeedBand(offer) === "gig_plus" ? "1 Gig+ 高速" : getPlanSpeedBand(offer) === "300_500" ? "300–500M 档" : "100M 左右",
-            getPlanSpeedBand(offer) === "gig_plus" ? "1 Gig+ 高速" : getPlanSpeedBand(offer) === "300_500" ? "300–500M 檔" : "100M 左右",
-            getPlanSpeedBand(offer) === "gig_plus" ? "1 Gig+ speed" : getPlanSpeedBand(offer) === "300_500" ? "300–500 Mbps tier" : "Around 100 Mbps"
-          ),
-          ...(getInternetUsageSpeedBand(form) === "100" && getPlanSpeedBand(offer) === "gig_plus"
-            ? [textByLanguage(language, "速度更高，价格也可能更高", "速度更高，價格也可能更高", "Faster speed, potentially higher price")]
-            : []),
-          ...(getInternetUsageSpeedBand(form) === "300_500" && getPlanSpeedBand(offer) === "gig_plus"
-            ? [textByLanguage(language, "高速备选", "高速備選", "High-speed alternative")]
-            : []),
-          ...(getInternetUsageSpeedBand(form) === "gig_plus" && getPlanSpeedBand(offer) === "300_500"
-            ? [textByLanguage(language, "低价备选，速度低一档", "低價備選，速度低一檔", "Lower-cost option, one speed tier down")]
-            : [])
-        ]
-      : [];
+  const internetBandBadges = [];
   const creditCheckBadge = textByLanguage(language, "需要信用核查", "需要信用審查", "Credit check required");
   const prepaidBadges = [
     textByLanguage(language, "预付卡订阅", "預付卡訂閱", "Prepaid subscription"),
