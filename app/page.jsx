@@ -210,7 +210,7 @@ const translations = {
       "Bell 可用优惠通常需要满足特定资格。最终价格、资格、自动付款、信用审核和促销条件以运营商或授权销售人员确认为准。"
     ,
     purpleCowNote:
-      "Purple Cow 适合价格敏感、希望降低宽带月费的用户。通常免安装费、免激活费，并提供首月不满意退款保证。最终可用性、速度、安装条件和退款条款以 Purple Cow 当前确认为准。",
+      "Purple Cow 适合价格敏感、希望降低宽带月费的用户。通过 Bill Saver 下单可协助申请免 $55 安装费，并提供无合约和不限流量方案。最终可用性、安装资格、优惠和价格以 Purple Cow 当前确认为准。",
     purpleCowBadges: ["免安装费", "免激活费", "首月不满意可退款"],
     koodoInternetNote:
       "Koodo Internet 适合希望降低宽带月费、接受自助安装、又想保留较好性价比的用户。通常无激活费，并支持免费自助安装；如需要人工指导或上门安装，可以根据地址和资格进一步确认。Koodo 也提供 30 天免费试用 / 不满意退款政策，具体安装方式、退款条件、资格和最终价格以 Koodo 当前条款确认为准。",
@@ -413,7 +413,7 @@ const translations = {
       "Bell 可用優惠通常需要滿足特定資格。最終價格、資格、自動付款、信用審核和促銷條件以電信商或授權銷售人員確認為準。"
     ,
     purpleCowNote:
-      "Purple Cow 適合價格敏感、希望降低寬頻月費的用戶。通常免安裝費、免啟用費，並提供首月不滿意退款保證。最終可用性、速度、安裝條件和退款條款以 Purple Cow 目前確認為準。",
+      "Purple Cow 適合價格敏感、希望降低寬頻月費的用戶。透過 Bill Saver 下單可協助申請免 $55 安裝費，並提供無合約和不限流量方案。最終可用性、安裝資格、優惠和價格以 Purple Cow 目前確認為準。",
     purpleCowBadges: ["免安裝費", "免啟用費", "首月不滿意可退款"],
     koodoInternetNote:
       "Koodo Internet 適合希望降低寬頻月費、接受自助安裝、又想保留較好性價比的用戶。通常無啟用費，並支援免費自助安裝；如需要人工指導或上門安裝，可以根據地址和資格進一步確認。Koodo 也提供 30 天免費試用 / 不滿意退款政策，具體安裝方式、退款條件、資格和最終價格以 Koodo 目前條款確認為準。",
@@ -627,7 +627,7 @@ const translations = {
       "Available Bell offers usually require specific eligibility. Final pricing, eligibility, pre-authorized payment, credit approval, and promotional terms must be confirmed by the provider or an authorized sales representative."
     ,
     purpleCowNote:
-      "Purple Cow may be a good fit for price-sensitive users who want to lower their internet bill. It typically has no installation fee, no activation fee, and a first-month money-back guarantee. Final availability, speed, installation conditions, and refund terms should be confirmed with Purple Cow.",
+      "Purple Cow may be a good fit for price-sensitive users who want to lower their internet bill. Ordering through Bill Saver may qualify for a $55 installation fee waiver, with no-contract and no-usage-fee options. Final availability, installation eligibility, offers, and pricing must be confirmed with Purple Cow.",
     purpleCowBadges: ["No installation fee", "No activation fee", "First-month money-back"],
     koodoInternetNote:
       "Koodo Internet may be a strong fit for users who want to lower their internet bill, are comfortable with self-installation, and still want good overall value. It typically has no activation fee and supports free self-installation. If technician guidance or in-home installation is needed, availability can be confirmed based on address and eligibility. Koodo also offers a 30-day free trial / money-back policy. Installation method, refund terms, eligibility, and final pricing should be confirmed with Koodo's current terms.",
@@ -1726,7 +1726,11 @@ function offerBadges(offer, language, form) {
   if (/Purple Cow/i.test(offer.provider)) {
     return [
       ...internetBandBadges,
-      textByLanguage(language, "Bill Saver 专享免安装费", "Bill Saver 專享免安裝費", "Bill Saver exclusive installation fee waiver"),
+      {
+        label: textByLanguage(language, "Bill Saver 下单可免 $55 安装费", "Bill Saver 下單可免 $55 安裝費", "Order through Bill Saver: waive $55 installation fee"),
+        subLabel: textByLanguage(language, "资格需确认", "資格需確認", "Eligibility confirmation required"),
+        className: "badge-bill-saver-exclusive"
+      },
       textByLanguage(language, "无合约", "無合約", "No contract"),
       textByLanguage(language, "不限流量", "不限流量", "No usage fees"),
       "Wireless Router",
@@ -1799,17 +1803,6 @@ function offerBadges(offer, language, form) {
 }
 
 function displayBadge(badge, offer, index, language) {
-  if (/Purple Cow/i.test(offer.provider || "") && index === 0) {
-    return {
-      label: textByLanguage(
-        language,
-        "Bill Saver 专享免安装费",
-        "Bill Saver 專享免安裝費",
-        "Bill Saver exclusive installation fee waiver"
-      ),
-      subLabel: textByLanguage(language, "Bill Saver 专享", "Bill Saver 專享", "Bill Saver exclusive")
-    };
-  }
   return typeof badge === "string" ? { label: badge } : badge;
 }
 
@@ -3622,7 +3615,11 @@ export default function Home() {
                             <div className="badge-row">
                               {badges.map((badge, index) => {
                                 const visibleBadge = displayBadge(badge, offer, index, language);
-                                return <span key={badgeKey(visibleBadge, index)}>{visibleBadge.label}</span>;
+                                return (
+                                  <span className={visibleBadge.className || ""} key={badgeKey(visibleBadge, index)}>
+                                    {visibleBadge.label}
+                                  </span>
+                                );
                               })}
                             </div>
                             <p>{localizedGoodFor(offer, t, language)}</p>
@@ -3668,7 +3665,10 @@ export default function Home() {
                                 const visibleBadge = displayBadge(badge, offer, index, language);
 
                                 return (
-                                  <span className={visibleBadge.subLabel ? "badge-with-sub-label" : ""} key={badgeKey(visibleBadge, index)}>
+                                  <span
+                                    className={[visibleBadge.subLabel ? "badge-with-sub-label" : "", visibleBadge.className || ""].filter(Boolean).join(" ")}
+                                    key={badgeKey(visibleBadge, index)}
+                                  >
                                     <span>{visibleBadge.label}</span>
                                     {visibleBadge.subLabel && <small>{visibleBadge.subLabel}</small>}
                                   </span>

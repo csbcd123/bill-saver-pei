@@ -1028,6 +1028,18 @@ textarea:focus {
   line-height: 1.05;
 }
 
+.badge-row .badge-bill-saver-exclusive {
+  border-color: #dfb83b;
+  background: linear-gradient(135deg, #fff7d6, #ffe9a3);
+  color: #694c00;
+  box-shadow: 0 3px 10px rgba(177, 128, 0, 0.18);
+  font-weight: 850;
+}
+
+.badge-row .badge-bill-saver-exclusive small {
+  color: #8a6500;
+}
+
 .referral-box {
   display: grid;
   gap: 10px;
