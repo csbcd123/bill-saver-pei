@@ -966,6 +966,34 @@ function mobileOfferSortScore(offer, form) {
   return price * 2 - estimatedSaving * 1.5 + mobileDataOverprovisionPenalty(offer.mobile_data, form.current_mobile_data);
 }
 
+function compareMobileOfferValue(offerA, offerB, form) {
+  const currentPrice = monthlyPrice(form);
+  const priceA = mobileOfferPrice(offerA);
+  const priceB = mobileOfferPrice(offerB);
+
+  if (currentPrice > 0 && priceA !== null && priceB !== null) {
+    const differenceA = Math.abs(currentPrice - priceA);
+    const differenceB = Math.abs(currentPrice - priceB);
+    const bothWithinTwelve = differenceA < 12 && differenceB < 12;
+
+    if (bothWithinTwelve) {
+      const aWithinFive = differenceA <= 5;
+      const bWithinFive = differenceB <= 5;
+      if (aWithinFive !== bWithinFive) return aWithinFive ? -1 : 1;
+
+      if (aWithinFive && bWithinFive) {
+        const dataA = mobileOfferDataGB(offerA);
+        const dataB = mobileOfferDataGB(offerB);
+        const comparableDataA = dataA === Infinity ? Number.MAX_SAFE_INTEGER : Number(dataA || 0);
+        const comparableDataB = dataB === Infinity ? Number.MAX_SAFE_INTEGER : Number(dataB || 0);
+        if (comparableDataA !== comparableDataB) return comparableDataB - comparableDataA;
+      }
+    }
+  }
+
+  return mobileOfferSortScore(offerA, form) - mobileOfferSortScore(offerB, form);
+}
+
 function speedBucket(speed) {
   const rank = speedRank(speed);
   if (rank <= 150) return "low";
@@ -2386,7 +2414,7 @@ function bestProviderOffer(offers, provider, form) {
 
 function bestMobileProviderOffer(offers, provider, form) {
   const matches = offers.filter((offer) => (provider === "Bell Aliant" ? isBell(offer) : offer.provider === provider));
-  return matches.sort((a, b) => mobileOfferSortScore(a, form) - mobileOfferSortScore(b, form))[0];
+  return matches.sort((a, b) => compareMobileOfferValue(a, b, form))[0];
 }
 
 function internetPicks(form) {
@@ -2440,9 +2468,19 @@ function mobilePicks(form) {
     ? ["public_mobile", "koodo", "telus", "bell_aliant", "eastlink"]
     : ["public_mobile", "telus", "bell_aliant"];
 
-  return offers
+  const sortedOffers = offers
     .filter((offer) => allowedProviders.includes(normalizeProviderName(offer.provider)))
-    .sort((a, b) => mobileOfferSortScore(a, form) - mobileOfferSortScore(b, form))
+    .sort((a, b) => compareMobileOfferValue(a, b, form));
+  const seenProviders = new Set();
+  const providerPicks = sortedOffers.filter((offer) => {
+    const provider = normalizeProviderName(offer.provider);
+    if (seenProviders.has(provider)) return false;
+    seenProviders.add(provider);
+    return true;
+  });
+
+  return providerPicks
+    .slice(0, 3)
     .map((offer, index) => ({
       ...offer,
       pickTypeKey: index === 0 ? "highQualityPick" : /Public Mobile/i.test(offer.provider) ? "lowestCostPick" : "manualPick"
