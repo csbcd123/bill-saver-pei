@@ -1695,7 +1695,7 @@ function offerBadges(offer, language, form) {
       textByLanguage(language, "30 天可免费试用", "30 天可免費試用", "30-day risk-free trial"),
       textByLanguage(language, "免费设备租用", "免費設備租用", "Free equipment rental"),
       textByLanguage(language, "安装资格需确认", "安裝資格需確認", "Installation eligibility required"),
-      ...(form?.bundle_includes_tv
+      ...(form?.service_type === "both" && form?.bundle_includes_tv
         ? [textByLanguage(language, "TV 需人工确认", "TV 需人工確認", "TV requires manual confirmation")]
         : []),
       ...(form?.bundle_includes_home_phone
@@ -1715,7 +1715,7 @@ function offerBadges(offer, language, form) {
       textByLanguage(language, "无合约", "無合約", "No contract"),
       textByLanguage(language, "不限流量", "不限流量", "No usage fees"),
       "Wireless Router",
-      ...(form?.bundle_includes_tv
+      ...(form?.service_type === "both" && form?.bundle_includes_tv
         ? [textByLanguage(language, "TV 需人工确认", "TV 需人工確認", "TV requires manual confirmation")]
         : []),
       ...(form?.bundle_includes_home_phone
