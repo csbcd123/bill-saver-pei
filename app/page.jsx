@@ -785,6 +785,17 @@ function LineIcon({ name, size = 32, strokeWidth = 2.4 }) {
   if (name === "smartphone") {
     return <svg {...common}><rect x="6.5" y="2" width="11" height="20" rx="2" /><path d="M10 5h4" /><path d="M11.5 18.5h1" /></svg>;
   }
+  if (name === "bundle") {
+    return (
+      <svg {...common}>
+        <rect x="3" y="3" width="7" height="7" rx="1.5" />
+        <rect x="14" y="3" width="7" height="7" rx="1.5" />
+        <rect x="3" y="14" width="7" height="7" rx="1.5" />
+        <path d="M17.5 14v7" />
+        <path d="M14 17.5h7" />
+      </svg>
+    );
+  }
   if (name === "building") {
     return <svg {...common}><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18" /><path d="M2 22h20" /><path d="M9 6h1" /><path d="M14 6h1" /><path d="M9 10h1" /><path d="M14 10h1" /><path d="M9 14h1" /><path d="M14 14h1" /><path d="M10 22v-4h4v4" /></svg>;
   }
@@ -795,14 +806,11 @@ function LineIcon({ name, size = 32, strokeWidth = 2.4 }) {
 }
 
 function ServiceTypeIcon({ type }) {
-  if (type === "both") {
-    return null;
-  }
-
   return (
-    <span className="bill-type-icon-wrap" aria-hidden="true">
+    <span className={`bill-type-icon-wrap${type === "both" ? " bill-type-icon-wrap-bundle" : ""}`} aria-hidden="true">
       {type === "internet" && <LineIcon name="wifi" size={30} strokeWidth={2.7} />}
       {type === "mobile" && <LineIcon name="smartphone" size={28} strokeWidth={2.6} />}
+      {type === "both" && <LineIcon name="bundle" size={31} strokeWidth={2.35} />}
     </span>
   );
 }

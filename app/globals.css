@@ -2671,6 +2671,23 @@ textarea:focus {
   transform: translateY(-1px);
 }
 
+.bill-type-icon-wrap-bundle {
+  color: #8af2ca;
+}
+
+.bill-type-icon-wrap-bundle svg {
+  color: #8af2ca;
+}
+
+.bill-type-card.active .bill-type-icon-wrap-bundle {
+  color: #fff;
+  filter: drop-shadow(0 0 8px rgba(70, 241, 184, 0.38));
+}
+
+.bill-type-card.active .bill-type-icon-wrap-bundle svg {
+  color: #fff;
+}
+
 .bill-type-combo-icon {
   display: inline-flex;
   align-items: center;
