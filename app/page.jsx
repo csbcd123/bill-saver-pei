@@ -1916,7 +1916,12 @@ function usageGuidanceContent(language) {
           "微信、網頁、電郵、YouTube/Netflix、一般高清影片、視訊通話、刷短影片、偶爾在家工作。",
           "Messaging, browsing, email, YouTube/Netflix, regular HD video, video calls, short videos, and occasional work from home."
         ),
-        estimate: textByLanguage(language, "50–100 Mbps 通常够用。", "50–100 Mbps 通常夠用。", "50–100 Mbps is usually enough."),
+        estimate: textByLanguage(
+          language,
+          "100M 左右，适合轻度使用。",
+          "100M 左右，適合輕度使用。",
+          "Around 100 Mbps for light use."
+        ),
         caution: textByLanguage(
           language,
           "如果多人同时 4K、游戏、直播、上传文件，100 Mbps / 上传 10 Mbps 可能不够稳。",
@@ -1937,9 +1942,9 @@ function usageGuidanceContent(language) {
         ),
         estimate: textByLanguage(
           language,
-          "100–300 Mbps 比较合适。对大多数 PEI 普通家庭来说，300 Mbps 通常已经比较舒服。",
-          "100–300 Mbps 比較合適。對大多數 PEI 一般家庭來說，300 Mbps 通常已經比較舒服。",
-          "100–300 Mbps is usually a good range. For many PEI households, 300 Mbps is already comfortable."
+          "300–500M 左右，适合大多数 PEI 普通家庭。",
+          "300–500M 左右，適合大多數 PEI 普通家庭。",
+          "Around 300–500 Mbps for most standard PEI households."
         ),
         caution: textByLanguage(
           language,
@@ -1961,9 +1966,9 @@ function usageGuidanceContent(language) {
         ),
         estimate: textByLanguage(
           language,
-          "400 Mbps–1 Gbps 更合适。如果追求稳定体验，尤其是多人同时使用，Gigabit / Fibre 会更稳。",
-          "400 Mbps–1 Gbps 更合適。如果追求穩定體驗，尤其是多人同時使用，Gigabit / Fibre 會更穩。",
-          "400 Mbps–1 Gbps is usually more suitable. For the most stable experience, especially with many simultaneous users, Gigabit / Fibre can be a better fit."
+          "1 Gig+ 高速，适合多人家庭和重度使用。",
+          "1 Gig+ 高速，適合多人家庭和重度使用。",
+          "1 Gig+ speed for multi-user households and heavy use."
         ),
         caution: textByLanguage(
           language,
