@@ -7,9 +7,10 @@ const GOOGLE_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbyIzob_u06H4LUyIE783HC9O9K_XmCckwyKz3u8y2h05MHX__C4XZ-9DskK__XBcBltxw/exec";
 
 const languages = [
-  { code: "zhHans", label: "简" },
-  { code: "zhHant", label: "繁" },
-  { code: "en", label: "EN" }
+  { code: "en", label: "English" },
+  { code: "zh", label: "简体中文" },
+  { code: "fr", label: "Français" },
+  { code: "zh-TW", label: "繁體中文" }
 ];
 
 const translations = {
@@ -635,6 +636,28 @@ const translations = {
   }
 };
 
+translations.zh = translations.zhHans;
+translations["zh-TW"] = translations.zhHant;
+translations.en.heroHeadline = "Free Internet & Mobile Bill Check";
+translations.fr = {
+  ...translations.en,
+  languageName: "Français",
+  heroHeadline: "Vérification gratuite de votre facture Internet et mobile",
+  serviceType: "Que souhaitez-vous vérifier?",
+  serviceCards: { mobile: "Facture mobile", internet: "Facture Internet", both: "Facture groupée" },
+  submit: "Vérifier ma facture",
+  bestPrice: "Obtenir cette offre",
+  manualPick: "Vérification manuelle",
+  installationAddress: "Adresse du service",
+  postalPrefix: "Code postal",
+  city: "Ville / région",
+  name: "Nom",
+  phone: "Téléphone",
+  email: "Courriel",
+  leadSubmit: "Soumettre",
+  preferredContact: "Méthode de contact préférée"
+};
+
 const areaOptions = [
   { value: "Charlottetown", label: "Charlottetown" },
   { value: "Stratford", label: "Stratford" },
@@ -728,8 +751,11 @@ const initialLead = {
   postal_code: "",
   is_byod: "",
   keep_phone_number: "",
-  contract_status: "",
+  current_contract_status: "not_sure",
   contract_end_date: "",
+  wants_contract_reminder: false,
+  reminder_days_before: "60",
+  consent_to_contact: false,
   best_contact_time: "",
   notes: ""
 };
@@ -824,7 +850,7 @@ function serviceTypeSubtitle(language, type) {
     both: ["多项服务人工复核", "多項服務人工覆核", "Manual review for multiple services"]
   };
   const [zhHans, zhHant, en] = subtitles[type];
-  return language === "en" ? en : language === "zhHant" ? zhHant : zhHans;
+  return language === "en" || language === "fr" ? en : language === "zhHant" || language === "zh-TW" ? zhHant : zhHans;
 }
 
 function MobileUsageCard({ item, content, active, onClick, bundle = false }) {
@@ -1437,7 +1463,7 @@ function isKoodoOrTelusInternet(offer) {
 
 function money(value, language) {
   if (typeof value !== "number") return value;
-  return language === "en" ? `$${value}/mo` : `$${value}/月`;
+  return language === "en" || language === "fr" ? `$${value}/mo` : `$${value}/月`;
 }
 
 function savingsText(offer, form, t, language) {
@@ -1450,8 +1476,8 @@ function savingsText(offer, form, t, language) {
       ? textByLanguage(language, "价格接近，但规格更好", "價格接近，但規格更好", "Similar price, better service")
       : textByLanguage(language, "适合作为备选方案", "適合作為備選方案", "Suitable as a backup option");
   }
-  if (language === "en") return `About $${saving}/mo, about $${annualSaving}/yr`;
-  return language === "zhHant" ? `約 $${saving}/月，約 $${annualSaving}/年` : `约 $${saving}/月，约 $${annualSaving}/年`;
+  if (language === "en" || language === "fr") return `About $${saving}/mo, about $${annualSaving}/yr`;
+  return language === "zhHant" || language === "zh-TW" ? `約 $${saving}/月，約 $${annualSaving}/年` : `约 $${saving}/月，约 $${annualSaving}/年`;
 }
 
 function confirmationSavingsText(offer, form, t, language) {
@@ -1611,7 +1637,7 @@ function localizedNote(offer, t, language, form) {
   }
   if (offer.offer_id === "bell_mobile_winback_manual") return bellAliantDisplayText(t.bellWinbackNote);
   if (/Purple Cow/i.test(offer.provider)) {
-    const description = offer.description?.[language === "zhHant" ? "zh-TW" : language === "en" ? "en" : "zh"];
+    const description = offer.description?.[language === "zhHant" || language === "zh-TW" ? "zh-TW" : language === "en" || language === "fr" ? "en" : "zh"];
     const publicDescription = offer.notDefaultPrimary
       ? textByLanguage(
           language,
@@ -1623,7 +1649,7 @@ function localizedNote(offer, t, language, form) {
     return [...bundleNotes, publicDescription].filter(Boolean).join(" ");
   }
   if (/Eastlink/i.test(offer.provider)) {
-    const description = offer.description?.[language === "zhHant" ? "zh-TW" : language === "en" ? "en" : "zh"];
+    const description = offer.description?.[language === "zhHant" || language === "zh-TW" ? "zh-TW" : language === "en" || language === "fr" ? "en" : "zh"];
     return [...bundleNotes, description || bellAliantDisplayText(offer.caution)].filter(Boolean).join(" ");
   }
   if (offer.lowSavingsWarning) {
@@ -1724,9 +1750,24 @@ function bundleResultNotes(form, language) {
 }
 
 function textByLanguage(language, zhHans, zhHant, en) {
-  if (language === "en") return en;
-  if (language === "zhHant") return zhHant;
+  if (language === "en" || language === "fr") return en;
+  if (language === "zhHant" || language === "zh-TW") return zhHant;
   return zhHans;
+}
+
+function getInitialLanguage() {
+  if (typeof window === "undefined") return "en";
+  const language = new URLSearchParams(window.location.search).get("lang");
+  return ["en", "zh", "fr", "zh-TW"].includes(language) ? language : "en";
+}
+
+function calculateReminderDueDate(contractEndDate, daysBefore) {
+  if (!contractEndDate || !daysBefore) return "";
+  const date = new Date(`${contractEndDate}T00:00:00`);
+  const days = Number(daysBefore);
+  if (Number.isNaN(date.getTime()) || !Number.isFinite(days)) return "";
+  date.setDate(date.getDate() - days);
+  return date.toISOString().slice(0, 10);
 }
 
 function telusDisclaimer(language) {
@@ -1777,7 +1818,7 @@ function fieldLabel(language, key) {
 
 function speedText(offer, language) {
   if (offer.speedLabel && typeof offer.speedLabel === "object") {
-    return offer.speedLabel[language === "zhHant" ? "zh-TW" : language === "en" ? "en" : "zh"];
+    return offer.speedLabel[language === "zhHant" || language === "zh-TW" ? "zh-TW" : language === "en" || language === "fr" ? "en" : "zh"];
   }
   if (!offer.speed_down && !offer.speed_up) {
     return textByLanguage(language, "具体上下行速度需确认", "具體上下行速度需確認", "Download/upload speeds require confirmation");
@@ -2319,6 +2360,7 @@ function recommendationTagTone(offer, index) {
 }
 
 function providerCtaLabel(offer, language) {
+  if (language === "fr") return "Obtenir cette offre";
   if (isBell(offer)) return textByLanguage(language, "获取可用优惠", "取得可用優惠", "Check available offer");
   if (/Koodo|TELUS/i.test(offer.provider || "")) return textByLanguage(language, "查看是否适合我", "查看是否適合我", "See if it fits");
   if (/Purple Cow/i.test(offer.provider || "")) return textByLanguage(language, "咨询本周方案", "諮詢本週方案", "Ask about this week's option");
@@ -2422,11 +2464,11 @@ function ResultStepProgress({ language, currentStep = 2, complete = false }) {
 function displayPlanName(offer, t) {
   if (offer.offer_id === "bell_mobile_winback_manual") return bellAliantDisplayText(t.bellWinbackService);
   if (offer.offer_id === "bell_internet_mobile_bundle") {
-    const language = t === translations.en ? "en" : t === translations.zhHant ? "zhHant" : "zhHans";
+    const language = t === translations.en || t === translations.fr ? "en" : t === translations.zhHant ? "zhHant" : "zhHans";
     return textByLanguage(language, "Bell Aliant 宽带 + Better TV", "Bell Aliant 寬頻 + Better TV", "Bell Aliant Internet + Better TV");
   }
   if (offer.offer_id === "bell_internet_better_tv_home_phone_bundle") {
-    const language = t === translations.en ? "en" : t === translations.zhHant ? "zhHant" : "zhHans";
+    const language = t === translations.en || t === translations.fr ? "en" : t === translations.zhHant ? "zhHant" : "zhHans";
     return textByLanguage(
       language,
       "Bell Aliant 宽带 + Better TV + 家庭电话",
@@ -2435,7 +2477,7 @@ function displayPlanName(offer, t) {
     );
   }
   if (offer.service_type === "both" && (offer.manual_tv_direction || offer.manual_home_phone_direction)) {
-    const language = t === translations.en ? "en" : t === translations.zhHant ? "zhHant" : "zhHans";
+    const language = t === translations.en || t === translations.fr ? "en" : t === translations.zhHant ? "zhHant" : "zhHans";
     const directions = [
       offer.manual_tv_direction ? textByLanguage(language, "TV 服务人工确认", "TV 服務人工確認", "TV service manual confirmation") : "",
       offer.manual_home_phone_direction
@@ -2965,7 +3007,7 @@ function savingsHelperText(yearlySavings, t, language) {
 function payloadOfferName(offer, language) {
   const localized = offer.serviceName || offer.service_name;
   if (localized && typeof localized === "object") {
-    const key = language === "en" ? "en" : language === "zhHant" ? "zh-TW" : "zh";
+    const key = language === "en" || language === "fr" ? "en" : language === "zhHant" || language === "zh-TW" ? "zh-TW" : "zh";
     if (localized[key]) return localized[key];
   }
   return offer.plan_name || offer.display_name || offer.name || "";
@@ -3027,7 +3069,7 @@ function buildSheetPayload({ form, language, source, lead, selectedOffer, recomm
       has_home_phone: form.bundle_includes_home_phone ? "yes" : "no",
       is_byod: lead.is_byod || "",
       keep_phone_number: lead.keep_phone_number || "",
-      contract_status: lead.contract_status || "",
+      current_contract_status: lead.current_contract_status || "",
       contract_end_date: lead.contract_end_date || ""
     }),
     willing_to_switch: "",
@@ -3044,6 +3086,16 @@ function buildSheetPayload({ form, language, source, lead, selectedOffer, recomm
     preferred_contact_method: lead.preferred_contact || "",
     best_contact_time: lead.best_contact_time || "",
     customer_note: lead.notes || "",
+    current_contract_status: lead.current_contract_status || "",
+    contract_end_date: lead.contract_end_date || "",
+    wants_contract_reminder: Boolean(lead.wants_contract_reminder),
+    reminder_days_before: lead.wants_contract_reminder ? lead.reminder_days_before || "60" : "",
+    reminder_due_date: lead.wants_contract_reminder
+      ? calculateReminderDueDate(lead.contract_end_date, lead.reminder_days_before)
+      : "",
+    reminder_sent: false,
+    reminder_sent_at: "",
+    consent_to_contact: Boolean(lead.consent_to_contact),
     current_monthly_bill: form.monthly_price || "",
     region: "PEI",
     city_or_area: form.city || "",
@@ -3107,7 +3159,7 @@ async function submitToGoogleSheet(payload) {
 }
 
 export default function Home() {
-  const [language, setLanguage] = useState("zhHans");
+  const [language, setLanguage] = useState("en");
   const [form, setForm] = useState(initialForm);
   const [lead, setLead] = useState(initialLead);
   const [selectedOffer, setSelectedOffer] = useState(null);
@@ -3134,6 +3186,24 @@ export default function Home() {
   const flowOpen = resultOpen || leadOpen || successOpen;
   const publicMobileReview = publicMobileLocalReviewContent(language);
   const usageGuidance = usageGuidanceContent(language);
+
+  useEffect(() => {
+    setLanguage(getInitialLanguage());
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.lang =
+      language === "fr" ? "fr" : language === "en" ? "en" : language === "zh-TW" ? "zh-Hant" : "zh-CN";
+    document.title = `Bill Saver | ${translations[language].heroHeadline}`;
+  }, [language]);
+
+  function setLanguageAndUrl(nextLanguage) {
+    setLanguage(nextLanguage);
+    if (typeof window === "undefined") return;
+    const url = new URL(window.location.href);
+    url.searchParams.set("lang", nextLanguage);
+    window.history.replaceState({}, "", url.toString());
+  }
 
   useEffect(() => {
     function onKeyDown(event) {
@@ -3384,6 +3454,27 @@ export default function Home() {
       );
       return;
     }
+    if (!lead.consent_to_contact) {
+      setSheetError(
+        language === "fr"
+          ? "Veuillez accepter avant de soumettre."
+          : textByLanguage(language, "请先同意后再提交。", "請先同意後再提交。", "Please agree before submitting.")
+      );
+      return;
+    }
+    if (lead.wants_contract_reminder && !lead.contract_end_date) {
+      setSheetError(
+        language === "fr"
+          ? "Veuillez saisir la date de fin du contrat pour activer le rappel."
+          : textByLanguage(
+              language,
+              "请先填写合约到期时间，再启用提醒。",
+              "請先填寫合約到期時間，再啟用提醒。",
+              "Please enter the contract end date before enabling a reminder."
+            )
+      );
+      return;
+    }
     setSubmitting(true);
     setSheetError("");
     try {
@@ -3408,7 +3499,7 @@ export default function Home() {
   }
 
   return (
-    <main className="page-shell billSaverPage" lang={language === "en" ? "en" : language === "zhHant" ? "zh-Hant" : "zh-CN"}>
+    <main className="page-shell billSaverPage" lang={language === "fr" ? "fr" : language === "en" ? "en" : language === "zh-TW" ? "zh-Hant" : "zh-CN"}>
       <section className="hero heroSection">
         <div className="heroInner">
           <div className="heroTopBar">
@@ -3425,18 +3516,17 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="language-switcher" aria-label="Language switcher">
-              {languages.map((item) => (
-                <button
-                  key={item.code}
-                  type="button"
-                  className={language === item.code ? "active" : ""}
-                  onClick={() => setLanguage(item.code)}
-                  aria-label={translations[item.code].languageName}
-                >
-                  {item.label}
-                </button>
-              ))}
+            <div className="language-switcher">
+              <select
+                className="languageSelect"
+                value={language}
+                onChange={(event) => setLanguageAndUrl(event.target.value)}
+                aria-label={language === "fr" ? "Langue" : "Language"}
+              >
+                {languages.map((item) => (
+                  <option key={item.code} value={item.code}>{item.label}</option>
+                ))}
+              </select>
             </div>
           </div>
 
@@ -3508,7 +3598,7 @@ export default function Home() {
                       >
                         {BUNDLE_TYPE_OPTIONS.map((option) => (
                           <option key={option.value} value={option.value}>
-                            {option.label[language]}
+                            {option.label[language] || option.label.en}
                           </option>
                         ))}
                       </select>
@@ -3532,8 +3622,8 @@ export default function Home() {
                           <span>{t.usageCards[item.value].description}</span>
                         </span>
                         <span className="usage-card-speed">
-                          <small>{language === "en" ? "Recommended" : language === "zhHant" ? "建議頻寬" : "推荐带宽"}</small>
-                          <strong>{internetUsageSpeeds[language][item.value]}</strong>
+                          <small>{language === "en" || language === "fr" ? "Recommended" : language === "zhHant" || language === "zh-TW" ? "建議頻寬" : "推荐带宽"}</small>
+                          <strong>{(internetUsageSpeeds[language] || internetUsageSpeeds.en)[item.value]}</strong>
                         </span>
                         {form.internet_usage_level === item.value && <span className="usage-card-check" aria-hidden="true">✓</span>}
                       </button>
@@ -3751,9 +3841,9 @@ export default function Home() {
                       </strong>
                     ) : (
                       <>
-                        <span>{language === "en" ? "~" : language === "zhHant" ? "約" : "约"}</span>
+                        <span>{language === "en" || language === "fr" ? "~" : language === "zhHant" || language === "zh-TW" ? "約" : "约"}</span>
                         <strong>${yearlySavings}</strong>
-                        <em>{language === "en" ? "/ yr" : "/ 年"}</em>
+                        <em>{language === "en" || language === "fr" ? "/ yr" : "/ 年"}</em>
                       </>
                     )}
                   </div>
@@ -4126,7 +4216,7 @@ export default function Home() {
                     </Field>
                     {requiresServiceAddress(form) && (
                       <>
-                        <Field label={textByLanguage(language, "安装街道地址", "安裝街道地址", "Installation street address")}>
+                        <Field label={language === "fr" ? "Adresse du service" : textByLanguage(language, "安装街道地址", "安裝街道地址", "Installation street address")}>
                           <input
                             value={lead.wechat}
                             onChange={(event) => updateLead("wechat", event.target.value)}
@@ -4134,7 +4224,7 @@ export default function Home() {
                             required
                           />
                         </Field>
-                        <Field label={textByLanguage(language, "安装地址邮政编码", "安裝地址郵遞區號", "Installation postal code")}>
+                        <Field label={language === "fr" ? "Code postal" : textByLanguage(language, "安装地址邮政编码", "安裝地址郵遞區號", "Installation postal code")}>
                           <input
                             value={lead.postal_code}
                             onChange={(event) => updateLead("postal_code", event.target.value)}
@@ -4142,7 +4232,7 @@ export default function Home() {
                             required
                           />
                         </Field>
-                        <Field label={textByLanguage(language, "安装城市 / 区域", "安裝城市 / 區域", "Installation city / area")}>
+                        <Field label={language === "fr" ? "Ville / région" : textByLanguage(language, "安装城市 / 区域", "安裝城市 / 區域", "Installation city / area")}>
                           <input value={form.city} readOnly />
                         </Field>
                         <Field label={textByLanguage(language, "省份", "省份", "Province")}>
@@ -4152,7 +4242,7 @@ export default function Home() {
                     )}
                     {form.service_type === "mobile" && (
                       <>
-                        <Field label={textByLanguage(language, "城市 / 区域", "城市 / 區域", "City / area")}>
+                        <Field label={language === "fr" ? "Ville / région" : textByLanguage(language, "城市 / 区域", "城市 / 區域", "City / area")}>
                           <input value={form.city} readOnly />
                         </Field>
                         <Field label={textByLanguage(language, "是否自带手机（BYOD）", "是否自帶手機（BYOD）", "Bring your own device (BYOD)")}>
@@ -4169,17 +4259,47 @@ export default function Home() {
                             <option value="no">{textByLanguage(language, "否", "否", "No")}</option>
                           </Select>
                         </Field>
-                        <Field label={textByLanguage(language, "当前合约状态", "目前合約狀態", "Current contract status")}>
-                          <Select value={lead.contract_status} onChange={(value) => updateLead("contract_status", value)}>
-                            <option value="">{textByLanguage(language, "请选择", "請選擇", "Please select")}</option>
-                            <option value="no_contract">{textByLanguage(language, "无合约", "無合約", "No contract")}</option>
-                            <option value="contract">{textByLanguage(language, "合约中", "合約中", "In contract")}</option>
-                            <option value="not_sure">{textByLanguage(language, "不确定", "不確定", "Not sure")}</option>
-                          </Select>
+                      </>
+                    )}
+                    <Field label={language === "fr" ? "Statut du contrat actuel" : textByLanguage(language, "当前合约状态", "目前合約狀態", "Current contract status")}>
+                      <Select
+                        value={lead.current_contract_status}
+                        onChange={(value) =>
+                          setLead((current) => ({
+                            ...current,
+                            current_contract_status: value,
+                            contract_end_date: value === "in_contract" ? current.contract_end_date : "",
+                            wants_contract_reminder: value === "in_contract" ? current.wants_contract_reminder : false
+                          }))
+                        }
+                      >
+                        <option value="no_contract">{language === "fr" ? "Sans contrat" : textByLanguage(language, "无合约", "無合約", "No contract")}</option>
+                        <option value="in_contract">{language === "fr" ? "Encore sous contrat" : textByLanguage(language, "合约中", "合約中", "Still in contract")}</option>
+                        <option value="not_sure">{language === "fr" ? "Pas sûr" : textByLanguage(language, "不确定", "不確定", "Not sure")}</option>
+                      </Select>
+                    </Field>
+                    {lead.current_contract_status === "in_contract" && (
+                      <>
+                        <Field label={language === "fr" ? "Date de fin du contrat" : textByLanguage(language, "合约到期时间", "合約到期時間", "Contract end date")}>
+                          <input type="date" value={lead.contract_end_date} onChange={(event) => updateLead("contract_end_date", event.target.value)} />
                         </Field>
-                        {lead.contract_status === "contract" && (
-                          <Field label={textByLanguage(language, "合约到期日（选填）", "合約到期日（選填）", "Contract end date (optional)")}>
-                            <input type="date" value={lead.contract_end_date} onChange={(event) => updateLead("contract_end_date", event.target.value)} />
+                        <label className="lead-checkbox-field">
+                          <input
+                            type="checkbox"
+                            checked={lead.wants_contract_reminder}
+                            onChange={(event) => updateLead("wants_contract_reminder", event.target.checked)}
+                          />
+                          <span>{language === "fr" ? "Me rappeler avant la fin de mon contrat" : textByLanguage(language, "合约到期前提醒我", "合約到期前提醒我", "Remind me before my contract ends")}</span>
+                        </label>
+                        {lead.wants_contract_reminder && (
+                          <Field label={language === "fr" ? "Délai du rappel" : textByLanguage(language, "提前提醒时间", "提前提醒時間", "Reminder timing")}>
+                            <Select value={lead.reminder_days_before} onChange={(value) => updateLead("reminder_days_before", value)}>
+                              {["30", "60", "90"].map((days) => (
+                                <option key={days} value={days}>
+                                  {language === "fr" ? `${days} jours avant` : language === "en" ? `${days} days` : textByLanguage(language, `提前 ${days} 天`, `提前 ${days} 天`, `${days} days`)}
+                                </option>
+                              ))}
+                            </Select>
                           </Field>
                         )}
                       </>
@@ -4187,6 +4307,23 @@ export default function Home() {
                     <Field label={textByLanguage(language, "备注（选填）", "備註（選填）", "Notes (optional)")}>
                       <textarea value={lead.notes} onChange={(event) => updateLead("notes", event.target.value)} />
                     </Field>
+                    <label className="lead-checkbox-field lead-consent-field">
+                      <input
+                        type="checkbox"
+                        checked={lead.consent_to_contact}
+                        onChange={(event) => updateLead("consent_to_contact", event.target.checked)}
+                      />
+                      <span>
+                        {language === "fr"
+                          ? "J’accepte que Bill Saver me contacte pour confirmer les offres disponibles ou me rappeler avant la fin de mon contrat."
+                          : textByLanguage(
+                              language,
+                              "我同意 Bill Saver 联系我，帮我人工确认可用优惠，或在合约到期前提醒我。",
+                              "我同意 Bill Saver 聯絡我，幫我人工確認可用優惠，或在合約到期前提醒我。",
+                              "I agree that Bill Saver may contact me to manually confirm available offers or remind me before my contract ends."
+                            )}
+                      </span>
+                    </label>
                   </div>
 
                   <button className="submit-button" type="submit" disabled={submitting}>
