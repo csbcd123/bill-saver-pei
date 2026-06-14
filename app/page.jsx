@@ -1643,9 +1643,9 @@ function priceNoteText(offer, language) {
   if (!/Koodo/i.test(offer.provider) || offer.service_type !== "internet") return "";
   return textByLanguage(
     language,
-    "TELUS / Koodo 后付费手机用户可能额外优惠 $10/月，预付费用户不包含在内，最终资格和价格以 Koodo 确认为准。",
-    "TELUS / Koodo 後付費手機用戶可能額外優惠 $10/月，預付費用戶不包含在內，最終資格和價格以 Koodo 確認為準。",
-    "TELUS / Koodo postpaid mobile customers may qualify for an extra $10/month discount. Prepaid users are not included. Final eligibility and pricing must be confirmed with Koodo."
+    "符合资格的 Koodo 后付费手机用户可能额外优惠 $10/月；预付费用户不包含在内。最终优惠、资格和价格以 Koodo 确认为准。",
+    "符合資格的 Koodo 後付費手機用戶可能額外優惠 $10/月；預付費用戶不包含在內。最終優惠、資格和價格以 Koodo 確認為準。",
+    "Eligible Koodo postpaid mobile customers may qualify for an extra $10/month discount. Prepaid customers are not included. Final discount, eligibility, and pricing must be confirmed with Koodo."
   );
 }
 
@@ -1704,6 +1704,12 @@ function offerBadges(offer, language, form) {
   if (/Koodo/i.test(offer.provider) && (offer.service_type === "internet" || offer.service_type === "both")) {
     return [
       ...internetBandBadges,
+      textByLanguage(
+        language,
+        "Koodo 后付费手机用户可优惠 $10/月*",
+        "Koodo 後付費手機用戶可優惠 $10/月*",
+        "Koodo postpaid mobile customers may save $10/mo*"
+      ),
       textByLanguage(language, "无合约", "無合約", "No contract"),
       textByLanguage(language, "30 天可免费试用", "30 天可免費試用", "30-day risk-free trial"),
       textByLanguage(language, "免费设备租用", "免費設備租用", "Free equipment rental"),
