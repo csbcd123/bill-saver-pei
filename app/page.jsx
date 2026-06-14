@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { offerDatabase } from "@/lib/offerDatabase";
 
 const GOOGLE_SCRIPT_URL =
@@ -1472,9 +1472,11 @@ function savingsText(offer, form, t, language) {
   const saving = Math.max(0, Math.round(monthlyPrice(form) - targetPrice));
   const annualSaving = saving * 12;
   if (saving <= 0) {
-    return offer.betterServiceLevel
-      ? textByLanguage(language, "价格接近，但规格更好", "價格接近，但規格更好", "Similar price, better service")
-      : textByLanguage(language, "适合作为备选方案", "適合作為備選方案", "Suitable as a backup option");
+    return textByLanguage(language, "价格接近", "價格接近", "Similar price");
+  }
+  if (offer.service_type === "mobile") {
+    if (language === "en" || language === "fr") return `Save about $${annualSaving}/yr`;
+    return language === "zhHant" || language === "zh-TW" ? `預計每年節省約 $${annualSaving}` : `预计每年节省约 $${annualSaving}`;
   }
   if (language === "en" || language === "fr") return `About $${saving}/mo, about $${annualSaving}/yr`;
   return language === "zhHant" || language === "zh-TW" ? `約 $${saving}/月，約 $${annualSaving}/年` : `约 $${saving}/月，约 $${annualSaving}/年`;
@@ -2322,6 +2324,9 @@ function premiumCtaContent(language, offer) {
 }
 
 function recommendationTag(offer, index, language) {
+  if (isEastlinkPlan(offer)) {
+    return textByLanguage(language, "官网参考方案", "官網參考方案", "Official website reference");
+  }
   if (offer.eastlinkLocalBackup) {
     return textByLanguage(language, "本地运营商备选", "本地電信商備選", "Local provider backup option");
   }
@@ -2332,7 +2337,7 @@ function recommendationTag(offer, index, language) {
   if (offer.recommendationType === "best_savings") return textByLanguage(language, "明显节省", "明顯節省", "Strong savings");
   if (offer.recommendationType === "small_savings") return textByLanguage(language, "小幅节省", "小幅節省", "Modest savings");
   if (offer.recommendationType === "upgrade_option") {
-    return textByLanguage(language, "价格接近，规格更好", "價格接近，規格更好", "Similar price, better service");
+    return textByLanguage(language, "升级备选", "升級備選", "Upgrade option");
   }
   if (offer.recommendationType === "manual_review") return textByLanguage(language, "人工确认", "人工確認", "Manual review");
   if (offer.recommendationType === "backup_option") return textByLanguage(language, "备选方案", "備選方案", "Backup option");
@@ -2345,6 +2350,7 @@ function recommendationTag(offer, index, language) {
 }
 
 function recommendationTagTone(offer, index) {
+  if (isEastlinkPlan(offer)) return "alternative";
   if (offer.eastlinkLocalBackup) return "alternative";
   if (offer.similarPricePreferred) return "value";
   if (offer.recommendationType === "strong_savings") return "primary";
@@ -2778,7 +2784,7 @@ function bundleServiceMatchScore(offer, form) {
   if (form.bundle_includes_tv) {
     if (/Purple Cow/i.test(offer.provider)) score -= 8;
     if (/Koodo/i.test(offer.provider)) score -= 5;
-    if (/Eastlink/i.test(offer.provider)) score -= 3;
+    if (/Eastlink/i.test(offer.provider)) score += 80;
   }
   if (form.bundle_includes_home_phone && /Eastlink/i.test(offer.provider)) score -= 8;
 
@@ -2835,11 +2841,15 @@ function bundlePicks(form) {
           bill_saver_target_price: purpleCowTvBundle ? purpleCowTvTotal : offer.bill_saver_target_price,
           bundle_total_monthly_cost: purpleCowTvBundle ? purpleCowTvTotal : offer.bundle_total_monthly_cost,
           is_sensitive_price:
-            keepPurpleCowInternetPriceVisible || koodoTvSeparate ? false : hasManualAddOn || offer.is_sensitive_price,
+            keepPurpleCowInternetPriceVisible || koodoTvSeparate || eastlinkTvReference
+              ? false
+              : hasManualAddOn || offer.is_sensitive_price,
           is_public_price:
-            keepPurpleCowInternetPriceVisible || koodoTvSeparate ? true : hasManualAddOn ? false : offer.is_public_price,
+            keepPurpleCowInternetPriceVisible || koodoTvSeparate || eastlinkTvReference
+              ? true
+              : hasManualAddOn ? false : offer.is_public_price,
           display_price_requires_confirmation:
-            keepPurpleCowInternetPriceVisible || koodoTvSeparate
+            keepPurpleCowInternetPriceVisible || koodoTvSeparate || eastlinkTvReference
               ? false
               : hasManualAddOn || offer.display_price_requires_confirmation,
           manual_tv_direction: Boolean(form.bundle_includes_tv && !purpleCowTvBundle && !koodoTvSeparate && !eastlinkTvReference),
@@ -2849,9 +2859,9 @@ function bundlePicks(form) {
             ...(form.bundle_includes_tv && !koodoTvSeparate ? ["tv"] : []),
             ...(form.bundle_includes_home_phone ? ["home_phone"] : [])
           ],
-          requires_manual_confirmation: offer.requires_manual_confirmation || hasManualAddOn,
-          calculation_price_available: purpleCowTvBundle || koodoTvSeparate ? true : !hasManualAddOn,
-          notPrimaryRecommendation: koodoTvSeparate || offer.notPrimaryRecommendation,
+          requires_manual_confirmation: eastlinkTvReference ? false : offer.requires_manual_confirmation || hasManualAddOn,
+          calculation_price_available: purpleCowTvBundle || koodoTvSeparate || eastlinkTvReference ? true : !hasManualAddOn,
+          notPrimaryRecommendation: koodoTvSeparate || eastlinkTvReference || offer.notPrimaryRecommendation,
           bundle_sort_score: 0,
           pickTypeKey: "bundlePick"
         };
@@ -3172,6 +3182,8 @@ export default function Home() {
   const [submitting, setSubmitting] = useState(false);
   const [sheetError, setSheetError] = useState("");
   const [missingFields, setMissingFields] = useState([]);
+  const flowBodyRef = useRef(null);
+  const flowHistoryPushedRef = useRef(false);
   const t = translations[language];
   const isBundle = form.service_type === "both";
   const showInternet = form.service_type === "internet" || isBundle;
@@ -3208,8 +3220,7 @@ export default function Home() {
   useEffect(() => {
     function onKeyDown(event) {
       if (event.key === "Escape") {
-        setResultOpen(false);
-        setLeadOpen(false);
+        closeFlow();
         setPeiReviewOpen(false);
         setShowUsageGuidance(false);
       }
@@ -3217,6 +3228,38 @@ export default function Home() {
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
+
+  useEffect(() => {
+    if (flowOpen && !flowHistoryPushedRef.current) {
+      window.history.pushState({ billSaverFlow: true, stage: leadOpen ? "lead" : resultOpen ? "result" : "success" }, "");
+      flowHistoryPushedRef.current = true;
+    }
+    if (!flowOpen) flowHistoryPushedRef.current = false;
+  }, [flowOpen, leadOpen, resultOpen]);
+
+  useEffect(() => {
+    function handlePopState() {
+      if (leadOpen || successOpen) {
+        setLeadOpen(false);
+        setSuccessOpen(false);
+        setResultOpen(true);
+        window.history.pushState({ billSaverFlow: true, stage: "result" }, "");
+        flowHistoryPushedRef.current = true;
+        return;
+      }
+      if (resultOpen) {
+        setResultOpen(false);
+        flowHistoryPushedRef.current = false;
+      }
+    }
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [leadOpen, resultOpen, successOpen]);
+
+  useEffect(() => {
+    if (flowOpen && flowBodyRef.current) flowBodyRef.current.scrollTop = 0;
+  }, [leadOpen, resultOpen, successOpen, flowOpen]);
 
   const shouldLockBodyScroll = resultOpen || leadOpen || peiReviewOpen || showUsageGuidance || successOpen;
 
@@ -3397,6 +3440,16 @@ export default function Home() {
 
     setResultOpen(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function closeFlow() {
+    setResultOpen(false);
+    setLeadOpen(false);
+    setSuccessOpen(false);
+    if (flowHistoryPushedRef.current) {
+      window.history.replaceState({}, "", window.location.href);
+      flowHistoryPushedRef.current = false;
+    }
   }
 
   function reopenLeadAfterSuccess() {
@@ -3806,10 +3859,10 @@ export default function Home() {
                   : textByLanguage(language, "重新开始", "重新開始", "Start over")}
               </button>
               <ResultStepProgress language={language} currentStep={currentStep} complete={successOpen} />
-              <span className="bill-flow-header-spacer" aria-hidden="true" />
+              <button className="flow-close-button" type="button" onClick={closeFlow} aria-label={t.close}>×</button>
             </header>
 
-            <div className="bill-flow-body">
+            <div className="bill-flow-body" ref={flowBodyRef}>
             {resultOpen && (
               <div className="bill-flow-step bill-flow-result" aria-label={t.billScore}>
               <div className="result-stack">
@@ -3906,7 +3959,10 @@ export default function Home() {
                         <div className="plan-card-overview">
                           <div className="plan-provider">
                             <div>
-                              <strong>{displayProviderName(offer.provider)}</strong>
+                              <div className="plan-provider-heading">
+                                <strong>{displayProviderName(offer.provider)}</strong>
+                                <strong className="plan-provider-price">{displayPrice(offer, t, language)}</strong>
+                              </div>
                               <span className={`recommendation-tag ${recommendationTagTone(offer, recommendationIndex)}`}>
                                 {recommendationTag(offer, recommendationIndex, language)}
                               </span>
@@ -4135,7 +4191,7 @@ export default function Home() {
       )}
 
       {leadOpen && (
-          <form className="bill-flow-step bill-flow-lead" onSubmit={submitLead}>
+          <form className="bill-flow-step bill-flow-lead" id="bill-saver-lead-form" onSubmit={submitLead}>
             <div className="lead-modal-body">
               <section className="lead-offer-section">
                 <div className="lead-section-heading">
@@ -4326,7 +4382,7 @@ export default function Home() {
                     </label>
                   </div>
 
-                  <button className="submit-button" type="submit" disabled={submitting}>
+                  <button className="submit-button lead-inline-submit" type="submit" disabled={submitting}>
                     {submitting
                       ? t.submitting
                       : textByLanguage(language, "提交并人工确认", "提交並人工確認", "Submit for manual confirmation")}
@@ -4361,6 +4417,37 @@ export default function Home() {
           </div>
       )}
             </div>
+            {(resultOpen || leadOpen) && (
+              <footer className="bill-flow-footer">
+                <div className="bill-flow-footer-actions">
+                  <button className="flow-footer-secondary" type="button" onClick={handleFlowBack}>
+                    {leadOpen
+                      ? textByLanguage(language, "返回方案", "返回方案", "Back to options")
+                      : textByLanguage(language, "返回修改", "返回修改", "Edit bill details")}
+                  </button>
+                  {resultOpen ? (
+                    <button className="flow-footer-primary" type="button" onClick={openLeadFromResult}>
+                      {textByLanguage(language, "提交信息 / 获取优惠", "提交資訊 / 取得優惠", "Submit details / Get offers")}
+                    </button>
+                  ) : (
+                    <button
+                      className="flow-footer-primary"
+                      type="submit"
+                      form="bill-saver-lead-form"
+                      disabled={submitting}
+                    >
+                      {submitting
+                        ? t.submitting
+                        : textByLanguage(language, "提交信息", "提交資訊", "Submit details")}
+                    </button>
+                  )}
+                </div>
+                <div className="bill-flow-footer-safe-note">
+                  <span aria-hidden="true">🔒</span>
+                  <span>{t.leadSafetyNote}</span>
+                </div>
+              </footer>
+            )}
           </div>
         </section>
       )}

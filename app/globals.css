@@ -1257,8 +1257,10 @@ textarea:focus {
   position: fixed;
   inset: 0;
   z-index: 9998;
-  overflow-x: hidden;
-  overflow-y: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
   background:
     radial-gradient(circle at 50% 0%, rgba(26, 177, 139, 0.2), transparent 36%),
     linear-gradient(180deg, #06242d, #001820);
@@ -1267,8 +1269,11 @@ textarea:focus {
 }
 
 .bill-flow-shell {
+  display: flex;
   width: min(1040px, 100%);
-  min-height: calc(100dvh - 40px);
+  height: min(92dvh, 980px);
+  max-height: calc(100dvh - 40px);
+  flex-direction: column;
   margin: 0 auto;
   overflow: hidden;
   border: 1px solid rgba(174, 230, 216, 0.28);
@@ -1278,9 +1283,8 @@ textarea:focus {
 }
 
 .bill-flow-header {
-  position: sticky;
-  top: 0;
   z-index: 8;
+  flex: 0 0 auto;
   display: grid;
   grid-template-columns: minmax(130px, 1fr) minmax(0, 640px) minmax(130px, 1fr);
   align-items: center;
@@ -1313,13 +1317,28 @@ textarea:focus {
   font-size: 1.05rem;
 }
 
-.bill-flow-header-spacer {
-  width: 1px;
-  height: 1px;
+.flow-close-button {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  justify-self: end;
+  border: 1px solid #d2e5df;
+  border-radius: 50%;
+  background: #f7fbf9;
+  color: #155d51;
+  font-size: 1.35rem;
+  font-weight: 900;
+  cursor: pointer;
 }
 
 .bill-flow-body {
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow-y: auto;
   padding: 22px;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 .bill-flow-step {
@@ -1689,6 +1708,67 @@ textarea:focus {
 .lead-offer-copy span {
   color: #58726d;
   font-size: 0.75rem;
+}
+
+.bill-flow-lead .lead-inline-submit,
+.bill-flow-lead .lead-minimal-disclaimer {
+  display: none;
+}
+
+.bill-flow-footer {
+  z-index: 8;
+  flex: 0 0 auto;
+  border-top: 1px solid rgba(15, 123, 104, 0.12);
+  background: rgba(255, 255, 255, 0.97);
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+  backdrop-filter: blur(16px);
+}
+
+.bill-flow-footer-actions {
+  display: grid;
+  grid-template-columns: minmax(120px, 1fr) minmax(180px, 1.4fr);
+  gap: 10px;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.flow-footer-secondary,
+.flow-footer-primary {
+  min-height: 48px;
+  border-radius: 12px;
+  padding: 9px 14px;
+  font-size: 0.88rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.flow-footer-secondary {
+  border: 1px solid rgba(7, 59, 58, 0.14);
+  background: rgba(7, 59, 58, 0.04);
+  color: #073b3a;
+}
+
+.flow-footer-primary {
+  border: 0;
+  background: linear-gradient(135deg, #0f9275, #0a7967);
+  color: #fff;
+}
+
+.flow-footer-primary:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.bill-flow-footer-safe-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 8px;
+  color: rgba(7, 59, 58, 0.58);
+  font-size: 0.72rem;
+  font-weight: 650;
+  text-align: center;
 }
 
 .lead-offer-copy small {
@@ -4051,16 +4131,30 @@ textarea:focus {
 }
 
 .plan-provider > div {
+  width: 100%;
   min-width: 0;
+}
+
+.plan-provider-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
 }
 
 .plan-provider strong {
   display: block;
   overflow-wrap: anywhere;
   color: var(--ink);
-  font-size: 1.05rem;
+  font-size: 1.12rem;
   line-height: 1.25;
   font-weight: 900;
+}
+
+.plan-provider .plan-provider-price {
+  color: #08715f;
+  font-size: 1.12rem;
+  white-space: nowrap;
 }
 
 .recommendation-tag {
@@ -4114,14 +4208,14 @@ textarea:focus {
 .plan-price-area > span,
 .plan-conversion > span {
   color: #75888b;
-  font-size: 0.69rem;
+  font-size: 0.74rem;
   line-height: 1.2;
   font-weight: 800;
 }
 
 .plan-field strong {
   color: #29464b;
-  font-size: 0.88rem;
+  font-size: 0.94rem;
   line-height: 1.45;
 }
 
@@ -4130,9 +4224,14 @@ textarea:focus {
   display: grid;
   align-content: start;
   gap: 6px;
+  border-radius: 10px;
+  background: rgba(15, 123, 104, 0.035);
+  padding: 10px 10px 10px 12px;
 }
 
+.plan-price-area > span,
 .plan-price-area > strong {
+  display: none;
   color: #08715f;
   font-size: 1.3rem;
   line-height: 1.2;
@@ -4153,7 +4252,7 @@ textarea:focus {
   margin: 2px 0 0;
   overflow: hidden;
   color: #718286;
-  font-size: 0.78rem;
+  font-size: 0.84rem;
   line-height: 1.4;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
@@ -4168,7 +4267,7 @@ textarea:focus {
 
 .plan-conversion strong {
   color: #08715f;
-  font-size: 0.94rem;
+  font-size: 1rem;
   line-height: 1.4;
   font-weight: 900;
 }
@@ -4367,8 +4466,14 @@ textarea:focus {
   }
 
   .plan-card-overview {
-    grid-template-columns: 1fr 1fr;
-    gap: 14px 10px;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "provider"
+      "conversion"
+      "service"
+      "speed"
+      "price";
+    gap: 12px;
   }
 
   .plan-price-area,
@@ -4393,13 +4498,26 @@ textarea:focus {
   }
 
   .plan-conversion strong {
-    font-size: 0.78rem;
+    font-size: 0.92rem;
   }
 
   .plan-conversion button,
   .plan-conversion a {
     min-height: 44px;
     padding: 9px 8px;
+  }
+
+  .plan-provider-heading {
+    align-items: center;
+  }
+
+  .plan-provider strong,
+  .plan-provider .plan-provider-price {
+    font-size: 1.05rem;
+  }
+
+  .plan-price-area p {
+    -webkit-line-clamp: 3;
   }
 
   .result-caution-action {
@@ -4631,12 +4749,15 @@ textarea:focus {
 
 @media (max-width: 768px) {
   .bill-flow-screen {
+    align-items: stretch;
     background: #f3f8f6;
     padding: 0;
   }
 
   .bill-flow-shell {
     width: 100%;
+    height: 100dvh;
+    max-height: 100dvh;
     min-height: 100dvh;
     border: 0;
     border-radius: 0;
@@ -4644,7 +4765,7 @@ textarea:focus {
   }
 
   .bill-flow-header {
-    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-columns: 42px minmax(0, 1fr) 42px;
     gap: 7px;
     min-height: 88px;
     padding: 7px 8px 6px;
@@ -4666,8 +4787,34 @@ textarea:focus {
     font-size: 1.25rem;
   }
 
+  .flow-close-button {
+    width: 40px;
+    height: 40px;
+  }
+
   .bill-flow-body {
     padding: 14px;
+  }
+
+  .bill-flow-footer {
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+  }
+
+  .bill-flow-footer-actions {
+    grid-template-columns: minmax(92px, 0.8fr) minmax(150px, 1.4fr);
+    gap: 8px;
+  }
+
+  .flow-footer-secondary,
+  .flow-footer-primary {
+    min-height: 46px;
+    padding: 8px 10px;
+    font-size: 0.8rem;
+  }
+
+  .bill-flow-footer-safe-note {
+    margin-top: 6px;
+    font-size: 0.66rem;
   }
 
   .bill-flow-success {
