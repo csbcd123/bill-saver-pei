@@ -1041,11 +1041,24 @@ function compareMobileOfferValue(offerA, offerB, form) {
 }
 
 function getMobileProviderTier(providerName) {
-  const provider = normalizeProviderName(providerName);
-  if (provider === "bell_aliant" || provider === "telus") return 1;
-  if (provider === "koodo") return 2;
-  if (provider === "public_mobile") return 3;
+  const provider = normalizeMobileProviderName(providerName);
+  if (["bell_aliant", "telus", "rogers"].includes(provider)) return 1;
+  if (["koodo", "koodo_telus", "fido", "virgin_plus"].includes(provider)) return 2;
+  if (["public_mobile", "lucky_mobile", "chatr"].includes(provider)) return 3;
   return 4;
+}
+
+function normalizeMobileProviderName(providerName) {
+  const raw = String(providerName || "").toLowerCase();
+  const provider = normalizeProviderName(providerName);
+  if (provider === "koodo_telus") return "koodo_telus";
+  if (raw.includes("bell")) return "bell_aliant";
+  if (raw.includes("rogers")) return "rogers";
+  if (raw.includes("fido")) return "fido";
+  if (raw.includes("virgin")) return "virgin_plus";
+  if (raw.includes("lucky")) return "lucky_mobile";
+  if (raw.includes("chatr")) return "chatr";
+  return provider;
 }
 
 function compareMobileClosePriceMoreData(offerA, offerB) {
@@ -1077,20 +1090,71 @@ function isPublicMobileClearlyAhead(publicPlan, nonPublicPlans, form) {
   return annualSavingsLead || monthlyPriceLead;
 }
 
-function finalizeMobileRecommendationOrder(offers, form) {
-  const publicPlan = offers.find((offer) => normalizeProviderName(offer.provider) === "public_mobile");
-  const nonPublicPlans = offers
-    .filter((offer) => normalizeProviderName(offer.provider) !== "public_mobile")
-    .sort(
-      (a, b) =>
-        compareMobileClosePriceMoreData(a, b) ||
-        getMobileProviderTier(a.provider) - getMobileProviderTier(b.provider) ||
-        compareMobileOfferValue(a, b, form)
-    );
+function isPublicMobilePlan(offer) {
+  return normalizeMobileProviderName(offer?.provider) === "public_mobile";
+}
 
-  if (!publicPlan) return nonPublicPlans.slice(0, 3);
-  if (isPublicMobileClearlyAhead(publicPlan, nonPublicPlans, form)) return [publicPlan, ...nonPublicPlans].slice(0, 3);
-  return [...nonPublicPlans.slice(0, 2), publicPlan, ...nonPublicPlans.slice(2)].slice(0, 3);
+function mobileProviderTierAdjustment(offer, form, offers) {
+  const currentTier = getMobileProviderTier(form.current_provider || form.provider);
+  const planTier = getMobileProviderTier(offer.provider);
+  const nonPublicPlans = offers.filter((candidate) => !isPublicMobilePlan(candidate));
+  const publicClearlyAhead = isPublicMobilePlan(offer) && isPublicMobileClearlyAhead(offer, nonPublicPlans, form);
+
+  if (currentTier === 1) {
+    if (planTier === 1) return -80;
+    if (planTier === 2) return -40;
+    if (planTier === 3) return publicClearlyAhead ? -20 : 160;
+  }
+
+  if (currentTier === 2) {
+    if (planTier === 2) return -40;
+    if (planTier === 3) return -20;
+    if (planTier === 1) return 20;
+  }
+
+  if (currentTier === 3) {
+    if (planTier === 2) return -80;
+    if (planTier === 1) return -40;
+    if (planTier === 3) return 120;
+  }
+
+  return 0;
+}
+
+function sortMobileRecommendations(offers, form) {
+  return [...offers].sort((a, b) => {
+    const tierDifference =
+      mobileProviderTierAdjustment(a, form, offers) - mobileProviderTierAdjustment(b, form, offers);
+    if (tierDifference !== 0) return tierDifference;
+
+    return (
+      compareMobileClosePriceMoreData(a, b) ||
+      compareMobileOfferValue(a, b, form) ||
+      getMobileProviderTier(a.provider) - getMobileProviderTier(b.provider)
+    );
+  });
+}
+
+function diversifyTopMobileRecommendations(offers, topLimit = 3) {
+  const top = [];
+  const later = [];
+  const topProviders = new Set();
+
+  offers.forEach((offer) => {
+    const provider = normalizeMobileProviderName(offer.provider);
+    if (top.length < topLimit && !topProviders.has(provider)) {
+      top.push(offer);
+      topProviders.add(provider);
+      return;
+    }
+    later.push(offer);
+  });
+
+  return top.length < topLimit ? top : [...top, ...later];
+}
+
+function finalizeMobileRecommendationOrder(offers, form) {
+  return diversifyTopMobileRecommendations(sortMobileRecommendations(offers, form));
 }
 
 function speedBucket(speed) {
@@ -2675,29 +2739,22 @@ function mobilePicks(form) {
           offer.service_type === "mobile" &&
           isRecommendableOffer(offer) &&
           !isKoodoPrepaid(offer) &&
-          mobileMeetsServiceLevel(offer, form) &&
-          !["Rogers", "Fido", "Virgin Plus"].includes(offer.provider)
+          mobileMeetsServiceLevel(offer, form)
         );
       }
     ),
     form.current_provider
   );
   const allowedProviders = isMainUrbanArea(form.city)
-    ? ["public_mobile", "koodo", "telus", "bell_aliant", "eastlink"]
-    : ["public_mobile", "telus", "bell_aliant"];
+    ? ["public_mobile", "koodo", "telus", "bell_aliant", "rogers", "fido", "virgin_plus", "lucky_mobile", "chatr"]
+    : ["public_mobile", "telus", "bell_aliant", "rogers", "lucky_mobile", "chatr"];
 
   const sortedOffers = offers
-    .filter((offer) => allowedProviders.includes(normalizeProviderName(offer.provider)))
+    .filter((offer) => allowedProviders.includes(normalizeMobileProviderName(offer.provider)))
     .sort((a, b) => compareMobileOfferValue(a, b, form));
-  const seenProviders = new Set();
-  const providerPicks = sortedOffers.filter((offer) => {
-    const provider = normalizeProviderName(offer.provider);
-    if (seenProviders.has(provider)) return false;
-    seenProviders.add(provider);
-    return true;
-  });
 
-  return finalizeMobileRecommendationOrder(providerPicks, form)
+  return finalizeMobileRecommendationOrder(sortedOffers, form)
+    .slice(0, 5)
     .map((offer, index) => ({
       ...offer,
       pickTypeKey: index === 0 ? "highQualityPick" : /Public Mobile/i.test(offer.provider) ? "lowestCostPick" : "manualPick"
