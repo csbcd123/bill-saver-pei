@@ -3586,9 +3586,38 @@ textarea:focus {
 
 @media (max-width: 900px) {
   .heroSection {
-    min-height: 480px;
-    padding: 20px 18px 96px;
+    min-height: 430px;
+    padding: 20px 18px 82px;
     background-position: 68% top;
+  }
+
+  .heroContent {
+    width: min(100%, 92vw);
+    max-width: 520px;
+    margin: 28px auto 0;
+    text-align: center;
+    transform: none;
+  }
+
+  .heroTitle {
+    max-width: 100%;
+    font-size: clamp(28px, 7.4vw, 40px);
+    line-height: 1.12;
+    letter-spacing: 0.01em;
+    white-space: normal;
+    overflow-wrap: normal;
+  }
+
+  .heroSubtitle {
+    max-width: 92%;
+    margin-top: 10px;
+    font-size: 15px;
+    line-height: 1.42;
+  }
+
+  .heroOfferTicker {
+    width: min(100%, 440px);
+    margin-top: 14px;
   }
 
   .heroBrandLogo {
@@ -3598,7 +3627,7 @@ textarea:focus {
 
   .workspace.single-column {
     width: 100%;
-    margin-top: -60px;
+    margin-top: -86px;
     padding-left: 14px;
     padding-right: 14px;
     padding-bottom: 60px;
@@ -3839,7 +3868,7 @@ textarea:focus {
 
   .heroContent {
     max-width: 100%;
-    margin-top: 34px;
+    margin-top: 24px;
     transform: none;
   }
 
@@ -3849,9 +3878,11 @@ textarea:focus {
   }
 
   .heroTitle {
-    font-size: clamp(30px, 8.5vw, 42px);
+    font-size: clamp(28px, 7.6vw, 38px);
     line-height: 1.12;
     letter-spacing: 0.01em;
+    white-space: normal;
+    overflow-wrap: normal;
   }
 
   .heroSubtitle {
@@ -3861,9 +3892,9 @@ textarea:focus {
 
   .heroOfferTicker {
     gap: 8px;
-    width: min(100%, 92vw);
+    width: min(100%, 88vw);
     min-height: 36px;
-    margin-top: 16px;
+    margin-top: 12px;
     padding: 4px 7px 4px 8px;
   }
 
@@ -4012,8 +4043,8 @@ textarea:focus {
 
 @media (max-width: 600px) {
   .heroSection {
-    min-height: 370px;
-    padding: 18px 16px 64px;
+    min-height: 388px;
+    padding: 18px 16px 72px;
     background-position: 68% top;
   }
 
@@ -4034,7 +4065,7 @@ textarea:focus {
   }
 
   .workspace.single-column {
-    margin-top: -112px;
+    margin-top: -92px;
   }
 
   .usage-card {
