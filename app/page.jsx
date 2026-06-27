@@ -3752,8 +3752,17 @@ export default function Home() {
                   </div>
                 )}
 
-                <div className={`field ${isBundle ? "bundle-usage-group" : ""} ${missingFields.includes("internet_usage_level") ? "missing" : ""}`.trim()}>
+                <div className={`field internet-usage-field ${isBundle ? "bundle-usage-group" : ""} ${missingFields.includes("internet_usage_level") ? "missing" : ""}`.trim()}>
                   <span>{t.internetUsageLevel}</span>
+                  <div className="mobile-internet-usage-select">
+                    <Select value={form.internet_usage_level} onChange={(value) => update("internet_usage_level", value)}>
+                      {usageLevels.map((item) => (
+                        <option key={item.value} value={item.value}>
+                          {`${t.usageCards[item.value].title} · ${(internetUsageSpeeds[language] || internetUsageSpeeds.en)[item.value]}`}
+                        </option>
+                      ))}
+                    </Select>
+                  </div>
                   <div className="usage-card-grid compact">
                     {usageLevels.map((item) => (
                       <button

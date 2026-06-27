@@ -3020,6 +3020,10 @@ textarea:focus {
   gap: 14px;
 }
 
+.mobile-internet-usage-select {
+  display: none;
+}
+
 .usage-card {
   position: relative;
   display: grid;
@@ -3614,6 +3618,14 @@ textarea:focus {
     min-width: 0;
     margin-top: 4px;
     text-align: left;
+  }
+
+  .internet-usage-field .mobile-internet-usage-select {
+    display: block;
+  }
+
+  .internet-usage-field > .usage-card-grid {
+    display: none;
   }
 
   .workspace.single-column .form-split {
