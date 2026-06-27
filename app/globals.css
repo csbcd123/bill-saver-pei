@@ -4043,12 +4043,13 @@ textarea:focus {
 
 @media (max-width: 600px) {
   .heroSection {
-    min-height: 430px;
-    padding: 18px 16px 86px;
+    min-height: 380px;
+    padding: 18px 16px 66px;
     background-position: 68% top;
   }
 
   .heroTopBar {
+    align-items: flex-start;
     gap: 10px;
   }
 
@@ -4065,7 +4066,7 @@ textarea:focus {
   }
 
   .workspace.single-column {
-    margin-top: -58px;
+    margin-top: -78px;
   }
 
   .heroTitle,
@@ -4076,7 +4077,7 @@ textarea:focus {
   .heroContent {
     position: absolute;
     right: 22px;
-    bottom: 92px;
+    bottom: 76px;
     left: 22px;
     width: auto;
     max-width: none;
