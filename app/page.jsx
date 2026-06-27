@@ -37,7 +37,7 @@ const translations = {
     monthlyPlaceholderInternet: "例如：89.99",
     monthlyPlaceholderMobile: "例如：45",
     monthlyPlaceholderBoth: "例如：140",
-    internetUsageLevel: "选择您的上网使用情况",
+    internetUsageLevel: "你家最多会有几个人在同一时间使用？",
     currentMobileData: "当前手机流量",
     currentMobileDataQuestion: "你每月大概用多少手机流量？",
     mobileDataUsageTitle: "选择您的手机流量使用情况",
@@ -130,16 +130,16 @@ const translations = {
     serviceCards: { mobile: "手机账单", internet: "宽带账单", both: "组合账单" },
     usageCards: {
       light: {
-        title: "轻度使用",
-        description: "适合网页、微信、视频通话、高清视频和日常轻度使用。"
+        title: "1–2 人",
+        description: "适合一到两个人同时上网、微信、视频、视频通话和日常办公。"
       },
       standard: {
-        title: "普通家庭",
-        description: "适合多人使用、4K 视频、孩子上网课、视频会议和多设备。"
+        title: "3–4 人",
+        description: "适合三到四个人同时使用，4K 视频、上网课、视频会议和多设备。"
       },
       heavy: {
-        title: "高速 / 多人家庭",
-        description: "适合多人同时 4K、远程办公、大文件下载、游戏和大量设备。"
+        title: "5 人以上",
+        description: "适合五人以上或大量设备同时使用，4K、游戏、下载和远程办公。"
       }
     },
     mobileDataUsageCards: {
@@ -243,7 +243,7 @@ const translations = {
     monthlyPlaceholderInternet: "例如：89.99",
     monthlyPlaceholderMobile: "例如：45",
     monthlyPlaceholderBoth: "例如：140",
-    internetUsageLevel: "選擇您的上網使用情況",
+    internetUsageLevel: "你家最多會有幾個人同時使用？",
     currentMobileData: "目前手機流量",
     currentMobileDataQuestion: "你每月大約用多少手機流量？",
     mobileDataUsageTitle: "選擇你的手機流量使用情況",
@@ -336,16 +336,16 @@ const translations = {
     serviceCards: { mobile: "手機帳單", internet: "寬頻帳單", both: "組合帳單" },
     usageCards: {
       light: {
-        title: "輕度使用",
-        description: "適合網頁、微信、視訊通話、高清影片和日常輕度使用。"
+        title: "1–2 人",
+        description: "適合一到兩個人同時上網、微信、影片、視訊通話和日常辦公。"
       },
       standard: {
-        title: "普通家庭",
-        description: "適合多人使用、4K 影片、孩子線上課、視訊會議和多設備。"
+        title: "3–4 人",
+        description: "適合三到四個人同時使用，4K 影片、線上課、視訊會議和多設備。"
       },
       heavy: {
-        title: "高速 / 多人家庭",
-        description: "適合多人同時 4K、遠端辦公、大檔案下載、遊戲和大量設備。"
+        title: "5 人以上",
+        description: "適合五人以上或大量設備同時使用，4K、遊戲、下載和遠端辦公。"
       }
     },
     mobileDataUsageCards: {
@@ -449,7 +449,7 @@ const translations = {
     monthlyPlaceholderInternet: "e.g. 89.99",
     monthlyPlaceholderMobile: "e.g. 45",
     monthlyPlaceholderBoth: "e.g. 140",
-    internetUsageLevel: "Choose your internet usage",
+    internetUsageLevel: "How many people may use the internet at the same time?",
     currentMobileData: "Current mobile data",
     currentMobileDataQuestion: "How much mobile data do you use per month?",
     mobileDataUsageTitle: "Choose your mobile data usage",
@@ -546,16 +546,16 @@ const translations = {
     serviceCards: { mobile: "Mobile bill", internet: "Internet bill", both: "Bundle Bill" },
     usageCards: {
       light: {
-        title: "Light use",
-        description: "Good for browsing, messaging, video calls, HD video, and light daily use."
+        title: "1–2 people",
+        description: "Good for one or two people browsing, messaging, video, video calls, and daily work."
       },
       standard: {
-        title: "Standard household",
-        description: "Good for multiple users, 4K video, online learning, video calls, and several devices."
+        title: "3–4 people",
+        description: "Good for three to four people, 4K video, online learning, video calls, and several devices."
       },
       heavy: {
-        title: "Heavy / multi-user household",
-        description: "Good for multiple 4K streams, remote work, large downloads, gaming, and many devices."
+        title: "5+ people",
+        description: "Good for five or more people or many devices using 4K, gaming, downloads, and remote work."
       }
     },
     mobileDataUsageCards: {
@@ -706,9 +706,12 @@ const BUNDLE_TYPE_OPTIONS = [
   }
 ];
 const internetUsageSpeeds = {
-  zhHans: { light: "1–2 人 · 100M", standard: "2–4 人 · 300–500M", heavy: "4 人以上 · 1 Gig+" },
-  zhHant: { light: "1–2 人 · 100M", standard: "2–4 人 · 300–500M", heavy: "4 人以上 · 1 Gig+" },
-  en: { light: "1–2 people · 100 Mbps", standard: "2–4 people · 300–500 Mbps", heavy: "4+ people · 1 Gig+" }
+  zhHans: { light: "100M", standard: "300–500M", heavy: "1 Gig+" },
+  zhHant: { light: "100M", standard: "300–500M", heavy: "1 Gig+" },
+  zh: { light: "100M", standard: "300–500M", heavy: "1 Gig+" },
+  "zh-TW": { light: "100M", standard: "300–500M", heavy: "1 Gig+" },
+  fr: { light: "100 Mbps", standard: "300–500 Mbps", heavy: "1 Gig+" },
+  en: { light: "100 Mbps", standard: "300–500 Mbps", heavy: "1 Gig+" }
 };
 const providerOptionsByService = {
   internet: ["Bell Aliant", "TELUS", "Koodo", "Eastlink", "Purple Cow", "Xplore", "Starlink", "Other", "Not sure"],
@@ -3764,7 +3767,7 @@ export default function Home() {
                           <span>{t.usageCards[item.value].description}</span>
                         </span>
                         <span className="usage-card-speed">
-                          <small>{language === "en" || language === "fr" ? "Recommended" : language === "zhHant" || language === "zh-TW" ? "建議頻寬" : "推荐带宽"}</small>
+                          <small>{language === "en" || language === "fr" ? "Reference speed" : language === "zhHant" || language === "zh-TW" ? "參考頻寬" : "参考带宽"}</small>
                           <strong>{(internetUsageSpeeds[language] || internetUsageSpeeds.en)[item.value]}</strong>
                         </span>
                         {form.internet_usage_level === item.value && <span className="usage-card-check" aria-hidden="true">✓</span>}
