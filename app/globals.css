@@ -294,6 +294,71 @@ h1 {
   text-shadow: 0 6px 18px rgba(0, 0, 0, 0.42);
 }
 
+.heroOfferTicker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: min(760px, 86vw);
+  min-height: 42px;
+  margin: 22px auto 0;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  background: rgba(0, 24, 32, 0.34);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+  padding: 5px 8px 5px 14px;
+  backdrop-filter: blur(12px);
+}
+
+.heroOfferTickerLabel {
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: rgba(28, 230, 165, 0.13);
+  color: rgba(138, 255, 214, 0.96);
+  padding: 7px 10px;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.heroOfferTickerTrack {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: max-content;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 13px;
+  font-weight: 750;
+  line-height: 1;
+  white-space: nowrap;
+  animation: heroTickerScroll 32s linear infinite;
+}
+
+.heroOfferTickerItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.heroOfferTickerItem::after {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(85, 232, 176, 0.58);
+}
+
+@keyframes heroTickerScroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 .stepProgress {
   position: relative;
   width: min(760px, 80vw);
@@ -3783,6 +3848,30 @@ textarea:focus {
   .heroSubtitle {
     margin-top: 10px;
     font-size: 15px;
+  }
+
+  .heroOfferTicker {
+    gap: 8px;
+    width: min(100%, 92vw);
+    min-height: 36px;
+    margin-top: 16px;
+    padding: 4px 7px 4px 8px;
+  }
+
+  .heroOfferTickerLabel {
+    padding: 6px 8px;
+    font-size: 10px;
+  }
+
+  .heroOfferTickerTrack {
+    gap: 8px;
+    font-size: 11px;
+    animation-duration: 28s;
+  }
+
+  .heroOfferTickerItem::after {
+    width: 4px;
+    height: 4px;
   }
 
   .heroContent .stepProgress {
