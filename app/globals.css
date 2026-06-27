@@ -4043,8 +4043,8 @@ textarea:focus {
 
 @media (max-width: 600px) {
   .heroSection {
-    min-height: 388px;
-    padding: 18px 16px 72px;
+    min-height: 430px;
+    padding: 18px 16px 86px;
     background-position: 68% top;
   }
 
@@ -4065,7 +4065,7 @@ textarea:focus {
   }
 
   .workspace.single-column {
-    margin-top: -106px;
+    margin-top: -58px;
   }
 
   .heroTitle,
@@ -4074,13 +4074,18 @@ textarea:focus {
   }
 
   .heroContent {
-    width: 100%;
-    max-width: 100%;
-    margin: 132px auto 0;
+    position: absolute;
+    right: 22px;
+    bottom: 92px;
+    left: 22px;
+    width: auto;
+    max-width: none;
+    margin: 0;
+    z-index: 2;
   }
 
   .heroOfferTicker {
-    width: min(360px, 88vw);
+    width: 100%;
     margin-top: 0;
   }
 
