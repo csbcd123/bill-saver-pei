@@ -244,7 +244,7 @@ textarea {
   max-width: 900px;
   margin: 18px auto 0;
   text-align: center;
-  transform: translateX(-40px);
+  transform: none;
 }
 
 .eyebrow {
@@ -4065,7 +4065,23 @@ textarea:focus {
   }
 
   .workspace.single-column {
-    margin-top: -92px;
+    margin-top: -106px;
+  }
+
+  .heroTitle,
+  .heroSubtitle {
+    display: none;
+  }
+
+  .heroContent {
+    width: 100%;
+    max-width: 100%;
+    margin: 132px auto 0;
+  }
+
+  .heroOfferTicker {
+    width: min(360px, 88vw);
+    margin-top: 0;
   }
 
   .usage-card {
