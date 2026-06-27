@@ -37,7 +37,7 @@ const translations = {
     monthlyPlaceholderInternet: "例如：89.99",
     monthlyPlaceholderMobile: "例如：45",
     monthlyPlaceholderBoth: "例如：140",
-    internetUsageLevel: "选择您的上网使用情况",
+    internetUsageLevel: "你家最多会有几个人在同一时间使用？",
     currentMobileData: "当前手机流量",
     currentMobileDataQuestion: "你每月大概用多少手机流量？",
     mobileDataUsageTitle: "选择您的手机流量使用情况",
@@ -130,33 +130,36 @@ const translations = {
     serviceCards: { mobile: "手机账单", internet: "宽带账单", both: "组合账单" },
     usageCards: {
       light: {
-        title: "轻度使用",
-        description: "适合刷网页、微信、视频通话、高清视频、1–2 人家庭日常使用"
+        title: "1–2 人",
+        description: "适合一到两个人同时上网、微信、视频、视频通话和日常办公。"
       },
       standard: {
-        title: "普通家庭",
-        description: "适合多人同时使用、4K 视频、视频会议、孩子上网课、多设备和普通游戏"
+        title: "3–4 人",
+        description: "适合三到四个人同时使用，4K 视频、上网课、视频会议和多设备。"
       },
       heavy: {
-        title: "高速 / 多人家庭",
-        description: "适合多人同时 4K、远程办公、大文件下载、多设备、游戏和智能家居"
+        title: "5 人以上",
+        description: "适合五人以上或大量设备同时使用，4K、游戏、下载和远程办公。"
       }
     },
     mobileDataUsageCards: {
       "0-20GB": {
         title: "轻度使用",
-        description: "微信、邮件、地图、轻度视频",
-        amount: "10–20 GB"
+        description: "适合微信、地图、网页、少量视频和日常轻度使用。",
+        amount: "0–20GB",
+        choicePercentLabel: "约 20% 用户选择"
       },
       "20-50GB": {
         title: "日常使用",
-        description: "社交媒体、短视频、视频通话",
-        amount: "20–60 GB"
+        description: "适合地图、社交软件、音乐、视频和日常使用。",
+        amount: "20–60GB",
+        choicePercentLabel: "约 60% 用户选择"
       },
       "60GB+": {
-        title: "重度使用",
-        description: "高清视频、热点分享、经常外出",
-        amount: "60 GB+"
+        title: "高流量用户",
+        description: "适合经常看视频、热点共享、出门办公和高流量使用。",
+        amount: "60GB+",
+        choicePercentLabel: "约 20% 用户选择"
       }
     },
     options: {
@@ -240,7 +243,7 @@ const translations = {
     monthlyPlaceholderInternet: "例如：89.99",
     monthlyPlaceholderMobile: "例如：45",
     monthlyPlaceholderBoth: "例如：140",
-    internetUsageLevel: "選擇您的上網使用情況",
+    internetUsageLevel: "你家最多會有幾個人同時使用？",
     currentMobileData: "目前手機流量",
     currentMobileDataQuestion: "你每月大約用多少手機流量？",
     mobileDataUsageTitle: "選擇你的手機流量使用情況",
@@ -333,33 +336,36 @@ const translations = {
     serviceCards: { mobile: "手機帳單", internet: "寬頻帳單", both: "組合帳單" },
     usageCards: {
       light: {
-        title: "輕度使用",
-        description: "適合瀏覽網頁、微信、視訊通話、高清影片、1–2 人家庭日常使用"
+        title: "1–2 人",
+        description: "適合一到兩個人同時上網、微信、影片、視訊通話和日常辦公。"
       },
       standard: {
-        title: "普通家庭",
-        description: "適合多人同時使用、4K 影片、視訊會議、孩子線上課、多設備和普通遊戲"
+        title: "3–4 人",
+        description: "適合三到四個人同時使用，4K 影片、線上課、視訊會議和多設備。"
       },
       heavy: {
-        title: "高速 / 多人家庭",
-        description: "適合多人同時 4K、遠端辦公、大型檔案下載、多設備、遊戲和智能家居"
+        title: "5 人以上",
+        description: "適合五人以上或大量設備同時使用，4K、遊戲、下載和遠端辦公。"
       }
     },
     mobileDataUsageCards: {
       "0-20GB": {
         title: "輕度使用",
-        description: "微信、電郵、地圖、輕度影片",
-        amount: "10–20 GB"
+        description: "適合微信、地圖、網頁、少量影片和日常輕度使用。",
+        amount: "0–20GB",
+        choicePercentLabel: "約 20% 用戶選擇"
       },
       "20-50GB": {
         title: "日常使用",
-        description: "社交媒體、短影片、視訊通話",
-        amount: "20–60 GB"
+        description: "適合地圖、社交軟件、音樂、影片和日常使用。",
+        amount: "20–60GB",
+        choicePercentLabel: "約 60% 用戶選擇"
       },
       "60GB+": {
-        title: "重度使用",
-        description: "高清影片、熱點分享、經常外出",
-        amount: "60 GB+"
+        title: "高流量用戶",
+        description: "適合經常看影片、熱點分享、出門辦公和高流量使用。",
+        amount: "60GB+",
+        choicePercentLabel: "約 20% 用戶選擇"
       }
     },
     options: {
@@ -443,7 +449,7 @@ const translations = {
     monthlyPlaceholderInternet: "e.g. 89.99",
     monthlyPlaceholderMobile: "e.g. 45",
     monthlyPlaceholderBoth: "e.g. 140",
-    internetUsageLevel: "Choose your internet usage",
+    internetUsageLevel: "How many people may use the internet at the same time?",
     currentMobileData: "Current mobile data",
     currentMobileDataQuestion: "How much mobile data do you use per month?",
     mobileDataUsageTitle: "Choose your mobile data usage",
@@ -540,33 +546,36 @@ const translations = {
     serviceCards: { mobile: "Mobile bill", internet: "Internet bill", both: "Bundle Bill" },
     usageCards: {
       light: {
-        title: "Light use",
-        description: "Good for browsing, messaging, video calls, HD video, and daily use for 1–2 people"
+        title: "1–2 people",
+        description: "Good for one or two people browsing, messaging, video, video calls, and daily work."
       },
       standard: {
-        title: "Standard household",
-        description: "Good for multiple users, 4K video, video calls, online learning, multiple devices, and casual gaming"
+        title: "3–4 people",
+        description: "Good for three to four people, 4K video, online learning, video calls, and several devices."
       },
       heavy: {
-        title: "Heavy / multi-user household",
-        description: "Good for multiple 4K streams, remote work, large downloads, many devices, gaming, and smart home devices"
+        title: "5+ people",
+        description: "Good for five or more people or many devices using 4K, gaming, downloads, and remote work."
       }
     },
     mobileDataUsageCards: {
       "0-20GB": {
         title: "Light use",
-        description: "Messaging, email, maps, and light video",
-        amount: "10–20 GB"
+        description: "Good for messaging, maps, browsing, some video, and light daily use.",
+        amount: "0–20GB",
+        choicePercentLabel: "Chosen by about 20% of users"
       },
       "20-50GB": {
         title: "Everyday use",
-        description: "Social media, short videos, and video calls",
-        amount: "20–60 GB"
+        description: "Good for maps, social apps, music, video, and regular daily use.",
+        amount: "20–60GB",
+        choicePercentLabel: "Chosen by about 60% of users"
       },
       "60GB+": {
-        title: "Heavy use",
-        description: "HD video, hotspot sharing, and frequent outside use",
-        amount: "60 GB+"
+        title: "Heavy data user",
+        description: "Good for frequent video, hotspot sharing, remote work, and heavy data use.",
+        amount: "60GB+",
+        choicePercentLabel: "Chosen by about 20% of users"
       }
     },
     options: {
@@ -697,9 +706,12 @@ const BUNDLE_TYPE_OPTIONS = [
   }
 ];
 const internetUsageSpeeds = {
-  zhHans: { light: "100M 左右", standard: "300–500M 左右", heavy: "1 Gig+ 高速" },
-  zhHant: { light: "100M 左右", standard: "300–500M 左右", heavy: "1 Gig+ 高速" },
-  en: { light: "Around 100 Mbps", standard: "Around 300–500 Mbps", heavy: "1 Gig+ speed" }
+  zhHans: { light: "100M", standard: "300–500M", heavy: "1 Gig+" },
+  zhHant: { light: "100M", standard: "300–500M", heavy: "1 Gig+" },
+  zh: { light: "100M", standard: "300–500M", heavy: "1 Gig+" },
+  "zh-TW": { light: "100M", standard: "300–500M", heavy: "1 Gig+" },
+  fr: { light: "100 Mbps", standard: "300–500 Mbps", heavy: "1 Gig+" },
+  en: { light: "100 Mbps", standard: "300–500 Mbps", heavy: "1 Gig+" }
 };
 const providerOptionsByService = {
   internet: ["Bell Aliant", "TELUS", "Koodo", "Eastlink", "Purple Cow", "Xplore", "Starlink", "Other", "Not sure"],
@@ -711,6 +723,8 @@ const usageLevels = [
   { value: "standard", currentSpeed: "300M" },
   { value: "heavy", currentSpeed: "1G" }
 ];
+// These percentages are MVP frontend guidance labels.
+// Replace them with real analytics after enough lead data is collected.
 const mobileDataUsageLevels = [
   { value: "0-20GB", type: "light" },
   { value: "20-50GB", type: "daily" },
@@ -724,9 +738,9 @@ const initialForm = {
   current_provider: "",
   monthly_price: "",
   price_type: "not_asked",
-  internet_usage_level: "",
-  current_speed: "",
-  current_mobile_data: "",
+  internet_usage_level: "standard",
+  current_speed: "300M",
+  current_mobile_data: "20-50GB",
   bundle_type: "internet_tv",
   bundle_includes_internet: true,
   bundle_includes_mobile: false,
@@ -875,6 +889,9 @@ function MobileUsageCard({ item, content, active, onClick, bundle = false }) {
           <span className="mobile-usage-amount">{content.amount}</span>
         </span>
         <span className="mobile-usage-desc">{content.description}</span>
+        {content.choicePercentLabel && (
+          <span className="mobileChoicePercent">{content.choicePercentLabel}</span>
+        )}
       </span>
       {active && <span className="mobile-usage-check" aria-hidden="true">✓</span>}
     </button>
@@ -1027,11 +1044,24 @@ function compareMobileOfferValue(offerA, offerB, form) {
 }
 
 function getMobileProviderTier(providerName) {
-  const provider = normalizeProviderName(providerName);
-  if (provider === "bell_aliant" || provider === "telus") return 1;
-  if (provider === "koodo") return 2;
-  if (provider === "public_mobile") return 3;
+  const provider = normalizeMobileProviderName(providerName);
+  if (["bell_aliant", "telus", "rogers"].includes(provider)) return 1;
+  if (["koodo", "koodo_telus", "fido", "virgin_plus"].includes(provider)) return 2;
+  if (["public_mobile", "lucky_mobile", "chatr"].includes(provider)) return 3;
   return 4;
+}
+
+function normalizeMobileProviderName(providerName) {
+  const raw = String(providerName || "").toLowerCase();
+  const provider = normalizeProviderName(providerName);
+  if (provider === "koodo_telus") return "koodo_telus";
+  if (raw.includes("bell")) return "bell_aliant";
+  if (raw.includes("rogers")) return "rogers";
+  if (raw.includes("fido")) return "fido";
+  if (raw.includes("virgin")) return "virgin_plus";
+  if (raw.includes("lucky")) return "lucky_mobile";
+  if (raw.includes("chatr")) return "chatr";
+  return provider;
 }
 
 function compareMobileClosePriceMoreData(offerA, offerB) {
@@ -1063,20 +1093,71 @@ function isPublicMobileClearlyAhead(publicPlan, nonPublicPlans, form) {
   return annualSavingsLead || monthlyPriceLead;
 }
 
-function finalizeMobileRecommendationOrder(offers, form) {
-  const publicPlan = offers.find((offer) => normalizeProviderName(offer.provider) === "public_mobile");
-  const nonPublicPlans = offers
-    .filter((offer) => normalizeProviderName(offer.provider) !== "public_mobile")
-    .sort(
-      (a, b) =>
-        compareMobileClosePriceMoreData(a, b) ||
-        getMobileProviderTier(a.provider) - getMobileProviderTier(b.provider) ||
-        compareMobileOfferValue(a, b, form)
-    );
+function isPublicMobilePlan(offer) {
+  return normalizeMobileProviderName(offer?.provider) === "public_mobile";
+}
 
-  if (!publicPlan) return nonPublicPlans.slice(0, 3);
-  if (isPublicMobileClearlyAhead(publicPlan, nonPublicPlans, form)) return [publicPlan, ...nonPublicPlans].slice(0, 3);
-  return [...nonPublicPlans.slice(0, 2), publicPlan, ...nonPublicPlans.slice(2)].slice(0, 3);
+function mobileProviderTierAdjustment(offer, form, offers) {
+  const currentTier = getMobileProviderTier(form.current_provider || form.provider);
+  const planTier = getMobileProviderTier(offer.provider);
+  const nonPublicPlans = offers.filter((candidate) => !isPublicMobilePlan(candidate));
+  const publicClearlyAhead = isPublicMobilePlan(offer) && isPublicMobileClearlyAhead(offer, nonPublicPlans, form);
+
+  if (currentTier === 1) {
+    if (planTier === 1) return -80;
+    if (planTier === 2) return -40;
+    if (planTier === 3) return publicClearlyAhead ? -20 : 160;
+  }
+
+  if (currentTier === 2) {
+    if (planTier === 2) return -40;
+    if (planTier === 3) return -20;
+    if (planTier === 1) return 20;
+  }
+
+  if (currentTier === 3) {
+    if (planTier === 2) return -80;
+    if (planTier === 1) return -40;
+    if (planTier === 3) return 120;
+  }
+
+  return 0;
+}
+
+function sortMobileRecommendations(offers, form) {
+  return [...offers].sort((a, b) => {
+    const tierDifference =
+      mobileProviderTierAdjustment(a, form, offers) - mobileProviderTierAdjustment(b, form, offers);
+    if (tierDifference !== 0) return tierDifference;
+
+    return (
+      compareMobileClosePriceMoreData(a, b) ||
+      compareMobileOfferValue(a, b, form) ||
+      getMobileProviderTier(a.provider) - getMobileProviderTier(b.provider)
+    );
+  });
+}
+
+function diversifyTopMobileRecommendations(offers, topLimit = 3) {
+  const top = [];
+  const later = [];
+  const topProviders = new Set();
+
+  offers.forEach((offer) => {
+    const provider = normalizeMobileProviderName(offer.provider);
+    if (top.length < topLimit && !topProviders.has(provider)) {
+      top.push(offer);
+      topProviders.add(provider);
+      return;
+    }
+    later.push(offer);
+  });
+
+  return top.length < topLimit ? top : [...top, ...later];
+}
+
+function finalizeMobileRecommendationOrder(offers, form) {
+  return diversifyTopMobileRecommendations(sortMobileRecommendations(offers, form));
 }
 
 function speedBucket(speed) {
@@ -1766,130 +1847,6 @@ function textByLanguage(language, zhHans, zhHant, en) {
   return zhHans;
 }
 
-const BILL_FILE_ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "application/pdf"];
-const BILL_FILE_MAX_SIZE = 10 * 1024 * 1024;
-const BILL_FILE_MAX_COUNT = 3;
-
-function uploadCopy(language) {
-  return {
-    uploadTitle: textByLanguage(language, "上传账单 / 截图", "上傳帳單 / 截圖", "Upload bill / screenshot"),
-    uploadSubtitle: textByLanguage(
-      language,
-      "让 AI 自动识别你的套餐和月费",
-      "讓 AI 自動識別你的套餐和月費",
-      "Let AI read your plan and monthly cost"
-    ),
-    manualTitle: textByLanguage(language, "手工填写", "手工填寫", "Enter manually"),
-    manualSubtitle: textByLanguage(language, "自己输入账单信息", "自己輸入帳單資訊", "Type your bill details yourself"),
-    panelTitle: textByLanguage(language, "上传你的账单截图或 PDF", "上傳你的帳單截圖或 PDF", "Upload your bill screenshot or PDF"),
-    panelBody: textByLanguage(
-      language,
-      "可以上传运营商 App 截图、邮箱账单截图，或 PDF 账单。AI 会尝试识别运营商、月费和服务内容。",
-      "可以上傳電信商 App 截圖、電郵帳單截圖，或 PDF 帳單。AI 會嘗試識別電信商、月費和服務內容。",
-      "You can upload a carrier app screenshot, email bill screenshot, or PDF bill. AI will try to identify your provider, monthly cost, and services."
-    ),
-    dropText: textByLanguage(language, "点击选择文件，或把文件拖到这里", "點擊選擇檔案，或把檔案拖到這裡", "Click to choose files, or drag them here"),
-    fileHelp: textByLanguage(language, "支持 JPG、PNG、WEBP、PDF，最多 3 个文件，每个 10MB。", "支援 JPG、PNG、WEBP、PDF，最多 3 個檔案，每個 10MB。", "JPG, PNG, WEBP, or PDF. Up to 3 files, 10MB each."),
-    analyzeButton: textByLanguage(language, "AI 识别账单", "AI 識別帳單", "Analyze bill with AI"),
-    analyzing: textByLanguage(language, "正在识别账单……", "正在識別帳單……", "Analyzing your bill..."),
-    safeNote: textByLanguage(
-      language,
-      "🔒 账单仅用于识别套餐、价格和服务内容，不会公开展示。",
-      "🔒 帳單僅用於識別套餐、價格和服務內容，不會公開展示。",
-      "🔒 Your bill is only used to identify plan, price, and service details. It will not be publicly shown."
-    ),
-    foundTitle: textByLanguage(language, "我们从账单中识别到：", "我們從帳單中識別到：", "We found these details from your bill:"),
-    foundHelp: textByLanguage(language, "请确认是否正确。", "請確認是否正確。", "Please confirm before continuing."),
-    confirm: textByLanguage(language, "确认并查看推荐", "確認並查看推薦", "Confirm and see recommendations"),
-    edit: textByLanguage(language, "我要修改", "我要修改", "Edit manually"),
-    chooseAtLeastOne: textByLanguage(language, "请至少选择一个文件。", "請至少選擇一個檔案。", "Please select at least one file."),
-    tooMany: textByLanguage(language, "最多上传 3 个文件。", "最多上傳 3 個檔案。", "Please upload no more than 3 files."),
-    badType: textByLanguage(language, "仅支持 JPG、PNG、WEBP 或 PDF 文件。", "僅支援 JPG、PNG、WEBP 或 PDF 檔案。", "Only JPG, PNG, WEBP, or PDF files are supported."),
-    tooLarge: textByLanguage(language, "每个文件必须小于 10MB。", "每個檔案必須小於 10MB。", "Each file must be under 10MB."),
-    analyzeError: textByLanguage(language, "无法识别账单，请稍后再试，或改用手工填写。", "無法識別帳單，請稍後再試，或改用手工填寫。", "Could not analyze bill. Please try again later or enter details manually."),
-    labels: {
-      provider: textByLanguage(language, "当前运营商", "目前服務商", "Current provider"),
-      serviceType: textByLanguage(language, "服务类型", "服務類型", "Service type"),
-      monthlyBill: textByLanguage(language, "当前月费", "目前月費", "Monthly bill"),
-      internetSpeed: textByLanguage(language, "宽带速度", "寬頻速度", "Internet speed"),
-      mobileData: textByLanguage(language, "手机流量", "手機流量", "Mobile data"),
-      tv: textByLanguage(language, "TV 服务", "TV 服務", "TV service"),
-      homePhone: textByLanguage(language, "家庭电话", "家居電話", "Home phone")
-    }
-  };
-}
-
-function validateBillFiles(files, language) {
-  const copy = uploadCopy(language);
-  if (!files || files.length === 0) return copy.chooseAtLeastOne;
-  if (files.length > BILL_FILE_MAX_COUNT) return copy.tooMany;
-  for (const file of files) {
-    if (!BILL_FILE_ALLOWED_TYPES.includes(file.type)) return copy.badType;
-    if (file.size > BILL_FILE_MAX_SIZE) return copy.tooLarge;
-  }
-  return "";
-}
-
-function providerFromBillAnalysis(provider, serviceType) {
-  const normalized = normalizeProviderName(provider);
-  if (!normalized || normalized === "unknown") return "";
-  if (serviceType === "both") {
-    if (normalized === "koodo" || normalized === "telus") return "koodo_telus";
-    if (normalized === "bell_aliant" || normalized === "eastlink" || normalized === "purple_cow") return normalized;
-    return "other_not_sure";
-  }
-  const labels = {
-    bell_aliant: "Bell Aliant",
-    eastlink: "Eastlink",
-    koodo: "Koodo",
-    telus: "TELUS",
-    public_mobile: "Public Mobile",
-    purple_cow: serviceType === "both" ? "purple_cow" : "Purple Cow",
-    xplore: "Xplore",
-    starlink: "Starlink",
-    other: serviceType === "both" ? "other_not_sure" : "Other"
-  };
-  return labels[normalized] || "";
-}
-
-function serviceTypeFromBillAnalysis(serviceType) {
-  if (serviceType === "bundle") return "both";
-  if (serviceType === "internet" || serviceType === "mobile") return serviceType;
-  return "";
-}
-
-function internetUsageFromMbps(speed) {
-  const value = Number(speed);
-  if (!Number.isFinite(value) || value <= 0) return "";
-  if (value <= 150) return "light";
-  if (value <= 750) return "standard";
-  return "heavy";
-}
-
-function mobileDataUsageFromGB(dataGB) {
-  const value = Number(dataGB);
-  if (!Number.isFinite(value) || value <= 0) return "";
-  if (value <= 20) return "0-20GB";
-  if (value <= 50) return "20-50GB";
-  return "60GB+";
-}
-
-function yesNoUnknown(value, language) {
-  if (value === true) return textByLanguage(language, "有", "有", "Yes");
-  if (value === false) return textByLanguage(language, "没有", "沒有", "No");
-  return textByLanguage(language, "未识别", "未識別", "Not detected");
-}
-
-function billAnalysisServiceLabel(value, language) {
-  const labels = {
-    internet: textByLanguage(language, "宽带", "寬頻", "Internet"),
-    mobile: textByLanguage(language, "手机", "手機", "Mobile"),
-    bundle: textByLanguage(language, "组合账单", "組合帳單", "Bundle"),
-    unknown: textByLanguage(language, "未识别", "未識別", "Unknown")
-  };
-  return labels[value] || labels.unknown;
-}
-
 function getInitialLanguage() {
   if (typeof window === "undefined") return "en";
   const language = new URLSearchParams(window.location.search).get("lang");
@@ -2274,9 +2231,9 @@ function usageGuidanceContent(language) {
         ),
         estimate: textByLanguage(
           language,
-          "100M 左右，适合轻度使用。",
-          "100M 左右，適合輕度使用。",
-          "Around 100 Mbps for light use."
+          "100M，适合轻度使用。",
+          "100M，適合輕度使用。",
+          "100 Mbps for light use."
         ),
         caution: textByLanguage(
           language,
@@ -2288,19 +2245,19 @@ function usageGuidanceContent(language) {
       {
         type: "standard",
         marker: "2",
-        title: textByLanguage(language, "普通家庭", "一般家庭", "Standard household"),
+        title: textByLanguage(language, "普通家庭", "普通家庭", "Standard household"),
         people: textByLanguage(language, "2–4 人", "2–4 人", "2–4 people"),
         body: textByLanguage(
           language,
           "4K 视频、视频会议、孩子上网课、电视盒子、多台手机和平板同时使用、普通游戏、偶尔远程办公。",
-          "4K 影片、視訊會議、孩子上網課、電視盒、多台手機和平板同時使用、一般遊戲、偶爾遠端工作。",
+          "4K 影片、視訊會議、孩子線上課、電視盒、多台手機和平板同時使用、一般遊戲、偶爾遠端工作。",
           "4K video, video meetings, online classes, TV boxes, multiple phones/tablets, casual gaming, and occasional remote work."
         ),
         estimate: textByLanguage(
           language,
-          "300–500M 左右，适合大多数 PEI 普通家庭。",
-          "300–500M 左右，適合大多數 PEI 普通家庭。",
-          "Around 300–500 Mbps for most standard PEI households."
+          "300–500M，适合大多数 PEI 普通家庭。",
+          "300–500M，適合大多數 PEI 普通家庭。",
+          "300–500 Mbps for most standard PEI households."
         ),
         caution: textByLanguage(
           language,
@@ -2312,7 +2269,7 @@ function usageGuidanceContent(language) {
       {
         type: "heavy",
         marker: "3",
-        title: textByLanguage(language, "重度家庭", "重度家庭", "Heavy household"),
+        title: textByLanguage(language, "高速 / 多人家庭", "高速 / 多人家庭", "Heavy / multi-user household"),
         people: textByLanguage(language, "4 人以上", "4 人以上", "4+ people"),
         body: textByLanguage(
           language,
@@ -2322,9 +2279,9 @@ function usageGuidanceContent(language) {
         ),
         estimate: textByLanguage(
           language,
-          "1 Gig+ 高速，适合多人家庭和重度使用。",
-          "1 Gig+ 高速，適合多人家庭和重度使用。",
-          "1 Gig+ speed for multi-user households and heavy use."
+          "1 Gig+，适合高速 / 多人家庭。",
+          "1 Gig+，適合高速 / 多人家庭。",
+          "1 Gig+ for heavy or multi-user households."
         ),
         caution: textByLanguage(
           language,
@@ -2785,29 +2742,22 @@ function mobilePicks(form) {
           offer.service_type === "mobile" &&
           isRecommendableOffer(offer) &&
           !isKoodoPrepaid(offer) &&
-          mobileMeetsServiceLevel(offer, form) &&
-          !["Rogers", "Fido", "Virgin Plus"].includes(offer.provider)
+          mobileMeetsServiceLevel(offer, form)
         );
       }
     ),
     form.current_provider
   );
   const allowedProviders = isMainUrbanArea(form.city)
-    ? ["public_mobile", "koodo", "telus", "bell_aliant", "eastlink"]
-    : ["public_mobile", "telus", "bell_aliant"];
+    ? ["public_mobile", "koodo", "telus", "bell_aliant", "rogers", "fido", "virgin_plus", "lucky_mobile", "chatr"]
+    : ["public_mobile", "telus", "bell_aliant", "rogers", "lucky_mobile", "chatr"];
 
   const sortedOffers = offers
-    .filter((offer) => allowedProviders.includes(normalizeProviderName(offer.provider)))
+    .filter((offer) => allowedProviders.includes(normalizeMobileProviderName(offer.provider)))
     .sort((a, b) => compareMobileOfferValue(a, b, form));
-  const seenProviders = new Set();
-  const providerPicks = sortedOffers.filter((offer) => {
-    const provider = normalizeProviderName(offer.provider);
-    if (seenProviders.has(provider)) return false;
-    seenProviders.add(provider);
-    return true;
-  });
 
-  return finalizeMobileRecommendationOrder(providerPicks, form)
+  return finalizeMobileRecommendationOrder(sortedOffers, form)
+    .slice(0, 5)
     .map((offer, index) => ({
       ...offer,
       pickTypeKey: index === 0 ? "highQualityPick" : /Public Mobile/i.test(offer.provider) ? "lowestCostPick" : "manualPick"
@@ -3324,15 +3274,9 @@ export default function Home() {
   const [submitting, setSubmitting] = useState(false);
   const [sheetError, setSheetError] = useState("");
   const [missingFields, setMissingFields] = useState([]);
-  const [entryMode, setEntryMode] = useState("manual");
-  const [billFiles, setBillFiles] = useState([]);
-  const [billAnalysisStatus, setBillAnalysisStatus] = useState("idle");
-  const [billAnalysisResult, setBillAnalysisResult] = useState(null);
-  const [billAnalysisError, setBillAnalysisError] = useState("");
   const flowBodyRef = useRef(null);
   const flowHistoryPushedRef = useRef(false);
   const t = translations[language];
-  const billUpload = uploadCopy(language);
   const isBundle = form.service_type === "both";
   const showInternet = form.service_type === "internet" || isBundle;
   const showMobile = form.service_type === "mobile" || (isBundle && form.bundle_includes_mobile);
@@ -3449,7 +3393,7 @@ export default function Home() {
           bundle_includes_home_phone: false,
           bundle_needs_manual_review: false,
           bundle_other_or_not_sure: false,
-          current_mobile_data: "",
+          current_mobile_data: "20-50GB",
           mobile_line_count: "0",
           has_tv_service: "yes",
           has_home_phone: "no"
@@ -3480,7 +3424,7 @@ export default function Home() {
       bundle_needs_manual_review: Boolean(option.needsManualReview),
       bundle_other_or_not_sure: value === "other_or_not_sure",
       mobile_line_count: option.includes.mobile ? current.mobile_line_count || "" : "0",
-      current_mobile_data: option.includes.mobile ? current.current_mobile_data || "" : "",
+      current_mobile_data: option.includes.mobile ? current.current_mobile_data || "20-50GB" : "20-50GB",
       has_tv_service: option.includes.tv ? "yes" : "no",
       has_home_phone: option.includes.homePhone ? "yes" : "no"
     }));
@@ -3489,149 +3433,6 @@ export default function Home() {
 
   function updateLead(field, value) {
     setLead((current) => ({ ...current, [field]: value }));
-  }
-
-  function setManualEntryMode() {
-    setEntryMode("manual");
-    setForm((current) => ({
-      ...current,
-      bill_input_method: "manual",
-      uploaded_bill_file_count: 0,
-      bill_analysis_provider: "",
-      bill_analysis_service_type: "",
-      bill_analysis_monthly_bill: "",
-      bill_analysis_internet_speed_mbps: "",
-      bill_analysis_mobile_data_gb: "",
-      bill_analysis_confidence: "",
-      bill_analysis_notes: ""
-    }));
-    setBillFiles([]);
-    setBillAnalysisStatus("idle");
-    setBillAnalysisResult(null);
-    setBillAnalysisError("");
-  }
-
-  function setUploadEntryMode() {
-    setEntryMode("upload");
-    setForm((current) => ({ ...current, bill_input_method: "upload" }));
-    setSheetError("");
-  }
-
-  function handleBillFileSelection(fileList) {
-    const nextFiles = Array.from(fileList || []);
-    setBillFiles(nextFiles);
-    setBillAnalysisResult(null);
-    setBillAnalysisStatus("idle");
-    setBillAnalysisError(validateBillFiles(nextFiles, language));
-  }
-
-  async function analyzeBillFiles() {
-    const error = validateBillFiles(billFiles, language);
-    if (error) {
-      setBillAnalysisError(error);
-      return;
-    }
-
-    setBillAnalysisStatus("analyzing");
-    setBillAnalysisError("");
-    setBillAnalysisResult(null);
-
-    try {
-      const formData = new FormData();
-      billFiles.forEach((file) => formData.append("files[]", file));
-      const response = await fetch("/api/analyze-bill", {
-        method: "POST",
-        body: formData
-      });
-      const json = await response.json();
-      if (!response.ok || !json.success) {
-        throw new Error(json.error || billUpload.analyzeError);
-      }
-      setBillAnalysisResult(json.data);
-      setBillAnalysisStatus("success");
-    } catch (error) {
-      setBillAnalysisStatus("error");
-      setBillAnalysisError(error.message || billUpload.analyzeError);
-    }
-  }
-
-  function applyBillAnalysisToForm(result) {
-    if (!result) return;
-    setForm((current) => {
-      const nextServiceType = serviceTypeFromBillAnalysis(result.serviceType) || current.service_type;
-      const nextUsageLevel = internetUsageFromMbps(result.internetSpeedMbps) || current.internet_usage_level;
-      const nextMobileData = mobileDataUsageFromGB(result.mobileDataGB) || current.current_mobile_data;
-      const nextProvider = providerFromBillAnalysis(result.provider, nextServiceType) || current.current_provider;
-      const includesMobile =
-        result.bundleType === "internet_mobile" ||
-        result.bundleType === "internet_mobile_tv" ||
-        (nextServiceType === "mobile");
-      const includesTv =
-        result.hasTvService === true ||
-        result.bundleType === "internet_tv" ||
-        result.bundleType === "internet_tv_home_phone" ||
-        result.bundleType === "internet_mobile_tv";
-      const includesHomePhone =
-        result.hasHomePhone === true || result.bundleType === "internet_tv_home_phone";
-
-      return {
-        ...current,
-        service_type: nextServiceType,
-        current_provider: nextProvider,
-        monthly_price: result.monthlyBill ?? current.monthly_price,
-        internet_usage_level: nextServiceType === "mobile" ? current.internet_usage_level : nextUsageLevel,
-        current_speed:
-          nextServiceType === "mobile"
-            ? current.current_speed
-            : nextUsageLevel
-              ? speedForUsage(nextUsageLevel)
-              : current.current_speed,
-        current_mobile_data: includesMobile ? nextMobileData : current.current_mobile_data,
-        mobile_line_count:
-          result.mobileLineCount && Number(result.mobileLineCount) > 0
-            ? String(result.mobileLineCount)
-            : includesMobile && current.mobile_line_count === "0"
-              ? "1"
-              : current.mobile_line_count,
-        bundle_type: result.bundleType || current.bundle_type,
-        bundle_includes_internet: nextServiceType === "both" ? true : current.bundle_includes_internet,
-        bundle_includes_mobile: nextServiceType === "both" ? includesMobile : current.bundle_includes_mobile,
-        bundle_includes_tv: nextServiceType === "both" ? includesTv : current.bundle_includes_tv,
-        bundle_includes_home_phone: nextServiceType === "both" ? includesHomePhone : current.bundle_includes_home_phone,
-        bundle_needs_manual_review: nextServiceType === "both" && result.bundleType === "other_or_not_sure",
-        bundle_other_or_not_sure: nextServiceType === "both" && result.bundleType === "other_or_not_sure",
-        has_tv_service: includesTv ? "yes" : current.has_tv_service,
-        has_home_phone: includesHomePhone ? "yes" : current.has_home_phone,
-        bill_input_method: "upload",
-        uploaded_bill_file_count: billFiles.length,
-        bill_analysis_provider: result.provider || "",
-        bill_analysis_service_type: result.serviceType || "",
-        bill_analysis_monthly_bill: result.monthlyBill ?? "",
-        bill_analysis_internet_speed_mbps: result.internetSpeedMbps ?? "",
-        bill_analysis_mobile_data_gb: result.mobileDataGB ?? "",
-        bill_analysis_confidence: result.confidence ?? "",
-        bill_analysis_notes: result.notes || ""
-      };
-    });
-    setLead((current) => ({
-      ...current,
-      current_contract_status: result.contractStatus || current.current_contract_status,
-      contract_end_date: result.contractEndDate || current.contract_end_date
-    }));
-  }
-
-  function confirmBillAnalysis() {
-    applyBillAnalysisToForm(billAnalysisResult);
-    setMissingFields([]);
-    setSheetError("");
-    setResultOpen(true);
-  }
-
-  function editBillAnalysisManually() {
-    applyBillAnalysisToForm(billAnalysisResult);
-    setEntryMode("manual");
-    setSheetError("");
-    window.requestAnimationFrame(() => window.scrollTo({ top: document.querySelector(".workspace")?.offsetTop || 0, behavior: "smooth" }));
   }
 
   function openLeadFromResult() {
@@ -3714,11 +3515,6 @@ export default function Home() {
     setLeadOfferIds([]);
     setMissingFields([]);
     setSheetError("");
-    setEntryMode("manual");
-    setBillFiles([]);
-    setBillAnalysisStatus("idle");
-    setBillAnalysisResult(null);
-    setBillAnalysisError("");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -3910,127 +3706,6 @@ export default function Home() {
         <form className="panel form-panel" onSubmit={submitInitial} noValidate>
           {sheetError && <div className="error">{sheetError}</div>}
 
-          <div className="entry-mode-grid" aria-label="Choose input method">
-            <button
-              className={entryMode === "upload" ? "entry-mode-card active" : "entry-mode-card"}
-              type="button"
-              onClick={setUploadEntryMode}
-            >
-              <span className="entry-mode-icon" aria-hidden="true">AI</span>
-              <span>
-                <strong>{billUpload.uploadTitle}</strong>
-                <small>{billUpload.uploadSubtitle}</small>
-              </span>
-            </button>
-            <button
-              className={entryMode === "manual" ? "entry-mode-card active" : "entry-mode-card"}
-              type="button"
-              onClick={setManualEntryMode}
-            >
-              <span className="entry-mode-icon" aria-hidden="true">M</span>
-              <span>
-                <strong>{billUpload.manualTitle}</strong>
-                <small>{billUpload.manualSubtitle}</small>
-              </span>
-            </button>
-          </div>
-
-          {entryMode === "upload" ? (
-            <section className="bill-upload-panel">
-              <div className="bill-upload-copy">
-                <h2>{billUpload.panelTitle}</h2>
-                <p>{billUpload.panelBody}</p>
-              </div>
-              <label
-                className="bill-upload-dropzone"
-                onDragOver={(event) => event.preventDefault()}
-                onDrop={(event) => {
-                  event.preventDefault();
-                  handleBillFileSelection(event.dataTransfer.files);
-                }}
-              >
-                <input
-                  type="file"
-                  accept="image/jpeg,image/png,image/webp,application/pdf"
-                  multiple
-                  onChange={(event) => handleBillFileSelection(event.target.files)}
-                />
-                <span className="bill-upload-drop-icon" aria-hidden="true">+</span>
-                <strong>{billUpload.dropText}</strong>
-                <small>{billUpload.fileHelp}</small>
-              </label>
-
-              {billFiles.length > 0 && (
-                <div className="bill-file-list">
-                  {billFiles.map((file) => (
-                    <span key={`${file.name}-${file.size}`}>
-                      {file.name} <small>{Math.max(1, Math.round(file.size / 1024))} KB</small>
-                    </span>
-                  ))}
-                </div>
-              )}
-
-              {billAnalysisError && <div className="error">{billAnalysisError}</div>}
-
-              <button
-                className="submit-button upload-analyze-button"
-                type="button"
-                onClick={analyzeBillFiles}
-                disabled={billAnalysisStatus === "analyzing"}
-              >
-                <span>{billAnalysisStatus === "analyzing" ? billUpload.analyzing : billUpload.analyzeButton}</span>
-                <span aria-hidden="true">-&gt;</span>
-              </button>
-              <p className="form-safe-note">{billUpload.safeNote}</p>
-
-              {billAnalysisStatus === "success" && billAnalysisResult && (
-                <div className="bill-analysis-confirm">
-                  <h3>{billUpload.foundTitle}</h3>
-                  <dl>
-                    <div>
-                      <dt>{billUpload.labels.provider}</dt>
-                      <dd>{billAnalysisResult.provider || "unknown"}</dd>
-                    </div>
-                    <div>
-                      <dt>{billUpload.labels.serviceType}</dt>
-                      <dd>{billAnalysisServiceLabel(billAnalysisResult.serviceType, language)}</dd>
-                    </div>
-                    <div>
-                      <dt>{billUpload.labels.monthlyBill}</dt>
-                      <dd>{billAnalysisResult.monthlyBill != null ? `$${billAnalysisResult.monthlyBill}` : "N/A"}</dd>
-                    </div>
-                    <div>
-                      <dt>{billUpload.labels.internetSpeed}</dt>
-                      <dd>{billAnalysisResult.internetSpeedMbps ? `${billAnalysisResult.internetSpeedMbps} Mbps` : "N/A"}</dd>
-                    </div>
-                    <div>
-                      <dt>{billUpload.labels.mobileData}</dt>
-                      <dd>{billAnalysisResult.mobileDataGB ? `${billAnalysisResult.mobileDataGB} GB` : "N/A"}</dd>
-                    </div>
-                    <div>
-                      <dt>{billUpload.labels.tv}</dt>
-                      <dd>{yesNoUnknown(billAnalysisResult.hasTvService, language)}</dd>
-                    </div>
-                    <div>
-                      <dt>{billUpload.labels.homePhone}</dt>
-                      <dd>{yesNoUnknown(billAnalysisResult.hasHomePhone, language)}</dd>
-                    </div>
-                  </dl>
-                  {billAnalysisResult.notes && <p>{billAnalysisResult.notes}</p>}
-                  <small>{billUpload.foundHelp}</small>
-                  <div className="bill-analysis-actions">
-                    <button className="submit-button" type="button" onClick={confirmBillAnalysis}>
-                      {billUpload.confirm}
-                    </button>
-                    <button className="secondary-upload-button" type="button" onClick={editBillAnalysisManually}>
-                      {billUpload.edit}
-                    </button>
-                  </div>
-                </div>
-              )}
-            </section>
-          ) : (
-            <>
           <div className="field bill-type-field">
             <div className="service-card-grid bill-type-grid">
               {serviceOrder.map((value) => (
@@ -4092,7 +3767,7 @@ export default function Home() {
                           <span>{t.usageCards[item.value].description}</span>
                         </span>
                         <span className="usage-card-speed">
-                          <small>{language === "en" || language === "fr" ? "Recommended" : language === "zhHant" || language === "zh-TW" ? "建議頻寬" : "推荐带宽"}</small>
+                          <small>{language === "en" || language === "fr" ? "Reference speed" : language === "zhHant" || language === "zh-TW" ? "參考頻寬" : "参考带宽"}</small>
                           <strong>{(internetUsageSpeeds[language] || internetUsageSpeeds.en)[item.value]}</strong>
                         </span>
                         {form.internet_usage_level === item.value && <span className="usage-card-check" aria-hidden="true">✓</span>}
@@ -4262,8 +3937,6 @@ export default function Home() {
             <span aria-hidden="true">🔒</span>
             {t.formSafetyNote}
           </p>
-            </>
-          )}
         </form>
       </section>
 
