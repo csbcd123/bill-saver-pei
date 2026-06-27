@@ -3707,15 +3707,20 @@ export default function Home() {
           {sheetError && <div className="error">{sheetError}</div>}
 
           <div className="field bill-type-field">
-            <div className="mobile-bill-type-select">
-              <Select value={form.service_type} onChange={(value) => update("service_type", value)}>
-                {serviceOrder.map((value) => (
-                  <option key={value} value={value}>
-                    {t.serviceCards[value]}
-                  </option>
-                ))}
-              </Select>
-            </div>
+            <label className="mobile-form-select-field mobile-bill-type-select">
+              <span>{t.serviceType}</span>
+              <span className="input-shell">
+                <span className="input-icon" aria-hidden="true"><ServiceTypeIcon type={form.service_type} /></span>
+                <Select value={form.service_type} onChange={(value) => update("service_type", value)}>
+                  {serviceOrder.map((value) => (
+                    <option key={value} value={value}>
+                      {t.serviceCards[value]}
+                    </option>
+                  ))}
+                </Select>
+                <span className="select-chevron" aria-hidden="true">⌄</span>
+              </span>
+            </label>
             <div className="service-card-grid bill-type-grid">
               {serviceOrder.map((value) => (
                 <button
@@ -3888,8 +3893,17 @@ export default function Home() {
           ) : (
             <div className="form-split form-grid-top mobile-form-split">
               <div className="form-split-left form-column">
-                <div className={`field ${missingFields.includes("current_mobile_data") ? "missing" : ""}`.trim()}>
+                <div className={`field mobile-data-usage-field ${missingFields.includes("current_mobile_data") ? "missing" : ""}`.trim()}>
                   <span>{t.mobileDataUsageTitle}</span>
+                  <div className="mobile-data-usage-select">
+                    <Select value={form.current_mobile_data} onChange={(value) => update("current_mobile_data", value)}>
+                      {mobileDataUsageLevels.map((item) => (
+                        <option key={item.value} value={item.value}>
+                          {`${t.mobileDataUsageCards[item.value].amount} · ${t.mobileDataUsageCards[item.value].title}`}
+                        </option>
+                      ))}
+                    </Select>
+                  </div>
                   <div className="usage-card-grid compact">
                     {mobileDataUsageLevels.map((item) => (
                       <MobileUsageCard
