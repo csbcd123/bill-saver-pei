@@ -312,6 +312,8 @@ h1 {
 
 .heroOfferTickerLabel {
   flex: 0 0 auto;
+  position: relative;
+  z-index: 2;
   border-radius: 999px;
   background: rgba(28, 230, 165, 0.13);
   color: rgba(138, 255, 214, 0.96);
@@ -320,6 +322,12 @@ h1 {
   font-weight: 900;
   line-height: 1;
   white-space: nowrap;
+}
+
+.heroOfferTickerWindow {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .heroOfferTickerTrack {
@@ -333,6 +341,7 @@ h1 {
   line-height: 1;
   white-space: nowrap;
   animation: heroTickerScroll 32s linear infinite;
+  will-change: transform;
 }
 
 .heroOfferTickerItem {
@@ -4003,8 +4012,8 @@ textarea:focus {
 
 @media (max-width: 600px) {
   .heroSection {
-    min-height: 460px;
-    padding: 18px 16px 90px;
+    min-height: 370px;
+    padding: 18px 16px 64px;
     background-position: 68% top;
   }
 
@@ -4022,6 +4031,10 @@ textarea:focus {
 
   .workspace.single-column .form-panel {
     padding: 16px;
+  }
+
+  .workspace.single-column {
+    margin-top: -112px;
   }
 
   .usage-card {
