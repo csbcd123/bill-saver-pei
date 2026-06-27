@@ -3163,12 +3163,48 @@ textarea:focus {
 .usageHelpMuted,
 .usageHelpAction,
 .usageHelpIcon {
-  color: #55e8b0;
+  color: rgba(255, 255, 255, 0.68);
 }
 
 .usageHelpLink {
   align-self: flex-start;
   margin-top: 8px;
+  min-height: 38px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.055);
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.25;
+  transition: border-color 160ms ease, background 160ms ease, color 160ms ease;
+}
+
+.usageHelpLink:hover {
+  border-color: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.usageHelpIcon {
+  width: 17px;
+  height: 17px;
+  border-color: rgba(255, 255, 255, 0.28);
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 11px;
+}
+
+.usageHelpMuted {
+  color: rgba(255, 255, 255, 0.58);
+}
+
+.usageHelpAction {
+  color: rgba(91, 232, 181, 0.86);
+  font-weight: 750;
+}
+
+.usageHelpLink:hover .usageHelpAction {
+  color: rgba(116, 247, 199, 0.96);
+  text-decoration: none;
 }
 
 .bundle-usage-group + .bundle-usage-group {
@@ -3718,8 +3754,8 @@ textarea:focus {
 
 @media (max-width: 768px) {
   .heroSection {
-    min-height: 460px;
-    padding: 18px 16px 90px;
+    min-height: 390px;
+    padding: 18px 16px 72px;
     background-position: 68% top;
   }
 
@@ -3747,6 +3783,10 @@ textarea:focus {
   .heroSubtitle {
     margin-top: 10px;
     font-size: 15px;
+  }
+
+  .heroContent .stepProgress {
+    display: none;
   }
 
   .language-switcher {
