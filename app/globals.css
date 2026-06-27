@@ -2707,6 +2707,10 @@ textarea:focus {
   gap: 0;
 }
 
+.mobile-bill-type-select {
+  display: none;
+}
+
 .bill-type-grid {
   gap: 28px;
   margin: 0 0 26px;
@@ -3967,6 +3971,16 @@ textarea:focus {
 }
 
 @media (max-width: 768px) {
+  .mobile-bill-type-select {
+    display: block;
+    width: 100%;
+    margin-bottom: 18px;
+  }
+
+  .bill-type-field .bill-type-grid {
+    display: none;
+  }
+
   .usage-card,
   .bundle-usage-card,
   .mobile-usage-card,

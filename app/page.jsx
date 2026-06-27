@@ -3707,6 +3707,15 @@ export default function Home() {
           {sheetError && <div className="error">{sheetError}</div>}
 
           <div className="field bill-type-field">
+            <div className="mobile-bill-type-select">
+              <Select value={form.service_type} onChange={(value) => update("service_type", value)}>
+                {serviceOrder.map((value) => (
+                  <option key={value} value={value}>
+                    {t.serviceCards[value]}
+                  </option>
+                ))}
+              </Select>
+            </div>
             <div className="service-card-grid bill-type-grid">
               {serviceOrder.map((value) => (
                 <button
