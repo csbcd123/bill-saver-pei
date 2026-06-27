@@ -65,31 +65,41 @@ textarea {
 
 .language-switcher {
   position: absolute;
-  top: 24px;
-  right: 34px;
+  top: 18px;
+  right: 20px;
   z-index: 5;
   display: flex;
   align-items: center;
-  gap: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.24);
-  border-radius: 12px;
-  background: rgba(0, 32, 36, 0.72);
-  padding: 6px;
-  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  background: rgba(0, 24, 32, 0.48);
+  padding: 3px 8px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(12px);
 }
 
 .languageSelect {
-  min-width: 150px;
-  height: 42px;
+  min-width: 116px;
+  height: 34px;
   border: 0;
-  border-radius: 9px;
-  background: rgba(255, 255, 255, 0.96);
-  color: var(--accent-strong);
-  padding: 0 34px 0 12px;
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.88);
+  padding: 0 20px 0 4px;
   font: inherit;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 800;
   cursor: pointer;
+}
+
+.languageSelect:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.languageSelect option {
+  background: #082d38;
+  color: #fff;
 }
 
 .hero {
@@ -3740,17 +3750,16 @@ textarea:focus {
   }
 
   .language-switcher {
-    top: 16px;
-    right: 16px;
-    gap: 4px;
-    padding: 5px;
+    top: 12px;
+    right: 12px;
+    padding: 2px 7px;
   }
 
   .languageSelect {
-    min-width: 124px;
-    height: 38px;
-    padding: 0 28px 0 9px;
-    font-size: 12px;
+    min-width: 96px;
+    height: 32px;
+    padding: 0 18px 0 3px;
+    font-size: 11px;
   }
 
   .language-switcher button {
@@ -3875,8 +3884,7 @@ textarea:focus {
   }
 
   .language-switcher {
-    gap: 2px;
-    padding: 3px;
+    right: 10px;
   }
 
   .language-switcher button {
