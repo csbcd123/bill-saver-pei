@@ -4043,8 +4043,8 @@ textarea:focus {
 
 @media (max-width: 600px) {
   .heroSection {
-    min-height: 340px;
-    padding: 18px 16px 48px;
+    min-height: 300px;
+    padding: 18px 16px 42px;
     background-position: 68% top;
   }
 
@@ -4066,7 +4066,7 @@ textarea:focus {
   }
 
   .workspace.single-column {
-    margin-top: -70px;
+    margin-top: -82px;
   }
 
   .heroTitle,
@@ -4075,36 +4075,11 @@ textarea:focus {
   }
 
   .heroContent {
-    position: absolute;
-    right: auto;
-    bottom: 58px;
-    left: 22px;
-    width: min(310px, calc(100vw - 44px));
-    max-width: none;
-    margin: 0;
-    z-index: 2;
+    display: none;
   }
 
   .heroOfferTicker {
-    width: 100%;
-    min-height: 32px;
-    margin-top: 0;
-    gap: 6px;
-    padding: 3px 7px;
-    border-color: rgba(255, 255, 255, 0.1);
-    background: rgba(0, 24, 32, 0.24);
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
-  }
-
-  .heroOfferTickerLabel {
-    padding: 6px 8px;
-    font-size: 10px;
-  }
-
-  .heroOfferTickerTrack {
-    gap: 8px;
-    font-size: 11px;
-    animation-duration: 30s;
+    display: none;
   }
 
   .usage-card {
