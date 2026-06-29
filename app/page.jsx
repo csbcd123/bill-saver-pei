@@ -431,7 +431,7 @@ const translations = {
     eyebrow: "PEI only · v1",
     title: "Bill Saver | Free PEI Mobile and Internet Bill Check",
     hero: "Enter bill details first to see your result. If you want available offers, submit contact details for manual review afterward.",
-    heroHeadline: "Check your bills, save your money",
+    heroHeadline: "Check Bills and Save Money",
     heroSubtitle: "Free PEI mobile and internet bill check with quick plan comparisons.",
     heroProgressSteps: ["Enter Bill", "View Result", "Get Offer"],
     formTitle: "Bill details",
@@ -647,7 +647,7 @@ const translations = {
 
 translations.zh = translations.zhHans;
 translations["zh-TW"] = translations.zhHant;
-translations.en.heroHeadline = "Check your bills, save your money";
+translations.en.heroHeadline = "Check Bills and Save Money";
 translations.fr = {
   ...translations.en,
   languageName: "Français",
