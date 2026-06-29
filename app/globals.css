@@ -2520,8 +2520,8 @@ textarea:focus {
 
 .heroSection {
   position: relative;
-  min-height: 560px;
-  padding: 28px 48px 120px;
+  min-height: 440px;
+  padding: 28px 48px 84px;
   color: #fff;
   overflow: hidden;
   background-image:
@@ -2554,7 +2554,7 @@ textarea:focus {
 }
 
 .heroInner {
-  min-height: 310px;
+  min-height: 230px;
 }
 
 .heroBrandLogo {
@@ -2563,7 +2563,7 @@ textarea:focus {
 }
 
 .heroContent {
-  margin-top: 18px;
+  margin-top: 8px;
 }
 
 .heroContent .eyebrow {
@@ -3400,15 +3400,15 @@ textarea:focus {
 
 @media (max-width: 900px) {
   .heroSection {
-    min-height: 430px;
-    padding: 20px 18px 82px;
+    min-height: 350px;
+    padding: 20px 18px 64px;
     background-position: 68% top;
   }
 
   .heroContent {
     width: min(100%, 92vw);
     max-width: 520px;
-    margin: 28px auto 0;
+    margin: 16px auto 0;
     text-align: center;
     transform: none;
   }
@@ -3436,7 +3436,7 @@ textarea:focus {
 
   .workspace.single-column {
     width: 100%;
-    margin-top: -86px;
+    margin-top: -78px;
     padding-left: 14px;
     padding-right: 14px;
     padding-bottom: 60px;
@@ -3666,8 +3666,8 @@ textarea:focus {
 
 @media (max-width: 768px) {
   .heroSection {
-    min-height: 390px;
-    padding: 18px 16px 72px;
+    min-height: 330px;
+    padding: 18px 16px 58px;
     background-position: 68% top;
   }
 
@@ -3677,7 +3677,7 @@ textarea:focus {
 
   .heroContent {
     max-width: 100%;
-    margin-top: 24px;
+    margin-top: 16px;
     transform: none;
   }
 
@@ -3784,8 +3784,8 @@ textarea:focus {
 
 @media (max-width: 600px) {
   .heroSection {
-    min-height: 390px;
-    padding: 18px 16px 72px;
+    min-height: 318px;
+    padding: 18px 16px 52px;
     background-position: 68% top;
   }
 
@@ -3807,7 +3807,7 @@ textarea:focus {
   }
 
   .workspace.single-column {
-    margin-top: -70px;
+    margin-top: -76px;
   }
 
   .usage-card {
