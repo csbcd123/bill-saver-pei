@@ -3679,26 +3679,6 @@ export default function Home() {
           <div className="heroContent">
             <h1 className="heroTitle">{t.heroHeadline}</h1>
             <p className="heroSubtitle">{t.heroSubtitle}</p>
-            <div className="stepProgress" aria-label={t.heroProgressSteps.join(" → ")}>
-              <div className="stepTrack" aria-hidden="true">
-                <div
-                  className="stepTrackActive"
-                  style={{ width: `${((currentStep - 1) / (t.heroProgressSteps.length - 1)) * 100}%` }}
-                />
-              </div>
-              {t.heroProgressSteps.map((step, index) => {
-                const stepNumber = index + 1;
-                const isComplete = stepNumber < currentStep;
-                const isCurrent = stepNumber === currentStep;
-
-                return (
-                  <div className={`stepNode stepNode${stepNumber} ${isComplete ? "done" : ""} ${isCurrent ? "active" : ""}`} key={step}>
-                    <span className="stepCircle">{isComplete ? "✓" : stepNumber}</span>
-                    <span className="stepLabel">{step}</span>
-                  </div>
-                );
-              })}
-            </div>
           </div>
         </div>
       </section>
