@@ -294,80 +294,6 @@ h1 {
   text-shadow: 0 6px 18px rgba(0, 0, 0, 0.42);
 }
 
-.heroOfferTicker {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: min(760px, 86vw);
-  min-height: 42px;
-  margin: 22px auto 0;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 999px;
-  background: rgba(0, 24, 32, 0.34);
-  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  overflow: hidden;
-  padding: 5px 8px 5px 14px;
-  backdrop-filter: blur(12px);
-}
-
-.heroOfferTickerLabel {
-  flex: 0 0 auto;
-  position: relative;
-  z-index: 2;
-  border-radius: 999px;
-  background: rgba(28, 230, 165, 0.13);
-  color: rgba(138, 255, 214, 0.96);
-  padding: 7px 10px;
-  font-size: 12px;
-  font-weight: 900;
-  line-height: 1;
-  white-space: nowrap;
-}
-
-.heroOfferTickerWindow {
-  flex: 1 1 auto;
-  min-width: 0;
-  overflow: hidden;
-}
-
-.heroOfferTickerTrack {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  min-width: max-content;
-  color: rgba(255, 255, 255, 0.82);
-  font-size: 13px;
-  font-weight: 750;
-  line-height: 1;
-  white-space: nowrap;
-  animation: heroTickerScroll 32s linear infinite;
-  will-change: transform;
-}
-
-.heroOfferTickerItem {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.heroOfferTickerItem::after {
-  content: "";
-  width: 5px;
-  height: 5px;
-  border-radius: 999px;
-  background: rgba(85, 232, 176, 0.58);
-}
-
-@keyframes heroTickerScroll {
-  from {
-    transform: translateX(0);
-  }
-
-  to {
-    transform: translateX(-50%);
-  }
-}
-
 .stepProgress {
   position: relative;
   width: min(760px, 80vw);
@@ -3615,11 +3541,6 @@ textarea:focus {
     line-height: 1.42;
   }
 
-  .heroOfferTicker {
-    width: min(100%, 440px);
-    margin-top: 14px;
-  }
-
   .heroBrandLogo {
     width: 150px;
     max-width: 48vw;
@@ -3890,30 +3811,6 @@ textarea:focus {
     font-size: 15px;
   }
 
-  .heroOfferTicker {
-    gap: 8px;
-    width: min(100%, 88vw);
-    min-height: 36px;
-    margin-top: 12px;
-    padding: 4px 7px 4px 8px;
-  }
-
-  .heroOfferTickerLabel {
-    padding: 6px 8px;
-    font-size: 10px;
-  }
-
-  .heroOfferTickerTrack {
-    gap: 8px;
-    font-size: 11px;
-    animation-duration: 28s;
-  }
-
-  .heroOfferTickerItem::after {
-    width: 4px;
-    height: 4px;
-  }
-
   .heroContent .stepProgress {
     display: none;
   }
@@ -4043,8 +3940,8 @@ textarea:focus {
 
 @media (max-width: 600px) {
   .heroSection {
-    min-height: 300px;
-    padding: 18px 16px 42px;
+    min-height: 390px;
+    padding: 18px 16px 72px;
     background-position: 68% top;
   }
 
@@ -4066,47 +3963,7 @@ textarea:focus {
   }
 
   .workspace.single-column {
-    margin-top: -82px;
-  }
-
-  .heroTitle,
-  .heroSubtitle {
-    display: none;
-  }
-
-  .heroContent {
-    display: block;
-    position: absolute;
-    top: 112px;
-    left: 22px;
-    width: min(330px, calc(100vw - 44px));
-    max-width: none;
-    margin: 0;
-    text-align: left;
-    z-index: 2;
-  }
-
-  .heroOfferTicker {
-    display: flex;
-    width: 100%;
-    min-height: 32px;
-    margin: 0;
-    gap: 6px;
-    padding: 3px 7px;
-    border-color: rgba(255, 255, 255, 0.1);
-    background: rgba(0, 24, 32, 0.26);
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
-  }
-
-  .heroOfferTickerLabel {
-    padding: 6px 8px;
-    font-size: 10px;
-  }
-
-  .heroOfferTickerTrack {
-    gap: 8px;
-    font-size: 11px;
-    animation-duration: 30s;
+    margin-top: -70px;
   }
 
   .usage-card {

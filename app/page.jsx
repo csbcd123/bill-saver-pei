@@ -20,9 +20,7 @@ const translations = {
     title: "Bill Saver｜PEI 手机宽带账单免费体检",
     hero: "先输入账单信息查看体检结果。想拿到可用优惠时，再提交联系方式给人工复核。",
     heroHeadline: "手机宽带账单免费体检",
-    heroSubtitle: "先看你的账单有没有优化空间，再决定是否人工确认优惠。",
-    heroTickerLabel: "本周可参考",
-    heroTickerItems: ["Bell Aliant", "Koodo", "TELUS", "Public Mobile", "Purple Cow", "Eastlink"],
+    heroSubtitle: "快速比较运营商方案，帮您每年节省数百加元",
     heroProgressSteps: ["输入账单", "查看结果", "获取优惠"],
     formTitle: "账单信息",
     province: "默认地区：Prince Edward Island",
@@ -228,9 +226,7 @@ const translations = {
     title: "Bill Saver｜PEI 手機寬頻帳單免費體檢",
     hero: "先輸入帳單資訊查看健檢結果。想取得可用優惠時，再提交聯絡方式給人工複核。",
     heroHeadline: "手機寬頻帳單免費健檢",
-    heroSubtitle: "先看你的帳單有沒有優化空間，再決定是否人工確認優惠。",
-    heroTickerLabel: "本週可參考",
-    heroTickerItems: ["Bell Aliant", "Koodo", "TELUS", "Public Mobile", "Purple Cow", "Eastlink"],
+    heroSubtitle: "快速比較電信商方案，幫你每年節省數百加元",
     heroProgressSteps: ["輸入帳單", "查看結果", "取得優惠"],
     formTitle: "帳單資訊",
     province: "預設地區：Prince Edward Island",
@@ -436,9 +432,7 @@ const translations = {
     title: "Bill Saver | Free PEI Mobile and Internet Bill Check",
     hero: "Enter bill details first to see your result. If you want available offers, submit contact details for manual review afterward.",
     heroHeadline: "Free Mobile & Internet Bill Check",
-    heroSubtitle: "See if your current bill has room to save before you switch.",
-    heroTickerLabel: "This week in PEI",
-    heroTickerItems: ["Bell Aliant", "Koodo", "TELUS", "Public Mobile", "Purple Cow", "Eastlink"],
+    heroSubtitle: "Quickly compare carrier plans and help you save hundreds per year",
     heroProgressSteps: ["Enter Bill", "View Result", "Get Offer"],
     formTitle: "Bill details",
     province: "Default region: Prince Edward Island",
@@ -658,9 +652,7 @@ translations.fr = {
   ...translations.en,
   languageName: "Français",
   heroHeadline: "Vérification gratuite de votre facture Internet et mobile",
-  heroSubtitle: "Vérifiez si votre facture actuelle peut être optimisée avant de changer.",
-  heroTickerLabel: "Cette semaine à l’Î.-P.-É.",
-  heroTickerItems: ["Bell Aliant", "Koodo", "TELUS", "Public Mobile", "Purple Cow", "Eastlink"],
+  heroSubtitle: "Comparez rapidement les forfaits des fournisseurs et économisez des centaines par année",
   serviceType: "Que souhaitez-vous vérifier?",
   serviceCards: { mobile: "Facture mobile", internet: "Facture Internet", both: "Facture groupée" },
   submit: "Vérifier ma facture",
@@ -3687,16 +3679,6 @@ export default function Home() {
           <div className="heroContent">
             <h1 className="heroTitle">{t.heroHeadline}</h1>
             <p className="heroSubtitle">{t.heroSubtitle}</p>
-            <div className="heroOfferTicker" aria-label={t.heroTickerLabel}>
-              <span className="heroOfferTickerLabel">{t.heroTickerLabel}</span>
-              <div className="heroOfferTickerWindow">
-                <div className="heroOfferTickerTrack">
-                  {[...t.heroTickerItems, ...t.heroTickerItems].map((item, index) => (
-                    <span className="heroOfferTickerItem" key={`${item}-${index}`}>{item}</span>
-                  ))}
-                </div>
-              </div>
-            </div>
             <div className="stepProgress" aria-label={t.heroProgressSteps.join(" → ")}>
               <div className="stepTrack" aria-hidden="true">
                 <div
