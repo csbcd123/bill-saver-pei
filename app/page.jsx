@@ -19,8 +19,8 @@ const translations = {
     eyebrow: "仅限 PEI · v1",
     title: "Bill Saver｜PEI 手机宽带账单免费体检",
     hero: "先输入账单信息查看体检结果。想拿到可用优惠时，再提交联系方式给人工复核。",
-    heroHeadline: "手机宽带账单免费体检",
-    heroSubtitle: "快速比较运营商方案，帮您每年节省数百加元",
+    heroHeadline: "查账单，省月费",
+    heroSubtitle: "免费检查 PEI 手机和宽带账单，快速比较可用方案。",
     heroProgressSteps: ["输入账单", "查看结果", "获取优惠"],
     formTitle: "账单信息",
     province: "默认地区：Prince Edward Island",
@@ -225,8 +225,8 @@ const translations = {
     eyebrow: "僅限 PEI · v1",
     title: "Bill Saver｜PEI 手機寬頻帳單免費體檢",
     hero: "先輸入帳單資訊查看健檢結果。想取得可用優惠時，再提交聯絡方式給人工複核。",
-    heroHeadline: "手機寬頻帳單免費健檢",
-    heroSubtitle: "快速比較電信商方案，幫你每年節省數百加元",
+    heroHeadline: "查帳單，省月費",
+    heroSubtitle: "免費檢查 PEI 手機和寬頻帳單，快速比較可用方案。",
     heroProgressSteps: ["輸入帳單", "查看結果", "取得優惠"],
     formTitle: "帳單資訊",
     province: "預設地區：Prince Edward Island",
@@ -431,8 +431,8 @@ const translations = {
     eyebrow: "PEI only · v1",
     title: "Bill Saver | Free PEI Mobile and Internet Bill Check",
     hero: "Enter bill details first to see your result. If you want available offers, submit contact details for manual review afterward.",
-    heroHeadline: "Free Mobile & Internet Bill Check",
-    heroSubtitle: "Quickly compare carrier plans and help you save hundreds per year",
+    heroHeadline: "Check your bills, save your money",
+    heroSubtitle: "Free PEI mobile and internet bill check with quick plan comparisons.",
     heroProgressSteps: ["Enter Bill", "View Result", "Get Offer"],
     formTitle: "Bill details",
     province: "Default region: Prince Edward Island",
@@ -647,12 +647,12 @@ const translations = {
 
 translations.zh = translations.zhHans;
 translations["zh-TW"] = translations.zhHant;
-translations.en.heroHeadline = "Free Internet & Mobile Bill Check";
+translations.en.heroHeadline = "Check your bills, save your money";
 translations.fr = {
   ...translations.en,
   languageName: "Français",
-  heroHeadline: "Vérification gratuite de votre facture Internet et mobile",
-  heroSubtitle: "Comparez rapidement les forfaits des fournisseurs et économisez des centaines par année",
+  heroHeadline: "Verifiez vos factures, economisez",
+  heroSubtitle: "Verification gratuite des factures mobile et Internet a l'I.-P.-E.",
   serviceType: "Que souhaitez-vous vérifier?",
   serviceCards: { mobile: "Facture mobile", internet: "Facture Internet", both: "Facture groupée" },
   submit: "Vérifier ma facture",
