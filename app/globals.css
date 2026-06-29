@@ -4075,11 +4075,38 @@ textarea:focus {
   }
 
   .heroContent {
-    display: none;
+    display: block;
+    position: absolute;
+    top: 112px;
+    left: 22px;
+    width: min(330px, calc(100vw - 44px));
+    max-width: none;
+    margin: 0;
+    text-align: left;
+    z-index: 2;
   }
 
   .heroOfferTicker {
-    display: none;
+    display: flex;
+    width: 100%;
+    min-height: 32px;
+    margin: 0;
+    gap: 6px;
+    padding: 3px 7px;
+    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(0, 24, 32, 0.26);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.16);
+  }
+
+  .heroOfferTickerLabel {
+    padding: 6px 8px;
+    font-size: 10px;
+  }
+
+  .heroOfferTickerTrack {
+    gap: 8px;
+    font-size: 11px;
+    animation-duration: 30s;
   }
 
   .usage-card {
