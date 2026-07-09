@@ -1333,6 +1333,59 @@ function getPlanSpeedBand(offer) {
   return "unknown";
 }
 
+function recommendationPartnerValue(offer) {
+  const commission = Number(offer.commission_estimate ?? offer.commission ?? 0);
+  const weightBonus = offer.recommendation_weight === "high" ? 20 : offer.recommendation_weight === "medium_high" ? 10 : 0;
+  const partnerBonus = offer.partner_status === "priority_partner" ? 20 : offer.partner_status === "active_partner" ? 10 : 0;
+  return (Number.isFinite(commission) ? commission : 0) + weightBonus + partnerBonus;
+}
+
+function compareInternetAlternateValue(a, b, form) {
+  const partnerDifference = recommendationPartnerValue(b) - recommendationPartnerValue(a);
+  if (partnerDifference !== 0) return partnerDifference;
+  return internetRecommendationScore(b, form) - internetRecommendationScore(a, form);
+}
+
+function limitInternetRecommendationsBySpeedBand(recommendations, form) {
+  if (form.service_type !== "internet") return recommendations;
+
+  const userBand = getInternetUsageSpeedBand(form);
+  const matchingBand = [];
+  const alternatesByBand = new Map();
+  const passThrough = [];
+
+  recommendations.forEach((offer) => {
+    if (offer.service_type !== "internet") {
+      passThrough.push(offer);
+      return;
+    }
+
+    const planBand = getPlanSpeedBand(offer);
+    if (planBand === userBand) {
+      matchingBand.push(offer);
+      return;
+    }
+
+    if (!alternatesByBand.has(planBand)) alternatesByBand.set(planBand, []);
+    alternatesByBand.get(planBand).push(offer);
+  });
+
+  const limitedAlternates = [];
+  recommendations.forEach((offer) => {
+    if (offer.service_type !== "internet") return;
+    const planBand = getPlanSpeedBand(offer);
+    if (planBand === userBand) return;
+
+    const bandOffers = alternatesByBand.get(planBand);
+    if (!bandOffers) return;
+
+    const bestAlternate = [...bandOffers].sort((a, b) => compareInternetAlternateValue(a, b, form))[0];
+    if (bestAlternate === offer && !limitedAlternates.includes(offer)) limitedAlternates.push(offer);
+  });
+
+  return recommendations.filter((offer) => matchingBand.includes(offer) || limitedAlternates.includes(offer) || passThrough.includes(offer));
+}
+
 function internetMeetsServiceLevel(offer, form) {
   return internetOfferSpeedMbps(offer) >= getRequiredInternetSpeedMbps(form);
 }
@@ -1542,9 +1595,10 @@ function sortRecommendations(recommendations, form) {
 }
 
 function pickVisibleRecommendations(recommendations, form) {
-  return sortRecommendations(recommendations, form).filter(
+  const visible = sortRecommendations(recommendations, form).filter(
     (offer) => offer.recommendationType !== "low_priority" && offer.visible !== false
   );
+  return limitInternetRecommendationsBySpeedBand(visible, form);
 }
 
 function isKoodoOrTelusInternet(offer) {
