@@ -716,7 +716,7 @@ const internetUsageSpeeds = {
 };
 const providerOptionsByService = {
   internet: ["Bell Aliant", "TELUS", "Koodo", "Eastlink", "Purple Cow", "Xplore", "Starlink", "Other", "Not sure"],
-  mobile: ["Bell Aliant", "TELUS", "Koodo", "Public Mobile", "Eastlink", "Rogers", "Fido", "Virgin Plus", "Other", "Not sure"],
+  mobile: ["Bell Aliant", "TELUS", "Koodo", "Public Mobile", "Other", "Not sure"],
   both: ["bell_aliant", "eastlink", "koodo_telus", "purple_cow", "other_not_sure"]
 };
 const usageLevels = [
@@ -1046,9 +1046,9 @@ function compareMobileOfferValue(offerA, offerB, form) {
 
 function getMobileProviderTier(providerName) {
   const provider = normalizeMobileProviderName(providerName);
-  if (["bell_aliant", "telus", "rogers"].includes(provider)) return 1;
-  if (["koodo", "koodo_telus", "fido", "virgin_plus"].includes(provider)) return 2;
-  if (["public_mobile", "lucky_mobile", "chatr"].includes(provider)) return 3;
+  if (["bell_aliant", "telus"].includes(provider)) return 1;
+  if (["koodo", "koodo_telus"].includes(provider)) return 2;
+  if (provider === "public_mobile") return 3;
   return 4;
 }
 
@@ -2820,8 +2820,8 @@ function mobilePicks(form) {
     form.current_provider
   );
   const allowedProviders = isMainUrbanArea(form.city)
-    ? ["public_mobile", "koodo", "telus", "bell_aliant", "rogers", "fido", "virgin_plus", "lucky_mobile", "chatr"]
-    : ["public_mobile", "telus", "bell_aliant", "rogers", "lucky_mobile", "chatr"];
+    ? ["public_mobile", "koodo", "telus", "bell_aliant"]
+    : ["public_mobile", "telus", "bell_aliant"];
 
   const sortedOffers = offers
     .filter((offer) => allowedProviders.includes(normalizeMobileProviderName(offer.provider)))
