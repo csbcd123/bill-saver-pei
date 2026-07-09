@@ -1,6 +1,6 @@
 # Contract reminder setup
 
-1. Add `contract-reminders.gs` to the existing Bill Saver Apps Script project.
+1. Add `contract-reminders.gs` to the existing Save My Bill Apps Script project.
 2. Run `ensureContractReminderHeaders()` once to append the reminder columns to the `Leads` sheet.
 3. Add the administrator email under **Project Settings > Script Properties**:
    - Property: `BILL_SAVER_ADMIN_EMAIL`

@@ -65,31 +65,41 @@ textarea {
 
 .language-switcher {
   position: absolute;
-  top: 24px;
-  right: 34px;
+  top: 18px;
+  right: 20px;
   z-index: 5;
   display: flex;
   align-items: center;
-  gap: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.24);
-  border-radius: 12px;
-  background: rgba(0, 32, 36, 0.72);
-  padding: 6px;
-  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  background: rgba(0, 24, 32, 0.48);
+  padding: 3px 8px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(12px);
 }
 
 .languageSelect {
-  min-width: 150px;
-  height: 42px;
+  min-width: 116px;
+  height: 34px;
   border: 0;
-  border-radius: 9px;
-  background: rgba(255, 255, 255, 0.96);
-  color: var(--accent-strong);
-  padding: 0 34px 0 12px;
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.88);
+  padding: 0 20px 0 4px;
   font: inherit;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 800;
   cursor: pointer;
+}
+
+.languageSelect:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.languageSelect option {
+  background: #082d38;
+  color: #fff;
 }
 
 .hero {
@@ -231,10 +241,10 @@ textarea {
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 900px;
-  margin: 18px auto 0;
+  max-width: 760px;
+  margin: 6px auto 0;
   text-align: center;
-  transform: translateX(-40px);
+  transform: none;
 }
 
 .eyebrow {
@@ -265,135 +275,25 @@ h1 {
 .heroTitle {
   margin: 0;
   color: #fff;
-  font-size: clamp(40px, 4.6vw, 60px);
+  font-size: clamp(44px, 5vw, 68px);
   font-weight: 900;
-  letter-spacing: 0.02em;
-  line-height: 1.08;
+  letter-spacing: 0;
+  line-height: 1.02;
   text-align: center;
-  text-shadow: 0 4px 0 rgba(0, 0, 0, 0.1), 0 10px 28px rgba(0, 0, 0, 0.48);
+  text-wrap: balance;
+  text-shadow: 0 8px 28px rgba(0, 0, 0, 0.52), 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .heroSubtitle {
-  margin: 14px auto 0;
-  max-width: 760px;
-  color: rgba(255, 255, 255, 0.82);
-  font-size: clamp(18px, 1.7vw, 23px);
-  line-height: 1.45;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  text-shadow: 0 6px 18px rgba(0, 0, 0, 0.42);
-}
-
-.stepProgress {
-  position: relative;
-  width: min(760px, 80vw);
-  height: 116px;
-  margin: 34px auto 0;
-}
-
-.stepLine,
-.stepItem::before,
-.stepItem::after,
-.stepNode::before,
-.stepNode::after {
-  display: none !important;
-  content: none !important;
-}
-
-.stepTrack {
-  position: absolute;
-  top: 30px;
-  left: 9%;
-  right: 9%;
-  height: 5px;
-  overflow: hidden;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.46);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.12);
-  z-index: 0;
-}
-
-.stepTrackActive {
-  height: 100%;
-  border-radius: 999px;
-  background: linear-gradient(90deg, #12f0a4, #0fd694);
-  box-shadow: 0 0 22px rgba(18, 240, 164, 0.42);
-}
-
-.stepNode {
-  position: absolute;
-  top: 0;
-  z-index: 2;
-  display: flex;
-  width: 140px;
-  transform: translateX(-50%);
-  flex-direction: column;
-  align-items: center;
-}
-
-.stepNode1 {
-  left: 9%;
-}
-
-.stepNode2 {
-  left: 50%;
-}
-
-.stepNode3 {
-  left: 91%;
-}
-
-.stepCircle {
-  position: relative;
-  z-index: 5;
-  display: grid;
-  place-items: center;
-  width: 66px;
-  height: 66px;
-  border: 4px solid rgba(255, 255, 255, 0.68);
-  border-radius: 999px;
-  background: #06242d;
-  color: rgba(255, 255, 255, 0.86);
-  font-size: 30px;
-  font-weight: 850;
-  line-height: 1;
-  box-shadow:
-    0 0 0 6px rgba(6, 36, 45, 0.72),
-    0 12px 30px rgba(0, 0, 0, 0.32),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-.stepNode.active .stepCircle {
-  border-color: rgba(255, 255, 255, 0.96);
-  background: linear-gradient(135deg, #24e9aa, #0eae80);
-  color: #fff;
-  box-shadow: 0 0 0 7px rgba(36, 233, 170, 0.16), 0 0 26px rgba(36, 233, 170, 0.38), 0 16px 34px rgba(0, 0, 0, 0.36);
-}
-
-.stepNode.done .stepCircle {
-  border-color: rgba(255, 255, 255, 0.86);
-  background: linear-gradient(135deg, #18c992, #0d8f73);
-  color: #fff;
-}
-
-.stepLabel {
-  margin-top: 14px;
-  color: rgba(255, 255, 255, 0.76);
-  font-size: 19px;
-  line-height: 1.2;
-  font-weight: 800;
-  text-align: center;
-  white-space: nowrap;
-  text-shadow: 0 6px 16px rgba(0, 0, 0, 0.36);
-}
-
-.stepNode.active .stepLabel {
-  color: #1ff0aa;
-  text-shadow: 0 0 18px rgba(31, 240, 170, 0.42), 0 6px 16px rgba(0, 0, 0, 0.36);
-}
-
-.stepNode.done .stepLabel {
-  color: rgba(31, 240, 170, 0.88);
+  max-width: 640px;
+  margin: 16px auto 0;
+  color: rgba(255, 255, 255, 0.84);
+  font-size: clamp(17px, 1.45vw, 21px);
+  font-weight: 650;
+  line-height: 1.42;
+  letter-spacing: 0;
+  text-wrap: balance;
+  text-shadow: 0 6px 20px rgba(0, 0, 0, 0.44);
 }
 
 .workspace {
@@ -2622,8 +2522,8 @@ textarea:focus {
 
 .heroSection {
   position: relative;
-  min-height: 560px;
-  padding: 28px 48px 120px;
+  min-height: 440px;
+  padding: 28px 48px 84px;
   color: #fff;
   overflow: hidden;
   background-image:
@@ -2656,7 +2556,7 @@ textarea:focus {
 }
 
 .heroInner {
-  min-height: 310px;
+  min-height: 230px;
 }
 
 .heroBrandLogo {
@@ -2665,7 +2565,7 @@ textarea:focus {
 }
 
 .heroContent {
-  margin-top: 18px;
+  margin-top: 8px;
 }
 
 .heroContent .eyebrow {
@@ -2705,6 +2605,10 @@ textarea:focus {
 
 .bill-type-field {
   gap: 0;
+}
+
+.mobile-bill-type-select {
+  display: none;
 }
 
 .bill-type-grid {
@@ -3020,6 +2924,14 @@ textarea:focus {
   gap: 14px;
 }
 
+.mobile-internet-usage-select {
+  display: none;
+}
+
+.mobile-data-usage-select {
+  display: none;
+}
+
 .usage-card {
   position: relative;
   display: grid;
@@ -3141,12 +3053,48 @@ textarea:focus {
 .usageHelpMuted,
 .usageHelpAction,
 .usageHelpIcon {
-  color: #55e8b0;
+  color: rgba(255, 255, 255, 0.68);
 }
 
 .usageHelpLink {
   align-self: flex-start;
   margin-top: 8px;
+  min-height: 38px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.055);
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.25;
+  transition: border-color 160ms ease, background 160ms ease, color 160ms ease;
+}
+
+.usageHelpLink:hover {
+  border-color: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.usageHelpIcon {
+  width: 17px;
+  height: 17px;
+  border-color: rgba(255, 255, 255, 0.28);
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 11px;
+}
+
+.usageHelpMuted {
+  color: rgba(255, 255, 255, 0.58);
+}
+
+.usageHelpAction {
+  color: rgba(91, 232, 181, 0.86);
+  font-weight: 750;
+}
+
+.usageHelpLink:hover .usageHelpAction {
+  color: rgba(116, 247, 199, 0.96);
+  text-decoration: none;
 }
 
 .bundle-usage-group + .bundle-usage-group {
@@ -3454,9 +3402,33 @@ textarea:focus {
 
 @media (max-width: 900px) {
   .heroSection {
-    min-height: 480px;
-    padding: 20px 18px 96px;
+    min-height: 350px;
+    padding: 20px 18px 64px;
     background-position: 68% top;
+  }
+
+  .heroContent {
+    width: min(100%, 92vw);
+    max-width: 560px;
+    margin: 12px auto 0;
+    text-align: center;
+    transform: none;
+  }
+
+  .heroTitle {
+    max-width: 100%;
+    font-size: clamp(34px, 7.8vw, 48px);
+    line-height: 1.05;
+    letter-spacing: 0;
+    white-space: normal;
+    overflow-wrap: normal;
+  }
+
+  .heroSubtitle {
+    max-width: 94%;
+    margin-top: 12px;
+    font-size: 15px;
+    line-height: 1.36;
   }
 
   .heroBrandLogo {
@@ -3466,7 +3438,7 @@ textarea:focus {
 
   .workspace.single-column {
     width: 100%;
-    margin-top: -60px;
+    margin-top: -78px;
     padding-left: 14px;
     padding-right: 14px;
     padding-bottom: 60px;
@@ -3616,6 +3588,31 @@ textarea:focus {
     text-align: left;
   }
 
+  .internet-usage-field .mobile-internet-usage-select {
+    display: block;
+  }
+
+  .internet-usage-field > .usage-card-grid {
+    display: none;
+  }
+
+  .mobile-internet-usage-select select,
+  .mobile-data-usage-select select {
+    min-height: 56px;
+    border-color: rgba(255, 255, 255, 0.2);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.075);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .mobile-internet-usage-select select option,
+  .mobile-data-usage-select select option {
+    background: #082d38;
+    color: #fff;
+  }
+
   .workspace.single-column .form-split {
     gap: 22px;
     padding: 18px;
@@ -3671,8 +3668,8 @@ textarea:focus {
 
 @media (max-width: 768px) {
   .heroSection {
-    min-height: 460px;
-    padding: 18px 16px 90px;
+    min-height: 330px;
+    padding: 18px 16px 58px;
     background-position: 68% top;
   }
 
@@ -3682,7 +3679,7 @@ textarea:focus {
 
   .heroContent {
     max-width: 100%;
-    margin-top: 34px;
+    margin-top: 12px;
     transform: none;
   }
 
@@ -3692,28 +3689,30 @@ textarea:focus {
   }
 
   .heroTitle {
-    font-size: clamp(30px, 8.5vw, 42px);
-    line-height: 1.12;
-    letter-spacing: 0.01em;
+    font-size: clamp(32px, 8.4vw, 42px);
+    line-height: 1.06;
+    letter-spacing: 0;
+    white-space: normal;
+    overflow-wrap: normal;
   }
 
   .heroSubtitle {
-    margin-top: 10px;
-    font-size: 15px;
+    max-width: 92%;
+    margin-top: 11px;
+    font-size: 14px;
   }
 
   .language-switcher {
-    top: 16px;
-    right: 16px;
-    gap: 4px;
-    padding: 5px;
+    top: 12px;
+    right: 12px;
+    padding: 2px 7px;
   }
 
   .languageSelect {
-    min-width: 124px;
-    height: 38px;
-    padding: 0 28px 0 9px;
-    font-size: 12px;
+    min-width: 96px;
+    height: 32px;
+    padding: 0 18px 0 3px;
+    font-size: 11px;
   }
 
   .language-switcher button {
@@ -3784,62 +3783,22 @@ textarea:focus {
     font-size: clamp(22px, 6vw, 30px);
   }
 
-  .stepProgress {
-    width: min(360px, 92vw);
-    height: 88px;
-    margin-top: 28px;
-  }
-
-  .stepTrack {
-    top: 23px;
-    left: 11%;
-    right: 11%;
-    height: 4px;
-  }
-
-  .stepNode {
-    width: 92px;
-  }
-
-  .stepNode1 {
-    left: 11%;
-  }
-
-  .stepNode2 {
-    left: 50%;
-  }
-
-  .stepNode3 {
-    left: 89%;
-  }
-
-  .stepCircle {
-    width: 50px;
-    height: 50px;
-    border-width: 3px;
-    font-size: 22px;
-  }
-
-  .stepLabel {
-    margin-top: 9px;
-    font-size: 13px;
-  }
 }
 
 @media (max-width: 600px) {
   .heroSection {
-    min-height: 460px;
-    padding: 18px 16px 90px;
+    min-height: 318px;
+    padding: 18px 16px 52px;
     background-position: 68% top;
   }
 
   .heroTopBar {
+    align-items: flex-start;
     gap: 10px;
   }
 
   .language-switcher {
-    gap: 2px;
-    padding: 3px;
+    right: 10px;
   }
 
   .language-switcher button {
@@ -3848,6 +3807,10 @@ textarea:focus {
 
   .workspace.single-column .form-panel {
     padding: 16px;
+  }
+
+  .workspace.single-column {
+    margin-top: -76px;
   }
 
   .usage-card {
@@ -3955,6 +3918,70 @@ textarea:focus {
 }
 
 @media (max-width: 768px) {
+  .mobile-bill-type-select {
+    display: grid;
+    gap: 8px;
+    width: 100%;
+    margin-bottom: 18px;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .mobile-bill-type-select > span:first-child {
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 1rem;
+    font-weight: 800;
+    line-height: 1.3;
+  }
+
+  .mobile-bill-type-select .input-shell {
+    min-height: 56px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.075);
+  }
+
+  .mobile-bill-type-select .input-icon {
+    width: 54px;
+    height: 56px;
+    flex-basis: 54px;
+  }
+
+  .mobile-bill-type-select .bill-type-icon-wrap {
+    width: 28px;
+    height: 28px;
+    flex: 0 0 28px;
+    align-self: center;
+    margin-top: 0;
+  }
+
+  .mobile-bill-type-select .bill-type-icon-wrap svg {
+    width: 22px;
+    height: 22px;
+    transform: none;
+  }
+
+  .mobile-bill-type-select .bill-type-icon-wrap-internet svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .mobile-bill-type-select .bill-type-icon-wrap-bundle svg {
+    width: 23px;
+    height: 23px;
+  }
+
+  .bill-type-field .bill-type-grid {
+    display: none;
+  }
+
+  .mobile-data-usage-field .mobile-data-usage-select {
+    display: block;
+  }
+
+  .mobile-data-usage-field > .usage-card-grid {
+    display: none;
+  }
+
   .usage-card,
   .bundle-usage-card,
   .mobile-usage-card,

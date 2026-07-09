@@ -163,7 +163,7 @@
     "commission": 0,
     "requires": [],
     "weak_upload": true,
-    "notes": "Includes wireless router, no usage fees, no contracts, and Bill Saver can help waive the $55 installation fee."
+    "notes": "Includes wireless router, no usage fees, no contracts, and Save My Bill can help waive the $55 installation fee."
   },
   {
     "id": "purple_cow_internet_300",
@@ -181,7 +181,7 @@
     "commission": 0,
     "requires": [],
     "weak_upload": true,
-    "notes": "Includes wireless router, no usage fees, no contracts, and Bill Saver can help waive the $55 installation fee."
+    "notes": "Includes wireless router, no usage fees, no contracts, and Save My Bill can help waive the $55 installation fee."
   },
   {
     "id": "purple_cow_internet_gig",
@@ -199,7 +199,7 @@
     "commission": 0,
     "requires": [],
     "weak_upload": true,
-    "notes": "Includes wireless router, no usage fees, no contracts, and Bill Saver can help waive the $55 installation fee."
+    "notes": "Includes wireless router, no usage fees, no contracts, and Save My Bill can help waive the $55 installation fee."
   },
   {
     "id": "xplore-internet-pei",

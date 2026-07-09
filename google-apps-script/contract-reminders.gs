@@ -79,7 +79,7 @@ function sendContractReminderAlerts() {
       `Contract end date: ${row[indexOf("contract_end_date")]}`
     ].join("\n");
 
-    MailApp.sendEmail(adminEmail, "Bill Saver contract reminder due", body);
+    MailApp.sendEmail(adminEmail, "Save My Bill contract reminder due", body);
     sheet.getRange(rowIndex + 1, indexOf("reminder_sent") + 1).setValue(true);
     sheet.getRange(rowIndex + 1, indexOf("reminder_sent_at") + 1).setValue(new Date());
   }
