@@ -1,7 +1,7 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "Bill Saver | Free Internet & Mobile Bill Check",
+  title: "Save My Bill | Free Internet & Mobile Bill Check",
   description: "PEI internet and mobile bill savings MVP"
 };
 

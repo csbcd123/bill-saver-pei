@@ -17,7 +17,7 @@ const translations = {
   zhHans: {
     languageName: "简体中文",
     eyebrow: "仅限 PEI · v1",
-    title: "Bill Saver｜PEI 手机宽带账单免费体检",
+    title: "Save My Bill｜PEI 手机宽带账单免费体检",
     hero: "先输入账单信息查看体检结果。想拿到可用优惠时，再提交联系方式给人工复核。",
     heroHeadline: "查账单，省月费",
     heroSubtitle: "免费检查 PEI 手机和宽带账单，快速比较可用方案。",
@@ -122,10 +122,10 @@ const translations = {
     leadSubmit: "提交",
     successTitle: "感谢你提交信息",
     successBody: "我们会在 1 个工作日内回复。",
-    successHelper: "Bill Saver 不向你收取任何服务费。最终价格、资格、安装和账单以运营商官方或授权团队确认为准。",
+    successHelper: "Save My Bill 不向你收取任何服务费。最终价格、资格、安装和账单以运营商官方或授权团队确认为准。",
     successButton: "返回首页",
     close: "关闭",
-    disclaimer: "Bill Saver 提供 PEI 本地手机 / 宽带账单免费分析服务。我们不会向你收取费用。部分运营商或合作渠道可能会向我们支付推荐佣金，但建议会综合考虑价格、速度、稳定性、地址可用性和你的实际需求。最终价格、资格、安装和信用审核以运营商官方或授权团队确认为准。",
+    disclaimer: "Save My Bill 提供 PEI 本地手机 / 宽带账单免费分析服务。我们不会向你收取费用。部分运营商或合作渠道可能会向我们支付推荐佣金，但建议会综合考虑价格、速度、稳定性、地址可用性和你的实际需求。最终价格、资格、安装和信用审核以运营商官方或授权团队确认为准。",
     footer: "请勿提交 SIN、银行卡、完整账号、完整账单或身份证件照片。本工具只需要大概账单信息来做初步判断。",
     serviceCards: { mobile: "手机账单", internet: "宽带账单", both: "组合账单" },
     usageCards: {
@@ -214,7 +214,7 @@ const translations = {
       "Bell 可用优惠通常需要满足特定资格。最终价格、资格、自动付款、信用审核和促销条件以运营商或授权销售人员确认为准。"
     ,
     purpleCowNote:
-      "Purple Cow 适合价格敏感、希望降低宽带月费的用户。通过 Bill Saver 下单可协助申请免 $55 安装费，并提供无合约和不限流量方案。最终可用性、安装资格、优惠和价格以 Purple Cow 当前确认为准。",
+      "Purple Cow 适合价格敏感、希望降低宽带月费的用户。通过 Save My Bill 下单可协助申请免 $55 安装费，并提供无合约和不限流量方案。最终可用性、安装资格、优惠和价格以 Purple Cow 当前确认为准。",
     purpleCowBadges: ["免安装费", "免激活费", "首月不满意可退款"],
     koodoInternetNote:
       "Koodo Internet 适合希望降低宽带月费、接受自助安装、又想保留较好性价比的用户。通常无激活费，并支持免费自助安装；如需要人工指导或上门安装，可以根据地址和资格进一步确认。Koodo 也提供 30 天免费试用 / 不满意退款政策，具体安装方式、退款条件、资格和最终价格以 Koodo 当前条款确认为准。",
@@ -223,7 +223,7 @@ const translations = {
   zhHant: {
     languageName: "繁體中文",
     eyebrow: "僅限 PEI · v1",
-    title: "Bill Saver｜PEI 手機寬頻帳單免費體檢",
+    title: "Save My Bill｜PEI 手機寬頻帳單免費體檢",
     hero: "先輸入帳單資訊查看健檢結果。想取得可用優惠時，再提交聯絡方式給人工複核。",
     heroHeadline: "查帳單，省月費",
     heroSubtitle: "免費檢查 PEI 手機和寬頻帳單，快速比較可用方案。",
@@ -328,10 +328,10 @@ const translations = {
     leadSubmit: "提交",
     successTitle: "感謝你提交資訊",
     successBody: "我們會在 1 個工作日內回覆。",
-    successHelper: "Bill Saver 不向你收取任何服務費。最終價格、資格、安裝和帳單以電信商官方或授權團隊確認為準。",
+    successHelper: "Save My Bill 不向你收取任何服務費。最終價格、資格、安裝和帳單以電信商官方或授權團隊確認為準。",
     successButton: "返回首頁",
     close: "關閉",
-    disclaimer: "Bill Saver 提供 PEI 本地手機 / 寬頻帳單免費分析服務。我們不會向你收取費用。部分電信商或合作渠道可能會向我們支付推薦佣金，但建議會綜合考慮價格、速度、穩定性、地址可用性和你的實際需求。最終價格、資格、安裝和信用審核以電信商官方或授權團隊確認為準。",
+    disclaimer: "Save My Bill 提供 PEI 本地手機 / 寬頻帳單免費分析服務。我們不會向你收取費用。部分電信商或合作渠道可能會向我們支付推薦佣金，但建議會綜合考慮價格、速度、穩定性、地址可用性和你的實際需求。最終價格、資格、安裝和信用審核以電信商官方或授權團隊確認為準。",
     footer: "請勿提交 SIN、銀行卡、完整帳號、完整帳單或身分證件照片。本工具只需要大概帳單資訊來做初步判斷。",
     serviceCards: { mobile: "手機帳單", internet: "寬頻帳單", both: "組合帳單" },
     usageCards: {
@@ -420,7 +420,7 @@ const translations = {
       "Bell 可用優惠通常需要滿足特定資格。最終價格、資格、自動付款、信用審核和促銷條件以電信商或授權銷售人員確認為準。"
     ,
     purpleCowNote:
-      "Purple Cow 適合價格敏感、希望降低寬頻月費的用戶。透過 Bill Saver 下單可協助申請免 $55 安裝費，並提供無合約和不限流量方案。最終可用性、安裝資格、優惠和價格以 Purple Cow 目前確認為準。",
+      "Purple Cow 適合價格敏感、希望降低寬頻月費的用戶。透過 Save My Bill 下單可協助申請免 $55 安裝費，並提供無合約和不限流量方案。最終可用性、安裝資格、優惠和價格以 Purple Cow 目前確認為準。",
     purpleCowBadges: ["免安裝費", "免啟用費", "首月不滿意可退款"],
     koodoInternetNote:
       "Koodo Internet 適合希望降低寬頻月費、接受自助安裝、又想保留較好性價比的用戶。通常無啟用費，並支援免費自助安裝；如需要人工指導或上門安裝，可以根據地址和資格進一步確認。Koodo 也提供 30 天免費試用 / 不滿意退款政策，具體安裝方式、退款條件、資格和最終價格以 Koodo 目前條款確認為準。",
@@ -429,7 +429,7 @@ const translations = {
   en: {
     languageName: "English",
     eyebrow: "PEI only · v1",
-    title: "Bill Saver | Free PEI Mobile and Internet Bill Check",
+    title: "Save My Bill | Free PEI Mobile and Internet Bill Check",
     hero: "Enter bill details first to see your result. If you want available offers, submit contact details for manual review afterward.",
     heroHeadline: "Check Bills and Save Money",
     heroSubtitle: "Free PEI mobile and internet bill check with quick plan comparisons.",
@@ -536,11 +536,11 @@ const translations = {
     successTitle: "Thank you for submitting your information",
     successBody: "We will reply within 1 business day.",
     successHelper:
-      "Bill Saver does not charge you a service fee. Final pricing, eligibility, installation, and billing are confirmed by the provider or authorized team.",
+      "Save My Bill does not charge you a service fee. Final pricing, eligibility, installation, and billing are confirmed by the provider or authorized team.",
     successButton: "Back to Home",
     close: "Close",
     disclaimer:
-      "Bill Saver provides free local PEI mobile and internet bill analysis. You do not pay us a fee. Some providers or partner channels may pay a referral commission, but recommendations consider price, speed, stability, address availability, and your needs. Final pricing, eligibility, installation, and credit approval must be confirmed by the provider or authorized team.",
+      "Save My Bill provides free local PEI mobile and internet bill analysis. You do not pay us a fee. Some providers or partner channels may pay a referral commission, but recommendations consider price, speed, stability, address availability, and your needs. Final pricing, eligibility, installation, and credit approval must be confirmed by the provider or authorized team.",
     footer:
       "Do not submit SIN, bank card details, full account numbers, full bills, or identity-document photos. This tool only needs approximate bill details for a preliminary check.",
     serviceCards: { mobile: "Mobile bill", internet: "Internet bill", both: "Bundle Bill" },
@@ -637,7 +637,7 @@ const translations = {
       "Available Bell offers usually require specific eligibility. Final pricing, eligibility, pre-authorized payment, credit approval, and promotional terms must be confirmed by the provider or an authorized sales representative."
     ,
     purpleCowNote:
-      "Purple Cow may be a good fit for price-sensitive users who want to lower their internet bill. Ordering through Bill Saver may qualify for a $55 installation fee waiver, with no-contract and no-usage-fee options. Final availability, installation eligibility, offers, and pricing must be confirmed with Purple Cow.",
+      "Purple Cow may be a good fit for price-sensitive users who want to lower their internet bill. Ordering through Save My Bill may qualify for a $55 installation fee waiver, with no-contract and no-usage-fee options. Final availability, installation eligibility, offers, and pricing must be confirmed with Purple Cow.",
     purpleCowBadges: ["No installation fee", "No activation fee", "First-month money-back"],
     koodoInternetNote:
       "Koodo Internet may be a strong fit for users who want to lower their internet bill, are comfortable with self-installation, and still want good overall value. It typically has no activation fee and supports free self-installation. If technician guidance or in-home installation is needed, availability can be confirmed based on address and eligibility. Koodo also offers a 30-day free trial / money-back policy. Installation method, refund terms, eligibility, and final pricing should be confirmed with Koodo's current terms.",
@@ -1812,9 +1812,9 @@ function bundleResultNotes(form, language) {
     notes.push(
       textByLanguage(
         language,
-        "你的组合账单不包含手机服务，因此系统不会推荐纯手机套餐。Bill Saver 会重点参考你的宽带、TV 服务和家庭电话情况进行人工确认。",
-        "你的組合帳單不包含手機服務，因此系統不會推薦純手機套餐。Bill Saver 會重點參考你的寬頻、TV 服務和家居電話情況進行人工確認。",
-        "Your bundle does not include mobile service, so the system will not recommend mobile-only plans. Bill Saver will focus on your internet, TV, and home phone services during manual review."
+        "你的组合账单不包含手机服务，因此系统不会推荐纯手机套餐。Save My Bill 会重点参考你的宽带、TV 服务和家庭电话情况进行人工确认。",
+        "你的組合帳單不包含手機服務，因此系統不會推薦純手機套餐。Save My Bill 會重點參考你的寬頻、TV 服務和家居電話情況進行人工確認。",
+        "Your bundle does not include mobile service, so the system will not recommend mobile-only plans. Save My Bill will focus on your internet, TV, and home phone services during manual review."
       )
     );
   }
@@ -1823,9 +1823,9 @@ function bundleResultNotes(form, language) {
     notes.push(
       textByLanguage(
         language,
-        "你填写了已有 TV 服务，Bill Saver 会在人工确认时同步核对是否有更合适的 Internet + TV 或 Internet + Mobile + TV 组合。",
-        "你填寫了已有電視服務，Bill Saver 會在人工確認時同步核對是否有更合適的 Internet + TV 或 Internet + Mobile + TV 組合。",
-        "You indicated that you have TV service. Bill Saver can also check whether an Internet + TV or Internet + Mobile + TV bundle is available."
+        "你填写了已有 TV 服务，Save My Bill 会在人工确认时同步核对是否有更合适的 Internet + TV 或 Internet + Mobile + TV 组合。",
+        "你填寫了已有電視服務，Save My Bill 會在人工確認時同步核對是否有更合適的 Internet + TV 或 Internet + Mobile + TV 組合。",
+        "You indicated that you have TV service. Save My Bill can also check whether an Internet + TV or Internet + Mobile + TV bundle is available."
       )
     );
   }
@@ -2013,7 +2013,7 @@ function offerBadges(offer, language, form) {
     return [
       ...internetBandBadges,
       {
-        label: textByLanguage(language, "Bill Saver 下单可免 $55 安装费", "Bill Saver 下單可免 $55 安裝費", "Order through Bill Saver: waive $55 installation fee"),
+        label: textByLanguage(language, "Save My Bill 下单可免 $55 安装费", "Save My Bill 下單可免 $55 安裝費", "Order through Save My Bill: waive $55 installation fee"),
         subLabel: textByLanguage(language, "资格需确认", "資格需確認", "Eligibility confirmation required"),
         className: "badge-bill-saver-exclusive"
       },
@@ -2377,23 +2377,23 @@ function premiumCtaContent(language, offer) {
       : null,
     title: textByLanguage(
       language,
-      isBundle ? "通过 Bill Saver 获取组合账单人工复核" : "通过 Bill Saver 获取人工确认优惠",
-      isBundle ? "透過 Bill Saver 取得組合帳單人工覆核" : "透過 Bill Saver 取得人工確認優惠",
-      isBundle ? "Get a manual bundle bill review through Bill Saver" : "Get manually confirmed offers through Bill Saver"
+      isBundle ? "通过 Save My Bill 获取组合账单人工复核" : "通过 Save My Bill 获取人工确认优惠",
+      isBundle ? "透過 Save My Bill 取得組合帳單人工覆核" : "透過 Save My Bill 取得人工確認優惠",
+      isBundle ? "Get a manual bundle bill review through Save My Bill" : "Get manually confirmed offers through Save My Bill"
     ),
     body: textByLanguage(
       language,
       isBundle
-        ? "我们会帮你核对当前可用价格、安装资格、TV 套餐、家庭电话是否需要保留，以及是否有更合适方案。你不需要向 Bill Saver 支付任何费用。"
-        : "我们会帮你核对当前可用价格、安装资格和是否有更合适方案。你不需要向 Bill Saver 支付任何费用。",
+        ? "我们会帮你核对当前可用价格、安装资格、TV 套餐、家庭电话是否需要保留，以及是否有更合适方案。你不需要向 Save My Bill 支付任何费用。"
+        : "我们会帮你核对当前可用价格、安装资格和是否有更合适方案。你不需要向 Save My Bill 支付任何费用。",
       isBundle
-        ? "我們會幫你核對目前可用價格、安裝資格、TV 套餐、家居電話是否需要保留，以及是否有更合適方案。你不需要向 Bill Saver 支付任何費用。"
-        : "我們會幫你核對目前可用價格、安裝資格和是否有更合適方案。你不需要向 Bill Saver 支付任何費用。",
+        ? "我們會幫你核對目前可用價格、安裝資格、TV 套餐、家居電話是否需要保留，以及是否有更合適方案。你不需要向 Save My Bill 支付任何費用。"
+        : "我們會幫你核對目前可用價格、安裝資格和是否有更合適方案。你不需要向 Save My Bill 支付任何費用。",
       isBundle
-        ? "We’ll help confirm available pricing, installation eligibility, TV options, whether home phone should be retained, and whether there is a better fit. You do not pay Bill Saver any fee."
-        : "We’ll help confirm available pricing, installation eligibility, and whether there is a better fit. You do not pay Bill Saver any fee."
+        ? "We’ll help confirm available pricing, installation eligibility, TV options, whether home phone should be retained, and whether there is a better fit. You do not pay Save My Bill any fee."
+        : "We’ll help confirm available pricing, installation eligibility, and whether there is a better fit. You do not pay Save My Bill any fee."
     ),
-    whyTitle: textByLanguage(language, "为什么通过 Bill Saver？", "為什麼透過 Bill Saver？", "Why use Bill Saver?"),
+    whyTitle: textByLanguage(language, "为什么通过 Save My Bill？", "為什麼透過 Save My Bill？", "Why use Save My Bill?"),
     items: [
       textByLanguage(language, "人工确认可用优惠", "人工確認可用優惠", "Manually confirm available offers"),
       textByLanguage(language, "不收任何服务费", "不收任何服務費", "No service fee"),
@@ -2469,17 +2469,17 @@ function resultTrustContent(language) {
     action: textByLanguage(language, "获得最佳价格 →", "取得最佳價格 →", "Get the Best Price →"),
     title: textByLanguage(
       language,
-      "通过 Bill Saver 获取人工确认优惠",
-      "透過 Bill Saver 取得人工確認優惠",
-      "Get manually confirmed offers through Bill Saver"
+      "通过 Save My Bill 获取人工确认优惠",
+      "透過 Save My Bill 取得人工確認優惠",
+      "Get manually confirmed offers through Save My Bill"
     ),
     body: textByLanguage(
       language,
-      "我们会帮你核对当前可用价格、安装资格和是否有更合适方案。你不需要向 Bill Saver 支付任何费用。",
-      "我們會幫你核對目前可用價格、安裝資格和是否有更合適方案。你不需要向 Bill Saver 支付任何費用。",
-      "We’ll help confirm available pricing, installation eligibility, and whether there is a better fit. You do not pay Bill Saver any fee."
+      "我们会帮你核对当前可用价格、安装资格和是否有更合适方案。你不需要向 Save My Bill 支付任何费用。",
+      "我們會幫你核對目前可用價格、安裝資格和是否有更合適方案。你不需要向 Save My Bill 支付任何費用。",
+      "We’ll help confirm available pricing, installation eligibility, and whether there is a better fit. You do not pay Save My Bill any fee."
     ),
-    whyTitle: textByLanguage(language, "为什么通过 Bill Saver？", "為什麼透過 Bill Saver？", "Why use Bill Saver?"),
+    whyTitle: textByLanguage(language, "为什么通过 Save My Bill？", "為什麼透過 Save My Bill？", "Why use Save My Bill?"),
     items: [
       textByLanguage(language, "人工确认可用优惠", "人工確認可用優惠", "Manually confirm available offers"),
       textByLanguage(language, "不收任何服务费", "不收任何服務費", "No service fee"),
@@ -2510,15 +2510,15 @@ function resultCautionItems(language) {
     ),
     textByLanguage(
       language,
-      "Bill Saver 不向用户收取服务费。部分运营商或合作渠道可能会向我们支付推荐佣金，但我们会综合价格、速度、稳定性、地址可用性和你的实际需求来整理建议。",
-      "Bill Saver 不向用戶收取服務費。部分電信商或合作渠道可能會向我們支付推薦佣金，但我們會綜合價格、速度、穩定性、地址可用性和你的實際需求來整理建議。",
-      "Bill Saver does not charge users a service fee. Some providers or partner channels may pay us a referral commission, but our recommendations consider pricing, speed, stability, address availability, and your actual needs."
+      "Save My Bill 不向用户收取服务费。部分运营商或合作渠道可能会向我们支付推荐佣金，但我们会综合价格、速度、稳定性、地址可用性和你的实际需求来整理建议。",
+      "Save My Bill 不向用戶收取服務費。部分電信商或合作渠道可能會向我們支付推薦佣金，但我們會綜合價格、速度、穩定性、地址可用性和你的實際需求來整理建議。",
+      "Save My Bill does not charge users a service fee. Some providers or partner channels may pay us a referral commission, but our recommendations consider pricing, speed, stability, address availability, and your actual needs."
     ),
     textByLanguage(
       language,
-      "如果后续价格上涨超出预期，Bill Saver 也可以继续帮你重新评估替代方案。",
-      "如果後續價格上漲超出預期，Bill Saver 也可以繼續幫你重新評估替代方案。",
-      "If prices later rise beyond expectations, Bill Saver can also help reassess alternatives."
+      "如果后续价格上涨超出预期，Save My Bill 也可以继续帮你重新评估替代方案。",
+      "如果後續價格上漲超出預期，Save My Bill 也可以繼續幫你重新評估替代方案。",
+      "If prices later rise beyond expectations, Save My Bill can also help reassess alternatives."
     )
   ];
 }
@@ -3299,7 +3299,7 @@ export default function Home() {
   useEffect(() => {
     document.documentElement.lang =
       language === "fr" ? "fr" : language === "en" ? "en" : language === "zh-TW" ? "zh-Hant" : "zh-CN";
-    document.title = `Bill Saver | ${translations[language].heroHeadline}`;
+    document.title = `Save My Bill | ${translations[language].heroHeadline}`;
   }, [language]);
 
   function setLanguageAndUrl(nextLanguage) {
@@ -3443,7 +3443,7 @@ export default function Home() {
       provider: "",
       category: "",
       serviceType: "",
-      serviceName: "General Bill Saver Review",
+      serviceName: "General Save My Bill Review",
       displayPrice: "",
       monthlyPrice: "",
       totalMonthlyCost: "",
@@ -3649,7 +3649,7 @@ export default function Home() {
       <section className="hero heroSection">
         <div className="heroInner">
           <div className="heroTopBar">
-            <div className="heroBrandText" aria-label="Bill Saver PEI">
+            <div className="heroBrandText" aria-label="Save My Bill PEI">
               <div className="heroBrandIcon" aria-hidden="true">
                 <span className="heroBrandSignal" />
                 <span className="heroBrandPaper" />
@@ -3657,7 +3657,7 @@ export default function Home() {
               </div>
               <div className="heroBrandWords">
                 <div className="heroBrandMain">
-                  <span>Bill Saver</span>
+                  <span>Save My Bill</span>
                   <strong>PEI</strong>
                 </div>
               </div>
@@ -4248,9 +4248,9 @@ export default function Home() {
                     <span>
                       {textByLanguage(
                         language,
-                        "Bill Saver 可以免费帮你核对当前可用价格、资格和安装方式。",
-                        "Bill Saver 可以免費幫你核對目前可用價格、資格和安裝方式。",
-                        "Bill Saver can help confirm current pricing, eligibility, and installation options at no cost."
+                        "Save My Bill 可以免费帮你核对当前可用价格、资格和安装方式。",
+                        "Save My Bill 可以免費幫你核對目前可用價格、資格和安裝方式。",
+                        "Save My Bill can help confirm current pricing, eligibility, and installation options at no cost."
                       )}
                     </span>
                   </div>
@@ -4476,12 +4476,12 @@ export default function Home() {
                       />
                       <span>
                         {language === "fr"
-                          ? "J’accepte que Bill Saver me contacte pour confirmer les offres disponibles ou me rappeler avant la fin de mon contrat."
+                          ? "J’accepte que Save My Bill me contacte pour confirmer les offres disponibles ou me rappeler avant la fin de mon contrat."
                           : textByLanguage(
                               language,
-                              "我同意 Bill Saver 联系我，帮我人工确认可用优惠，或在合约到期前提醒我。",
-                              "我同意 Bill Saver 聯絡我，幫我人工確認可用優惠，或在合約到期前提醒我。",
-                              "I agree that Bill Saver may contact me to manually confirm available offers or remind me before my contract ends."
+                              "我同意 Save My Bill 联系我，帮我人工确认可用优惠，或在合约到期前提醒我。",
+                              "我同意 Save My Bill 聯絡我，幫我人工確認可用優惠，或在合約到期前提醒我。",
+                              "I agree that Save My Bill may contact me to manually confirm available offers or remind me before my contract ends."
                             )}
                       </span>
                     </label>
@@ -4495,9 +4495,9 @@ export default function Home() {
                   <p className="lead-minimal-disclaimer">
                     {textByLanguage(
                       language,
-                      "Bill Saver 不向你收取任何服务费。最终价格、资格、安装和账单以运营商官方或授权团队确认为准。",
-                      "Bill Saver 不向你收取任何服務費。最終價格、資格、安裝和帳單以電信商官方或授權團隊確認為準。",
-                      "Bill Saver does not charge you a service fee. Final pricing, eligibility, installation, and billing are confirmed by the provider or authorized team."
+                      "Save My Bill 不向你收取任何服务费。最终价格、资格、安装和账单以运营商官方或授权团队确认为准。",
+                      "Save My Bill 不向你收取任何服務費。最終價格、資格、安裝和帳單以電信商官方或授權團隊確認為準。",
+                      "Save My Bill does not charge you a service fee. Final pricing, eligibility, installation, and billing are confirmed by the provider or authorized team."
                     )}
                   </p>
               </section>
