@@ -1340,7 +1340,15 @@ function recommendationPartnerValue(offer) {
   return (Number.isFinite(commission) ? commission : 0) + weightBonus + partnerBonus;
 }
 
+function isBellInternetSpecialAlternate(offer, form) {
+  return offer.service_type === "internet" && getPlanSpeedBand(offer) === "gig_plus" && isBell(offer) && !isBell(form.current_provider);
+}
+
 function compareInternetAlternateValue(a, b, form) {
+  const aBellSpecial = isBellInternetSpecialAlternate(a, form);
+  const bBellSpecial = isBellInternetSpecialAlternate(b, form);
+  if (aBellSpecial !== bBellSpecial) return aBellSpecial ? -1 : 1;
+
   const partnerDifference = recommendationPartnerValue(b) - recommendationPartnerValue(a);
   if (partnerDifference !== 0) return partnerDifference;
   return internetRecommendationScore(b, form) - internetRecommendationScore(a, form);
