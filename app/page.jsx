@@ -1346,6 +1346,12 @@ function compareInternetAlternateValue(a, b, form) {
   return internetRecommendationScore(b, form) - internetRecommendationScore(a, form);
 }
 
+function isOverkillLightUsageGigAlternate(offer, userBand, planBand) {
+  if (userBand !== "100" || planBand !== "gig_plus") return false;
+  const provider = normalizeProviderName(offer.provider);
+  return provider === "koodo" || provider === "purple_cow";
+}
+
 function limitInternetRecommendationsBySpeedBand(recommendations, form) {
   if (form.service_type !== "internet") return recommendations;
 
@@ -1361,6 +1367,8 @@ function limitInternetRecommendationsBySpeedBand(recommendations, form) {
     }
 
     const planBand = getPlanSpeedBand(offer);
+    if (isOverkillLightUsageGigAlternate(offer, userBand, planBand)) return;
+
     if (planBand === userBand) {
       matchingBand.push(offer);
       return;
