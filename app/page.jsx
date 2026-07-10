@@ -8,9 +8,14 @@ const GOOGLE_SCRIPT_URL =
 
 const languages = [
   { code: "en", label: "English" },
+  { code: "fr", label: "français" },
+  { code: "es", label: "Español" },
+  { code: "ar", label: "العربية" },
+  { code: "fa", label: "فارسی" },
+  { code: "vi", label: "tiếng Việt" },
   { code: "zh", label: "简体中文" },
-  { code: "fr", label: "Français" },
-  { code: "zh-TW", label: "繁體中文" }
+  { code: "zh-TW", label: "繁體中文" },
+  { code: "ko", label: "한국어" }
 ];
 
 const translations = {
@@ -668,6 +673,166 @@ translations.fr = {
   preferredContact: "Méthode de contact préférée"
 };
 
+translations.es = {
+  ...translations.en,
+  languageName: "Español",
+  title: "Save My Bill | Revisión gratuita de factura móvil e Internet en PEI",
+  heroHeadline: "Revisa tus facturas y ahorra dinero",
+  heroSubtitle: "Comparación gratuita de facturas móviles e Internet en PEI.",
+  serviceType: "¿Qué factura quieres revisar?",
+  serviceCards: { mobile: "Factura móvil", internet: "Factura de Internet", both: "Factura combinada" },
+  provider: "Proveedor actual",
+  providerInternet: "¿Qué proveedor de Internet usas ahora?",
+  providerMobile: "¿Qué proveedor móvil usas ahora?",
+  city: "¿En qué zona vives?",
+  monthlyPriceInternet: "Factura mensual de Internet antes de impuestos",
+  monthlyPriceMobile: "Factura mensual móvil antes de impuestos",
+  monthlyPriceBoth: "Factura mensual total antes de impuestos",
+  internetUsageLevel: "¿Cuántas personas pueden usar Internet al mismo tiempo?",
+  currentMobileDataQuestion: "¿Cuántos datos móviles usas al mes?",
+  submit: "Revisar mi factura",
+  submitting: "Enviando...",
+  bestPrice: "Obtener esta oferta",
+  leadSubmit: "Enviar información",
+  successTitle: "Gracias por enviar tu información",
+  successBody: "Responderemos dentro de 1 día hábil.",
+  name: "Nombre",
+  phone: "Teléfono",
+  email: "Correo electrónico",
+  preferredContact: "Método de contacto preferido",
+  installationAddress: "Dirección del servicio",
+  postalPrefix: "Código postal",
+  close: "Cerrar"
+};
+
+translations.ar = {
+  ...translations.en,
+  languageName: "العربية",
+  title: "Save My Bill | فحص مجاني لفاتورة الجوال والإنترنت في PEI",
+  heroHeadline: "افحص فواتيرك ووفر المال",
+  heroSubtitle: "مقارنة مجانية لفواتير الجوال والإنترنت في PEI.",
+  serviceType: "ما الفاتورة التي تريد فحصها؟",
+  serviceCards: { mobile: "فاتورة الجوال", internet: "فاتورة الإنترنت", both: "فاتورة مجمعة" },
+  provider: "المزود الحالي",
+  providerInternet: "ما مزود الإنترنت الذي تستخدمه الآن؟",
+  providerMobile: "ما مزود الجوال الذي تستخدمه الآن؟",
+  city: "في أي منطقة تسكن؟",
+  monthlyPriceInternet: "فاتورة الإنترنت الشهرية قبل الضريبة",
+  monthlyPriceMobile: "فاتورة الجوال الشهرية قبل الضريبة",
+  monthlyPriceBoth: "إجمالي الفاتورة الشهرية قبل الضريبة",
+  internetUsageLevel: "كم شخصا قد يستخدم الإنترنت في نفس الوقت؟",
+  currentMobileDataQuestion: "كم تستخدم من بيانات الجوال شهريا؟",
+  submit: "افحص فاتورتي",
+  submitting: "جار الإرسال...",
+  bestPrice: "احصل على هذا العرض",
+  leadSubmit: "إرسال المعلومات",
+  successTitle: "شكرا لإرسال معلوماتك",
+  successBody: "سنرد خلال يوم عمل واحد.",
+  name: "الاسم",
+  phone: "الهاتف",
+  email: "البريد الإلكتروني",
+  preferredContact: "طريقة التواصل المفضلة",
+  installationAddress: "عنوان الخدمة",
+  postalPrefix: "الرمز البريدي",
+  close: "إغلاق"
+};
+
+translations.fa = {
+  ...translations.en,
+  languageName: "فارسی",
+  title: "Save My Bill | بررسی رایگان قبض موبایل و اینترنت در PEI",
+  heroHeadline: "قبض‌ها را بررسی کن و پول ذخیره کن",
+  heroSubtitle: "مقایسه رایگان قبض موبایل و اینترنت در PEI.",
+  serviceType: "کدام قبض را می‌خواهید بررسی کنید؟",
+  serviceCards: { mobile: "قبض موبایل", internet: "قبض اینترنت", both: "قبض ترکیبی" },
+  provider: "ارائه‌دهنده فعلی",
+  providerInternet: "اکنون از کدام ارائه‌دهنده اینترنت استفاده می‌کنید؟",
+  providerMobile: "اکنون از کدام ارائه‌دهنده موبایل استفاده می‌کنید؟",
+  city: "در کدام منطقه زندگی می‌کنید؟",
+  monthlyPriceInternet: "قبض ماهانه اینترنت قبل از مالیات",
+  monthlyPriceMobile: "قبض ماهانه موبایل قبل از مالیات",
+  monthlyPriceBoth: "مجموع قبض ماهانه قبل از مالیات",
+  internetUsageLevel: "چند نفر ممکن است هم‌زمان از اینترنت استفاده کنند؟",
+  currentMobileDataQuestion: "ماهانه چقدر دیتای موبایل استفاده می‌کنید؟",
+  submit: "بررسی قبض",
+  submitting: "در حال ارسال...",
+  bestPrice: "دریافت این پیشنهاد",
+  leadSubmit: "ارسال اطلاعات",
+  successTitle: "از ارسال اطلاعات شما متشکریم",
+  successBody: "ظرف ۱ روز کاری پاسخ می‌دهیم.",
+  name: "نام",
+  phone: "تلفن",
+  email: "ایمیل",
+  preferredContact: "روش تماس ترجیحی",
+  installationAddress: "آدرس سرویس",
+  postalPrefix: "کد پستی",
+  close: "بستن"
+};
+
+translations.vi = {
+  ...translations.en,
+  languageName: "tiếng Việt",
+  title: "Save My Bill | Kiểm tra miễn phí hóa đơn di động và Internet PEI",
+  heroHeadline: "Kiểm tra hóa đơn và tiết kiệm tiền",
+  heroSubtitle: "So sánh miễn phí hóa đơn di động và Internet tại PEI.",
+  serviceType: "Bạn muốn kiểm tra hóa đơn nào?",
+  serviceCards: { mobile: "Hóa đơn di động", internet: "Hóa đơn Internet", both: "Hóa đơn gói chung" },
+  provider: "Nhà cung cấp hiện tại",
+  providerInternet: "Bạn đang dùng nhà cung cấp Internet nào?",
+  providerMobile: "Bạn đang dùng nhà cung cấp di động nào?",
+  city: "Bạn sống ở khu vực nào?",
+  monthlyPriceInternet: "Hóa đơn Internet hàng tháng trước thuế",
+  monthlyPriceMobile: "Hóa đơn di động hàng tháng trước thuế",
+  monthlyPriceBoth: "Tổng hóa đơn hàng tháng trước thuế",
+  internetUsageLevel: "Có tối đa bao nhiêu người dùng Internet cùng lúc?",
+  currentMobileDataQuestion: "Bạn dùng khoảng bao nhiêu dữ liệu di động mỗi tháng?",
+  submit: "Kiểm tra hóa đơn",
+  submitting: "Đang gửi...",
+  bestPrice: "Nhận ưu đãi này",
+  leadSubmit: "Gửi thông tin",
+  successTitle: "Cảm ơn bạn đã gửi thông tin",
+  successBody: "Chúng tôi sẽ phản hồi trong vòng 1 ngày làm việc.",
+  name: "Tên",
+  phone: "Điện thoại",
+  email: "Email",
+  preferredContact: "Cách liên hệ ưu tiên",
+  installationAddress: "Địa chỉ dịch vụ",
+  postalPrefix: "Mã bưu chính",
+  close: "Đóng"
+};
+
+translations.ko = {
+  ...translations.en,
+  languageName: "한국어",
+  title: "Save My Bill | PEI 모바일 및 인터넷 요금 무료 점검",
+  heroHeadline: "요금을 확인하고 비용을 절약하세요",
+  heroSubtitle: "PEI 모바일 및 인터넷 요금을 무료로 비교해 드립니다.",
+  serviceType: "어떤 요금을 확인하시겠어요?",
+  serviceCards: { mobile: "모바일 요금", internet: "인터넷 요금", both: "번들 요금" },
+  provider: "현재 통신사",
+  providerInternet: "현재 어떤 인터넷 통신사를 사용하시나요?",
+  providerMobile: "현재 어떤 모바일 통신사를 사용하시나요?",
+  city: "어느 지역에 거주하시나요?",
+  monthlyPriceInternet: "세전 인터넷 월 요금",
+  monthlyPriceMobile: "세전 모바일 월 요금",
+  monthlyPriceBoth: "세전 총 월 요금",
+  internetUsageLevel: "동시에 인터넷을 사용할 수 있는 최대 인원은 몇 명인가요?",
+  currentMobileDataQuestion: "매월 모바일 데이터를 얼마나 사용하시나요?",
+  submit: "요금 점검하기",
+  submitting: "제출 중...",
+  bestPrice: "이 혜택 받기",
+  leadSubmit: "정보 제출",
+  successTitle: "정보를 제출해 주셔서 감사합니다",
+  successBody: "영업일 기준 1일 이내에 답변드리겠습니다.",
+  name: "이름",
+  phone: "전화번호",
+  email: "이메일",
+  preferredContact: "선호 연락 방법",
+  installationAddress: "서비스 주소",
+  postalPrefix: "우편번호",
+  close: "닫기"
+};
+
 const areaOptions = [
   { value: "Charlottetown", label: "Charlottetown" },
   { value: "Stratford", label: "Stratford" },
@@ -874,7 +1039,7 @@ function serviceTypeSubtitle(language, type) {
     both: ["多项服务人工复核", "多項服務人工覆核", "Manual review for multiple services"]
   };
   const [zhHans, zhHant, en] = subtitles[type];
-  return language === "en" || language === "fr" ? en : language === "zhHant" || language === "zh-TW" ? zhHant : zhHans;
+  return !isChineseLanguage(language) ? en : isTraditionalChineseLanguage(language) ? zhHant : zhHans;
 }
 
 function MobileUsageCard({ item, content, active, onClick, bundle = false }) {
@@ -1622,9 +1787,43 @@ function isKoodoOrTelusInternet(offer) {
   return offer.service_type === "internet" && (provider === "koodo" || provider === "telus");
 }
 
+function isTraditionalChineseLanguage(language) {
+  return language === "zhHant" || language === "zh-TW";
+}
+
+function isChineseLanguage(language) {
+  return language === "zh" || language === "zhHans" || isTraditionalChineseLanguage(language);
+}
+
+function isRtlLanguage(language) {
+  return language === "ar" || language === "fa";
+}
+
+function htmlLangFor(language) {
+  const map = {
+    ar: "ar",
+    es: "es",
+    fa: "fa",
+    fr: "fr",
+    ko: "ko",
+    vi: "vi",
+    en: "en",
+    "zh-TW": "zh-Hant",
+    zhHant: "zh-Hant",
+    zh: "zh-CN",
+    zhHans: "zh-CN"
+  };
+  return map[language] || "en";
+}
+
+function localizedDataKey(language) {
+  if (isTraditionalChineseLanguage(language)) return "zh-TW";
+  return isChineseLanguage(language) ? "zh" : "en";
+}
+
 function money(value, language) {
   if (typeof value !== "number") return value;
-  return language === "en" || language === "fr" ? `$${value}/mo` : `$${value}/月`;
+  return isChineseLanguage(language) ? `$${value}/月` : `$${value}/mo`;
 }
 
 function savingsText(offer, form, t, language) {
@@ -1636,11 +1835,11 @@ function savingsText(offer, form, t, language) {
     return textByLanguage(language, "价格接近", "價格接近", "Similar price");
   }
   if (offer.service_type === "mobile") {
-    if (language === "en" || language === "fr") return `Save about $${annualSaving}/yr`;
-    return language === "zhHant" || language === "zh-TW" ? `預計每年節省約 $${annualSaving}` : `预计每年节省约 $${annualSaving}`;
+    if (!isChineseLanguage(language)) return `Save about $${annualSaving}/yr`;
+    return isTraditionalChineseLanguage(language) ? `預計每年節省約 $${annualSaving}` : `预计每年节省约 $${annualSaving}`;
   }
-  if (language === "en" || language === "fr") return `About $${saving}/mo, about $${annualSaving}/yr`;
-  return language === "zhHant" || language === "zh-TW" ? `約 $${saving}/月，約 $${annualSaving}/年` : `约 $${saving}/月，约 $${annualSaving}/年`;
+  if (!isChineseLanguage(language)) return `About $${saving}/mo, about $${annualSaving}/yr`;
+  return isTraditionalChineseLanguage(language) ? `約 $${saving}/月，約 $${annualSaving}/年` : `约 $${saving}/月，约 $${annualSaving}/年`;
 }
 
 function confirmationSavingsText(offer, form, t, language) {
@@ -1800,7 +1999,7 @@ function localizedNote(offer, t, language, form) {
   }
   if (offer.offer_id === "bell_mobile_winback_manual") return bellAliantDisplayText(t.bellWinbackNote);
   if (/Purple Cow/i.test(offer.provider)) {
-    const description = offer.description?.[language === "zhHant" || language === "zh-TW" ? "zh-TW" : language === "en" || language === "fr" ? "en" : "zh"];
+    const description = offer.description?.[localizedDataKey(language)];
     const publicDescription = offer.notDefaultPrimary
       ? textByLanguage(
           language,
@@ -1812,7 +2011,7 @@ function localizedNote(offer, t, language, form) {
     return [...bundleNotes, publicDescription].filter(Boolean).join(" ");
   }
   if (/Eastlink/i.test(offer.provider)) {
-    const description = offer.description?.[language === "zhHant" || language === "zh-TW" ? "zh-TW" : language === "en" || language === "fr" ? "en" : "zh"];
+    const description = offer.description?.[localizedDataKey(language)];
     return [...bundleNotes, description || bellAliantDisplayText(offer.caution)].filter(Boolean).join(" ");
   }
   if (offer.lowSavingsWarning) {
@@ -1913,15 +2112,15 @@ function bundleResultNotes(form, language) {
 }
 
 function textByLanguage(language, zhHans, zhHant, en) {
-  if (language === "en" || language === "fr") return en;
-  if (language === "zhHant" || language === "zh-TW") return zhHant;
+  if (!isChineseLanguage(language)) return en;
+  if (isTraditionalChineseLanguage(language)) return zhHant;
   return zhHans;
 }
 
 function getInitialLanguage() {
   if (typeof window === "undefined") return "en";
   const language = new URLSearchParams(window.location.search).get("lang");
-  return ["en", "zh", "fr", "zh-TW"].includes(language) ? language : "en";
+  return languages.some((item) => item.code === language) ? language : "en";
 }
 
 function calculateReminderDueDate(contractEndDate, daysBefore) {
@@ -1981,7 +2180,7 @@ function fieldLabel(language, key) {
 
 function speedText(offer, language) {
   if (offer.speedLabel && typeof offer.speedLabel === "object") {
-    return offer.speedLabel[language === "zhHant" || language === "zh-TW" ? "zh-TW" : language === "en" || language === "fr" ? "en" : "zh"];
+    return offer.speedLabel[localizedDataKey(language)];
   }
   if (!offer.speed_down && !offer.speed_up) {
     return textByLanguage(language, "具体上下行速度需确认", "具體上下行速度需確認", "Download/upload speeds require confirmation");
@@ -3171,7 +3370,7 @@ function savingsHelperText(yearlySavings, t, language) {
 function payloadOfferName(offer, language) {
   const localized = offer.serviceName || offer.service_name;
   if (localized && typeof localized === "object") {
-    const key = language === "en" || language === "fr" ? "en" : language === "zhHant" || language === "zh-TW" ? "zh-TW" : "zh";
+    const key = localizedDataKey(language);
     if (localized[key]) return localized[key];
   }
   return offer.plan_name || offer.display_name || offer.name || "";
@@ -3367,8 +3566,8 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    document.documentElement.lang =
-      language === "fr" ? "fr" : language === "en" ? "en" : language === "zh-TW" ? "zh-Hant" : "zh-CN";
+    document.documentElement.lang = htmlLangFor(language);
+    document.documentElement.dir = isRtlLanguage(language) ? "rtl" : "ltr";
     document.title = `Save My Bill | ${translations[language].heroHeadline}`;
   }, [language]);
 
@@ -3715,7 +3914,7 @@ export default function Home() {
   }
 
   return (
-    <main className="page-shell billSaverPage" lang={language === "fr" ? "fr" : language === "en" ? "en" : language === "zh-TW" ? "zh-Hant" : "zh-CN"}>
+    <main className="page-shell billSaverPage" lang={htmlLangFor(language)} dir={isRtlLanguage(language) ? "rtl" : "ltr"}>
       <section className="hero heroSection">
         <div className="heroInner">
           <div className="heroTopBar">
@@ -3841,7 +4040,7 @@ export default function Home() {
                           <span>{t.usageCards[item.value].description}</span>
                         </span>
                         <span className="usage-card-speed">
-                          <small>{language === "en" || language === "fr" ? "Reference speed" : language === "zhHant" || language === "zh-TW" ? "參考頻寬" : "参考带宽"}</small>
+                          <small>{textByLanguage(language, "参考带宽", "參考頻寬", "Reference speed")}</small>
                           <strong>{(internetUsageSpeeds[language] || internetUsageSpeeds.en)[item.value]}</strong>
                         </span>
                         {form.internet_usage_level === item.value && <span className="usage-card-check" aria-hidden="true">✓</span>}
@@ -4069,9 +4268,9 @@ export default function Home() {
                       </strong>
                     ) : (
                       <>
-                        <span>{language === "en" || language === "fr" ? "~" : language === "zhHant" || language === "zh-TW" ? "約" : "约"}</span>
+                        <span>{textByLanguage(language, "约", "約", "~")}</span>
                         <strong>${yearlySavings}</strong>
-                        <em>{language === "en" || language === "fr" ? "/ yr" : "/ 年"}</em>
+                        <em>{textByLanguage(language, "/ 年", "/ 年", "/ yr")}</em>
                       </>
                     )}
                   </div>
@@ -4527,7 +4726,7 @@ export default function Home() {
                             <Select value={lead.reminder_days_before} onChange={(value) => updateLead("reminder_days_before", value)}>
                               {["30", "60", "90"].map((days) => (
                                 <option key={days} value={days}>
-                                  {language === "fr" ? `${days} jours avant` : language === "en" ? `${days} days` : textByLanguage(language, `提前 ${days} 天`, `提前 ${days} 天`, `${days} days`)}
+                                  {language === "fr" ? `${days} jours avant` : textByLanguage(language, `提前 ${days} 天`, `提前 ${days} 天`, `${days} days`)}
                                 </option>
                               ))}
                             </Select>
