@@ -2890,7 +2890,7 @@ function AboutSaveMyBillModal({ isOpen, onClose, language }) {
   }
 
   return (
-    <div className="usageModalBackdrop" role="presentation" onMouseDown={onClose}>
+    <div className="usageModalBackdrop aboutModalBackdrop" role="presentation" onMouseDown={onClose}>
       <div
         className="usageModal aboutSaveMyBillModal"
         role="dialog"

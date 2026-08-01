@@ -2245,6 +2245,10 @@ textarea:focus {
   color: #073b3a;
 }
 
+.aboutModalBackdrop {
+  z-index: 10020;
+}
+
 .aboutModalHeader {
   padding-right: 42px;
 }
