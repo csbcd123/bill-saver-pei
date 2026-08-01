@@ -939,6 +939,125 @@ function aboutSaveMyBillContent(language) {
   return content[language] || content.en;
 }
 
+function subscriptionContent(language) {
+  const content = {
+    en: {
+      prompt:
+        "Want regular carrier specials? Subscribe by email and we will send a weekly price update when we find useful offers.",
+      button: "Subscribe for weekly offers",
+      title: "Subscribe for weekly offers",
+      label: "Email address",
+      placeholder: "you@example.com",
+      submit: "Subscribe",
+      submitting: "Subscribing...",
+      success: "Subscribed. We will send useful carrier offer updates by email.",
+      error: "Subscription failed. Please try again later.",
+      invalid: "Please enter a valid email address."
+    },
+    zh: {
+      prompt: "如果想收到运营商定期特惠，可以注册邮箱。我们会每周更新一次价格并发送给你。",
+      button: "订阅运营商特惠",
+      title: "订阅运营商特惠",
+      label: "邮箱地址",
+      placeholder: "you@example.com",
+      submit: "确认订阅",
+      submitting: "提交中...",
+      success: "订阅成功。我们会通过邮箱发送有用的运营商优惠更新。",
+      error: "订阅失败，请稍后再试。",
+      invalid: "请填写有效的邮箱地址。"
+    },
+    "zh-TW": {
+      prompt: "如果想收到電信商定期特惠，可以註冊電郵。我們會每週更新一次價格並寄給你。",
+      button: "訂閱電信商特惠",
+      title: "訂閱電信商特惠",
+      label: "電郵地址",
+      placeholder: "you@example.com",
+      submit: "確認訂閱",
+      submitting: "提交中...",
+      success: "訂閱成功。我們會透過電郵寄送有用的電信商優惠更新。",
+      error: "訂閱失敗，請稍後再試。",
+      invalid: "請填寫有效的電郵地址。"
+    },
+    fr: {
+      prompt:
+        "Vous voulez recevoir les offres spéciales des fournisseurs? Inscrivez votre courriel et nous enverrons une mise à jour des prix chaque semaine.",
+      button: "S'abonner aux offres",
+      title: "S'abonner aux offres hebdomadaires",
+      label: "Courriel",
+      placeholder: "vous@example.com",
+      submit: "S'abonner",
+      submitting: "Envoi...",
+      success: "Abonnement confirmé. Nous enverrons les mises à jour utiles par courriel.",
+      error: "Échec de l'abonnement. Veuillez réessayer plus tard.",
+      invalid: "Veuillez entrer une adresse courriel valide."
+    },
+    es: {
+      prompt:
+        "Si quieres recibir ofertas especiales de operadores, registra tu correo. Enviaremos una actualización semanal de precios.",
+      button: "Suscribirse a ofertas",
+      title: "Suscribirse a ofertas semanales",
+      label: "Correo electrónico",
+      placeholder: "tu@example.com",
+      submit: "Suscribirme",
+      submitting: "Enviando...",
+      success: "Suscripción confirmada. Enviaremos actualizaciones útiles por correo.",
+      error: "No se pudo suscribir. Inténtalo más tarde.",
+      invalid: "Introduce un correo electrónico válido."
+    },
+    ar: {
+      prompt: "إذا أردت تلقي عروض شركات الاتصالات، سجّل بريدك الإلكتروني وسنرسل تحديثا أسبوعيا للأسعار.",
+      button: "اشترك في العروض",
+      title: "اشترك في العروض الأسبوعية",
+      label: "البريد الإلكتروني",
+      placeholder: "you@example.com",
+      submit: "اشتراك",
+      submitting: "جار الإرسال...",
+      success: "تم الاشتراك. سنرسل تحديثات العروض المفيدة عبر البريد الإلكتروني.",
+      error: "فشل الاشتراك. يرجى المحاولة لاحقا.",
+      invalid: "يرجى إدخال بريد إلكتروني صالح."
+    },
+    fa: {
+      prompt: "اگر می‌خواهید پیشنهادهای ویژه اپراتورها را دریافت کنید، ایمیل خود را ثبت کنید تا هر هفته به‌روزرسانی قیمت‌ها را بفرستیم.",
+      button: "اشتراک پیشنهادها",
+      title: "اشتراک پیشنهادهای هفتگی",
+      label: "ایمیل",
+      placeholder: "you@example.com",
+      submit: "اشتراک",
+      submitting: "در حال ارسال...",
+      success: "اشتراک ثبت شد. به‌روزرسانی‌های مفید را از طریق ایمیل ارسال می‌کنیم.",
+      error: "ثبت اشتراک ناموفق بود. لطفا بعدا دوباره تلاش کنید.",
+      invalid: "لطفا یک ایمیل معتبر وارد کنید."
+    },
+    vi: {
+      prompt:
+        "Nếu bạn muốn nhận ưu đãi định kỳ từ nhà mạng, hãy đăng ký email. Chúng tôi sẽ gửi cập nhật giá mỗi tuần.",
+      button: "Đăng ký nhận ưu đãi",
+      title: "Đăng ký nhận ưu đãi hằng tuần",
+      label: "Email",
+      placeholder: "you@example.com",
+      submit: "Đăng ký",
+      submitting: "Đang gửi...",
+      success: "Đã đăng ký. Chúng tôi sẽ gửi các cập nhật ưu đãi hữu ích qua email.",
+      error: "Đăng ký không thành công. Vui lòng thử lại sau.",
+      invalid: "Vui lòng nhập email hợp lệ."
+    },
+    ko: {
+      prompt: "통신사 특별 혜택을 받고 싶다면 이메일을 등록해 주세요. 매주 가격 업데이트를 보내드립니다.",
+      button: "주간 혜택 구독",
+      title: "주간 혜택 구독",
+      label: "이메일 주소",
+      placeholder: "you@example.com",
+      submit: "구독",
+      submitting: "전송 중...",
+      success: "구독되었습니다. 유용한 통신사 혜택 업데이트를 이메일로 보내드리겠습니다.",
+      error: "구독에 실패했습니다. 나중에 다시 시도해 주세요.",
+      invalid: "유효한 이메일 주소를 입력해 주세요."
+    }
+  };
+
+  return content[language] || content.en;
+}
+
 const areaOptions = [
   { value: "Charlottetown", label: "Charlottetown" },
   { value: "Stratford", label: "Stratford" },
@@ -2736,9 +2855,39 @@ function UsageGuidanceModal({ isOpen, onClose, language }) {
 }
 
 function AboutSaveMyBillModal({ isOpen, onClose, language }) {
+  const [showSubscribeForm, setShowSubscribeForm] = useState(false);
+  const [subscribeEmail, setSubscribeEmail] = useState("");
+  const [subscribeStatus, setSubscribeStatus] = useState("");
+  const [subscribeSubmitting, setSubscribeSubmitting] = useState(false);
+
   if (!isOpen) return null;
 
   const content = aboutSaveMyBillContent(language);
+  const subscribe = subscriptionContent(language);
+
+  async function handleSubscribe(event) {
+    event.preventDefault();
+    if (subscribeSubmitting) return;
+
+    const email = subscribeEmail.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setSubscribeStatus(subscribe.invalid);
+      return;
+    }
+
+    setSubscribeSubmitting(true);
+    setSubscribeStatus("");
+
+    try {
+      await submitToGoogleSheet(buildSubscriptionPayload({ email, language }));
+      setSubscribeStatus(subscribe.success);
+      setSubscribeEmail("");
+    } catch {
+      setSubscribeStatus(subscribe.error);
+    } finally {
+      setSubscribeSubmitting(false);
+    }
+  }
 
   return (
     <div className="usageModalBackdrop" role="presentation" onMouseDown={onClose}>
@@ -2767,6 +2916,33 @@ function AboutSaveMyBillModal({ isOpen, onClose, language }) {
         <div className="aboutModalContact">
           <span>{content.contactLabel}</span>
           <a href="mailto:savemybillpei@gmail.com">savemybillpei@gmail.com</a>
+        </div>
+
+        <div className="aboutSubscribeBox">
+          <p>{subscribe.prompt}</p>
+          {!showSubscribeForm ? (
+            <button type="button" className="aboutSubscribeButton" onClick={() => setShowSubscribeForm(true)}>
+              {subscribe.button}
+            </button>
+          ) : (
+            <form className="aboutSubscribeForm" onSubmit={handleSubscribe}>
+              <label htmlFor="weekly-offer-email">{subscribe.label}</label>
+              <div className="aboutSubscribeInputRow">
+                <input
+                  id="weekly-offer-email"
+                  type="email"
+                  value={subscribeEmail}
+                  onChange={(event) => setSubscribeEmail(event.target.value)}
+                  placeholder={subscribe.placeholder}
+                  autoComplete="email"
+                />
+                <button type="submit" disabled={subscribeSubmitting}>
+                  {subscribeSubmitting ? subscribe.submitting : subscribe.submit}
+                </button>
+              </div>
+              {subscribeStatus && <span className="aboutSubscribeStatus">{subscribeStatus}</span>}
+            </form>
+          )}
         </div>
       </div>
     </div>
@@ -3663,6 +3839,44 @@ function buildSheetPayload({ form, language, source, lead, selectedOffer, recomm
   };
 }
 
+function buildSubscriptionPayload({ email, language }) {
+  const now = new Date().toISOString();
+
+  return {
+    source: "weekly_offer_subscription",
+    language,
+    name: "",
+    email,
+    phone: "",
+    preferred_contact: "email",
+    wechat: "",
+    city: "",
+    postal_code: "",
+    service_type: "weekly_offers",
+    current_provider: "",
+    monthly_price: "",
+    price_type: "",
+    current_speed: "",
+    current_mobile_data: "",
+    plan_details: JSON.stringify({ subscription_type: "weekly_carrier_offers" }),
+    willing_to_switch: "",
+    notes: "Subscribed to weekly carrier offer updates.",
+    submitted_at: now,
+    page_version: "save_my_bill_pei_v1",
+    lead_source: "weekly_offer_subscription",
+    customer_email: email,
+    preferred_contact_method: "email",
+    consent_to_contact: true,
+    region: "PEI",
+    user_agent: typeof navigator !== "undefined" ? navigator.userAgent : "",
+    referrer: typeof document !== "undefined" ? document.referrer : "",
+    landing_page: typeof window !== "undefined" ? window.location.href : "",
+    utm_source: typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("utm_source") || "" : "",
+    utm_medium: typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("utm_medium") || "" : "",
+    utm_campaign: typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("utm_campaign") || "" : ""
+  };
+}
+
 async function submitToGoogleSheet(payload) {
   await fetch(GOOGLE_SCRIPT_URL, {
     method: "POST",
@@ -4092,8 +4306,14 @@ export default function Home() {
           </div>
 
           <div className="heroContent">
-            <h1 className="heroTitle">{t.heroHeadline}</h1>
-            <p className="heroSubtitle">{t.heroSubtitle}</p>
+            <h1 className="heroTitle heroTitleHidden">{t.heroHeadline}</h1>
+            <div className="heroSubtitleTicker" aria-label={t.heroSubtitle}>
+              <div className="heroSubtitleTrack">
+                <span>{t.heroSubtitle}</span>
+                <span aria-hidden="true">{t.heroSubtitle}</span>
+                <span aria-hidden="true">{t.heroSubtitle}</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
