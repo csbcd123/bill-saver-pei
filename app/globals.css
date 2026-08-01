@@ -2210,36 +2210,6 @@ textarea:focus {
   transform: translateY(-1px);
 }
 
-.flowAboutLink {
-  display: flex;
-  width: fit-content;
-  margin: 8px auto 0;
-  padding: 6px 11px;
-  border-color: rgba(15, 123, 104, 0.22);
-  background: rgba(15, 123, 104, 0.06);
-  color: #0b7f6a;
-  font-size: 0.72rem;
-}
-
-.flowAboutLink:hover,
-.flowAboutLink:focus-visible {
-  border-color: rgba(15, 123, 104, 0.42);
-  background: rgba(15, 123, 104, 0.12);
-  color: #06564b;
-}
-
-.bill-flow-success-footer {
-  display: flex;
-  justify-content: center;
-  margin: 0 auto 24px;
-}
-
-.successAboutLink {
-  border-color: rgba(15, 123, 104, 0.22);
-  background: rgba(255, 255, 255, 0.86);
-  color: #0b7f6a;
-}
-
 .aboutSaveMyBillModal {
   max-width: 680px;
   color: #073b3a;
@@ -4771,6 +4741,26 @@ textarea:focus {
   font-weight: 850;
   cursor: pointer;
   box-shadow: 0 10px 22px rgba(8, 113, 95, 0.2);
+}
+
+.resultAboutFooter {
+  display: flex;
+  justify-content: center;
+  margin: -2px auto 0;
+  padding-bottom: 4px;
+}
+
+.resultAboutLink {
+  border-color: rgba(15, 123, 104, 0.22);
+  background: rgba(255, 255, 255, 0.76);
+  color: #0b7f6a;
+}
+
+.resultAboutLink:hover,
+.resultAboutLink:focus-visible {
+  border-color: rgba(15, 123, 104, 0.42);
+  background: rgba(255, 255, 255, 0.94);
+  color: #06564b;
 }
 
 @media (min-width: 1280px) {

@@ -4893,8 +4893,17 @@ export default function Home() {
                     {textByLanguage(language, "帮我人工确认方案", "幫我人工確認方案", "Help confirm my options")}
                   </button>
                 </div>
-              </section>
-              </div>
+	              </section>
+	              <div className="resultAboutFooter">
+	                <button
+	                  type="button"
+	                  className="aboutFooterLink resultAboutLink"
+	                  onClick={() => setAboutOpen(true)}
+	                >
+	                  {aboutSaveMyBillContent(language).linkLabel}
+	                </button>
+	              </div>
+	              </div>
               </div>
             )}
 
@@ -5156,17 +5165,6 @@ export default function Home() {
             </div>
           </div>
 	      )}
-	            {successOpen && (
-	              <div className="bill-flow-success-footer">
-	                <button
-	                  type="button"
-	                  className="aboutFooterLink successAboutLink"
-	                  onClick={() => setAboutOpen(true)}
-	                >
-	                  {aboutSaveMyBillContent(language).linkLabel}
-	                </button>
-	              </div>
-	            )}
 	            </div>
 	            {(resultOpen || leadOpen) && (
               <footer className="bill-flow-footer">
@@ -5197,14 +5195,7 @@ export default function Home() {
                   <span aria-hidden="true">🔒</span>
                   <span>{t.leadSafetyNote}</span>
                 </div>
-	                <button
-	                  type="button"
-	                  className="aboutFooterLink flowAboutLink"
-	                  onClick={() => setAboutOpen(true)}
-	                >
-	                  {aboutSaveMyBillContent(language).linkLabel}
-	                </button>
-	              </footer>
+		              </footer>
             )}
           </div>
         </section>
