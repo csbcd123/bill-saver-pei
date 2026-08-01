@@ -284,6 +284,18 @@ h1 {
   text-shadow: 0 8px 28px rgba(0, 0, 0, 0.52), 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
+.heroTitleHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
 .heroSubtitle {
   max-width: 640px;
   margin: 16px auto 0;
@@ -294,6 +306,50 @@ h1 {
   letter-spacing: 0;
   text-wrap: balance;
   text-shadow: 0 6px 20px rgba(0, 0, 0, 0.44);
+}
+
+.heroSubtitleTicker {
+  width: min(880px, 92vw);
+  margin: 10px auto 0;
+  overflow: hidden;
+  border: 1px solid rgba(164, 238, 224, 0.24);
+  border-radius: 999px;
+  background: rgba(0, 38, 48, 0.38);
+  box-shadow:
+    0 16px 44px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+}
+
+.heroSubtitleTrack {
+  display: flex;
+  width: max-content;
+  gap: 54px;
+  padding: 12px 0;
+  color: rgba(255, 255, 255, 0.94);
+  font-size: clamp(22px, 2.7vw, 36px);
+  font-weight: 900;
+  line-height: 1.15;
+  letter-spacing: 0;
+  text-shadow: 0 8px 24px rgba(0, 0, 0, 0.42);
+  animation: heroSubtitleScroll 24s linear infinite;
+  will-change: transform;
+}
+
+.heroSubtitleTrack span {
+  flex: 0 0 auto;
+  padding-inline: 28px;
+  white-space: nowrap;
+}
+
+@keyframes heroSubtitleScroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-33.333%);
+  }
 }
 
 .workspace {
@@ -2118,6 +2174,185 @@ textarea:focus {
   line-height: 1.7;
 }
 
+.site-footer p {
+  margin: 0 0 10px;
+}
+
+.aboutFooterLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px solid rgba(31, 226, 160, 0.36);
+  border-radius: 999px;
+  background: rgba(31, 226, 160, 0.09);
+  color: #1ee7a0;
+  padding: 8px 13px;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 850;
+  line-height: 1.2;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.aboutFooterLink:hover,
+.aboutFooterLink:focus-visible {
+  border-color: rgba(31, 226, 160, 0.68);
+  background: rgba(31, 226, 160, 0.16);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.aboutSaveMyBillModal {
+  max-width: 680px;
+  color: #073b3a;
+}
+
+.aboutModalBackdrop {
+  z-index: 10020;
+}
+
+.aboutModalHeader {
+  padding-right: 42px;
+}
+
+.aboutModalHeader span {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid rgba(15, 123, 104, 0.18);
+  border-radius: 999px;
+  background: rgba(15, 123, 104, 0.08);
+  color: #0b7f6a;
+  padding: 5px 10px;
+  font-size: 0.78rem;
+  font-weight: 850;
+}
+
+.aboutModalHeader h2 {
+  margin: 12px 0 0;
+  color: #062f2e;
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  line-height: 1.08;
+}
+
+.aboutModalBody {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.aboutModalBody p {
+  margin: 0;
+  color: #36514c;
+  font-size: 0.98rem;
+  line-height: 1.68;
+}
+
+.aboutModalContact {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+  margin-top: 22px;
+  border-top: 1px solid rgba(15, 123, 104, 0.14);
+  padding-top: 16px;
+  color: #58726d;
+  font-weight: 750;
+}
+
+.aboutModalContact a {
+  color: #0b7f6a;
+  font-weight: 900;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.aboutSubscribeBox {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+  border: 1px solid rgba(15, 123, 104, 0.16);
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(15, 123, 104, 0.08), rgba(31, 226, 160, 0.08));
+  padding: 14px;
+}
+
+.aboutSubscribeBox p {
+  margin: 0;
+  color: #244943;
+  font-size: 0.92rem;
+  font-weight: 750;
+  line-height: 1.55;
+}
+
+.aboutSubscribeButton,
+.aboutSubscribeForm button {
+  min-height: 42px;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #14c991, #0a7f6c);
+  color: #ffffff;
+  padding: 10px 16px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 12px 24px rgba(15, 123, 104, 0.22);
+}
+
+.aboutSubscribeButton {
+  width: fit-content;
+}
+
+.aboutSubscribeForm {
+  display: grid;
+  gap: 8px;
+}
+
+.aboutSubscribeForm label {
+  color: #34554f;
+  font-size: 0.78rem;
+  font-weight: 850;
+}
+
+.aboutSubscribeInputRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+}
+
+.aboutSubscribeInputRow input {
+  min-height: 42px;
+  border: 1px solid rgba(15, 123, 104, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #073b3a;
+  padding: 10px 14px;
+  font: inherit;
+  outline: none;
+}
+
+.aboutSubscribeInputRow input:focus {
+  border-color: rgba(15, 123, 104, 0.48);
+  box-shadow: 0 0 0 3px rgba(31, 226, 160, 0.14);
+}
+
+.aboutSubscribeForm button:disabled {
+  opacity: 0.64;
+  cursor: wait;
+}
+
+.aboutSubscribeStatus {
+  color: #0b6b5d;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
 @media (min-width: 1280px) {
   .hero {
     min-height: 460px;
@@ -2185,6 +2420,32 @@ textarea:focus {
     width: 100%;
     padding-left: 14px;
     padding-right: 14px;
+  }
+
+  .aboutFooterLink {
+    min-height: 38px;
+    padding: 8px 12px;
+    font-size: 0.8rem;
+  }
+
+  .aboutSaveMyBillModal {
+    width: min(94vw, 680px);
+  }
+
+  .aboutModalHeader {
+    padding-right: 34px;
+  }
+
+  .aboutModalBody p {
+    font-size: 0.92rem;
+  }
+
+  .aboutSubscribeButton {
+    width: 100%;
+  }
+
+  .aboutSubscribeInputRow {
+    grid-template-columns: 1fr;
   }
 
   .workspace {
@@ -3424,6 +3685,22 @@ textarea:focus {
     overflow-wrap: normal;
   }
 
+  .heroSubtitleTicker {
+    width: min(92vw, 560px);
+    margin-top: 8px;
+  }
+
+  .heroSubtitleTrack {
+    gap: 36px;
+    padding: 10px 0;
+    font-size: clamp(18px, 5.5vw, 25px);
+    animation-duration: 20s;
+  }
+
+  .heroSubtitleTrack span {
+    padding-inline: 18px;
+  }
+
   .heroSubtitle {
     max-width: 94%;
     margin-top: 12px;
@@ -4464,6 +4741,26 @@ textarea:focus {
   font-weight: 850;
   cursor: pointer;
   box-shadow: 0 10px 22px rgba(8, 113, 95, 0.2);
+}
+
+.resultAboutFooter {
+  display: flex;
+  justify-content: center;
+  margin: -2px auto 0;
+  padding-bottom: 4px;
+}
+
+.resultAboutLink {
+  border-color: rgba(15, 123, 104, 0.22);
+  background: rgba(255, 255, 255, 0.76);
+  color: #0b7f6a;
+}
+
+.resultAboutLink:hover,
+.resultAboutLink:focus-visible {
+  border-color: rgba(15, 123, 104, 0.42);
+  background: rgba(255, 255, 255, 0.94);
+  color: #06564b;
 }
 
 @media (min-width: 1280px) {

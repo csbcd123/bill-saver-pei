@@ -8,9 +8,14 @@ const GOOGLE_SCRIPT_URL =
 
 const languages = [
   { code: "en", label: "English" },
+  { code: "fr", label: "français" },
+  { code: "es", label: "Español" },
+  { code: "ar", label: "العربية" },
+  { code: "fa", label: "فارسی" },
+  { code: "vi", label: "tiếng Việt" },
   { code: "zh", label: "简体中文" },
-  { code: "fr", label: "Français" },
-  { code: "zh-TW", label: "繁體中文" }
+  { code: "zh-TW", label: "繁體中文" },
+  { code: "ko", label: "한국어" }
 ];
 
 const translations = {
@@ -668,6 +673,391 @@ translations.fr = {
   preferredContact: "Méthode de contact préférée"
 };
 
+translations.es = {
+  ...translations.en,
+  languageName: "Español",
+  title: "Save My Bill | Revisión gratuita de factura móvil e Internet en PEI",
+  heroHeadline: "Revisa tus facturas y ahorra dinero",
+  heroSubtitle: "Comparación gratuita de facturas móviles e Internet en PEI.",
+  serviceType: "¿Qué factura quieres revisar?",
+  serviceCards: { mobile: "Factura móvil", internet: "Factura de Internet", both: "Factura combinada" },
+  provider: "Proveedor actual",
+  providerInternet: "¿Qué proveedor de Internet usas ahora?",
+  providerMobile: "¿Qué proveedor móvil usas ahora?",
+  city: "¿En qué zona vives?",
+  monthlyPriceInternet: "Factura mensual de Internet antes de impuestos",
+  monthlyPriceMobile: "Factura mensual móvil antes de impuestos",
+  monthlyPriceBoth: "Factura mensual total antes de impuestos",
+  internetUsageLevel: "¿Cuántas personas pueden usar Internet al mismo tiempo?",
+  currentMobileDataQuestion: "¿Cuántos datos móviles usas al mes?",
+  submit: "Revisar mi factura",
+  submitting: "Enviando...",
+  bestPrice: "Obtener esta oferta",
+  leadSubmit: "Enviar información",
+  successTitle: "Gracias por enviar tu información",
+  successBody: "Responderemos dentro de 1 día hábil.",
+  name: "Nombre",
+  phone: "Teléfono",
+  email: "Correo electrónico",
+  preferredContact: "Método de contacto preferido",
+  installationAddress: "Dirección del servicio",
+  postalPrefix: "Código postal",
+  close: "Cerrar"
+};
+
+translations.ar = {
+  ...translations.en,
+  languageName: "العربية",
+  title: "Save My Bill | فحص مجاني لفاتورة الجوال والإنترنت في PEI",
+  heroHeadline: "افحص فواتيرك ووفر المال",
+  heroSubtitle: "مقارنة مجانية لفواتير الجوال والإنترنت في PEI.",
+  serviceType: "ما الفاتورة التي تريد فحصها؟",
+  serviceCards: { mobile: "فاتورة الجوال", internet: "فاتورة الإنترنت", both: "فاتورة مجمعة" },
+  provider: "المزود الحالي",
+  providerInternet: "ما مزود الإنترنت الذي تستخدمه الآن؟",
+  providerMobile: "ما مزود الجوال الذي تستخدمه الآن؟",
+  city: "في أي منطقة تسكن؟",
+  monthlyPriceInternet: "فاتورة الإنترنت الشهرية قبل الضريبة",
+  monthlyPriceMobile: "فاتورة الجوال الشهرية قبل الضريبة",
+  monthlyPriceBoth: "إجمالي الفاتورة الشهرية قبل الضريبة",
+  internetUsageLevel: "كم شخصا قد يستخدم الإنترنت في نفس الوقت؟",
+  currentMobileDataQuestion: "كم تستخدم من بيانات الجوال شهريا؟",
+  submit: "افحص فاتورتي",
+  submitting: "جار الإرسال...",
+  bestPrice: "احصل على هذا العرض",
+  leadSubmit: "إرسال المعلومات",
+  successTitle: "شكرا لإرسال معلوماتك",
+  successBody: "سنرد خلال يوم عمل واحد.",
+  name: "الاسم",
+  phone: "الهاتف",
+  email: "البريد الإلكتروني",
+  preferredContact: "طريقة التواصل المفضلة",
+  installationAddress: "عنوان الخدمة",
+  postalPrefix: "الرمز البريدي",
+  close: "إغلاق"
+};
+
+translations.fa = {
+  ...translations.en,
+  languageName: "فارسی",
+  title: "Save My Bill | بررسی رایگان قبض موبایل و اینترنت در PEI",
+  heroHeadline: "قبض‌ها را بررسی کن و پول ذخیره کن",
+  heroSubtitle: "مقایسه رایگان قبض موبایل و اینترنت در PEI.",
+  serviceType: "کدام قبض را می‌خواهید بررسی کنید؟",
+  serviceCards: { mobile: "قبض موبایل", internet: "قبض اینترنت", both: "قبض ترکیبی" },
+  provider: "ارائه‌دهنده فعلی",
+  providerInternet: "اکنون از کدام ارائه‌دهنده اینترنت استفاده می‌کنید؟",
+  providerMobile: "اکنون از کدام ارائه‌دهنده موبایل استفاده می‌کنید؟",
+  city: "در کدام منطقه زندگی می‌کنید؟",
+  monthlyPriceInternet: "قبض ماهانه اینترنت قبل از مالیات",
+  monthlyPriceMobile: "قبض ماهانه موبایل قبل از مالیات",
+  monthlyPriceBoth: "مجموع قبض ماهانه قبل از مالیات",
+  internetUsageLevel: "چند نفر ممکن است هم‌زمان از اینترنت استفاده کنند؟",
+  currentMobileDataQuestion: "ماهانه چقدر دیتای موبایل استفاده می‌کنید؟",
+  submit: "بررسی قبض",
+  submitting: "در حال ارسال...",
+  bestPrice: "دریافت این پیشنهاد",
+  leadSubmit: "ارسال اطلاعات",
+  successTitle: "از ارسال اطلاعات شما متشکریم",
+  successBody: "ظرف ۱ روز کاری پاسخ می‌دهیم.",
+  name: "نام",
+  phone: "تلفن",
+  email: "ایمیل",
+  preferredContact: "روش تماس ترجیحی",
+  installationAddress: "آدرس سرویس",
+  postalPrefix: "کد پستی",
+  close: "بستن"
+};
+
+translations.vi = {
+  ...translations.en,
+  languageName: "tiếng Việt",
+  title: "Save My Bill | Kiểm tra miễn phí hóa đơn di động và Internet PEI",
+  heroHeadline: "Kiểm tra hóa đơn và tiết kiệm tiền",
+  heroSubtitle: "So sánh miễn phí hóa đơn di động và Internet tại PEI.",
+  serviceType: "Bạn muốn kiểm tra hóa đơn nào?",
+  serviceCards: { mobile: "Hóa đơn di động", internet: "Hóa đơn Internet", both: "Hóa đơn gói chung" },
+  provider: "Nhà cung cấp hiện tại",
+  providerInternet: "Bạn đang dùng nhà cung cấp Internet nào?",
+  providerMobile: "Bạn đang dùng nhà cung cấp di động nào?",
+  city: "Bạn sống ở khu vực nào?",
+  monthlyPriceInternet: "Hóa đơn Internet hàng tháng trước thuế",
+  monthlyPriceMobile: "Hóa đơn di động hàng tháng trước thuế",
+  monthlyPriceBoth: "Tổng hóa đơn hàng tháng trước thuế",
+  internetUsageLevel: "Có tối đa bao nhiêu người dùng Internet cùng lúc?",
+  currentMobileDataQuestion: "Bạn dùng khoảng bao nhiêu dữ liệu di động mỗi tháng?",
+  submit: "Kiểm tra hóa đơn",
+  submitting: "Đang gửi...",
+  bestPrice: "Nhận ưu đãi này",
+  leadSubmit: "Gửi thông tin",
+  successTitle: "Cảm ơn bạn đã gửi thông tin",
+  successBody: "Chúng tôi sẽ phản hồi trong vòng 1 ngày làm việc.",
+  name: "Tên",
+  phone: "Điện thoại",
+  email: "Email",
+  preferredContact: "Cách liên hệ ưu tiên",
+  installationAddress: "Địa chỉ dịch vụ",
+  postalPrefix: "Mã bưu chính",
+  close: "Đóng"
+};
+
+translations.ko = {
+  ...translations.en,
+  languageName: "한국어",
+  title: "Save My Bill | PEI 모바일 및 인터넷 요금 무료 점검",
+  heroHeadline: "요금을 확인하고 비용을 절약하세요",
+  heroSubtitle: "PEI 모바일 및 인터넷 요금을 무료로 비교해 드립니다.",
+  serviceType: "어떤 요금을 확인하시겠어요?",
+  serviceCards: { mobile: "모바일 요금", internet: "인터넷 요금", both: "번들 요금" },
+  provider: "현재 통신사",
+  providerInternet: "현재 어떤 인터넷 통신사를 사용하시나요?",
+  providerMobile: "현재 어떤 모바일 통신사를 사용하시나요?",
+  city: "어느 지역에 거주하시나요?",
+  monthlyPriceInternet: "세전 인터넷 월 요금",
+  monthlyPriceMobile: "세전 모바일 월 요금",
+  monthlyPriceBoth: "세전 총 월 요금",
+  internetUsageLevel: "동시에 인터넷을 사용할 수 있는 최대 인원은 몇 명인가요?",
+  currentMobileDataQuestion: "매월 모바일 데이터를 얼마나 사용하시나요?",
+  submit: "요금 점검하기",
+  submitting: "제출 중...",
+  bestPrice: "이 혜택 받기",
+  leadSubmit: "정보 제출",
+  successTitle: "정보를 제출해 주셔서 감사합니다",
+  successBody: "영업일 기준 1일 이내에 답변드리겠습니다.",
+  name: "이름",
+  phone: "전화번호",
+  email: "이메일",
+  preferredContact: "선호 연락 방법",
+  installationAddress: "서비스 주소",
+  postalPrefix: "우편번호",
+  close: "닫기"
+};
+
+function aboutSaveMyBillContent(language) {
+  const content = {
+    en: {
+      linkLabel: "About Save My Bill PEI",
+      title: "About Save My Bill PEI",
+      body: [
+        "Save My Bill PEI helps people reduce monthly costs for mobile, internet, and TV services. We regularly look for available carrier offers and help users compare whether a better option may fit their needs.",
+        "At this stage, we only provide these services for PEI users. Over time, we plan to gradually serve Atlantic Canada and expand into insurance and loan-related savings services.",
+        "This service is completely free for users. Partners interested in working with us are welcome to contact us."
+      ],
+      contactLabel: "Contact",
+      freeNote: "Free for users"
+    },
+    zh: {
+      linkLabel: "关于 Save My Bill PEI",
+      title: "关于 Save My Bill PEI",
+      body: [
+        "Save My Bill PEI 希望帮助大家节约手机、宽带和电视服务的每月费用。我们会定期挖掘运营商的可用特殊 offer，并帮助用户比较是否有更合适的方案。",
+        "目前只面向 PEI 用户提供手机、宽带和电视相关服务，后续将逐步服务海洋四省，并计划扩展至保险和贷款相关的省钱业务。",
+        "本服务对用户端完全免费。欢迎有意向的合作伙伴联系我们。"
+      ],
+      contactLabel: "联系方式",
+      freeNote: "用户端完全免费"
+    },
+    "zh-TW": {
+      linkLabel: "關於 Save My Bill PEI",
+      title: "關於 Save My Bill PEI",
+      body: [
+        "Save My Bill PEI 希望幫助大家節省手機、寬頻和電視服務的每月費用。我們會定期整理電信商目前可用的特殊 offer，並協助用戶比較是否有更合適的方案。",
+        "目前只面向 PEI 用戶提供手機、寬頻和電視相關服務，後續將逐步服務海洋四省，並計劃擴展至保險和貸款相關的省錢業務。",
+        "本服務對用戶端完全免費。歡迎有意向的合作夥伴聯絡我們。"
+      ],
+      contactLabel: "聯絡方式",
+      freeNote: "用戶端完全免費"
+    },
+    fr: {
+      linkLabel: "À propos de Save My Bill PEI",
+      title: "À propos de Save My Bill PEI",
+      body: [
+        "Save My Bill PEI aide les gens à réduire leurs frais mensuels de mobile, d’Internet et de télévision. Nous recherchons régulièrement les offres disponibles des fournisseurs et aidons les utilisateurs à comparer les options.",
+        "Pour le moment, nous offrons ces services uniquement aux utilisateurs de PEI. Nous prévoyons ensuite de servir progressivement les provinces de l’Atlantique et d’étendre nos services à l’assurance et aux prêts.",
+        "Ce service est entièrement gratuit pour les utilisateurs. Les partenaires intéressés peuvent nous contacter."
+      ],
+      contactLabel: "Contact",
+      freeNote: "Gratuit pour les utilisateurs"
+    },
+    es: {
+      linkLabel: "Acerca de Save My Bill PEI",
+      title: "Acerca de Save My Bill PEI",
+      body: [
+        "Save My Bill PEI ayuda a las personas a reducir sus costos mensuales de móvil, Internet y televisión. Revisamos periódicamente ofertas disponibles de los operadores y ayudamos a comparar opciones.",
+        "Por ahora atendemos solo a usuarios de PEI. Más adelante planeamos servir gradualmente a las provincias atlánticas y expandirnos a seguros y préstamos.",
+        "Este servicio es completamente gratuito para los usuarios. Socios interesados pueden contactarnos."
+      ],
+      contactLabel: "Contacto",
+      freeNote: "Gratis para usuarios"
+    },
+    ar: {
+      linkLabel: "حول Save My Bill PEI",
+      title: "حول Save My Bill PEI",
+      body: [
+        "تساعد Save My Bill PEI الناس على تقليل التكاليف الشهرية لخدمات الجوال والإنترنت والتلفزيون. نبحث بانتظام عن عروض شركات الاتصالات المتاحة ونساعد المستخدمين على مقارنة الخيارات.",
+        "حاليا نقدم هذه الخدمات لمستخدمي PEI فقط. لاحقا نخطط للتوسع تدريجيا في مقاطعات الأطلسي وإضافة خدمات مرتبطة بالتأمين والقروض.",
+        "هذه الخدمة مجانية تماما للمستخدمين. نرحب بتواصل الشركاء المهتمين."
+      ],
+      contactLabel: "للتواصل",
+      freeNote: "مجاني للمستخدمين"
+    },
+    fa: {
+      linkLabel: "درباره Save My Bill PEI",
+      title: "درباره Save My Bill PEI",
+      body: [
+        "Save My Bill PEI به مردم کمک می‌کند هزینه ماهانه موبایل، اینترنت و تلویزیون را کاهش دهند. ما به‌طور منظم پیشنهادهای موجود اپراتورها را بررسی می‌کنیم و به کاربران کمک می‌کنیم گزینه‌های بهتر را مقایسه کنند.",
+        "در حال حاضر فقط به کاربران PEI خدمات موبایل، اینترنت و تلویزیون ارائه می‌کنیم. در آینده به‌تدریج به استان‌های آتلانتیک و سپس خدمات مرتبط با بیمه و وام گسترش خواهیم داد.",
+        "این سرویس برای کاربران کاملا رایگان است. از همکاری با شرکای علاقه‌مند استقبال می‌کنیم."
+      ],
+      contactLabel: "تماس",
+      freeNote: "رایگان برای کاربران"
+    },
+    vi: {
+      linkLabel: "Giới thiệu Save My Bill PEI",
+      title: "Giới thiệu Save My Bill PEI",
+      body: [
+        "Save My Bill PEI giúp mọi người giảm chi phí hằng tháng cho di động, Internet và TV. Chúng tôi thường xuyên tìm các ưu đãi hiện có từ nhà mạng và giúp người dùng so sánh lựa chọn phù hợp hơn.",
+        "Hiện tại dịch vụ chỉ dành cho người dùng tại PEI. Sau đó, chúng tôi dự định mở rộng dần sang các tỉnh Atlantic và các dịch vụ tiết kiệm liên quan đến bảo hiểm và khoản vay.",
+        "Dịch vụ này hoàn toàn miễn phí cho người dùng. Chúng tôi hoan nghênh các đối tác quan tâm liên hệ."
+      ],
+      contactLabel: "Liên hệ",
+      freeNote: "Miễn phí cho người dùng"
+    },
+    ko: {
+      linkLabel: "Save My Bill PEI 소개",
+      title: "Save My Bill PEI 소개",
+      body: [
+        "Save My Bill PEI는 모바일, 인터넷, TV 월 요금을 줄일 수 있도록 돕습니다. 정기적으로 통신사의 이용 가능한 특별 혜택을 찾아보고 사용자에게 더 맞는 선택지가 있는지 비교해 드립니다.",
+        "현재는 PEI 사용자에게만 모바일, 인터넷, TV 관련 서비스를 제공하며, 앞으로 Atlantic Canada와 보험 및 대출 관련 절약 서비스로 확장할 계획입니다.",
+        "이 서비스는 사용자에게 완전히 무료입니다. 협업에 관심 있는 파트너의 연락을 환영합니다."
+      ],
+      contactLabel: "연락처",
+      freeNote: "사용자 무료"
+    }
+  };
+
+  return content[language] || content.en;
+}
+
+function subscriptionContent(language) {
+  const content = {
+    en: {
+      prompt:
+        "Want regular carrier specials? Subscribe by email and we will send a weekly price update when we find useful offers.",
+      button: "Subscribe for weekly offers",
+      title: "Subscribe for weekly offers",
+      label: "Email address",
+      placeholder: "you@example.com",
+      submit: "Subscribe",
+      submitting: "Subscribing...",
+      success: "Subscribed. We will send useful carrier offer updates by email.",
+      error: "Subscription failed. Please try again later.",
+      invalid: "Please enter a valid email address."
+    },
+    zh: {
+      prompt: "如果想收到运营商定期特惠，可以注册邮箱。我们会每周更新一次价格并发送给你。",
+      button: "订阅运营商特惠",
+      title: "订阅运营商特惠",
+      label: "邮箱地址",
+      placeholder: "you@example.com",
+      submit: "确认订阅",
+      submitting: "提交中...",
+      success: "订阅成功。我们会通过邮箱发送有用的运营商优惠更新。",
+      error: "订阅失败，请稍后再试。",
+      invalid: "请填写有效的邮箱地址。"
+    },
+    "zh-TW": {
+      prompt: "如果想收到電信商定期特惠，可以註冊電郵。我們會每週更新一次價格並寄給你。",
+      button: "訂閱電信商特惠",
+      title: "訂閱電信商特惠",
+      label: "電郵地址",
+      placeholder: "you@example.com",
+      submit: "確認訂閱",
+      submitting: "提交中...",
+      success: "訂閱成功。我們會透過電郵寄送有用的電信商優惠更新。",
+      error: "訂閱失敗，請稍後再試。",
+      invalid: "請填寫有效的電郵地址。"
+    },
+    fr: {
+      prompt:
+        "Vous voulez recevoir les offres spéciales des fournisseurs? Inscrivez votre courriel et nous enverrons une mise à jour des prix chaque semaine.",
+      button: "S'abonner aux offres",
+      title: "S'abonner aux offres hebdomadaires",
+      label: "Courriel",
+      placeholder: "vous@example.com",
+      submit: "S'abonner",
+      submitting: "Envoi...",
+      success: "Abonnement confirmé. Nous enverrons les mises à jour utiles par courriel.",
+      error: "Échec de l'abonnement. Veuillez réessayer plus tard.",
+      invalid: "Veuillez entrer une adresse courriel valide."
+    },
+    es: {
+      prompt:
+        "Si quieres recibir ofertas especiales de operadores, registra tu correo. Enviaremos una actualización semanal de precios.",
+      button: "Suscribirse a ofertas",
+      title: "Suscribirse a ofertas semanales",
+      label: "Correo electrónico",
+      placeholder: "tu@example.com",
+      submit: "Suscribirme",
+      submitting: "Enviando...",
+      success: "Suscripción confirmada. Enviaremos actualizaciones útiles por correo.",
+      error: "No se pudo suscribir. Inténtalo más tarde.",
+      invalid: "Introduce un correo electrónico válido."
+    },
+    ar: {
+      prompt: "إذا أردت تلقي عروض شركات الاتصالات، سجّل بريدك الإلكتروني وسنرسل تحديثا أسبوعيا للأسعار.",
+      button: "اشترك في العروض",
+      title: "اشترك في العروض الأسبوعية",
+      label: "البريد الإلكتروني",
+      placeholder: "you@example.com",
+      submit: "اشتراك",
+      submitting: "جار الإرسال...",
+      success: "تم الاشتراك. سنرسل تحديثات العروض المفيدة عبر البريد الإلكتروني.",
+      error: "فشل الاشتراك. يرجى المحاولة لاحقا.",
+      invalid: "يرجى إدخال بريد إلكتروني صالح."
+    },
+    fa: {
+      prompt: "اگر می‌خواهید پیشنهادهای ویژه اپراتورها را دریافت کنید، ایمیل خود را ثبت کنید تا هر هفته به‌روزرسانی قیمت‌ها را بفرستیم.",
+      button: "اشتراک پیشنهادها",
+      title: "اشتراک پیشنهادهای هفتگی",
+      label: "ایمیل",
+      placeholder: "you@example.com",
+      submit: "اشتراک",
+      submitting: "در حال ارسال...",
+      success: "اشتراک ثبت شد. به‌روزرسانی‌های مفید را از طریق ایمیل ارسال می‌کنیم.",
+      error: "ثبت اشتراک ناموفق بود. لطفا بعدا دوباره تلاش کنید.",
+      invalid: "لطفا یک ایمیل معتبر وارد کنید."
+    },
+    vi: {
+      prompt:
+        "Nếu bạn muốn nhận ưu đãi định kỳ từ nhà mạng, hãy đăng ký email. Chúng tôi sẽ gửi cập nhật giá mỗi tuần.",
+      button: "Đăng ký nhận ưu đãi",
+      title: "Đăng ký nhận ưu đãi hằng tuần",
+      label: "Email",
+      placeholder: "you@example.com",
+      submit: "Đăng ký",
+      submitting: "Đang gửi...",
+      success: "Đã đăng ký. Chúng tôi sẽ gửi các cập nhật ưu đãi hữu ích qua email.",
+      error: "Đăng ký không thành công. Vui lòng thử lại sau.",
+      invalid: "Vui lòng nhập email hợp lệ."
+    },
+    ko: {
+      prompt: "통신사 특별 혜택을 받고 싶다면 이메일을 등록해 주세요. 매주 가격 업데이트를 보내드립니다.",
+      button: "주간 혜택 구독",
+      title: "주간 혜택 구독",
+      label: "이메일 주소",
+      placeholder: "you@example.com",
+      submit: "구독",
+      submitting: "전송 중...",
+      success: "구독되었습니다. 유용한 통신사 혜택 업데이트를 이메일로 보내드리겠습니다.",
+      error: "구독에 실패했습니다. 나중에 다시 시도해 주세요.",
+      invalid: "유효한 이메일 주소를 입력해 주세요."
+    }
+  };
+
+  return content[language] || content.en;
+}
+
 const areaOptions = [
   { value: "Charlottetown", label: "Charlottetown" },
   { value: "Stratford", label: "Stratford" },
@@ -874,7 +1264,7 @@ function serviceTypeSubtitle(language, type) {
     both: ["多项服务人工复核", "多項服務人工覆核", "Manual review for multiple services"]
   };
   const [zhHans, zhHant, en] = subtitles[type];
-  return language === "en" || language === "fr" ? en : language === "zhHant" || language === "zh-TW" ? zhHant : zhHans;
+  return !isChineseLanguage(language) ? en : isTraditionalChineseLanguage(language) ? zhHant : zhHans;
 }
 
 function MobileUsageCard({ item, content, active, onClick, bundle = false }) {
@@ -1622,9 +2012,43 @@ function isKoodoOrTelusInternet(offer) {
   return offer.service_type === "internet" && (provider === "koodo" || provider === "telus");
 }
 
+function isTraditionalChineseLanguage(language) {
+  return language === "zhHant" || language === "zh-TW";
+}
+
+function isChineseLanguage(language) {
+  return language === "zh" || language === "zhHans" || isTraditionalChineseLanguage(language);
+}
+
+function isRtlLanguage(language) {
+  return language === "ar" || language === "fa";
+}
+
+function htmlLangFor(language) {
+  const map = {
+    ar: "ar",
+    es: "es",
+    fa: "fa",
+    fr: "fr",
+    ko: "ko",
+    vi: "vi",
+    en: "en",
+    "zh-TW": "zh-Hant",
+    zhHant: "zh-Hant",
+    zh: "zh-CN",
+    zhHans: "zh-CN"
+  };
+  return map[language] || "en";
+}
+
+function localizedDataKey(language) {
+  if (isTraditionalChineseLanguage(language)) return "zh-TW";
+  return isChineseLanguage(language) ? "zh" : "en";
+}
+
 function money(value, language) {
   if (typeof value !== "number") return value;
-  return language === "en" || language === "fr" ? `$${value}/mo` : `$${value}/月`;
+  return isChineseLanguage(language) ? `$${value}/月` : `$${value}/mo`;
 }
 
 function savingsText(offer, form, t, language) {
@@ -1636,11 +2060,11 @@ function savingsText(offer, form, t, language) {
     return textByLanguage(language, "价格接近", "價格接近", "Similar price");
   }
   if (offer.service_type === "mobile") {
-    if (language === "en" || language === "fr") return `Save about $${annualSaving}/yr`;
-    return language === "zhHant" || language === "zh-TW" ? `預計每年節省約 $${annualSaving}` : `预计每年节省约 $${annualSaving}`;
+    if (!isChineseLanguage(language)) return `Save about $${annualSaving}/yr`;
+    return isTraditionalChineseLanguage(language) ? `預計每年節省約 $${annualSaving}` : `预计每年节省约 $${annualSaving}`;
   }
-  if (language === "en" || language === "fr") return `About $${saving}/mo, about $${annualSaving}/yr`;
-  return language === "zhHant" || language === "zh-TW" ? `約 $${saving}/月，約 $${annualSaving}/年` : `约 $${saving}/月，约 $${annualSaving}/年`;
+  if (!isChineseLanguage(language)) return `About $${saving}/mo, about $${annualSaving}/yr`;
+  return isTraditionalChineseLanguage(language) ? `約 $${saving}/月，約 $${annualSaving}/年` : `约 $${saving}/月，约 $${annualSaving}/年`;
 }
 
 function confirmationSavingsText(offer, form, t, language) {
@@ -1800,7 +2224,7 @@ function localizedNote(offer, t, language, form) {
   }
   if (offer.offer_id === "bell_mobile_winback_manual") return bellAliantDisplayText(t.bellWinbackNote);
   if (/Purple Cow/i.test(offer.provider)) {
-    const description = offer.description?.[language === "zhHant" || language === "zh-TW" ? "zh-TW" : language === "en" || language === "fr" ? "en" : "zh"];
+    const description = offer.description?.[localizedDataKey(language)];
     const publicDescription = offer.notDefaultPrimary
       ? textByLanguage(
           language,
@@ -1812,7 +2236,7 @@ function localizedNote(offer, t, language, form) {
     return [...bundleNotes, publicDescription].filter(Boolean).join(" ");
   }
   if (/Eastlink/i.test(offer.provider)) {
-    const description = offer.description?.[language === "zhHant" || language === "zh-TW" ? "zh-TW" : language === "en" || language === "fr" ? "en" : "zh"];
+    const description = offer.description?.[localizedDataKey(language)];
     return [...bundleNotes, description || bellAliantDisplayText(offer.caution)].filter(Boolean).join(" ");
   }
   if (offer.lowSavingsWarning) {
@@ -1913,15 +2337,15 @@ function bundleResultNotes(form, language) {
 }
 
 function textByLanguage(language, zhHans, zhHant, en) {
-  if (language === "en" || language === "fr") return en;
-  if (language === "zhHant" || language === "zh-TW") return zhHant;
+  if (!isChineseLanguage(language)) return en;
+  if (isTraditionalChineseLanguage(language)) return zhHant;
   return zhHans;
 }
 
 function getInitialLanguage() {
   if (typeof window === "undefined") return "en";
   const language = new URLSearchParams(window.location.search).get("lang");
-  return ["en", "zh", "fr", "zh-TW"].includes(language) ? language : "en";
+  return languages.some((item) => item.code === language) ? language : "en";
 }
 
 function calculateReminderDueDate(contractEndDate, daysBefore) {
@@ -1981,7 +2405,7 @@ function fieldLabel(language, key) {
 
 function speedText(offer, language) {
   if (offer.speedLabel && typeof offer.speedLabel === "object") {
-    return offer.speedLabel[language === "zhHant" || language === "zh-TW" ? "zh-TW" : language === "en" || language === "fr" ? "en" : "zh"];
+    return offer.speedLabel[localizedDataKey(language)];
   }
   if (!offer.speed_down && !offer.speed_up) {
     return textByLanguage(language, "具体上下行速度需确认", "具體上下行速度需確認", "Download/upload speeds require confirmation");
@@ -2404,8 +2828,8 @@ function UsageGuidanceModal({ isOpen, onClose, language }) {
                   <div>
                     <h4>{card.title}</h4>
                     <span>{card.people}</span>
-                  </div>
-                </div>
+	                  </div>
+	                </div>
 
                 <p>{card.body}</p>
 
@@ -2425,6 +2849,101 @@ function UsageGuidanceModal({ isOpen, onClose, language }) {
         </div>
 
         <p className="usageSource">{content.source}</p>
+      </div>
+    </div>
+  );
+}
+
+function AboutSaveMyBillModal({ isOpen, onClose, language }) {
+  const [showSubscribeForm, setShowSubscribeForm] = useState(false);
+  const [subscribeEmail, setSubscribeEmail] = useState("");
+  const [subscribeStatus, setSubscribeStatus] = useState("");
+  const [subscribeSubmitting, setSubscribeSubmitting] = useState(false);
+
+  if (!isOpen) return null;
+
+  const content = aboutSaveMyBillContent(language);
+  const subscribe = subscriptionContent(language);
+
+  async function handleSubscribe(event) {
+    event.preventDefault();
+    if (subscribeSubmitting) return;
+
+    const email = subscribeEmail.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setSubscribeStatus(subscribe.invalid);
+      return;
+    }
+
+    setSubscribeSubmitting(true);
+    setSubscribeStatus("");
+
+    try {
+      await submitToGoogleSheet(buildSubscriptionPayload({ email, language }));
+      setSubscribeStatus(subscribe.success);
+      setSubscribeEmail("");
+    } catch {
+      setSubscribeStatus(subscribe.error);
+    } finally {
+      setSubscribeSubmitting(false);
+    }
+  }
+
+  return (
+    <div className="usageModalBackdrop aboutModalBackdrop" role="presentation" onMouseDown={onClose}>
+      <div
+        className="usageModal aboutSaveMyBillModal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="about-save-my-bill-title"
+        onMouseDown={(event) => event.stopPropagation()}
+      >
+        <button type="button" className="usageModalClose" onClick={onClose} aria-label="Close">
+          ×
+        </button>
+
+        <div className="aboutModalHeader">
+          <span>{content.freeNote}</span>
+          <h2 id="about-save-my-bill-title">{content.title}</h2>
+        </div>
+
+        <div className="aboutModalBody">
+          {content.body.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+        </div>
+
+        <div className="aboutModalContact">
+          <span>{content.contactLabel}</span>
+          <a href="mailto:savemybillpei@gmail.com">savemybillpei@gmail.com</a>
+        </div>
+
+        <div className="aboutSubscribeBox">
+          <p>{subscribe.prompt}</p>
+          {!showSubscribeForm ? (
+            <button type="button" className="aboutSubscribeButton" onClick={() => setShowSubscribeForm(true)}>
+              {subscribe.button}
+            </button>
+          ) : (
+            <form className="aboutSubscribeForm" onSubmit={handleSubscribe}>
+              <label htmlFor="weekly-offer-email">{subscribe.label}</label>
+              <div className="aboutSubscribeInputRow">
+                <input
+                  id="weekly-offer-email"
+                  type="email"
+                  value={subscribeEmail}
+                  onChange={(event) => setSubscribeEmail(event.target.value)}
+                  placeholder={subscribe.placeholder}
+                  autoComplete="email"
+                />
+                <button type="submit" disabled={subscribeSubmitting}>
+                  {subscribeSubmitting ? subscribe.submitting : subscribe.submit}
+                </button>
+              </div>
+              {subscribeStatus && <span className="aboutSubscribeStatus">{subscribeStatus}</span>}
+            </form>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -3171,7 +3690,7 @@ function savingsHelperText(yearlySavings, t, language) {
 function payloadOfferName(offer, language) {
   const localized = offer.serviceName || offer.service_name;
   if (localized && typeof localized === "object") {
-    const key = language === "en" || language === "fr" ? "en" : language === "zhHant" || language === "zh-TW" ? "zh-TW" : "zh";
+    const key = localizedDataKey(language);
     if (localized[key]) return localized[key];
   }
   return offer.plan_name || offer.display_name || offer.name || "";
@@ -3320,6 +3839,44 @@ function buildSheetPayload({ form, language, source, lead, selectedOffer, recomm
   };
 }
 
+function buildSubscriptionPayload({ email, language }) {
+  const now = new Date().toISOString();
+
+  return {
+    source: "weekly_offer_subscription",
+    language,
+    name: "",
+    email,
+    phone: "",
+    preferred_contact: "email",
+    wechat: "",
+    city: "",
+    postal_code: "",
+    service_type: "weekly_offers",
+    current_provider: "",
+    monthly_price: "",
+    price_type: "",
+    current_speed: "",
+    current_mobile_data: "",
+    plan_details: JSON.stringify({ subscription_type: "weekly_carrier_offers" }),
+    willing_to_switch: "",
+    notes: "Subscribed to weekly carrier offer updates.",
+    submitted_at: now,
+    page_version: "save_my_bill_pei_v1",
+    lead_source: "weekly_offer_subscription",
+    customer_email: email,
+    preferred_contact_method: "email",
+    consent_to_contact: true,
+    region: "PEI",
+    user_agent: typeof navigator !== "undefined" ? navigator.userAgent : "",
+    referrer: typeof document !== "undefined" ? document.referrer : "",
+    landing_page: typeof window !== "undefined" ? window.location.href : "",
+    utm_source: typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("utm_source") || "" : "",
+    utm_medium: typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("utm_medium") || "" : "",
+    utm_campaign: typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("utm_campaign") || "" : ""
+  };
+}
+
 async function submitToGoogleSheet(payload) {
   await fetch(GOOGLE_SCRIPT_URL, {
     method: "POST",
@@ -3341,6 +3898,7 @@ export default function Home() {
   const [leadOpen, setLeadOpen] = useState(false);
   const [peiReviewOpen, setPeiReviewOpen] = useState(false);
   const [showUsageGuidance, setShowUsageGuidance] = useState(false);
+  const [aboutOpen, setAboutOpen] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [sheetError, setSheetError] = useState("");
@@ -3367,8 +3925,8 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    document.documentElement.lang =
-      language === "fr" ? "fr" : language === "en" ? "en" : language === "zh-TW" ? "zh-Hant" : "zh-CN";
+    document.documentElement.lang = htmlLangFor(language);
+    document.documentElement.dir = isRtlLanguage(language) ? "rtl" : "ltr";
     document.title = `Save My Bill | ${translations[language].heroHeadline}`;
   }, [language]);
 
@@ -3386,6 +3944,7 @@ export default function Home() {
         closeFlow();
         setPeiReviewOpen(false);
         setShowUsageGuidance(false);
+        setAboutOpen(false);
       }
     }
     window.addEventListener("keydown", onKeyDown);
@@ -3424,7 +3983,7 @@ export default function Home() {
     if (flowOpen && flowBodyRef.current) flowBodyRef.current.scrollTop = 0;
   }, [leadOpen, resultOpen, successOpen, flowOpen]);
 
-  const shouldLockBodyScroll = resultOpen || leadOpen || peiReviewOpen || showUsageGuidance || successOpen;
+  const shouldLockBodyScroll = resultOpen || leadOpen || peiReviewOpen || showUsageGuidance || aboutOpen || successOpen;
 
   useEffect(() => {
     if (!shouldLockBodyScroll) return;
@@ -3715,7 +4274,7 @@ export default function Home() {
   }
 
   return (
-    <main className="page-shell billSaverPage" lang={language === "fr" ? "fr" : language === "en" ? "en" : language === "zh-TW" ? "zh-Hant" : "zh-CN"}>
+    <main className="page-shell billSaverPage" lang={htmlLangFor(language)} dir={isRtlLanguage(language) ? "rtl" : "ltr"}>
       <section className="hero heroSection">
         <div className="heroInner">
           <div className="heroTopBar">
@@ -3747,8 +4306,14 @@ export default function Home() {
           </div>
 
           <div className="heroContent">
-            <h1 className="heroTitle">{t.heroHeadline}</h1>
-            <p className="heroSubtitle">{t.heroSubtitle}</p>
+            <h1 className="heroTitle heroTitleHidden">{t.heroHeadline}</h1>
+            <div className="heroSubtitleTicker" aria-label={t.heroSubtitle}>
+              <div className="heroSubtitleTrack">
+                <span>{t.heroSubtitle}</span>
+                <span aria-hidden="true">{t.heroSubtitle}</span>
+                <span aria-hidden="true">{t.heroSubtitle}</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -3813,9 +4378,9 @@ export default function Home() {
                         ))}
                       </select>
                       <span className="bundle-select-chevron" aria-hidden="true">▾</span>
-                    </div>
-                  </div>
-                )}
+	                    </div>
+	                  </div>
+	      )}
 
                 <div className={`field internet-usage-field ${isBundle ? "bundle-usage-group" : ""} ${missingFields.includes("internet_usage_level") ? "missing" : ""}`.trim()}>
                   <span>{t.internetUsageLevel}</span>
@@ -3841,7 +4406,7 @@ export default function Home() {
                           <span>{t.usageCards[item.value].description}</span>
                         </span>
                         <span className="usage-card-speed">
-                          <small>{language === "en" || language === "fr" ? "Reference speed" : language === "zhHant" || language === "zh-TW" ? "參考頻寬" : "参考带宽"}</small>
+                          <small>{textByLanguage(language, "参考带宽", "參考頻寬", "Reference speed")}</small>
                           <strong>{(internetUsageSpeeds[language] || internetUsageSpeeds.en)[item.value]}</strong>
                         </span>
                         {form.internet_usage_level === item.value && <span className="usage-card-check" aria-hidden="true">✓</span>}
@@ -4069,12 +4634,12 @@ export default function Home() {
                       </strong>
                     ) : (
                       <>
-                        <span>{language === "en" || language === "fr" ? "~" : language === "zhHant" || language === "zh-TW" ? "約" : "约"}</span>
+                        <span>{textByLanguage(language, "约", "約", "~")}</span>
                         <strong>${yearlySavings}</strong>
-                        <em>{language === "en" || language === "fr" ? "/ yr" : "/ 年"}</em>
+                        <em>{textByLanguage(language, "/ 年", "/ 年", "/ yr")}</em>
                       </>
-                    )}
-                  </div>
+	                    )}
+	                  </div>
                 </div>
               </section>
 
@@ -4328,8 +4893,17 @@ export default function Home() {
                     {textByLanguage(language, "帮我人工确认方案", "幫我人工確認方案", "Help confirm my options")}
                   </button>
                 </div>
-              </section>
-              </div>
+	              </section>
+	              <div className="resultAboutFooter">
+	                <button
+	                  type="button"
+	                  className="aboutFooterLink resultAboutLink"
+	                  onClick={() => setAboutOpen(true)}
+	                >
+	                  {aboutSaveMyBillContent(language).linkLabel}
+	                </button>
+	              </div>
+	              </div>
               </div>
             )}
 
@@ -4527,7 +5101,7 @@ export default function Home() {
                             <Select value={lead.reminder_days_before} onChange={(value) => updateLead("reminder_days_before", value)}>
                               {["30", "60", "90"].map((days) => (
                                 <option key={days} value={days}>
-                                  {language === "fr" ? `${days} jours avant` : language === "en" ? `${days} days` : textByLanguage(language, `提前 ${days} 天`, `提前 ${days} 天`, `${days} days`)}
+                                  {language === "fr" ? `${days} jours avant` : textByLanguage(language, `提前 ${days} 天`, `提前 ${days} 天`, `${days} days`)}
                                 </option>
                               ))}
                             </Select>
@@ -4590,9 +5164,9 @@ export default function Home() {
               </button>
             </div>
           </div>
-      )}
-            </div>
-            {(resultOpen || leadOpen) && (
+	      )}
+	            </div>
+	            {(resultOpen || leadOpen) && (
               <footer className="bill-flow-footer">
                 <div className="bill-flow-footer-actions">
                   <button className="flow-footer-secondary" type="button" onClick={handleFlowBack}>
@@ -4621,15 +5195,21 @@ export default function Home() {
                   <span aria-hidden="true">🔒</span>
                   <span>{t.leadSafetyNote}</span>
                 </div>
-              </footer>
+		              </footer>
             )}
           </div>
         </section>
       )}
 
-      <UsageGuidanceModal isOpen={showUsageGuidance} onClose={() => setShowUsageGuidance(false)} language={language} />
+	      <UsageGuidanceModal isOpen={showUsageGuidance} onClose={() => setShowUsageGuidance(false)} language={language} />
+	      <AboutSaveMyBillModal isOpen={aboutOpen} onClose={() => setAboutOpen(false)} language={language} />
 
-      <footer className="site-footer">{t.footer}</footer>
+	      <footer className="site-footer">
+	        <p>{t.footer}</p>
+	        <button type="button" className="aboutFooterLink" onClick={() => setAboutOpen(true)}>
+	          {aboutSaveMyBillContent(language).linkLabel}
+	        </button>
+	      </footer>
     </main>
   );
 }
