@@ -833,6 +833,112 @@ translations.ko = {
   close: "닫기"
 };
 
+function aboutSaveMyBillContent(language) {
+  const content = {
+    en: {
+      linkLabel: "About Save My Bill PEI",
+      title: "About Save My Bill PEI",
+      body: [
+        "Save My Bill PEI helps people reduce monthly costs for mobile, internet, and TV services. We regularly look for available carrier offers and help users compare whether a better option may fit their needs.",
+        "Our main base is in Stratford, PEI. At this stage, we only provide these services for PEI users. Over time, we plan to gradually serve Atlantic Canada and expand into insurance and loan-related savings services.",
+        "This service is completely free for users. Partners interested in working with us are welcome to contact us."
+      ],
+      contactLabel: "Contact",
+      freeNote: "Free for users"
+    },
+    zh: {
+      linkLabel: "关于 Save My Bill PEI",
+      title: "关于 Save My Bill PEI",
+      body: [
+        "Save My Bill PEI 希望帮助大家节约手机、宽带和电视服务的每月费用。我们会定期挖掘运营商的可用特殊 offer，并帮助用户比较是否有更合适的方案。",
+        "本站主家位于 PEI Stratford。目前只面向 PEI 用户提供手机、宽带和电视相关服务，后续将逐步服务海洋四省，并计划扩展至保险和贷款相关的省钱业务。",
+        "本服务对用户端完全免费。欢迎有意向的合作伙伴联系我们。"
+      ],
+      contactLabel: "联系方式",
+      freeNote: "用户端完全免费"
+    },
+    "zh-TW": {
+      linkLabel: "關於 Save My Bill PEI",
+      title: "關於 Save My Bill PEI",
+      body: [
+        "Save My Bill PEI 希望幫助大家節省手機、寬頻和電視服務的每月費用。我們會定期整理電信商目前可用的特殊 offer，並協助用戶比較是否有更合適的方案。",
+        "本站主家位於 PEI Stratford。目前只面向 PEI 用戶提供手機、寬頻和電視相關服務，後續將逐步服務海洋四省，並計劃擴展至保險和貸款相關的省錢業務。",
+        "本服務對用戶端完全免費。歡迎有意向的合作夥伴聯絡我們。"
+      ],
+      contactLabel: "聯絡方式",
+      freeNote: "用戶端完全免費"
+    },
+    fr: {
+      linkLabel: "À propos de Save My Bill PEI",
+      title: "À propos de Save My Bill PEI",
+      body: [
+        "Save My Bill PEI aide les gens à réduire leurs frais mensuels de mobile, d’Internet et de télévision. Nous recherchons régulièrement les offres disponibles des fournisseurs et aidons les utilisateurs à comparer les options.",
+        "Notre base principale est à Stratford, PEI. Pour le moment, nous offrons ces services uniquement aux utilisateurs de PEI. Nous prévoyons ensuite de servir progressivement les provinces de l’Atlantique et d’étendre nos services à l’assurance et aux prêts.",
+        "Ce service est entièrement gratuit pour les utilisateurs. Les partenaires intéressés peuvent nous contacter."
+      ],
+      contactLabel: "Contact",
+      freeNote: "Gratuit pour les utilisateurs"
+    },
+    es: {
+      linkLabel: "Acerca de Save My Bill PEI",
+      title: "Acerca de Save My Bill PEI",
+      body: [
+        "Save My Bill PEI ayuda a las personas a reducir sus costos mensuales de móvil, Internet y televisión. Revisamos periódicamente ofertas disponibles de los operadores y ayudamos a comparar opciones.",
+        "Nuestra base principal está en Stratford, PEI. Por ahora atendemos solo a usuarios de PEI. Más adelante planeamos servir gradualmente a las provincias atlánticas y expandirnos a seguros y préstamos.",
+        "Este servicio es completamente gratuito para los usuarios. Socios interesados pueden contactarnos."
+      ],
+      contactLabel: "Contacto",
+      freeNote: "Gratis para usuarios"
+    },
+    ar: {
+      linkLabel: "حول Save My Bill PEI",
+      title: "حول Save My Bill PEI",
+      body: [
+        "تساعد Save My Bill PEI الناس على تقليل التكاليف الشهرية لخدمات الجوال والإنترنت والتلفزيون. نبحث بانتظام عن عروض شركات الاتصالات المتاحة ونساعد المستخدمين على مقارنة الخيارات.",
+        "يقع مقرنا الرئيسي في ستراتفورد، جزيرة الأمير إدوارد. حاليا نقدم هذه الخدمات لمستخدمي PEI فقط. لاحقا نخطط للتوسع تدريجيا في مقاطعات الأطلسي وإضافة خدمات مرتبطة بالتأمين والقروض.",
+        "هذه الخدمة مجانية تماما للمستخدمين. نرحب بتواصل الشركاء المهتمين."
+      ],
+      contactLabel: "للتواصل",
+      freeNote: "مجاني للمستخدمين"
+    },
+    fa: {
+      linkLabel: "درباره Save My Bill PEI",
+      title: "درباره Save My Bill PEI",
+      body: [
+        "Save My Bill PEI به مردم کمک می‌کند هزینه ماهانه موبایل، اینترنت و تلویزیون را کاهش دهند. ما به‌طور منظم پیشنهادهای موجود اپراتورها را بررسی می‌کنیم و به کاربران کمک می‌کنیم گزینه‌های بهتر را مقایسه کنند.",
+        "پایگاه اصلی ما در Stratford, PEI است. در حال حاضر فقط به کاربران PEI خدمات موبایل، اینترنت و تلویزیون ارائه می‌کنیم. در آینده به‌تدریج به استان‌های آتلانتیک و سپس خدمات مرتبط با بیمه و وام گسترش خواهیم داد.",
+        "این سرویس برای کاربران کاملا رایگان است. از همکاری با شرکای علاقه‌مند استقبال می‌کنیم."
+      ],
+      contactLabel: "تماس",
+      freeNote: "رایگان برای کاربران"
+    },
+    vi: {
+      linkLabel: "Giới thiệu Save My Bill PEI",
+      title: "Giới thiệu Save My Bill PEI",
+      body: [
+        "Save My Bill PEI giúp mọi người giảm chi phí hằng tháng cho di động, Internet và TV. Chúng tôi thường xuyên tìm các ưu đãi hiện có từ nhà mạng và giúp người dùng so sánh lựa chọn phù hợp hơn.",
+        "Cơ sở chính của chúng tôi ở Stratford, PEI. Hiện tại dịch vụ chỉ dành cho người dùng tại PEI. Sau đó, chúng tôi dự định mở rộng dần sang các tỉnh Atlantic và các dịch vụ tiết kiệm liên quan đến bảo hiểm và khoản vay.",
+        "Dịch vụ này hoàn toàn miễn phí cho người dùng. Chúng tôi hoan nghênh các đối tác quan tâm liên hệ."
+      ],
+      contactLabel: "Liên hệ",
+      freeNote: "Miễn phí cho người dùng"
+    },
+    ko: {
+      linkLabel: "Save My Bill PEI 소개",
+      title: "Save My Bill PEI 소개",
+      body: [
+        "Save My Bill PEI는 모바일, 인터넷, TV 월 요금을 줄일 수 있도록 돕습니다. 정기적으로 통신사의 이용 가능한 특별 혜택을 찾아보고 사용자에게 더 맞는 선택지가 있는지 비교해 드립니다.",
+        "저희의 주요 기반은 PEI Stratford입니다. 현재는 PEI 사용자에게만 모바일, 인터넷, TV 관련 서비스를 제공하며, 앞으로 Atlantic Canada와 보험 및 대출 관련 절약 서비스로 확장할 계획입니다.",
+        "이 서비스는 사용자에게 완전히 무료입니다. 협업에 관심 있는 파트너의 연락을 환영합니다."
+      ],
+      contactLabel: "연락처",
+      freeNote: "사용자 무료"
+    }
+  };
+
+  return content[language] || content.en;
+}
+
 const areaOptions = [
   { value: "Charlottetown", label: "Charlottetown" },
   { value: "Stratford", label: "Stratford" },
@@ -2603,8 +2709,8 @@ function UsageGuidanceModal({ isOpen, onClose, language }) {
                   <div>
                     <h4>{card.title}</h4>
                     <span>{card.people}</span>
-                  </div>
-                </div>
+	                  </div>
+	                </div>
 
                 <p>{card.body}</p>
 
@@ -2624,6 +2730,44 @@ function UsageGuidanceModal({ isOpen, onClose, language }) {
         </div>
 
         <p className="usageSource">{content.source}</p>
+      </div>
+    </div>
+  );
+}
+
+function AboutSaveMyBillModal({ isOpen, onClose, language }) {
+  if (!isOpen) return null;
+
+  const content = aboutSaveMyBillContent(language);
+
+  return (
+    <div className="usageModalBackdrop" role="presentation" onMouseDown={onClose}>
+      <div
+        className="usageModal aboutSaveMyBillModal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="about-save-my-bill-title"
+        onMouseDown={(event) => event.stopPropagation()}
+      >
+        <button type="button" className="usageModalClose" onClick={onClose} aria-label="Close">
+          ×
+        </button>
+
+        <div className="aboutModalHeader">
+          <span>{content.freeNote}</span>
+          <h2 id="about-save-my-bill-title">{content.title}</h2>
+        </div>
+
+        <div className="aboutModalBody">
+          {content.body.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+        </div>
+
+        <div className="aboutModalContact">
+          <span>{content.contactLabel}</span>
+          <a href="mailto:savemybillpei@gmail.com">savemybillpei@gmail.com</a>
+        </div>
       </div>
     </div>
   );
@@ -3540,6 +3684,7 @@ export default function Home() {
   const [leadOpen, setLeadOpen] = useState(false);
   const [peiReviewOpen, setPeiReviewOpen] = useState(false);
   const [showUsageGuidance, setShowUsageGuidance] = useState(false);
+  const [aboutOpen, setAboutOpen] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [sheetError, setSheetError] = useState("");
@@ -3585,6 +3730,7 @@ export default function Home() {
         closeFlow();
         setPeiReviewOpen(false);
         setShowUsageGuidance(false);
+        setAboutOpen(false);
       }
     }
     window.addEventListener("keydown", onKeyDown);
@@ -3623,7 +3769,7 @@ export default function Home() {
     if (flowOpen && flowBodyRef.current) flowBodyRef.current.scrollTop = 0;
   }, [leadOpen, resultOpen, successOpen, flowOpen]);
 
-  const shouldLockBodyScroll = resultOpen || leadOpen || peiReviewOpen || showUsageGuidance || successOpen;
+  const shouldLockBodyScroll = resultOpen || leadOpen || peiReviewOpen || showUsageGuidance || aboutOpen || successOpen;
 
   useEffect(() => {
     if (!shouldLockBodyScroll) return;
@@ -4012,9 +4158,9 @@ export default function Home() {
                         ))}
                       </select>
                       <span className="bundle-select-chevron" aria-hidden="true">▾</span>
-                    </div>
-                  </div>
-                )}
+	                    </div>
+	                  </div>
+	      )}
 
                 <div className={`field internet-usage-field ${isBundle ? "bundle-usage-group" : ""} ${missingFields.includes("internet_usage_level") ? "missing" : ""}`.trim()}>
                   <span>{t.internetUsageLevel}</span>
@@ -4272,8 +4418,8 @@ export default function Home() {
                         <strong>${yearlySavings}</strong>
                         <em>{textByLanguage(language, "/ 年", "/ 年", "/ yr")}</em>
                       </>
-                    )}
-                  </div>
+	                    )}
+	                  </div>
                 </div>
               </section>
 
@@ -4789,9 +4935,20 @@ export default function Home() {
               </button>
             </div>
           </div>
-      )}
-            </div>
-            {(resultOpen || leadOpen) && (
+	      )}
+	            {successOpen && (
+	              <div className="bill-flow-success-footer">
+	                <button
+	                  type="button"
+	                  className="aboutFooterLink successAboutLink"
+	                  onClick={() => setAboutOpen(true)}
+	                >
+	                  {aboutSaveMyBillContent(language).linkLabel}
+	                </button>
+	              </div>
+	            )}
+	            </div>
+	            {(resultOpen || leadOpen) && (
               <footer className="bill-flow-footer">
                 <div className="bill-flow-footer-actions">
                   <button className="flow-footer-secondary" type="button" onClick={handleFlowBack}>
@@ -4820,15 +4977,28 @@ export default function Home() {
                   <span aria-hidden="true">🔒</span>
                   <span>{t.leadSafetyNote}</span>
                 </div>
-              </footer>
+	                <button
+	                  type="button"
+	                  className="aboutFooterLink flowAboutLink"
+	                  onClick={() => setAboutOpen(true)}
+	                >
+	                  {aboutSaveMyBillContent(language).linkLabel}
+	                </button>
+	              </footer>
             )}
           </div>
         </section>
       )}
 
-      <UsageGuidanceModal isOpen={showUsageGuidance} onClose={() => setShowUsageGuidance(false)} language={language} />
+	      <UsageGuidanceModal isOpen={showUsageGuidance} onClose={() => setShowUsageGuidance(false)} language={language} />
+	      <AboutSaveMyBillModal isOpen={aboutOpen} onClose={() => setAboutOpen(false)} language={language} />
 
-      <footer className="site-footer">{t.footer}</footer>
+	      <footer className="site-footer">
+	        <p>{t.footer}</p>
+	        <button type="button" className="aboutFooterLink" onClick={() => setAboutOpen(true)}>
+	          {aboutSaveMyBillContent(language).linkLabel}
+	        </button>
+	      </footer>
     </main>
   );
 }
