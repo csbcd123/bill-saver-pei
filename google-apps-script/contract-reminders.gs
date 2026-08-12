@@ -9,6 +9,15 @@ const CONTRACT_REMINDER_HEADERS = [
   "consent_to_contact"
 ];
 
+const BILL_SAVER_ADMIN_EMAIL_FALLBACK = "savemybillpei@gmail.com";
+
+function getBillSaverAdminEmail() {
+  return (
+    PropertiesService.getScriptProperties().getProperty("BILL_SAVER_ADMIN_EMAIL") ||
+    BILL_SAVER_ADMIN_EMAIL_FALLBACK
+  );
+}
+
 function ensureContractReminderHeaders() {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Leads");
   if (!sheet) throw new Error('Sheet "Leads" was not found.');
@@ -26,10 +35,7 @@ function sendContractReminderAlerts() {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Leads");
   if (!sheet) throw new Error('Sheet "Leads" was not found.');
 
-  const adminEmail = PropertiesService.getScriptProperties().getProperty("BILL_SAVER_ADMIN_EMAIL");
-  if (!adminEmail) {
-    throw new Error("Set BILL_SAVER_ADMIN_EMAIL in Apps Script project properties before enabling reminders.");
-  }
+  const adminEmail = getBillSaverAdminEmail();
 
   const values = sheet.getDataRange().getValues();
   if (values.length < 2) return;
@@ -83,4 +89,52 @@ function sendContractReminderAlerts() {
     sheet.getRange(rowIndex + 1, indexOf("reminder_sent") + 1).setValue(true);
     sheet.getRange(rowIndex + 1, indexOf("reminder_sent_at") + 1).setValue(new Date());
   }
+}
+
+function sendLeadNotificationEmail(payload) {
+  const adminEmail = getBillSaverAdminEmail();
+  const data = payload || {};
+  const source = data.source || data.lead_source || "website_lead";
+  const customerName = data.customer_name || data.name || "";
+  const customerEmail = data.customer_email || data.email || "";
+  const customerPhone = data.customer_phone || data.phone || "";
+  const serviceType = data.service_type || "";
+  const city = data.city_or_area || data.city || "";
+  const provider = data.current_provider || "";
+  const monthlyPrice = data.current_monthly_bill || data.monthly_price || "";
+  const selectedOffer = data.selected_offer_name || data.top_recommendation_name || "";
+  const selectedProvider = data.selected_offer_provider || data.top_recommendation_provider || "";
+  const notes = data.customer_note || data.notes || "";
+  const landingPage = data.landing_page || "";
+
+  const subject =
+    source === "weekly_offer_subscription"
+      ? "Save My Bill weekly offer subscription"
+      : "New Save My Bill PEI lead";
+
+  const body = [
+    "A new Save My Bill PEI submission was written to Google Sheets.",
+    "",
+    `Source: ${source}`,
+    `Language: ${data.language || ""}`,
+    `Name: ${customerName}`,
+    `Email: ${customerEmail}`,
+    `Phone: ${customerPhone}`,
+    `Preferred contact: ${data.preferred_contact_method || data.preferred_contact || ""}`,
+    `Service type: ${serviceType}`,
+    `City / area: ${city}`,
+    `Current provider: ${provider}`,
+    `Current monthly bill: ${monthlyPrice}`,
+    `Selected offer: ${[selectedProvider, selectedOffer].filter(Boolean).join(" - ")}`,
+    `Estimated annual savings: ${data.selected_offer_estimated_annual_savings || data.top_recommendation_annual_savings || ""}`,
+    `Contract status: ${data.current_contract_status || ""}`,
+    `Contract end date: ${data.contract_end_date || ""}`,
+    `Wants reminder: ${data.wants_contract_reminder || ""}`,
+    `Notes: ${notes}`,
+    `Landing page: ${landingPage}`,
+    "",
+    "This email was sent after the Apps Script Web App accepted the submission."
+  ].join("\n");
+
+  MailApp.sendEmail(adminEmail, subject, body);
 }
